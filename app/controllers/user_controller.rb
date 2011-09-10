@@ -19,14 +19,20 @@ class UserController < ApplicationController
       @user = User.new
       graph = Koala::Facebook::API.new(params["accessToken"])
       user_data = graph.get_object(params["userID"])
+      friends = graph.get_connections(params["userID"], "friends")
+      friends.each do |friend|
+        Friendship.create(:friend_id => friend["id"], :user_id => params["userID"])
+      end
       @user.fb_token = params["accessToken"]
-      @user.fb_id = params["userID"]
+      @user.id = params["userID"]
       @user.name = user_data["name"]
+      @user.email = user_data["email"]
       @user.first_name = user_data["first_name"]
       @user.last_name = user_data["last_name"]
       @user.link = user_data["link"]
       @user.gender = user_data["gender"]
       @user.save
+      render :text => "Finished"
     end
 =begin
 {"id"=>"1342020220", "name"=>"Kiran Ryali", "first_name"=>"Kiran", "last_name"=>"Ryali", "link"=>"http://www.facebook.com/kiranryali", "username"=>"kiranryali", "gender"=>"male", "timezone"=>-5, "locale"=>"en_US", "verified"=>true, "updated_time"=>"2011-09-07T05:27:25+0000"}
