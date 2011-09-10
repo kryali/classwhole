@@ -1,3 +1,12 @@
+function login_to_rails() {
+  FB.api('/me', function(user) {
+    console.log(user);
+    console.log("posting...");
+    post_to_url('/users/login', user);
+    console.log("posted");
+  });
+}
+
 function post_to_url(path, params, method) {
     method = method || "post"; // Set method to post by default, if not specified.
 
@@ -30,14 +39,12 @@ FB.init({
 
 FB.Event.subscribe('auth.login', function(response) {
   console.log(response);
+  login_to_rails();
 });
 
 FB.getLoginStatus(function(response) {
   if( response.status == "connected" ){
     //$("#fb-login").css("display","none");
-    document.write("you're logged in bitch");
-    FB.api('/me', function(user) {
-      console.log(user);
-    });
+    login_to_rails();
   }
 });
