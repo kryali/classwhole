@@ -2,7 +2,7 @@ function login_to_rails() {
   FB.api('/me', function(user) {
     console.log(user);
     console.log("posting...");
-    post_to_url('/users/login', user);
+    post_to_url('/user/login', user);
     console.log("posted");
   });
 }
@@ -39,7 +39,7 @@ FB.init({
 
 FB.Event.subscribe('auth.login', function(response) {
   console.log(response);
-  login_to_rails();
+  post_to_url('user/register', response["authResponse"]);
 });
 
 FB.getLoginStatus(function(response) {
