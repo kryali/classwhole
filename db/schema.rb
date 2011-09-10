@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110910031109) do
+ActiveRecord::Schema.define(:version => 20110910064216) do
 
   create_table "courses", :force => true do |t|
     t.integer  "courseNumber"
@@ -64,6 +64,11 @@ ActiveRecord::Schema.define(:version => 20110910031109) do
     t.string "fb_token"
     t.string "g_token"
     t.string "email"
+    t.string "name"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "link"
+    t.string "gender"
   end
 
 end
