@@ -5,3 +5,4 @@ tmp/
 .sass-cache/
 *.swp
 Gemfile.lock
+db/schema.rb
