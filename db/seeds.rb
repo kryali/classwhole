@@ -6,7 +6,7 @@ require 'xmlsimple'
 def ParseSemester(year, season)
 
   # Initialize
-  Major.delete_all
+  Subject.delete_all
   Course.delete_all
   Section.delete_all
 
@@ -30,7 +30,7 @@ def ParseSemester(year, season)
     puts "-------\n#{subject['subjectCode']}\n-------\n"
 
     # Add the subject/major to the database
-    currentMajor = Major.create(
+    currentMajor = Subject.create(
         :phone => subject['phone'],
         :webSiteAddress => subject['webSiteAddress'],
         :address2 => subject['address2'],
