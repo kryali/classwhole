@@ -7,6 +7,7 @@ gem 'rails', '3.1.0'
 
 gem 'sqlite3'
 gem 'xml-simple'
+gem 'koala', "~> 1.2.0beta"
 
 
 # Gems used only for assets and not required
