@@ -5,6 +5,7 @@
   <%= stylesheet_link_tag    "application" %>
   <%= csrf_meta_tags %>
   <%= javascript_tag "var AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? %>
+  <%= javascript_include_tag "jquery-1.6.3.min" %>
 </head>
 <body>
 
