@@ -2,11 +2,18 @@
  * fb_button_init.js
  * File Summary: initializes the facebook sdk and contains login logic via facebook 
  */
+ 
 
 $(document).ready(function() { 
 
+  /* Constants */
+  var LOGIN_PATH = "/user/login";
+
+
   /*
    * This creates a hidden form and posts this data to rails
+   *  A BETTER way would be to actually have a hidden form on the login page,
+   *  That way - we wouldn't have to pass the AUTH_TOKEN from rails into the javascript
    */
   function post_to_url(path, params, method) {
       method = method || "post"; // Set method to post by default, if not specified.
@@ -30,6 +37,7 @@ $(document).ready(function() {
       form.submit();
   }
 
+
   /* 
    * FB.init starts the facebook sdk, enabling calls against the facebook api
    * also, the facebook "sdk" sucks.
@@ -47,20 +55,21 @@ $(document).ready(function() {
   $('#fb-button').click( function(event) {
 
     /* FB.getLoginStatus allows you to determine if a user is 
-     * logged in and connected to your app.*/
+     * logged into facebook.*/
     FB.getLoginStatus(function(response) {
-      if( response.authResponse ) {
-        /* Log the user in with it's facebook graph data */
-        FB.api('/me', function(user) {
-          post_to_url('/user/login', user);
-        });
+      if(response.authResponse){
+        /* User is logged in to facebook, let him in */
+        post_to_url(LOGIN_PATH, response["authResponse"]);
       }
     });
 
     /* FB.Event.subscribe('auth.login') gets fired when the user logs in
      * Register the user by silently posting a form to rails */
     FB.Event.subscribe('auth.login', function(response) {
-      post_to_url('user/register', response["authResponse"]);
+      post_to_url(LOGIN_PATH, response["authResponse"]);
     });
+
   });
+
+
 });
