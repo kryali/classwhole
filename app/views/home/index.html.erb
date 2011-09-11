@@ -1,1 +1,6 @@
-<%= render 'shared/fb_login_button' %>
+<% unless session[:user_id] %>
+  <%= render 'shared/fb_login_button' %>
+<% else %>
+  Welcome <%= User.find(session[:user_id]).name %> 
+  <%= link_to "Logout", logout_path %>
+<% end %>
