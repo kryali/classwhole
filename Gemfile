@@ -9,6 +9,8 @@ gem 'sqlite3'
 gem 'xml-simple'
 gem 'koala', "~> 1.2.0beta"
 
+gem 'haml'
+
 gem 'rails3-jquery-autocomplete', '~> 0.9.1' 
 
 # Gems used only for assets and not required
