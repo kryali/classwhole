@@ -1,9 +1,11 @@
 Whiteboard::Application.routes.draw do
 
   match 'courses/' => 'courses#index'
-  match 'courses/:subjectCode' => 'courses#subject' 
-  match 'courses/:subjectCode/:courseNumber' => 'courses#course'
-  match 'courses/:subjectCode/:courseNumber/:sectionId' => 'courses#section'
+  match 'courses/:subjectCode' => 'courses#subject', :as => 'show_subject'
+  match 'courses/:subjectCode/:courseNumber' => 'courses#course', :as => 'show_course'
+  match 'courses/:subjectCode/:courseNumber/:sectionId' => 'courses#section' => 'show_section'
+
+  match 'courses/new' => 'courses#add_course'
 
   root :to => 'home#index'
   match 'user/login' => 'user#login', :via => :post
