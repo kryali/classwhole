@@ -28,4 +28,4 @@ class CoursesController < ApplicationController
     @section = Section.find(params[:sectionId])
   end
 
-end_)
+end

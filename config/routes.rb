@@ -1,10 +1,9 @@
 Whiteboard::Application.routes.draw do
 
+  match 'courses/' => 'courses#index'
   match 'courses/:subjectCode' => 'courses#subject' 
   match 'courses/:subjectCode/:courseNumber' => 'courses#course'
   match 'courses/:subjectCode/:courseNumber/:sectionId' => 'courses#section'
-  get "courses/course" 
-  get "courses/section/"
 
   root :to => 'home#index'
   match 'user/login' => 'user#login', :via => :post
