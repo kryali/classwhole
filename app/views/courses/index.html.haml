@@ -1,5 +1,5 @@
 Index of available majors
 %br
 - @subjects.each do |subject|
-  %a{:href => "#"}= subject.subjectCode
+  = link_to  subject.subjectCode, show_subject_path(subject.subjectCode) 
   %br
