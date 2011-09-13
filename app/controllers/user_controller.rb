@@ -1,11 +1,15 @@
+# Handles user login/registration interaction
+#
 class UserController < ApplicationController
   def login
+
+    user_id = params["userID"]
     begin 
-      @user = User.find(params["userID"])
+      @user = User.find(user_id)
       self.current_user=@user
     rescue ActiveRecord::RecordNotFound
-      register(params["accessToken"], params["userID"]);
-      try
+      user_id = register(params["accessToken"], params["userID"]);
+      retry
     ensure
       redirect_to(root_path)
     end
@@ -32,6 +36,7 @@ class UserController < ApplicationController
     @user.link = user_data["link"]
     @user.gender = user_data["gender"]
     @user.save
+    return @user.id
   end
 
 
