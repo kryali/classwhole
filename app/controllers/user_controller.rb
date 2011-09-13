@@ -2,11 +2,11 @@ class UserController < ApplicationController
   def login
     begin 
       @user = User.find(params["userID"])
+      self.current_user=@user
     rescue ActiveRecord::RecordNotFound
       register(params["accessToken"], params["userID"]);
+      try
     ensure
-      current_user = @user
-      session[:user_id] = @user.id if @user.id
       redirect_to(root_path)
     end
   end
