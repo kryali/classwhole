@@ -6,6 +6,7 @@ require 'xmlsimple'
 def ParseSemester(year, season)
 
   # Initialize
+  Semester.delete_all
   Subject.delete_all
   Course.delete_all
   Section.delete_all
@@ -24,13 +25,16 @@ def ParseSemester(year, season)
   # Turn the string into a hash of data 
   catalog = XmlSimple.xml_in(xml_data, 'ForceArray' => ['subject'], 'SuppressEmpty' => nil)
 
+  currentSemester = Semester.create(:year => year, :season => season)
+
   # Iterate through the subjects found in the hash
   catalog['subject'].each do |subject|
 
     puts "-------\n#{subject['subjectCode']}\n-------\n"
 
     # Add the subject/major to the database
-    currentMajor = Subject.create(
+#    currentMajor = Subject.create(
+    currentMajor = currentSemester.subjects.create(
         :phone => subject['phone'],
         :webSiteAddress => subject['webSiteAddress'],
         :address2 => subject['address2'],
@@ -39,7 +43,7 @@ def ParseSemester(year, season)
         :subjectDescription => subject['subjectDescription'],
         :subjectCode => subject['subjectCode'],
         :unitName => subject['unitName']
-        )
+    )
 
     # Build a url based off of the current subject code
     subjectURL = base_url + "/schedule/" + subject['subjectCode'] + "/index.xml"
@@ -80,4 +84,4 @@ def ParseSemester(year, season)
   end
 end
 
-ParseSemester( '2011', 'spring' )
+ParseSemester( '2011', 'fall' )
