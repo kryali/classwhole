@@ -1,5 +1,0 @@
-Showing Subject
-= @subject.subjectCode
-- for course in @courses
-  <br/>
-  = link_to( course.courseNumber, show_course_path(:year => @semester.year, :season => @semester.season, :subjectCode => @subject.subjectCode, :courseNumber => course.courseNumber ) )
