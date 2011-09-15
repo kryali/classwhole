@@ -1,1 +1,1 @@
-Blackboard successor
+Classwhole - the Blackboard successor
