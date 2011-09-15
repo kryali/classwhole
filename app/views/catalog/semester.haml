@@ -1,0 +1,7 @@
+Showing semester 
+= @semester.season + " " + @semester.year 
+<br/>
+Subjects
+- for subject in @semester.subjects
+  <br/>
+  = link_to subject.subjectCode, show_subject_path(:year => @semester.year, :season => @semester.season, :subjectCode => subject.subjectCode)
