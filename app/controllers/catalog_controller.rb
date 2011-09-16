@@ -11,23 +11,20 @@ class CatalogController < ApplicationController
   #
   def get_semester(params)
     @year = params[:year]
-    @season = params[:season]
-
+    @season = params[:season] 
     @semester = Semester.find_by_year_and_season(@year, @season)
   end
 
   def get_subject(params)
-    @subjectCode = params[:subjectCode]
-
     @semester = get_semester(params)
-    @subject = @semester.subjects.find_by_subjectCode(@subjectCode)
+    @subject_code = params[:subject_code] 
+    @subject = @semester.subjects.find_by_code(@subject_code)
   end
 
   def get_course(params)
-    @courseNumber = params[:courseNumber]
-
     @subject = get_subject(params)
-    @course = @subject.courses.find_by_courseNumber(@courseNumber)
+    @course_number = params[:course_number] 
+    @course = @subject.courses.find_by_number(@course_number)
   end
   # </helpers>
 
@@ -59,7 +56,7 @@ class CatalogController < ApplicationController
   # - Show all the courses for a given subject
   #
   # Route:
-  #   courses/:season/:year/:subjectCode
+  #   courses/:season/:year/:subject_code
   def subject
     @subject = get_subject(params)
     @courses = @subject.courses
@@ -71,7 +68,7 @@ class CatalogController < ApplicationController
   # - Show all the sections for a given course
   #
   # Route:
-  #   courses/:season/:year/:subjectCode/:courseNumber
+  #   courses/:season/:year/:subject_code/:courseNumber
   def course
     @course = get_course(params)
     @sections = @course.sections

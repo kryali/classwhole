@@ -1,15 +1,9 @@
 Whiteboard::Application.routes.draw do
 
-  #match 'courses/' => 'courses#index'
-  #match 'courses/:subjectCode' => 'courses#subject', :as => 'show_subject'
-  #match 'courses/:subjectCode/:courseNumber' => 'courses#course', :as => 'show_course'
-  #match 'courses/:subjectCode/:courseNumber/:sectionId' => 'courses#section', :as => 'show_section'
-  #match 'courses/new' => 'courses#add_course'
-
   match  'courses/' => 'catalog#index', :as => 'show_university'
   match  'courses/:season/:year/' => 'catalog#semester', :as => 'show_semester'
-  match  'courses/:season/:year/:subjectCode' => 'catalog#subject', :as => 'show_subject'
-  match  'courses/:season/:year/:subjectCode/:courseNumber' => 'catalog#course', :as => 'show_course'
+  match  'courses/:season/:year/:subject_code' => 'catalog#subject', :as => 'show_subject'
+  match  'courses/:season/:year/:subject_code/:course_number' => 'catalog#course', :as => 'show_course'
 
   root :to => 'home#index'
   match 'user/login' => 'user#login', :via => :post
