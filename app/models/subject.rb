@@ -1,9 +1,8 @@
 class Subject < ActiveRecord::Base
-	validates :subjectCode, :uniqueness => true
+	validates :code, :uniqueness => true
 	has_many :courses
 
   define_index do
-    indexes subjectDescription, :sortable => true
-    has :subjectCode
+    indexes description, :sortable => true
   end
 end

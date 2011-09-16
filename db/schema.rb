@@ -11,15 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110915013157) do
+ActiveRecord::Schema.define(:version => 20110915180150) do
 
   create_table "courses", :force => true do |t|
-    t.integer  "courseNumber"
+    t.integer  "number"
     t.string   "hours"
     t.text     "description"
     t.string   "title"
-    t.string   "subjectCode"
-    t.integer  "subjectId"
+    t.string   "subject_code"
     t.integer  "subject_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -32,18 +31,18 @@ ActiveRecord::Schema.define(:version => 20110915013157) do
 
   create_table "sections", :force => true do |t|
     t.integer  "room"
-    t.integer  "referenceNumber"
+    t.integer  "reference_number"
     t.text     "notes"
     t.string   "type"
     t.string   "instructor"
     t.string   "days"
-    t.time     "startTime"
-    t.time     "endTime"
+    t.time     "start_time"
+    t.time     "end_time"
     t.string   "building"
     t.integer  "course_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "sectionId"
+    t.string   "code"
   end
 
   create_table "semesters", :force => true do |t|
@@ -55,13 +54,13 @@ ActiveRecord::Schema.define(:version => 20110915013157) do
   end
 
   create_table "subjects", :force => true do |t|
-    t.string   "webSiteAddress"
+    t.string   "web_site_address"
     t.text     "address2"
     t.string   "contact"
-    t.string   "contactTitle"
-    t.text     "subjectDescription"
-    t.string   "subjectCode"
-    t.string   "unitName"
+    t.string   "contact_title"
+    t.text     "subject_description"
+    t.string   "code"
+    t.string   "unit_name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "phone"
