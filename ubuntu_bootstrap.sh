@@ -12,7 +12,7 @@ rvm install 1.9.2 -C --with-openssl-dir=$HOME/.rvm/usr,--with-iconv-dir=$HOME/.r
 rvm use --default 1.9.2
 cp /etc/ssl/certs/* ~/.rvm/usr/ssl/certs/
 gem install rails
-sudo apt-get install cd ~/.rvm/src/ruby-1.9.2-p290/ext/readline
+cd ~/.rvm/src/ruby-1.9.2-p290/ext/readline
 ruby extconf.rb
 make
 make install
