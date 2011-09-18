@@ -1,6 +1,17 @@
 %input{:id => "autocomplete-course-list", :type => "text"}
 :javascript
+  /* Might need to put this somewhere else where it makes more sense */
   $(document).ready(function(){
+    /* Set up autocomplete, use a rails catalog helper function to populate data */
+    var course_list = #{course_list_for_autocomplete};
+    $("#autocomplete-course-list").autocomplete({ 
+      source: course_list,
+      minLength: 2,
+      autoFocus: true,
+      select: add_course_to_list,
+    });
+
+    /* === List management === */
 
     /* Keep track of the number of classes the user is inputting */
     var class_counter = 0;
@@ -46,17 +57,8 @@
                     .attr("type", "hidden")
                     .attr("name", "size")
                     .appendTo("#hidden-course-form");
-        }
+      }
     };
-
-    /* Set up autocomplete */
-    var course_list = #{course_list_for_autocomplete};
-    $("#autocomplete-course-list").autocomplete({ 
-      source: course_list,
-      minLength: 2,
-      autoFocus: true,
-      select: add_course_to_list,
-    });
 
   });
 %br
