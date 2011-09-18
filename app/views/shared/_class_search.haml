@@ -1,0 +1,34 @@
+%input{:id => "autocomplete-course-list", :type => "text"}
+:javascript
+  $(document).ready(function(){
+
+    var add_course_id_to_form = function( course_id ) { 
+    }
+
+    var add_course_to_list = function( event, ui ) {
+      if ( ui.item ) {
+        /* need to check if the course is already in the list */
+
+        /* Prevent the input box from being filled with the value.
+           Instead, blank the input box out. */
+        event.preventDefault();
+        $("#autocomplete-course-list").val(""); 
+
+        /* Append the course to the currently populated list */
+        $("<li/>").text(ui.item.label).appendTo("#user-course-list");
+
+        /* Add the course id to our hidden form */
+        add_course_id_to_form(ui.item.value);
+      }
+    };
+    var course_list = #{course_list_for_autocomplete};
+    $("#autocomplete-course-list").autocomplete({ 
+      source: course_list,
+      minLength: 2,
+      autoFocus: true,
+      select: add_course_to_list,
+    });
+  });
+%br
+%h3 Your classes 
+%ul#user-course-list
