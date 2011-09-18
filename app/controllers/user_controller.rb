@@ -1,8 +1,9 @@
+#
 # Handles user login/registration interaction
 #
 class UserController < ApplicationController
-  def login
 
+  def login
     user_id = params["userID"]
     begin 
       @user = User.find(user_id)
@@ -16,9 +17,9 @@ class UserController < ApplicationController
   end
 
   #
-  # register receives an accessToken and a userID, then
-  # uses koala to retrieve the user's data 
-  # and facebook friends
+  # Description: register receives an accessToken and a userID, then
+  #   uses koala to retrieve the user's data 
+  #   and facebook friends
   #
   def register(accessToken, userID)
     # User wasn't found, register him
@@ -39,9 +40,22 @@ class UserController < ApplicationController
     return @user.id
   end
 
-
+  #
+  # destroy the session so the user is no longer logged in
+  #
   def logout
     session[:user_id] = nil
     redirect_to(root_path)
   end
+
+  #
+  # Description: This function gets passed a list of course ids and adds it
+  #   to the currently logged in user 
+  #
+  def add_courses
+    # Add each class to the current users classes
+    params["size"].to_i.times { |i| current_user.courses << Course.find(params[i.to_s]) }
+    redirect_to(root_path)
+  end
+
 end
