@@ -3,5 +3,6 @@
   = current_user.name
   = link_to "Logout", logout_path
   = link_to "Courses", show_university_path
+  = render 'shared/class_search'
 - else
   = render 'shared/fb_login_button'

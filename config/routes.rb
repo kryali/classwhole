@@ -8,6 +8,7 @@ Whiteboard::Application.routes.draw do
   root :to => 'home#index'
   match 'user/login' => 'user#login', :via => :post
   match 'user/register' => 'user#register', :via => :post
+  match 'user/courses/new' => 'user#add_courses', :via => :post, :as => :add_courses
   match 'user/logout', :as => 'logout'
 
   # The priority is based upon order of creation:
