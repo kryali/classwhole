@@ -58,4 +58,16 @@ class UserController < ApplicationController
     redirect_to(root_path)
   end
 
+  #
+  # Description: This function gets passed a course ids and removes the course
+  #   from the currently logged in user 
+  #
+  def remove_course
+    begin
+      target_course = Course.find(params["course_id"].to_i)
+      current_user.courses.delete(target_course)
+      redirect_to(root_path)
+    end
+  end
+
 end
