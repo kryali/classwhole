@@ -9,6 +9,7 @@ Whiteboard::Application.routes.draw do
   match 'user/login' => 'user#login', :via => :post
   match 'user/register' => 'user#register', :via => :post
   match 'user/courses/new' => 'user#add_courses', :via => :post, :as => :add_courses
+  match 'user/courses/destroy/:course_id' => 'user#remove_course', :as => :remove_course
   match 'user/logout', :as => 'logout'
 
   # The priority is based upon order of creation:
