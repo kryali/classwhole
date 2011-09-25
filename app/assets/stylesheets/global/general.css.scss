@@ -1,3 +1,7 @@
 .hidden {
   display: none;
 }
+
+.ui-autocomplete-loading {
+  background: image-url("small-ajax-loading.gif");
+}

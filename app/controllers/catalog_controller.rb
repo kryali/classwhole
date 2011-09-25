@@ -82,7 +82,7 @@ class CatalogController < ApplicationController
   #
   # Route:
   #   courses/class_list
-  def class_list
+  def auto_search
     class_list = []
     Course.all.each do |course|
       if course.to_s.include?(params["term"].upcase)
