@@ -29,7 +29,7 @@ $(document).ready(function(){
       var class_id = ui.item.value;
       if( class_id in selected_classes ){
         /* return if the user as already selected the class*/
-        alert("error : class is already selected"); // REMOVE THIS LATER
+        pop_alert("error","class is already selected"); // REMOVE THIS LATER
         return;
       } else {
         selected_classes[class_id] = class_counter;
@@ -51,7 +51,6 @@ $(document).ready(function(){
   };
 
   /* Set up autocomplete, use a rails catalog helper function to populate data */
-  // var course_list = #{course_list_for_autocomplete};
   $("#autocomplete-course-list").autocomplete({ 
     source: "courses/search/auto",
     minLength: 2,
