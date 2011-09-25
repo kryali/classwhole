@@ -12,13 +12,13 @@ Example of what's getting inserted
  */
 
 $(document).ready(function () {
-
   /* 
       Use this function to create pop up alerts in your code
       USAGE: pop_alert("warning", "This is a warning message");
+        
+      global right now, see if this is correct later
   */
-
-  var pop_alert = function(level, message) {
+ pop_alert = function(level, message) {
 
     /* Build the html and insert it into the document */
     var alert_close_box = $('<a />', {
@@ -36,5 +36,6 @@ $(document).ready(function () {
     alert_box.alert();
 
     $('body').prepend(alert_box);
-  }
+  };
+
 });
