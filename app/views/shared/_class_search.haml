@@ -31,7 +31,7 @@
         var class_id = ui.item.value;
         if( class_id in selected_classes ){
           /* return if the user as already selected the class*/
-          alert("class is already selected"); // REMOVE THIS LATER
+          alert("error : class is already selected"); // REMOVE THIS LATER
           return;
         } else {
           selected_classes[class_id] = class_counter;
@@ -71,4 +71,4 @@
       = link_to("x", remove_course_path(course.id))
 -# Use a hidden form to keep track of the selected classes
 =form_tag({:controller => :user, :action=> :add_courses}, :method => :post, :id => "hidden-course-form" ) do
-  =submit_tag "Add Classes"
+  =submit_tag("Add Classes", {:class => 'btn default'})
