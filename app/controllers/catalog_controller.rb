@@ -77,5 +77,20 @@ class CatalogController < ApplicationController
     render 'course'
   end
 
-
+  # Description:
+  # - Return a json formatted list of classes for autocomplete
+  #
+  # Route:
+  #   courses/class_list
+  def class_list
+    class_list = []
+    Course.all.each do |course|
+      if course.to_s.include?(params["term"].upcase)
+        class_list << { label: "#{course.to_s}",
+                        title: "#{course.title}",
+                        value: "#{course.id}" }
+      end
+    end
+    render :json => class_list
+  end
 end

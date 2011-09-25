@@ -4,6 +4,7 @@ Whiteboard::Application.routes.draw do
   match  'courses/:season/:year/' => 'catalog#semester', :as => 'show_semester'
   match  'courses/:season/:year/:subject_code' => 'catalog#subject', :as => 'show_subject'
   match  'courses/:season/:year/:subject_code/:course_number' => 'catalog#course', :as => 'show_course'
+  match 'courses/class_list' => 'catalog#class_list', :as => 'class_list'
 
   root :to => 'home#index'
   match 'user/login' => 'user#login', :via => :post
