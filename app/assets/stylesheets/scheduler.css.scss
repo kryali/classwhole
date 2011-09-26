@@ -1,0 +1,72 @@
+// Place all the styles related to the scheduler controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#wrapper {
+  width: 520px;
+  background: #F2F2F2;
+  margin: 0 auto;
+  color: #4D4D4D;
+}
+
+#header {
+  background: #E6E6E6;
+  height: 40px;
+  padding: 2em 1em 1em 1em;
+  border-bottom: 2px solid #E4DFDF;
+
+  a#logo {
+    float: left; 
+    display: block;
+    font-size: 1.2em;
+    text-decoration: none;
+  }
+
+  a#logo:visited {
+    color: #4D4D4D;
+  }
+
+  #fb-button {
+    float: right;
+  }
+}
+
+#content {
+  padding: 40px;
+  position: relative;
+}
+
+#class-search-box {
+  width: 370px;
+  margin: 0 auto;
+
+  h1 {
+    text-align: center;
+    font-size: 1.3em;
+    padding-bottom: 25px;
+  }
+
+  #autocomplete-course-list {
+    width: 350px;
+    height: 40px;
+    padding: 0 10px 0 10px;
+    font-size: 1.2em;
+    background: #e6e6e6;
+    border: 1px solid #a2a2a2;
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+
+    box-shadow: inset 0px 0px 4px #a2a2a2;
+    -moz-box-shadow: inset 0px 0px 4px #a2a2a2;
+    -webkit-box-shadow: inset 0px 0px 4px #a2a2a2;
+  }
+}
+
+#user-course-list {
+  position: absolute;
+  width: 165px;
+  top: 0;
+  right: -165px;
+  background: red;
+}
