@@ -36,7 +36,7 @@ $(document).ready(function(){
       }
 
       /* Append the course to the currently populated list */
-      $("<li/>").text(ui.item.label).appendTo("#user-course-list");
+      $("<li/>").text(ui.item.label).appendTo("#user-course-list ul");
 
       /* Add the course id to our hidden form */
       add_course_id_to_form(class_id);

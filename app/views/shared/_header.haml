@@ -1,0 +1,9 @@
+%div#header
+  = link_to "ClassWhole", root_path, {:id => "logo"}
+  - if current_user
+    Welcome
+    = current_user.name
+    = link_to "Logout", logout_path
+    = link_to "Courses", show_university_path
+  - else
+    = render 'shared/misc/fb_login_button'

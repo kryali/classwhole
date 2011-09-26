@@ -1,0 +1,11 @@
+%div#user-course-list
+  %h3 Your classes 
+  %ul
+  - if current_user
+    - for course in current_user.courses
+      %li
+        = link_to("x", remove_course_path(course.id), :remote => true, :class=>"remove-link")
+        = course.to_s
+  = form_tag({:controller => :user, :action=> :add_courses}, :method => :post, :id => "hidden-course-form" ) do
+    =submit_tag("Save Classes", {:class => 'btn default'})
+= javascript_include_tag "forms/schedule-autocomplete"
