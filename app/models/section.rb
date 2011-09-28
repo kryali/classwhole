@@ -9,7 +9,6 @@ class Section < ActiveRecord::Base
     # Check for day conflicts
     day_array = days.split("")
     day_array.each do |day|
-
       # If we have a day conflict, check for an hour and minutes conflict
       if( section.days.include?(day) )
         if (start_time.to_i   >= section.start_time.to_i and start_time.to_i <= section.end_time.to_i) or
@@ -19,6 +18,7 @@ class Section < ActiveRecord::Base
       end
     end
 
+    # No conflicts have been found, return false
     return false
   end
 end

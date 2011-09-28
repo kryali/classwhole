@@ -2,9 +2,11 @@ class SchedulerController < ApplicationController
   def index
   end
 
-  # Description: This function ensures that no two sections are conflicting
-  #   Method: Make sure that sectionb's start and end time is not between sectiona's start and end time
-  def conflict?(sectiona, sectionb)
+  def has_conflicts?(schedule, target_section)
+    schedule.each do |section|
+      return true if section.conflict?(target_section)
+    end
+    return false
   end
 
   def generate_schedule
@@ -13,12 +15,14 @@ class SchedulerController < ApplicationController
     current_user.courses.each do |course|
       logger.info "Course: #{course.to_s}"
       course.sections.each do |section|
-        logger.info "\tSection: #{section.code}"
-        logger.info "\t\tTime: #{section.start_time} #{section.end_time}"
-        logger.info "\t\tType: #{section.code}"
+        if not has_conflicts?(schedule, section)
+          schedule << section
+          break
+        end
       end
     end
-    logger.info "END SCHEDULER"
+    render :json => schedule
+
   end
 
   def show
