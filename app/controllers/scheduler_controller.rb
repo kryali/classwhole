@@ -12,11 +12,9 @@ class SchedulerController < ApplicationController
 
   def generate_schedule
     schedule = []
-    logger.info "START SCHEDULER"
     current_user.courses.each do |course|
-      logger.info "Course: #{course.to_s}"
       course.sections.each do |section|
-        if not has_conflicts?(schedule, section)
+        unless has_conflicts?(schedule, section)
           schedule << section
           break
         end
