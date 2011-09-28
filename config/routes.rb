@@ -1,8 +1,8 @@
 Whiteboard::Application.routes.draw do
 
   get "scheduler/index"
-
   get "scheduler/show"
+  get "scheduler/new"
 
   match  'courses/search/auto' => 'catalog#auto_search'
   match  'courses/' => 'catalog#index', :as => 'show_university'

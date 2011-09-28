@@ -1,4 +1,5 @@
 class SchedulerController < ApplicationController
+
   def index
   end
 
@@ -22,10 +23,12 @@ class SchedulerController < ApplicationController
       end
     end
     render :json => schedule
-
   end
 
   def show
+  end
+
+  def new
     generate_schedule
   end
 
