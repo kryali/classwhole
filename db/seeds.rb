@@ -106,12 +106,13 @@ def ParseSemester(year, season)
         end
 
         section_start_time, section_end_time = parse_hours(section['startTime'], section['endTime'])
+
         currentSection = currentCourse.sections.create(
           :room => section['roomNumber'].to_i,
           :days => section['days'],
           :reference_number => section['referenceNumber'].to_i,
           :notes => section['sectionNotes'],
-          :type => section['sectionType'],
+          :section_type => section['sectionType'],
           :instructor => section['instructor'],
 
           # Time value can be "ARRANGED", not an actual time, so this is stored as nil
