@@ -6,3 +6,5 @@ tmp/
 *.swp
 Gemfile.lock
 db/schema.rb
+db/schema.rb
+db/*schema.rb*
