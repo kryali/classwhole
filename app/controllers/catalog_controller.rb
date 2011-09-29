@@ -84,7 +84,7 @@ class CatalogController < ApplicationController
   #   courses/class_list
   def auto_search
     class_list = []
-    Course.all.each do |course|
+    all_courses.each do |course|
       if course.to_s.include?(params["term"].upcase)
         class_list << { label: "#{course.to_s}",
                         title: "#{course.title}",
@@ -93,4 +93,16 @@ class CatalogController < ApplicationController
     end
     render :json => class_list
   end
+
+
+	def all_courses
+		@all_courses ||= Course.all
+	end
+
+
+
 end
+
+
+
+	
