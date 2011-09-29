@@ -23,7 +23,7 @@ class SchedulerController < ApplicationController
         #if incompatible
         #  next
         #end
-        case section.type
+        case section.section_type
         when "LEC"
           lectures << section
         when "DIS"
@@ -36,7 +36,7 @@ class SchedulerController < ApplicationController
           logger.error "HOLY SHIT WTF WHY IS THIS NULL? pray this is a lecture"
           lectures << section
         else
-          logger.error "section found that does not have a registered section type : " << section.type
+          logger.error "section found that does not have a registered section type : " << section.section_type
         end
       end
       if lectures.size > 0
