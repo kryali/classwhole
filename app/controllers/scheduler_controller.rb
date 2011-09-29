@@ -11,16 +11,67 @@ class SchedulerController < ApplicationController
   end
 
   def generate_schedule
-    schedule = []
+    valid_schedules = []
+    class_sections = []
     current_user.courses.each do |course|
+      lectures = []
+      discussions = []
+      labs = []
+
       course.sections.each do |section|
-        if not has_conflicts?(schedule, section)
-          schedule << section
-          break
+        #remove incompatible sections (single constraints)
+        #if incompatible
+        #  next
+        #end
+        case section.type
+        when "LEC"
+          lectures << section
+        when "DIS"
+          discussions << section
+        when "LBD"
+          discussions << section
+        when "LAB"
+          labs << section
+        when nil
+          logger.error "HOLY SHIT WTF WHY IS THIS NULL? pray this is a lecture"
+          lectures << section
+        else
+          logger.error "section found that does not have a registered section type : " << section.type
         end
       end
+      if lectures.size > 0
+        class_sections << lectures
+      end
+      if discussions.size > 0
+        class_sections << discussions
+      end
+      if labs.size > 0
+        class_sections << labs
+      end
     end
-    render :json => schedule
+
+    class_sections.sort!{|x,y| y.size <=> x.size} #include priority in here too when we implement that
+    generate_schedule_recurse(valid_schedules, class_sections, [], 0)
+    render :json => valid_schedules
+  end
+    
+
+  def generate_schedule_recurse(valid_schedules, class_sections, schedule, current_section)
+    if current_section >= class_sections.size
+      return true
+    end
+    section_list = class_sections[current_section]
+    section_list.each do |section|
+      unless has_conflicts?(schedule, section)
+        schedule.push(section)
+        fit = generate_schedule_recurse(valid_schedules, class_sections, schedule, current_section+1)
+        if fit
+          valid_schedules << schedule.clone
+        end
+        schedule.pop
+      end
+    end
+    return false
   end
 
   def show
