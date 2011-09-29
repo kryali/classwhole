@@ -5,6 +5,30 @@
 
 require 'xmlsimple'
 
+
+# TODO: FIX THIS FOR SPRING SEMESTER!!  
+@semester_start_date = Time.parse("22-Aug-11")
+@semester_end_date   = Time.parse("07-Dec-11")
+
+#
+# Description: takes a  string in the format "01:40 PM" and parses it 
+#              for a a Time object
+# Time.utc(year, month, day, hour, min) → time
+#
+def parse_hours( start_time_string, end_time_string)
+  start_time_match = /(?<hour>\d\d):(?<min>\d\d)\s*(?<am_pm>\w+)/.match(start_time_string)
+  return nil if not start_time_match
+
+  end_time_match = /(?<hour>\d\d):(?<min>\d\d)\s*(?<am_pm>\w+)/.match(end_time_string)
+  return nil if not end_time_match
+
+  # this year month and day do not matter, as long as it is consistent    
+  # TODO: Don't hardcode year you moron
+  start_time = Time.local(1990, 7, 1, start_time_match[:hour].to_i, start_time_match[:min].to_i)
+    end_time = Time.local(1990, 7, 1, end_time_match[:hour].to_i,   end_time_match[:min].to_i)
+  return start_time, end_time
+end
+
 def ParseSemester(year, season)
 
   # Initialize
@@ -55,9 +79,10 @@ def ParseSemester(year, season)
 
     # Iterate through the courses offered in the class 
     subjectCourses.each do |course|
+
       currentCourse = currentMajor.courses.create(
           :number => course['courseNumber'].to_i,
-          :hours => course['hours'],
+          :hours => course['hours'].to_i,
           :description => course['description'],
           :title => course['title'],
           :subject_code => course['subjectCode'],
@@ -67,6 +92,20 @@ def ParseSemester(year, season)
 
       courseSections = course['section']
       courseSections.each do |section|
+
+        # If there is a date rage specified, use it, otherwise default to semester
+        # omg this totally worked
+        quarter_duration = section['sectionDateRange']
+        if not quarter_duration
+          start_date = @semester_start_date
+            end_date = @semester_end_date
+        else
+          dates = quarter_duration.split(" - ")
+          start_date = Time.parse(dates[0])
+          end_date = Time.parse(dates[1])
+        end
+
+        section_start_time, section_end_time = parse_hours(section['startTime'], section['endTime'])
         currentSection = currentCourse.sections.create(
           :room => section['roomNumber'].to_i,
           :days => section['days'],
@@ -74,8 +113,12 @@ def ParseSemester(year, season)
           :notes => section['sectionNotes'],
           :type => section['sectionType'],
           :instructor => section['instructor'],
-          :start_time => (Time.parse(section['startTime']) rescue nil), #NOTE Time value can be "ARRANGED", not an actual time, so should we store this?
-          :end_time => (Time.parse(section['endTime']) rescue nil),
+
+          # Time value can be "ARRANGED", not an actual time, so this is stored as nil
+          :start_time => section_start_time,
+          :end_time => section_end_time,
+          :start_date => start_date,
+          :end_date => end_date,
           :building => section['building'],
           :code => section['sectionId']
           )

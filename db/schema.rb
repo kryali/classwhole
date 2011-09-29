@@ -11,11 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110918044800) do
+ActiveRecord::Schema.define(:version => 20110929043437) do
 
   create_table "courses", :force => true do |t|
     t.integer  "number"
-    t.string   "hours"
+    t.integer  "hours",        :limit => 255
     t.text     "description"
     t.string   "title"
     t.string   "subject_code"
@@ -44,6 +44,8 @@ ActiveRecord::Schema.define(:version => 20110918044800) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "code"
+    t.datetime "start_date"
+    t.datetime "end_date"
   end
 
   create_table "semesters", :force => true do |t|
