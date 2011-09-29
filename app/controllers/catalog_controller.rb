@@ -94,15 +94,8 @@ class CatalogController < ApplicationController
     render :json => class_list
   end
 
-
 	def all_courses
 		@all_courses ||= Course.all
 	end
 
-
-
 end
-
-
-
-	
