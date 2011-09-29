@@ -14,7 +14,7 @@ class SchedulerController < ApplicationController
     schedule = []
     current_user.courses.each do |course|
       course.sections.each do |section|
-        unless has_conflicts?(schedule, section)
+        if not has_conflicts?(schedule, section)
           schedule << section
           break
         end
