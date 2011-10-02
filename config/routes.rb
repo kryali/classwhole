@@ -4,7 +4,9 @@ Whiteboard::Application.routes.draw do
   get "scheduler/show"
   get "scheduler/new"
 
-  match  'courses/search/auto' => 'catalog#auto_search'
+  match  'courses/search/auto/subject' => 'catalog#subject_auto_search'
+  match  'courses/search/auto/subject/:subject_code' => 'catalog#course_auto_search'
+
   match  'courses/' => 'catalog#index', :as => 'show_university'
   match  'courses/:season/:year/' => 'catalog#semester', :as => 'show_semester'
   match  'courses/:season/:year/:subject_code' => 'catalog#subject', :as => 'show_subject'
