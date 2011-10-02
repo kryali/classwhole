@@ -163,7 +163,6 @@ $(document).ready(function(){
     var list = $(".ui-autocomplete").children();
 
     if( autocomplete_state == "open" && list.length != 0 ) {
-      console.log("SETTING TEXT");
       $("#autocomplete-course-completion").text(best_result);
     }
   };
@@ -171,7 +170,10 @@ $(document).ready(function(){
   self.setInterval(function(){
     watch_for_empty_form();
     watch_for_single_subject();
-    form_suggestion();
   }, 300);
+
+  self.setInterval(function(){
+    form_suggestion();
+  }, 100);
 
 });
