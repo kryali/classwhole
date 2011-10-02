@@ -121,6 +121,9 @@ $(document).ready(function(){
       /* Trigger the autocomplete */
       $(autocomplete_div).autocomplete("search");
     }
+    watch_for_empty_form();
+    watch_for_single_subject();
+    form_suggestion();
   });
 
   function list_closed() {
@@ -166,14 +169,5 @@ $(document).ready(function(){
       $("#autocomplete-course-completion").text(best_result);
     }
   };
-
-  self.setInterval(function(){
-    watch_for_empty_form();
-    watch_for_single_subject();
-  }, 300);
-
-  self.setInterval(function(){
-    form_suggestion();
-  }, 100);
 
 });
