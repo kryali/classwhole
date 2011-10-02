@@ -24,19 +24,19 @@ class SchedulerController < ApplicationController
         #  next
         #end
         case section.section_type
-        when "LEC"
-          lectures << section
-        when "DIS"
-          discussions << section
-        when "LBD"
-          discussions << section
-        when "LAB"
-          labs << section
-        when nil
-          logger.error "HOLY SHIT WTF WHY IS THIS NULL? pray this is a lecture"
-          lectures << section
-        else
-          logger.error "section found that does not have a registered section type : " << section.section_type
+          when "LEC"
+            lectures << section
+          when "DIS"
+            discussions << section
+          when "LBD"
+            discussions << section
+          when "LAB"
+            labs << section
+          when nil
+            logger.error "HOLY SHIT WTF WHY IS THIS NULL? pray this is a lecture"
+            lectures << section
+          else
+            logger.error "section found that does not have a registered section type : #{section.section_type}"
         end
       end
       if lectures.size > 0
