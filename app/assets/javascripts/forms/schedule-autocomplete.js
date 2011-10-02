@@ -83,13 +83,11 @@ $(document).ready(function(){
   var subject_id = undefined;
   function subject_select(event, ui) {
     /* Prevent input box being filled */ 
-    event.preventDefault();
+    // event.preventDefault();
     if ( ui.item ) {
       subject_id = ui.item.value;
       /* Make autocomplete query for classes now */
 
-      /* insert a space into the input */
-      $("#autocomplete-course-list").val($("#autocomplete-course-list").val() + " ");
       switch_to_course_mode(subject_id);
       /* Trigger the autocomplete */
       $(autocomplete_div).autocomplete("search");

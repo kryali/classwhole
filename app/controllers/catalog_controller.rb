@@ -97,7 +97,7 @@ class CatalogController < ApplicationController
       if course.to_s.include?(params["term"].upcase)
         course_list << { label: "#{course.to_s}",
                          title: "#{course.title}",
-                         value: "#{course.id}" }
+                         value: "#{course.to_s}" }
       end
     end
     render :json => course_list

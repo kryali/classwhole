@@ -54,7 +54,12 @@ class UserController < ApplicationController
   #
   def add_courses
     # Add each class to the current users classes
-    params["size"].to_i.times { |i| current_user.courses << Course.find(params[i.to_s]) }
+    params["size"].to_i.times do |i|
+      course = params[i.to_s].split(" ")
+      subject = course[0]
+      number = course[1]
+      current_user.courses << Course.find_by_subject_code_and_number(subject, number)
+    end
     redirect_to(root_path)
   end
 
