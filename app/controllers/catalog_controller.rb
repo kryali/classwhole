@@ -112,7 +112,7 @@ class CatalogController < ApplicationController
     subject_list = []
 
     all_subjects.each do |subject|
-      if params["term"] and subject.to_s.include?(params["term"].upcase) or not params["term"]
+      if params["term"] and subject.starts_with?(params["term"].upcase) or not params["term"]
         subject_list << { label: "#{subject.to_s}",
                           title: "#{subject.title}",
                           value: "#{subject.code}" }
