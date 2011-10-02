@@ -38,7 +38,7 @@ $(document).ready(function(){
 
   /* In order to send a list of class ids to rails, we need to silently 
      keep track of the class ids in a hidden form as well as send the size of the list */
-  var add_course_id_to_form = function( course_id ) { 
+  var add_course_id_to_hidden_form = function( course_id ) { 
 
     $("<input>").val(course_id)
                 .attr("type", "hidden")
@@ -67,7 +67,7 @@ $(document).ready(function(){
       $("<li/>").text(ui.item.label).appendTo("#user-course-list ul");
 
       /* Add the course id to our hidden form */
-      add_course_id_to_form(class_id);
+      add_course_id_to_hidden_form(class_id);
       class_counter++;
 
       /* use a form to keep track of count */
@@ -85,9 +85,7 @@ $(document).ready(function(){
     /* Prevent input box being filled */ 
     event.preventDefault();
     if ( ui.item ) {
-      console.log("Switching to class search");
       subject_id = ui.item.value;
-      console.log(subject_id);
       /* Make autocomplete query for classes now */
 
       /* insert a space into the input */
