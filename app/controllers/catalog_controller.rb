@@ -92,9 +92,8 @@ class CatalogController < ApplicationController
       courses = all_courses
     end
 
-    # Matching query with course name. (i.e. "01" matches "101")
     courses.each do |course|
-      if course.to_s.include?(params["term"].upcase)
+      if params["term"] and course.to_s.include?(params["term"].upcase) or not params["term"]
         course_list << { label: "#{course.to_s}",
                          title: "#{course.title}",
                          value: "#{course.to_s}" }
@@ -109,11 +108,11 @@ class CatalogController < ApplicationController
   # Route:
   #   courses/search/auto/subject
   def subject_auto_search
-
+    
     subject_list = []
 
     all_subjects.each do |subject|
-      if subject.to_s.include?(params["term"].upcase)
+      if params["term"] and subject.to_s.include?(params["term"].upcase) or not params["term"]
         subject_list << { label: "#{subject.to_s}",
                           title: "#{subject.title}",
                           value: "#{subject.code}" }
