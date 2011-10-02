@@ -81,17 +81,50 @@ class CatalogController < ApplicationController
   # - Return a json formatted list of classes for autocomplete
   #
   # Route:
-  #   courses/class_list
-  def auto_search
-    class_list = []
-    all_courses.each do |course|
+  #   courses/search/auto/subject/:subject_code
+  def course_auto_search
+    course_list = []
+
+    # Fall back to using all courses, if we can't find the subject
+    begin
+      courses = Subject.find_by_code(params[:subject_code]).courses
+    rescue
+      courses = all_courses
+    end
+
+    # Matching query with course name. (i.e. "01" matches "101")
+    courses.each do |course|
       if course.to_s.include?(params["term"].upcase)
-        class_list << { label: "#{course.to_s}",
-                        title: "#{course.title}",
-                        value: "#{course.id}" }
+        course_list << { label: "#{course.to_s}",
+                         title: "#{course.title}",
+                         value: "#{course.id}" }
       end
     end
-    render :json => class_list
+    render :json => course_list
+  end
+
+  # Description:
+  # - Return a json formatted list of subjects for autocomplete
+  #
+  # Route:
+  #   courses/search/auto/subject
+  def subject_auto_search
+
+    subject_list = []
+
+    all_subjects.each do |subject|
+      if subject.to_s.include?(params["term"].upcase)
+        subject_list << { label: "#{subject.to_s}",
+                          title: "#{subject.title}",
+                          value: "#{subject.code}" }
+      end
+    end
+
+    render :json => subject_list
+  end
+
+  def all_subjects
+		@all_subjects ||= Subject.all
   end
 
 	def all_courses
