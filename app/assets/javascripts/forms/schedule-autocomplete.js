@@ -2,9 +2,9 @@ $(document).ready(function(){
   
   /* Keep track of the number of classes the user is inputting */
   var class_counter = 0;
+  var spacebar_keycode = "32";
   var selected_classes = {};
   var autocomplete_div = "#autocomplete-course-list";
-
   var ajax_search_url = "courses/search/auto/subject/";
 
   /* So there are two main modes for the autocomplete form, subject and course mode
@@ -113,7 +113,7 @@ $(document).ready(function(){
   /* Switch to course mode when a user types a space on a non empty form */
   $(autocomplete_div).keyup(function(event) {
     var form_value = $(autocomplete_div).val();
-    if(event.keyCode == "32" && form_has_characters()) {
+    if(event.keyCode == spacebar_keycode && form_has_characters()) {
       switch_to_course_mode(form_value.split(" ")[0]);
       /* Trigger the autocomplete */
       $(autocomplete_div).autocomplete("search");
