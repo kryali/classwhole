@@ -6,6 +6,9 @@ $(document).ready(function(){
   var selected_classes = {};
   var autocomplete_div = "#autocomplete-course-list";
   var ajax_search_url = "courses/search/auto/subject/";
+  var current_mode = "subject";
+
+  autocomplete_state = "closed";
 
   /* So there are two main modes for the autocomplete form, subject and course mode
    * 
@@ -29,11 +32,13 @@ $(document).ready(function(){
   function switch_to_subject_mode() {
     $(autocomplete_div).autocomplete( "option", "select", subject_select ); 
     $(autocomplete_div).autocomplete( "option", "source",  ajax_search_url ); 
+    current_mode = "subject";
   }
 
   function switch_to_course_mode(subject_id) {
     $(autocomplete_div).autocomplete( "option", "select", add_course_to_list ); 
     $(autocomplete_div).autocomplete( "option", "source",  ajax_search_url + subject_id); 
+    current_mode = "course";
   }
 
   /* In order to send a list of class ids to rails, we need to silently 
@@ -118,6 +123,16 @@ $(document).ready(function(){
     }
   });
 
+  function list_closed() {
+    $("#autocomplete-course-completion").text("");
+    autocomplete_state = "closed";
+  };
+
+  function list_opened() {
+    autocomplete_state = "open";
+    form_suggestion();
+  };
+
   /* Set up autocomplete, use a rails catalog helper function to populate data */
   $(autocomplete_div).autocomplete({ 
     source: ajax_search_url,
@@ -125,16 +140,38 @@ $(document).ready(function(){
     delay: 0,
     autoFocus: true,
     select: subject_select,
+    close: list_closed,
+    open: list_opened,
   });
 
-  var watch_for_empty_form = function() {
+  function watch_for_single_subject() {
+    var list = $(".ui-autocomplete").children();
+    if( current_mode == "subject" && list.length == 1 ) {
+      switch_to_course_mode(list.text());
+      $(autocomplete_div).autocomplete("search");
+    }
+  };
+
+  function watch_for_empty_form() {
     if(!form_has_characters()){
       switch_to_subject_mode();
     };
   };
 
+  function form_suggestion() {
+    var best_result = $(".ui-autocomplete .ui-menu-item:first-child").text();
+    var list = $(".ui-autocomplete").children();
+
+    if( autocomplete_state == "open" && list.length != 0 ) {
+      console.log("SETTING TEXT");
+      $("#autocomplete-course-completion").text(best_result);
+    }
+  };
+
   self.setInterval(function(){
     watch_for_empty_form();
+    watch_for_single_subject();
+    form_suggestion();
   }, 300);
 
 });
