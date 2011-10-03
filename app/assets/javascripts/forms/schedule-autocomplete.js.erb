@@ -113,17 +113,26 @@ $(document).ready(function(){
     return false;
   };
 
-  /* Switch to course mode when a user types a space on a non empty form */
   $(autocomplete_div).keyup(function(event) {
+
+    /* A keyup event signifies that the user has changed the input, thus do checks */
+    watch_for_empty_form();
+    watch_for_single_subject();
+    form_suggestion();
+
+    var keycode = $.ui.keyCode;
     var form_value = $(autocomplete_div).val();
-    if(event.keyCode == spacebar_keycode && form_has_characters()) {
+
+    if(event.keyCode == keycode.SPACE && form_has_characters()) {
+      /* Switch to course mode when a user types a space on a non empty form */
       switch_to_course_mode(form_value.split(" ")[0]);
       /* Trigger the autocomplete */
       $(autocomplete_div).autocomplete("search");
     }
-    watch_for_empty_form();
-    watch_for_single_subject();
-    form_suggestion();
+    else if (event.keyCode == keycode.DOWN || event.keyCode == keycode.UP) {
+      /* This means the user has used the arrows to select an item, thus clear the suggestion */
+      $("#autocomplete-course-completion").text("");
+    }
   });
 
   function list_closed() {
@@ -136,7 +145,6 @@ $(document).ready(function(){
     form_suggestion();
   };
 
-  /* Set up autocomplete, use a rails catalog helper function to populate data */
   $(autocomplete_div).autocomplete({ 
     source: ajax_search_url,
     minLength: 1,
