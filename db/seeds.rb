@@ -65,7 +65,7 @@ def ParseSemester(year, season)
         :address2 => subject['address2'],
         :contact => subject['contact'],
         :contact_title => subject['contactTitle'],
-        :subject_description => subject['subjectDescription'],
+        :title => subject['subjectDescription'],
         :code => subject['subjectCode'],
         :unit_name => subject['unitName']
     )
