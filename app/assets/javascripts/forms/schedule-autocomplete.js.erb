@@ -37,7 +37,7 @@ $(document).ready(function(){
 
   function switch_to_course_mode(subject_id) {
     $(autocomplete_div).autocomplete( "option", "select", add_course_to_list ); 
-    $(autocomplete_div).autocomplete( "option", "source",  ajax_search_url + subject_id); 
+    $(autocomplete_div).autocomplete( "option", "source",  ajax_search_url + subject_id.toUpperCase()); 
     current_mode = "course";
   }
 

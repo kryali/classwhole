@@ -4,7 +4,8 @@ class Subject < ActiveRecord::Base
 
   def self.trie(str)
     subjects = []
-    possible_subjects = $redis.smembers("subject:#{str}")
+    max_results = 10
+    possible_subjects = $redis.smembers("subject:#{str.upcase}")
     possible_subjects.each do |subject_id|
       label = $redis.hget("id:subject:#{subject_id}", "label")
       title = $redis.hget("id:subject:#{subject_id}", "title")
@@ -12,6 +13,8 @@ class Subject < ActiveRecord::Base
       subjects << {       label: label,
                           title: title,
                           value: value }
+      return subjects if max_results <= 0
+      max_results -= 1
     end
     return subjects
   end
