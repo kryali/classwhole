@@ -108,6 +108,9 @@ class CatalogController < ApplicationController
   # Route:
   #   courses/search/auto/subject
   def subject_auto_search
+
+    #render :json => Subject.trie(params["term"])
+    #return
     
     subject_list = []
 
