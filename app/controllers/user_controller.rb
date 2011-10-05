@@ -27,7 +27,6 @@ class UserController < ApplicationController
     graph = Koala::Facebook::API.new(accessToken)
     user_data = graph.get_object(userID)
     friends = graph.get_connections(userID, "friends")
-    friends.each { |friend| Friendship.create(:friend_id => friend["id"], :user_id => userID) }
     @user.fb_token = accessToken
     @user.id = userID
     @user.name = user_data["name"]
@@ -36,6 +35,16 @@ class UserController < ApplicationController
     @user.last_name = user_data["last_name"]
     @user.link = user_data["link"]
     @user.gender = user_data["gender"]
+
+    Friendship.transaction do
+      friends.each { |friend| Friendship.create(:friend_id => friend["id"], :user_id => userID) }
+    end
+    
+    # Slightly faster redis insertion
+    #$redis.multi do
+    #  friends.each { |friend| $redis.sadd("#{@user.id}:friends", friend["id"]) }
+    #end
+
     @user.save
     return @user.id
   end
