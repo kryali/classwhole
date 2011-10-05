@@ -3,16 +3,17 @@ class Subject < ActiveRecord::Base
 	has_many :courses
 
   def self.trie(str)
-    #subjects = []
-    #possible_subjects = $redis.smembers("subject:#{str}")
-    #possible_subjects.each do |subject_id|
-    #  subjects << Subject.find(subject_id)
-    #end
-    #return subjects
-    #logger.info "REDIS!!!"
-    #result = $redis.smembers("subject:#{str}")
-    #logger.info "#{str}:#{result}"
-    #return result
+    subjects = []
+    possible_subjects = $redis.smembers("subject:#{str}")
+    possible_subjects.each do |subject_id|
+      label = $redis.hget("id:subject:#{subject_id}", "label")
+      title = $redis.hget("id:subject:#{subject_id}", "title")
+      value = $redis.hget("id:subject:#{subject_id}", "value")
+      subjects << {       label: label,
+                          title: title,
+                          value: value }
+    end
+    return subjects
   end
 
   def starts_with?(str)

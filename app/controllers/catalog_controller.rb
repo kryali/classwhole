@@ -83,23 +83,7 @@ class CatalogController < ApplicationController
   # Route:
   #   courses/search/auto/subject/:subject_code
   def course_auto_search
-    course_list = []
-
-    # Fall back to using all courses, if we can't find the subject
-    begin
-      courses = Subject.find_by_code(params[:subject_code]).courses
-    rescue
-      courses = all_courses
-    end
-
-    courses.each do |course|
-      if params["term"] and course.to_s.include?(params["term"].upcase) or not params["term"]
-        course_list << { label: "#{course.to_s}",
-                         title: "#{course.title}",
-                         value: "#{course.to_s}" }
-      end
-    end
-    render :json => course_list
+    render :json => Course.trie(params["term"])
   end
 
   # Description:
@@ -108,21 +92,7 @@ class CatalogController < ApplicationController
   # Route:
   #   courses/search/auto/subject
   def subject_auto_search
-
-    #render :json => Subject.trie(params["term"])
-    #return
-    
-    subject_list = []
-
-    all_subjects.each do |subject|
-      if params["term"] and subject.starts_with?(params["term"].upcase) or not params["term"]
-        subject_list << { label: "#{subject.to_s}",
-                          title: "#{subject.title}",
-                          value: "#{subject.code}" }
-      end
-    end
-
-    render :json => subject_list
+    render :json => Subject.trie(params["term"])
   end
 
   def all_subjects
