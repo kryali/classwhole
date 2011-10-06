@@ -48,7 +48,8 @@ class SchedulerController < ApplicationController
 
     class_sections.sort!{|x,y| x.size <=> y.size} #include priority in here too when we implement that
     generate_schedule_recurse(valid_schedules, class_sections, [], 0)
-    render :json => valid_schedules
+    
+    render :json => valid_schedules[0,5]
   end
     
 
