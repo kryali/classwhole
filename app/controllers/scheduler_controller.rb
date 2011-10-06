@@ -27,6 +27,8 @@ class SchedulerController < ApplicationController
         case section.section_type
           when "LEC"
             lectures << section
+          when "LCD"
+            lectures << section
           when "DIS"
             discussions << section
           when "LBD"
@@ -40,20 +42,15 @@ class SchedulerController < ApplicationController
             logger.error "section found that does not have a registered section type : #{section.section_type}"
         end
       end
-      if lectures.size > 0
-        class_sections << lectures
-      end
-      if discussions.size > 0
-        class_sections << discussions
-      end
-      if labs.size > 0
-        class_sections << labs
-      end
+      class_sections << lectures if lectures.size > 0
+      class_sections << discussions if discussions.size > 0
+      class_sections << labs if labs.size > 0
     end
 
-    class_sections.sort!{|x,y| y.size <=> x.size} #include priority in here too when we implement that
+    class_sections.sort!{|x,y| x.size <=> y.size} #include priority in here too when we implement that
     generate_schedule_recurse(valid_schedules, class_sections, [], 0)
-    @possible_schedules = valid_schedules.to_json
+
+    @possible_schedules = valid_schedules[0,5].to_json
     render 'show'
   end
     
