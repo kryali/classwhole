@@ -169,12 +169,26 @@ $(document).ready(function(){
     };
   };
 
+  function is_lower_case(c) {
+    if( c >= 'a' && c <= 'z' )
+      return true;
+    else
+      return false;
+  }
+
   function form_suggestion() {
     var best_result = $(".ui-autocomplete .ui-menu-item:first-child").text();
     var list = $(".ui-autocomplete").children();
+    var suggested_text = "";
+    var append_string = "";
 
     if( autocomplete_state == "open" && list.length != 0 ) {
-      $("#autocomplete-course-completion").text(best_result);
+      current = $("#autocomplete-course-list").val();
+      append_string = best_result.substring(current.length);
+      if( is_lower_case(current[current.length-1]))
+        append_string = append_string.toLowerCase();
+      suggested_text = current + append_string;
+      $("#autocomplete-course-completion").text(suggested_text);
     }
   };
 
