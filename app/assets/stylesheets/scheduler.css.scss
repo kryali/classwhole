@@ -3,7 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 #wrapper {
-  width: 520px;
+  width: 900px;
   background: #F2F2F2;
   margin: 0 auto;
   color: #4D4D4D;
@@ -134,4 +134,25 @@
     a { color: #AAAAAA; text-decoration: none; }
   }
 
+}
+
+$block-width: 150px;
+$block-height: 40px;
+$numblocks: 12;
+
+.schedule-day {
+  height: $block-height * $numblocks;
+  width: $block-width;
+  position: relative;
+  background: yellow;
+  float: left;
+  margin: 5px;
+}
+
+.schedule-block {
+  height: $block-height;
+  width: 100%;
+  background: red;
+  position: absolute;
+  border-bottom: 1px solid blue;
 }
