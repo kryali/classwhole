@@ -1,2 +1,4 @@
-<h1>Scheduler#show</h1>
-<p>Find me in app/views/scheduler/show.html.erb</p>
+%div#content
+  = javascript_include_tag "scheduler.js"
+  :javascript
+    draw_all_schedules(#{@possible_schedules});

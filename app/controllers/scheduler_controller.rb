@@ -4,6 +4,7 @@ class SchedulerController < ApplicationController
   end
 
   def has_conflicts?(schedule, target_section)
+    return false
     schedule.each do |section|
       return true if section.conflict?(target_section)
     end
@@ -52,7 +53,8 @@ class SchedulerController < ApplicationController
 
     class_sections.sort!{|x,y| y.size <=> x.size} #include priority in here too when we implement that
     generate_schedule_recurse(valid_schedules, class_sections, [], 0)
-    render :json => valid_schedules
+    @possible_schedules = valid_schedules.to_json
+    render 'show'
   end
     
 

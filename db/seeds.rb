@@ -24,8 +24,8 @@ def parse_hours( start_time_string, end_time_string)
 
   # this year month and day do not matter, as long as it is consistent    
   # TODO: Don't hardcode year you moron
-  start_time = Time.local(1990, 7, 1, start_time_match[:hour].to_i, start_time_match[:min].to_i)
-    end_time = Time.local(1990, 7, 1, end_time_match[:hour].to_i,   end_time_match[:min].to_i)
+  start_time = Time.utc(1990, 7, 1, start_time_match[:hour].to_i, start_time_match[:min].to_i)
+    end_time = Time.utc(1990, 7, 1, end_time_match[:hour].to_i,   end_time_match[:min].to_i)
   return start_time, end_time
 end
 
@@ -53,6 +53,7 @@ def ParseSemester(year, season)
 
   currentSemester = Semester.create(:year => year, :season => season)
 
+  Subject.transaction do
   # Iterate through the subjects found in the hash
   catalog['subject'].each do |subject|
 
@@ -77,54 +78,59 @@ def ParseSemester(year, season)
     subjectXML_data = Net::HTTP.get_response(URI.parse(subjectURL)).body
     subjectCourses = XmlSimple.xml_in(subjectXML_data, 'ForceArray' => ['course','section'], 'SuppressEmpty' => nil)['subject']['course']
 
-    # Iterate through the courses offered in the class 
-    subjectCourses.each do |course|
+    Course.transaction do
+      # Iterate through the courses offered in the class 
+      subjectCourses.each do |course|
 
-      currentCourse = currentMajor.courses.create(
-          :number => course['courseNumber'].to_i,
-          :hours => course['hours'].to_i,
-          :description => course['description'],
-          :title => course['title'],
-          :subject_code => course['subjectCode'],
-          :subject_id => course['subjectId'].to_i
-          )
-      puts currentCourse.title
+        currentCourse = currentMajor.courses.create(
+            :number => course['courseNumber'].to_i,
+            :hours => course['hours'].to_i,
+            :description => course['description'],
+            :title => course['title'],
+            :subject_code => course['subjectCode'],
+            :subject_id => course['subjectId'].to_i
+            )
+        puts currentCourse.title
 
-      courseSections = course['section']
-      courseSections.each do |section|
+        courseSections = course['section']
+        Section.transaction do
+          courseSections.each do |section|
 
-        # If there is a date rage specified, use it, otherwise default to semester
-        # omg this totally worked
-        quarter_duration = section['sectionDateRange']
-        if not quarter_duration
-          start_date = @semester_start_date
-            end_date = @semester_end_date
-        else
-          dates = quarter_duration.split(" - ")
-          start_date = Time.parse(dates[0])
-          end_date = Time.parse(dates[1])
+            # If there is a date rage specified, use it, otherwise default to semester
+            # omg this totally worked
+            quarter_duration = section['sectionDateRange']
+            if not quarter_duration
+              start_date = @semester_start_date
+                end_date = @semester_end_date
+            else
+              dates = quarter_duration.split(" - ")
+              start_date = Time.parse(dates[0])
+              end_date = Time.parse(dates[1])
+            end
+
+            section_start_time, section_end_time = parse_hours(section['startTime'], section['endTime'])
+
+            currentSection = currentCourse.sections.create(
+              :room => section['roomNumber'].to_i,
+              :days => section['days'],
+              :reference_number => section['referenceNumber'].to_i,
+              :notes => section['sectionNotes'],
+              :section_type => section['sectionType'],
+              :instructor => section['instructor'],
+
+              # Time value can be "ARRANGED", not an actual time, so this is stored as nil
+              :start_time => section_start_time,
+              :end_time => section_end_time,
+              :start_date => start_date,
+              :end_date => end_date,
+              :building => section['building'],
+              :code => section['sectionId']
+              )
+          end
         end
-
-        section_start_time, section_end_time = parse_hours(section['startTime'], section['endTime'])
-
-        currentSection = currentCourse.sections.create(
-          :room => section['roomNumber'].to_i,
-          :days => section['days'],
-          :reference_number => section['referenceNumber'].to_i,
-          :notes => section['sectionNotes'],
-          :section_type => section['sectionType'],
-          :instructor => section['instructor'],
-
-          # Time value can be "ARRANGED", not an actual time, so this is stored as nil
-          :start_time => section_start_time,
-          :end_time => section_end_time,
-          :start_date => start_date,
-          :end_date => end_date,
-          :building => section['building'],
-          :code => section['sectionId']
-          )
       end
     end
+  end
   end
 end
 
