@@ -8,7 +8,7 @@ class Subject < ActiveRecord::Base
     begin
       possible_subjects = $redis.smembers("subject:#{str.upcase}")
     rescue Errno::ECONNREFUSED
-      return []
+      return subjects
     end
     
     possible_subjects.each do |subject_id|
