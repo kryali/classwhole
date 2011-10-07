@@ -12,7 +12,7 @@ class Course < ActiveRecord::Base
     begin
       possible_courses = $redis.smembers("course:#{term.upcase}")
     rescue Errno::ECONNREFUSED
-      return courses
+      return nil
     end
     possible_courses.each do |course_id|
 
