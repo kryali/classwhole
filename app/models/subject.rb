@@ -32,7 +32,9 @@ class Subject < ActiveRecord::Base
     return code
   end
 
-  define_index do
-    indexes description, :sortable => true
+  def backup_search(term)
+    # TODO: Get database selection code from a previous commit
+    # this is a fallback
   end
+
 end
