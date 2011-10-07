@@ -84,7 +84,7 @@ class CatalogController < ApplicationController
   #   courses/search/auto/subject/:subject_code
   def course_auto_search
     result_json = Course.trie(params["term"])
-    unless result_json.empty?
+    if result_json
       render :json => result_json 
       return
     end
@@ -117,7 +117,7 @@ class CatalogController < ApplicationController
   #   courses/search/auto/subject
   def subject_auto_search
     result_json = Subject.trie(params["term"])
-    unless result_json.empty?
+    if result_json
       render :json => result_json 
       return
     end
