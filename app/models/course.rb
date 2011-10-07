@@ -5,16 +5,12 @@ class Course < ActiveRecord::Base
 #   has_and_belongs_to_many :users
 
   def self.trie(term)
-
     results_needed = 10
-
     courses = []
     possible_courses = $redis.smembers("course:#{term.upcase}")
     possible_courses.each do |course_id|
 
-      if results_needed <= 0
-        break
-      end
+      break if results_needed <= 0
 
       label = $redis.hget("id:course:#{course_id}", "label")
       title = $redis.hget("id:course:#{course_id}", "title")
@@ -25,7 +21,13 @@ class Course < ActiveRecord::Base
 
       results_needed -= 1
     end
-    return courses
+    return courses unless courses.empty?
+    return backup_search(term)
+  end
+
+  def backup_search(term)
+    # TODO: Get database selection code from a previous commit
+    # this is a fallback
   end
 
   def to_s
