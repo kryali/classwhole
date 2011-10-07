@@ -5,7 +5,11 @@ class Subject < ActiveRecord::Base
   def self.trie(str)
     subjects = []
     max_results = 10
-    possible_subjects = $redis.smembers("subject:#{str.upcase}")
+    begin
+      possible_subjects = $redis.smembers("subject:#{str.upcase}")
+    rescue Errno::ECONNREFUSED
+      return []
+    end
     
     possible_subjects.each do |subject_id|
       label = $redis.hget("id:subject:#{subject_id}", "label")
@@ -32,7 +36,4 @@ class Subject < ActiveRecord::Base
     return code
   end
 
-  define_index do
-    indexes description, :sortable => true
-  end
 end
