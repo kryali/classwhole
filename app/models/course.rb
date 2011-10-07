@@ -9,7 +9,11 @@ class Course < ActiveRecord::Base
     results_needed = 10
 
     courses = []
-    possible_courses = $redis.smembers("course:#{term.upcase}")
+    begin
+      possible_courses = $redis.smembers("course:#{term.upcase}")
+    rescue Errno::ECONNREFUSED
+      return courses
+    end
     possible_courses.each do |course_id|
 
       if results_needed <= 0
