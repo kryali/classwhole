@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.0'
-gem 'thinking-sphinx', '2.0.5'
+gem 'rails', '3.1.1'
+# gem 'thinking-sphinx', '2.0.5'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -25,6 +25,8 @@ group :assets do
 end
 
 gem 'jquery-rails'
+
+gem 'rack', '1.3.3'
 
 # Use unicorn as the web server
 # gem 'unicorn'
