@@ -1,4 +1,5 @@
 public/assets/*
+public/assets
 .bundle
 db/*.sqlite3*
 log/*.log
