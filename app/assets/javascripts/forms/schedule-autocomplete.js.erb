@@ -30,12 +30,14 @@ $(document).ready(function(){
    */
 
   function switch_to_subject_mode() {
+    console.log("Switching to subject mode.");
     $(autocomplete_div).autocomplete( "option", "select", subject_select ); 
     $(autocomplete_div).autocomplete( "option", "source",  ajax_search_url ); 
     current_mode = "subject";
   }
 
   function switch_to_course_mode(subject_id) {
+    console.log("Switching to course mode.");
     $(autocomplete_div).autocomplete( "option", "select", add_course_to_list ); 
     $(autocomplete_div).autocomplete( "option", "source",  ajax_search_url + subject_id.toUpperCase()); 
     current_mode = "course";
@@ -123,7 +125,7 @@ $(document).ready(function(){
     var keycode = $.ui.keyCode;
     var form_value = $(autocomplete_div).val();
 
-    if(event.keyCode == keycode.SPACE && form_has_characters()) {
+    if(event.keyCode == keycode.SPACE) {
       /* Switch to course mode when a user types a space on a non empty form */
       switch_to_course_mode(form_value.split(" ")[0]);
       /* Trigger the autocomplete */
