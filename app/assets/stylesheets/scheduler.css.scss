@@ -47,17 +47,18 @@
   width: 370px;
   margin: 0 auto;
   height: 40px;
-  padding: 0 10px 0 10px;
   background: none;
 
   position:relative;
 
 
   #autocomplete-course-list {
+    font-family: Arial;
     padding: 0 10px 0 10px;
     font-size: 1.2em;
     z-index: 5;
-    width: 100%;
+
+    //width: 100%;
     height: 100%;
     border: medium none;
     outline: medium none;
@@ -66,6 +67,8 @@
     border-radius: 7px;
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px;
+
+    position: absolute;
   }
 
   #autocomplete-course-list-bg {
@@ -92,8 +95,9 @@
     width: 100%;
     height: 100%;
     position: absolute;
-    left: 21.5px;
     top: 10px;
+    left: 11px;
+    padding: 0;
   }
 }
 
