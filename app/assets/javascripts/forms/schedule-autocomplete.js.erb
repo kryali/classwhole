@@ -1,4 +1,21 @@
 $(document).ready(function(){
+
+  /* Extend the autocomplete prototype to return class titles as well as codes */
+  var proto = $.ui.autocomplete.prototype, initSource = proto._initSource;
+  $.extend( proto, 
+    { 
+      _renderItem: function(ul, item) {
+                     var course_label = $("<div class='course-label'></span>")["html"](item.label);
+                     var course_title = $("<div class='course-title'></span>")["html"](item.title);
+                     return $("<li></li>")
+                            .data( "item.autocomplete", item )
+                            .append($("<a></a>")
+                                    .append( course_label )
+                                    .append( course_title )
+                                    )
+                            .appendTo(ul)
+                   }
+    });
   
   /* Keep track of the number of classes the user is inputting */
   var class_counter = 0;
@@ -30,12 +47,14 @@ $(document).ready(function(){
    */
 
   function switch_to_subject_mode() {
+    console.log("Switching to subject mode.");
     $(autocomplete_div).autocomplete( "option", "select", subject_select ); 
     $(autocomplete_div).autocomplete( "option", "source",  ajax_search_url ); 
     current_mode = "subject";
   }
 
   function switch_to_course_mode(subject_id) {
+    console.log("Switching to course mode.");
     $(autocomplete_div).autocomplete( "option", "select", add_course_to_list ); 
     $(autocomplete_div).autocomplete( "option", "source",  ajax_search_url + subject_id.toUpperCase()); 
     current_mode = "course";
@@ -93,6 +112,7 @@ $(document).ready(function(){
       subject_id = ui.item.value;
       /* Make autocomplete query for classes now */
 
+      console.log("subject_select:" + ui.item.value);
       switch_to_course_mode(subject_id);
       /* Trigger the autocomplete */
       $(autocomplete_div).autocomplete("search");
@@ -123,8 +143,9 @@ $(document).ready(function(){
     var keycode = $.ui.keyCode;
     var form_value = $(autocomplete_div).val();
 
-    if(event.keyCode == keycode.SPACE && form_has_characters()) {
+    if(event.keyCode == keycode.SPACE) {
       /* Switch to course mode when a user types a space on a non empty form */
+      console.log("KEY UP:" + form_value.split(" ")[0]);
       switch_to_course_mode(form_value.split(" ")[0]);
       /* Trigger the autocomplete */
       $(autocomplete_div).autocomplete("search");
@@ -156,9 +177,13 @@ $(document).ready(function(){
   });
 
   function watch_for_single_subject() {
-    var list = $(".ui-autocomplete").children();
-    if( current_mode == "subject" && list.length == 1 ) {
-      switch_to_course_mode(list.text());
+
+    var results_array = $(".ui-autocomplete .ui-menu-item .course-label");
+    if( results_array.length <= 0 ) return;
+    var best_result = results_array[0].innerHTML;
+
+    if( current_mode == "subject" && results_array.length == 1 ) {
+      switch_to_course_mode(best_result);
       $(autocomplete_div).autocomplete("search");
     }
   };
@@ -177,7 +202,10 @@ $(document).ready(function(){
   }
 
   function form_suggestion() {
-    var best_result = $(".ui-autocomplete .ui-menu-item:first-child").text();
+    /* Super hacky */
+    var results_array = $(".ui-autocomplete .ui-menu-item .course-label");
+    if( results_array.length <= 0 ) return;
+    var best_result = results_array[0].innerHTML;
     var list = $(".ui-autocomplete").children();
     var suggested_text = "";
     var append_string = "";

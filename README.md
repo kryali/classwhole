@@ -9,6 +9,7 @@ This script installs rails3 w/ sqlite3, mysql and sphinx upcoming..
 ## Setup
     bundle install
     rake db:setup
+    rake redis:setup
 ## Run
     rails server
 

@@ -5,11 +5,17 @@ class Course < ActiveRecord::Base
 #   has_and_belongs_to_many :users
 
   def self.trie(term)
-    results_needed = 10
-    courses = []
-    possible_courses = $redis.smembers("course:#{term.upcase}")
-    possible_courses.each do |course_id|
+    results_needed = 5
 
+    begin
+      possible_courses = $redis.smembers("course:#{term.upcase}")
+    rescue Errno::ECONNREFUSED
+      return nil
+    end
+
+    courses = []
+    possible_courses.each do |course_id|
+      results_needed -= 1
       break if results_needed <= 0
 
       label = $redis.hget("id:course:#{course_id}", "label")
@@ -18,16 +24,8 @@ class Course < ActiveRecord::Base
       courses << {       label: label,
                           title: title,
                           value: value }
-
-      results_needed -= 1
     end
-    return courses unless courses.empty?
-    return backup_search(term)
-  end
-
-  def backup_search(term)
-    # TODO: Get database selection code from a previous commit
-    # this is a fallback
+    return courses 
   end
 
   def to_s
