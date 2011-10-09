@@ -15,13 +15,16 @@ $(document).ready(function(){
   $.extend( proto, 
     { 
       _renderItem: function(ul, item) {
-                     var input_text = $(autocomplete_div).val().toUpperCase(); 
+                     var input_text = $(autocomplete_div).val(); 
                      var bold_text = $("<strong></strong");
-                     var index = item.label.indexOf(input_text);
+                     var index = item.label.indexOf(input_text.toUpperCase());
                      var course_label;
                      console.log("index: " + index);
                      if( index >= 0 ){
                        var rest_of_text = item.label.substr( index + input_text.length, item.label.length - input_text.length );
+                       /* IF the last character was lower case, make the suggestion lowercase too */
+                       if( input_text.length > 0 && is_lower_case(input_text[input_text.length-1]))
+                         rest_of_text = rest_of_text.toLowerCase();
                        bold_text = bold_text.append(rest_of_text);
                        course_label = $("<div class='course-label'></span>")
                                       .append( input_text )
@@ -42,7 +45,9 @@ $(document).ready(function(){
                                     .append( course_title )
                                     )
                             .appendTo(ul)
-                   }
+                   },
+        /* Test this further */
+        ///close: function(event) { console.log("CLOSE");}
     });
   
   /* So there are two main modes for the autocomplete form, subject and course mode
@@ -174,6 +179,16 @@ $(document).ready(function(){
     }
   });
 
+  $(autocomplete_div).keydown(function(event) {
+    var keycode = $.ui.keyCode;
+    if( event.keyCode == keycode.TAB ) {
+      var best_result = $(".ui-autocomplete .ui-menu-item .course-label").first().text();
+      $(autocomplete_div).val(best_result);
+      if( best_result != "" )
+        event.preventDefault();
+    };
+  });
+
   function list_closed() {
     $("#autocomplete-course-completion").text("");
     autocomplete_state = "closed";
@@ -188,7 +203,7 @@ $(document).ready(function(){
     source: ajax_search_url,
     minLength: 1,
     delay: 0,
-    autoFocus: true,
+    //autoFocus: true,
     select: subject_select,
     close: list_closed,
     open: list_opened,
