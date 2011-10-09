@@ -6,7 +6,7 @@ class Course < ActiveRecord::Base
 
   def self.trie(term)
 
-    results_needed = 10
+    results_needed = 5
 
     courses = []
     begin

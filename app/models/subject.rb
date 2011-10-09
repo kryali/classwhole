@@ -4,7 +4,7 @@ class Subject < ActiveRecord::Base
 
   def self.trie(str)
     subjects = []
-    max_results = 10
+    max_results = 5
     begin
       possible_subjects = $redis.smembers("subject:#{str.upcase}")
     rescue Errno::ECONNREFUSED
