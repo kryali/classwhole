@@ -1,5 +1,5 @@
 public/assets
-public/assets/
+public/assets/manifest.yml
 public/index.html
 .bundle
 .sass-cache/
