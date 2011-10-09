@@ -3,10 +3,14 @@ class Subject < ActiveRecord::Base
 	has_many :courses
 
   def self.trie(str)
-    subjects = []
-    max_results = 10
-    possible_subjects = $redis.smembers("subject:#{str.upcase}")
+    begin
+      possible_subjects = $redis.smembers("subject:#{str.upcase}")
+    rescue Errno::ECONNREFUSED
+      return nil
+    end
     
+    subjects = []
+    max_results = 5
     possible_subjects.each do |subject_id|
       label = $redis.hget("id:subject:#{subject_id}", "label")
       title = $redis.hget("id:subject:#{subject_id}", "title")
@@ -14,8 +18,8 @@ class Subject < ActiveRecord::Base
       subjects << {       label: label,
                           title: title,
                           value: value }
-      return subjects if max_results <= 0
       max_results -= 1
+      break if max_results <= 0
     end
 
     return subjects
@@ -30,11 +34,6 @@ class Subject < ActiveRecord::Base
 
   def to_s
     return code
-  end
-
-  def backup_search(term)
-    # TODO: Get database selection code from a previous commit
-    # this is a fallback
   end
 
 end
