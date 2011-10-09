@@ -1,11 +1,39 @@
 $(document).ready(function(){
 
+  /* Keep track of the number of classes the user is inputting */
+  var class_counter = 0;
+  var spacebar_keycode = "32";
+  var selected_classes = {};
+  var autocomplete_div = "#autocomplete-course-list";
+  var ajax_search_url = "courses/search/auto/subject/";
+  var current_mode = "subject";
+
+  autocomplete_state = "closed";
+
   /* Extend the autocomplete prototype to return class titles as well as codes */
   var proto = $.ui.autocomplete.prototype, initSource = proto._initSource;
   $.extend( proto, 
     { 
       _renderItem: function(ul, item) {
-                     var course_label = $("<div class='course-label'></span>")["html"](item.label);
+                     var input_text = $(autocomplete_div).val().toUpperCase(); 
+                     var bold_text = $("<strong></strong");
+                     var index = item.label.indexOf(input_text);
+                     var course_label;
+                     console.log("index: " + index);
+                     if( index >= 0 ){
+                       var rest_of_text = item.label.substr( index + input_text.length, item.label.length - input_text.length );
+                       bold_text = bold_text.append(rest_of_text);
+                       course_label = $("<div class='course-label'></span>")
+                                      .append( input_text )
+                                      .append( bold_text );
+                       console.log(course_label);
+                       console.log( "input_text: " + input_text );
+                       console.log( "label_text: " + item.label );
+                       console.log( "rest_of_text: " + rest_of_text );
+                     } 
+                     else {
+                       course_label = $("<div class='course-label'></span>").append(item.label);
+                     }
                      var course_title = $("<div class='course-title'></span>")["html"](item.title);
                      return $("<li></li>")
                             .data( "item.autocomplete", item )
@@ -17,16 +45,6 @@ $(document).ready(function(){
                    }
     });
   
-  /* Keep track of the number of classes the user is inputting */
-  var class_counter = 0;
-  var spacebar_keycode = "32";
-  var selected_classes = {};
-  var autocomplete_div = "#autocomplete-course-list";
-  var ajax_search_url = "courses/search/auto/subject/";
-  var current_mode = "subject";
-
-  autocomplete_state = "closed";
-
   /* So there are two main modes for the autocomplete form, subject and course mode
    * 
    *  1. Subject Mode (default): - form searches subjects rather than classes
@@ -180,7 +198,7 @@ $(document).ready(function(){
 
     var results_array = $(".ui-autocomplete .ui-menu-item .course-label");
     if( results_array.length <= 0 ) return;
-    var best_result = results_array[0].innerHTML;
+    var best_result = $(".ui-autocomplete .ui-menu-item .course-label").first().text();
 
     if( current_mode == "subject" && results_array.length == 1 ) {
       switch_to_course_mode(best_result);
@@ -203,9 +221,7 @@ $(document).ready(function(){
 
   function form_suggestion() {
     /* Super hacky */
-    var results_array = $(".ui-autocomplete .ui-menu-item .course-label");
-    if( results_array.length <= 0 ) return;
-    var best_result = results_array[0].innerHTML;
+    var best_result = $(".ui-autocomplete .ui-menu-item .course-label").first().text();
     var list = $(".ui-autocomplete").children();
     var suggested_text = "";
     var append_string = "";
