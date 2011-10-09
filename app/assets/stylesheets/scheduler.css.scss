@@ -2,6 +2,10 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+* {
+  font-family: 'Arial', 'Tahoma', sans-serif;
+}
+
 #wrapper {
   width: 900px;
   background: #F2F2F2;
@@ -53,7 +57,6 @@
 
 
   #autocomplete-course-list {
-    font-family: Arial;
     padding: 0 10px 0 10px;
     font-size: 1.2em;
     z-index: 5;
@@ -182,6 +185,7 @@ $numblocks: 12;
     padding: .7em;
     font-size: .9em;
     width: 100%;
+    font-family: 'Arial', 'Tahoma', sans-serif;
   }
   box-shadow: 0px 0px 4px #a2a2a2;
   -moz-box-shadow: 0px 0px 4px #a2a2a2;
