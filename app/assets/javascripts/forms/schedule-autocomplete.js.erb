@@ -19,7 +19,6 @@ $(document).ready(function(){
                      var bold_text = $("<strong></strong");
                      var index = item.label.indexOf(input_text.toUpperCase());
                      var course_label;
-                     console.log("index: " + index);
                      if( index >= 0 ){
                        var rest_of_text = item.label.substr( index + input_text.length, item.label.length - input_text.length );
                        /* IF the last character was lower case, make the suggestion lowercase too */
@@ -29,10 +28,6 @@ $(document).ready(function(){
                        course_label = $("<div class='course-label'></span>")
                                       .append( input_text )
                                       .append( bold_text );
-                       console.log(course_label);
-                       console.log( "input_text: " + input_text );
-                       console.log( "label_text: " + item.label );
-                       console.log( "rest_of_text: " + rest_of_text );
                      } 
                      else {
                        course_label = $("<div class='course-label'></span>").append(item.label);
@@ -70,14 +65,12 @@ $(document).ready(function(){
    */
 
   function switch_to_subject_mode() {
-    console.log("Switching to subject mode.");
     $(autocomplete_div).autocomplete( "option", "select", subject_select ); 
     $(autocomplete_div).autocomplete( "option", "source",  ajax_search_url ); 
     current_mode = "subject";
   }
 
   function switch_to_course_mode(subject_id) {
-    console.log("Switching to course mode.");
     $(autocomplete_div).autocomplete( "option", "select", add_course_to_list ); 
     $(autocomplete_div).autocomplete( "option", "source",  ajax_search_url + subject_id.toUpperCase()); 
     current_mode = "course";
@@ -95,7 +88,6 @@ $(document).ready(function(){
   };
 
   var add_course_to_list = function( event, ui ) {
-
     /* Prevent input box being filled */ 
     event.preventDefault();
     $(autocomplete_div).val(""); 
@@ -199,11 +191,24 @@ $(document).ready(function(){
     form_suggestion();
   };
 
+  /* THis is to fix lowercase being inserted into the input form */
+  function input_focus(event, ui) {
+    var input_text = $(autocomplete_div).val(); 
+    if(ui.item) {
+      var replacement_string = ui.item.label; 
+      if( input_text.length > 0 && is_lower_case(input_text[input_text.length-1]))
+        replacement_string = replacement_string.toLowerCase();
+      $("#autocomplete-course-list").val(replacement_string);
+      event.preventDefault();
+    }
+  };
+
   $(autocomplete_div).autocomplete({ 
     source: ajax_search_url,
     minLength: 1,
     delay: 0,
     autoFocus: true,
+    //focus: input_focus,
     select: subject_select,
     close: list_closed,
     open: list_opened,
