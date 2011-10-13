@@ -179,6 +179,7 @@ $numblocks: 12;
     border: 1px solid #cccccc;
   }
   .ui-menu-item:hover, .ui-state-hover {
+    border-right: 1px solid #cccccc;
     background: #FFE4B5;
     cursor: pointer;
     cursor: hand;
