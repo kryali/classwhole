@@ -5,7 +5,7 @@ Get your environment setup
     sudo ./ubuntu_bootstrap.sh
     sudo ./install_redis.sh
     bundle install
-    passenger-install-nginx-module      # For nginx and nice server stuff
+    rvmsudo passenger-install-nginx-module --user=you      # For nginx and nice server stuff
     
 ## Setup
     bundle install
@@ -16,6 +16,7 @@ Get your environment setup
     
 # Production
     bundle exec rake assets:precompile
+    rvmsudo passenger start -p 80 --user=you
     
 # Committing
 
