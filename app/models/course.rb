@@ -5,7 +5,7 @@ class Course < ActiveRecord::Base
 #   has_and_belongs_to_many :users
 
   def self.trie(term)
-    results_needed = 5
+    results_needed = 10
 
     begin
       possible_courses = $redis.smembers("course:#{term.upcase}")

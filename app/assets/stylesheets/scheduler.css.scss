@@ -168,6 +168,10 @@ $numblocks: 12;
   width: 370px;
   position: relative;
   position: absolute;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 145px;
+
   .ui-menu-item {
     width: 100%;
     color: #333333;
@@ -199,9 +203,9 @@ $numblocks: 12;
     right: 0px;
   }
 
-  box-shadow: 0px 0px 4px #a2a2a2;
-  -moz-box-shadow: 0px 0px 4px #a2a2a2;
-  -webkit-box-shadow: 0px 0px 4px #a2a2a2;
+  //box-shadow: 0px 0px 4px #a2a2a2;
+  //-moz-box-shadow: 0px 0px 4px #a2a2a2;
+  //-webkit-box-shadow: 0px 0px 4px #a2a2a2;
 }
 
 strong {
