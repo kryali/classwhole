@@ -1,5 +1,40 @@
 $(document).ready(function(){
 
+  /* Extend the autocomplete prototype to return class titles as well as codes */
+  var proto = $.ui.autocomplete.prototype, initSource = proto._initSource;
+
+  /* Override the display form for the autocomplete, so we can make it all sexy and stuff */
+  var render_item = function(ul, item) {
+    var input_text = $(autocomplete_div).val(); 
+    var bold_text = $("<strong></strong");
+    var index = item.label.indexOf(input_text.toUpperCase());
+    var course_label;
+    if( index >= 0 ){
+      var rest_of_text = item.label.substr( index + input_text.length, item.label.length - input_text.length );
+      if( input_text.length > 0 && is_lower_case(input_text[input_text.length-1]))
+        rest_of_text = rest_of_text.toLowerCase();
+      bold_text = bold_text.append(rest_of_text);
+      course_label = $("<div class='course-label'></span>")
+                     .append( input_text )
+                     .append( bold_text );
+    } 
+    else {
+      course_label = $("<div class='course-label'></span>").append(item.label);
+    }
+    var course_title = $("<div class='course-title'></span>")["html"](item.title);
+    return $("<li></li>")
+           .data( "item.autocomplete", item )
+           .append($("<a></a>").append( course_label ).append( course_title ))
+           .appendTo(ul);
+  };
+
+  $.extend( proto, 
+    { 
+      _renderItem: render_item,
+      ///close: function(event) { console.log("CLOSE");}
+    });
+  
+
   /* Keep track of the number of classes the user is inputting */
   var class_counter = 0;
   var spacebar_keycode = "32";
@@ -10,41 +45,6 @@ $(document).ready(function(){
 
   autocomplete_state = "closed";
 
-  /* Extend the autocomplete prototype to return class titles as well as codes */
-  var proto = $.ui.autocomplete.prototype, initSource = proto._initSource;
-  $.extend( proto, 
-    { 
-      _renderItem: function(ul, item) {
-                     var input_text = $(autocomplete_div).val(); 
-                     var bold_text = $("<strong></strong");
-                     var index = item.label.indexOf(input_text.toUpperCase());
-                     var course_label;
-                     if( index >= 0 ){
-                       var rest_of_text = item.label.substr( index + input_text.length, item.label.length - input_text.length );
-                       /* IF the last character was lower case, make the suggestion lowercase too */
-                       if( input_text.length > 0 && is_lower_case(input_text[input_text.length-1]))
-                         rest_of_text = rest_of_text.toLowerCase();
-                       bold_text = bold_text.append(rest_of_text);
-                       course_label = $("<div class='course-label'></span>")
-                                      .append( input_text )
-                                      .append( bold_text );
-                     } 
-                     else {
-                       course_label = $("<div class='course-label'></span>").append(item.label);
-                     }
-                     var course_title = $("<div class='course-title'></span>")["html"](item.title);
-                     return $("<li></li>")
-                            .data( "item.autocomplete", item )
-                            .append($("<a></a>")
-                                    .append( course_label )
-                                    .append( course_title )
-                                    )
-                            .appendTo(ul)
-                   },
-        /* Test this further */
-        ///close: function(event) { console.log("CLOSE");}
-    });
-  
   /* So there are two main modes for the autocomplete form, subject and course mode
    * 
    *  1. Subject Mode (default): - form searches subjects rather than classes
@@ -88,6 +88,12 @@ $(document).ready(function(){
   };
 
   var add_course_to_list = function( event, ui ) {
+    var keycode = $.ui.keyCode;
+    if( event.keyCode == keycode.TAB ) {
+      /* If the user hit a tab, we don't want to add it just yet */
+      return;
+    }
+
     /* Prevent input box being filled */ 
     event.preventDefault();
     $(autocomplete_div).val(""); 
@@ -176,8 +182,7 @@ $(document).ready(function(){
     if( event.keyCode == keycode.TAB ) {
       var best_result = $(".ui-autocomplete .ui-menu-item .course-label").first().text();
       $(autocomplete_div).val(best_result);
-      if( best_result != "" )
-        event.preventDefault();
+      if( best_result != "" ) event.preventDefault();
     };
   });
 
@@ -227,9 +232,7 @@ $(document).ready(function(){
   };
 
   function watch_for_empty_form() {
-    if(!form_has_characters()){
-      switch_to_subject_mode();
-    };
+    if(!form_has_characters()) switch_to_subject_mode();
   };
 
   function is_lower_case(c) {
@@ -240,7 +243,7 @@ $(document).ready(function(){
   }
 
   function form_suggestion() {
-    /* Super hacky */
+    /* Get the first result from the list and set it to the background of the input form */
     var best_result = $(".ui-autocomplete .ui-menu-item .course-label").first().text();
     var list = $(".ui-autocomplete").children();
     var suggested_text = "";
