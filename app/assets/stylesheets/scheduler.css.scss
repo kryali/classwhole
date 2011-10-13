@@ -2,15 +2,24 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+$bg-color           : #F2F2F2;
+$bg-color           : #333333;
+$content-bg-color   : #eeeeee;
+$default-font-color : #4D4D4D;
+$accent-font-color  : #333333;
+
 * {
   font-family: 'Arial', 'Tahoma', sans-serif;
 }
 
+html, body {
+  background: $bg-color;
+}
+
 #wrapper {
   width: 500px;
-  background: #F2F2F2;
   margin: 0 auto;
-  color: #4D4D4D;
+  color: $default-font-color;
 }
 
 #header {
@@ -38,6 +47,7 @@
 #content {
   padding: 40px;
   position: relative;
+  background: $content-bg-color;
 
   h1 {
     text-align: center;
@@ -85,6 +95,7 @@
     height: 100%;
 
     background: #e6e6e6;
+    background: white;
     border: 1px solid #a2a2a2;
     border-radius: 7px;
     -moz-border-radius: 7px;
