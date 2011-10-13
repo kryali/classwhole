@@ -1,18 +1,23 @@
 # Getting started
 
-Rails 3 on ubuntu 11.04 is a pain, so everything you need has been saved in a bash script.
-Read it so you know what's going on. 
-
-This script installs rails3 w/ sqlite3, mysql and sphinx upcoming..
-
-    sudo sh ubuntu_bootstrap.sh
+Get your environment setup 
+    
+    sudo ./ubuntu_bootstrap.sh
+    sudo ./install_redis.sh
+    bundle install
+    rvmsudo passenger-install-nginx-module --user=you      # For nginx and nice server stuff
+    
 ## Setup
     bundle install
-    rake db:setup
+    rake db:setup       # I would run this in a screen
     rake redis:setup
-## Run
+## Run (Development)
     rails server
-
+    
+# Production
+    bundle exec rake assets:precompile
+    rvmsudo passenger start -p 80 --user=you
+    
 # Committing
 
 ###Working on a new feature
