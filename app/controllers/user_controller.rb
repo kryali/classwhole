@@ -5,12 +5,14 @@ class UserController < ApplicationController
 
   def login
     user_id = params["userID"]
+    max_try = 5
     begin 
       @user = User.find(user_id)
       self.current_user=@user
     rescue ActiveRecord::RecordNotFound
       user_id = register(params["accessToken"], params["userID"]);
-      retry
+      max_try -= 1
+      retry if max_try > 0
     ensure
       redirect_to(root_path)
     end
@@ -18,8 +20,7 @@ class UserController < ApplicationController
 
   #
   # Description: register receives an accessToken and a userID, then
-  #   uses koala to retrieve the user's data 
-  #   and facebook friends
+  #   uses koala to retrieve the user's data and facebook friends
   #
   def register(accessToken, userID)
     # User wasn't found, register him
