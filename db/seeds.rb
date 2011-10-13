@@ -62,7 +62,6 @@ end
 # calls: add_sections_to_course
 #
 def add_course_to_subject(subject, data)
-  puts "parsing courses for subject.."
   subject_courses = XmlSimple.xml_in(data, 'ForceArray' => ['course','section'], 'SuppressEmpty' => nil)['subject']['course']
 
   Course.transaction do
