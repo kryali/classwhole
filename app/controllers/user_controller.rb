@@ -63,7 +63,15 @@ class UserController < ApplicationController
   #   to the currently logged in user 
   #
   def add_courses
-    # Add each class to the current users classes
+ 		# If the person isn't logged into facebook, create a new "current_user"
+		if !current_user
+			@non_fb_user = User.new
+			@non_fb_user.id = params["userID"]			
+			@non_fb_user.save			
+			self.current_user = @non_fb_user 
+		end
+
+		# Add each class to the current users classes
     params["size"].to_i.times do |i|
       course = params[i.to_s].split(" ")
       subject = course[0]
