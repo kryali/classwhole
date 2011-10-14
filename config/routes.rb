@@ -6,6 +6,7 @@ Whiteboard::Application.routes.draw do
 
   match  'courses/search/auto/subject' => 'catalog#subject_auto_search'
   match  'courses/search/auto/subject/:subject_code' => 'catalog#course_auto_search'
+  match  'courses/search' => 'catalog#simple_search', :via => :post
 
   match  'courses/' => 'catalog#index', :as => 'show_university'
   match  'courses/:season/:year/' => 'catalog#semester', :as => 'show_semester'

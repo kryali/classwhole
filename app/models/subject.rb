@@ -4,7 +4,7 @@ class Subject < ActiveRecord::Base
 
   def self.trie(str)
     begin
-      possible_subjects = $redis.smembers("subject:#{str.upcase}")
+      possible_subjects = $redis.smembers("subject:#{str.upcase.gsub(/\s+/, "")}")
     rescue Errno::ECONNREFUSED
       return nil
     end
