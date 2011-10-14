@@ -52,9 +52,10 @@ class UserController < ApplicationController
 
   #
   # destroy the session so the user is no longer logged in
-  #
+  # delete the cookie 
   def logout
     session[:user_id] = nil
+		cookies.delete("classes")
     redirect_to(root_path)
   end
 
@@ -63,22 +64,22 @@ class UserController < ApplicationController
   #   to the currently logged in user 
   #
   def add_courses
- 		# If the person isn't logged into facebook, create a new "current_user"
+		# If the person isn't logged into facebook, create a cookie
 		if !current_user
-			@non_fb_user = User.new
-			@non_fb_user.id = params["userID"]			
-			@non_fb_user.save			
-			self.current_user = @non_fb_user 
+			cookies["classes"] = { :value => "", :expires => 1.year.from_now }# create a cookie!			
+			self.current_user = User.new #create a blank current_user		
 		end
 
 		# Add each class to the current users classes
     params["size"].to_i.times do |i|
-      course = params[i.to_s].split(" ")
+    	course = params[i.to_s].split(" ")
       subject = course[0]
       number = course[1]
       current_user.courses << Course.find_by_subject_code_and_number(subject, number)
+			add_course_to_cookie(subject, number)
     end
-    redirect_to(root_path)
+
+		redirect_to(root_path)
   end
 
   #
@@ -92,5 +93,17 @@ class UserController < ApplicationController
       redirect_to(root_path)
     end
   end
+
+ #
+ # Description: This function simply adds the course_id to a the coookie
+ #
+ #
+	def add_course_to_cookie(subject, number)
+		if cookies["classes"]
+			course_id_string = Course.find_by_subject_code_and_number(subject, number).id.to_s			
+			cook = cookies["classes"] # this is used in the next line, so I didn't have to deal with quotes inside a string		
+			cookies["classes"] = { :value => "#{cook}#{course_id_string}|", :expires => 1.year.from_now } 				
+		end
+	end
 
 end
