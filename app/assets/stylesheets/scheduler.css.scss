@@ -165,7 +165,7 @@ html, body {
   //height: $block-height * $numblocks;
   width: $block-width;
   position: relative;
-  background: yellow;
+  background: #cccccc;
   float: left;
   margin: 0 0px 0 0px;
   border-right: 1px solid red;
@@ -175,17 +175,16 @@ html, body {
     display: block;
     height: $block-height - 2;
     width: 100%;
-    background: yellow;
-    border: 1px solid blue;
+    background: #dddddd;
+    border: 1px solid #aaaaac;
   } 
 }
 
 .schedule-block {
- // height: $block-height;
   width: 100%;
-  background: red;
+  background: white;
   position: absolute;
-  border-bottom: 1px solid blue;
+  border: 1px solid #999999;
 }
 
 .ui-autocomplete {
