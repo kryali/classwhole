@@ -142,6 +142,10 @@ class CatalogController < ApplicationController
     end
   end
 
+  def simple_search
+    render :json => Course.trie(params[:term])
+  end
+
   def all_subjects
 		@all_subjects ||= Subject.all
   end

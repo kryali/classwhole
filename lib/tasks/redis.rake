@@ -47,7 +47,7 @@ def build_subject_trie
 
       current_str = ""
       size.times do |i|
-        current_str += str[i]
+        current_str += str[i] if str[i] != " "
         $redis.sadd("subject:#{current_str}", subject.id)
       end
     end
@@ -67,7 +67,7 @@ def build_course_trie
 
       current_str = ""
       size.times do |i|
-        current_str += str[i]
+        current_str += str[i] if str[i] != " "
         $redis.sadd("course:#{current_str}", course.id)
       end
     end

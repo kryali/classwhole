@@ -8,7 +8,7 @@ class Course < ActiveRecord::Base
     results_needed = 10
 
     begin
-      possible_courses = $redis.smembers("course:#{term.upcase}")
+      possible_courses = $redis.smembers("course:#{term.upcase.gsub(/\s+/,"")}")
     rescue Errno::ECONNREFUSED
       return nil
     end
