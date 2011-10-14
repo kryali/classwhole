@@ -8,6 +8,11 @@ $content-bg-color   : #eeeeee;
 $default-font-color : #4D4D4D;
 $accent-font-color  : #333333;
 
+// schedule
+$block-width: 150px;
+$block-height: 40px;
+$numblocks: 12;
+
 * {
   font-family: 'Arial', 'Tahoma', sans-serif;
 }
@@ -17,7 +22,7 @@ html, body {
 }
 
 #wrapper {
-  width: 900px;
+  width: 930px;
   margin: 0 auto;
   color: $default-font-color;
 }
@@ -154,24 +159,29 @@ html, body {
     background: #F2F2F2;
     a { color: #AAAAAA; text-decoration: none; }
   }
-
 }
 
-$block-width: 150px;
-$block-height: 40px;
-$numblocks: 12;
-
 .schedule-day {
-  height: $block-height * $numblocks;
+  //height: $block-height * $numblocks;
   width: $block-width;
   position: relative;
   background: yellow;
   float: left;
-  margin: 5px;
+  margin: 0 0px 0 0px;
+  border-right: 1px solid red;
+  overflow: hidden;
+
+  tr {
+    display: block;
+    height: $block-height - 2;
+    width: 100%;
+    background: yellow;
+    border: 1px solid blue;
+  } 
 }
 
 .schedule-block {
-  height: $block-height;
+ // height: $block-height;
   width: 100%;
   background: red;
   position: absolute;
@@ -221,6 +231,22 @@ $numblocks: 12;
   //box-shadow: 0px 0px 4px #a2a2a2;
   //-moz-box-shadow: 0px 0px 4px #a2a2a2;
   //-webkit-box-shadow: 0px 0px 4px #a2a2a2;
+}
+
+.schedule-wrapper {
+  clear: both;
+  overflow: hidden;
+  margin-bottom: 50px;
+  .time-label {
+    float: left;
+    li {
+      display: block;
+      text-align: right;
+      padding-right: 5px;
+      line-height: $block-height;
+      height: $block-height;
+    }
+  }
 }
 
 strong {
