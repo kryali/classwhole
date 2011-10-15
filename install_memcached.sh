@@ -14,3 +14,6 @@ cd memcached-1.4.8
 ./configure
 make
 sudo make install
+cd ..
+rm -rf memcached-1.4.8*
+echo "Done."
