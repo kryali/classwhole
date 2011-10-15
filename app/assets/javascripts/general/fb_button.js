@@ -50,6 +50,14 @@ $(document).ready(function() {
     oauth  : true // enable OAuth 2.0
   });
 
+  FB.getLoginStatus(function(response) {
+    if(response.authResponse){
+      console.log( "User is logged into facebook already!" );
+      /* User is logged in to facebook, let him in */
+      console.log( response.authResponse );
+      //post_to_url(LOGIN_PATH, response["authResponse"]);
+    }
+  });
 
   /* When a user clicks a button, */
   $('#fb-button').click( function(event) {
@@ -59,6 +67,7 @@ $(document).ready(function() {
     FB.getLoginStatus(function(response) {
       if(response.authResponse){
         /* User is logged in to facebook, let him in */
+        console.log( response.authResponse );
         post_to_url(LOGIN_PATH, response["authResponse"]);
       }
     });
