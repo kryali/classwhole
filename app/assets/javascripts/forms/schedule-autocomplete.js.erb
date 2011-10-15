@@ -133,7 +133,6 @@ $(document).ready(function(){
       subject_id = ui.item.value;
       /* Make autocomplete query for classes now */
 
-      console.log("subject_select:" + ui.item.value);
       switch_to_course_mode(subject_id);
       /* Trigger the autocomplete */
       $(autocomplete_div).autocomplete("search");
@@ -166,7 +165,6 @@ $(document).ready(function(){
 
     if(event.keyCode == keycode.SPACE) {
       /* Switch to course mode when a user types a space on a non empty form */
-      console.log("KEY UP:" + form_value.split(" ")[0]);
       switch_to_course_mode(form_value.split(" ")[0]);
       /* Trigger the autocomplete */
       $(autocomplete_div).autocomplete("search");
