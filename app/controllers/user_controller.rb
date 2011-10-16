@@ -78,7 +78,6 @@ class UserController < ApplicationController
       current_user.courses << Course.find_by_subject_code_and_number(subject, number)
 			add_course_to_cookie(subject, number)
     end
-
 		redirect_to(root_path)
   end
 
@@ -90,10 +89,22 @@ class UserController < ApplicationController
     begin
       target_course = Course.find(params["course_id"].to_i)
       current_user.courses.delete(target_course)
-      redirect_to(root_path)
+			remove_class_from_cookie(params["course_id"].to_i)     
+			redirect_to(root_path)
     end
   end
+	
+	#
+	#	Description: Helper function to remove a course from the cookie
+	#
+	#
 
+	def remove_class_from_cookie(id)
+		if cookies["classes"]
+			id_to_be_removed = id.to_s+ "|"		
+			cookies["classes"] = {:value => cookies["classes"].sub(id_to_be_removed, ""), :expires=> 1.year.from_now}
+		end	
+	end
  #
  # Description: This function simply adds the course_id to a the coookie
  #
