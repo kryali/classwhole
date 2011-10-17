@@ -2,36 +2,61 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-$bg-color           : #F2F2F2;
-$bg-color           : #333333;
-$content-bg-color   : #eeeeee;
-$default-font-color : #4D4D4D;
-$accent-font-color  : #333333;
+/* 
+  global color variables 
+  
+  tweak these to style the main page
+  TODO: unclutter this clutter
+
+*//*
+
+  all positions 
+
+  -h: height; 
+*/
+
+@mixin shadow($x, $y, $blur, $color, $inset : "") {
+  box-shadow: $inset $x $y $blur $color;
+  -moz-box-shadow: $inset $x $y $blur $color;
+  -webkit-box-shadow: $inset $x $y $blur $color;
+}
 
 // schedule
-$block-width: 150px;
-$block-height: 40px;
-$numblocks: 12;
+$block-width        : 150px;
+$schedule-block-h   : 40px;
+$numblocks          : 12;
 
-* {
-  font-family: 'Arial', 'Tahoma', sans-serif;
-}
+/* all colors */
+// These are the main element colors 
+$bg-color           : url('grey-bg.png');
+$content-bg-color   : url('grey-bg.png');
+$default-font-color : #4D4D4D;
+$accent-font-color  : #333333;
+$header-bg          : #E6E6E6;
+$header-bg          : url('grey-bg.png');
+
+$course-list-bg     : white; //#E6E6E6;
+
+$showcase-bg        : url('showcase-bg.png');
 
 html, body {
   background: $bg-color;
+  line-height: 1.22;
+  font-family: 'Arial', 'Tahoma', sans-serif;
 }
 
 #wrapper {
-  width: 930px;
+  width: 100%;
+  max-width: 880px;
   margin: 0 auto;
   color: $default-font-color;
 }
 
 #header {
-  background: #E6E6E6;
+  background: $header-bg;
   height: 40px;
   padding: 2em 1em 1em 1em;
-  border-bottom: 2px solid #E4DFDF;
+  border-bottom: 2px1solid #E4DFDF;
 
   a#logo {
     float: left; 
@@ -67,9 +92,7 @@ html, body {
   margin: 0 auto;
   height: 40px;
   background: none;
-
   position:relative;
-
 
   #autocomplete-course-list {
     padding: 0 0px 0 10px;
@@ -79,8 +102,6 @@ html, body {
     width: 100%;
     height: 100%;
     outline: medium none;
-    position: absolute;
-
     position: absolute;
 
     border: medium none;
@@ -123,46 +144,74 @@ html, body {
   }
 }
 
-#user-course-list {
-  position: absolute;
-  width: 165px;
-  top: 0;
-  right: -165px;
-  border-left: 1px solid #D5D5D5;
-  background: #E6E6E6;
+#showcase {
+  width: 100%;
+  height: 350px;
+  position: relative;
+  background: $showcase-bg;
+  padding-top:  40px;
 
-  /* Browser specific border specific */
-  -webkit-border-top-right-radius: 10px;
-  -webkit-border-bottom-right-radius: 10px;
-  -moz-border-radius-topright: 10px;
-  -moz-border-radius-bottomright: 10px;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
+  -webkit-box-shadow: inset 0px 3px 3px #444444;
+}
+
+#showcase-title {
+  margin-top: 70px;
+  height: 50px;
+  text-align: center;
+  h1 {
+    font-size: 1.7em;
+  }
+}
+
+#user-course-list {
+
+  width: 235px;
+  background: $course-list-bg;
+  padding: 1em;
+  margin: 0 auto;
+  position: relative;
+
+  box-shadow: 2px 2px 2px #000;
+  -moz-box-shadow: 1px 2px 2px #000;
+  -webkit-box-shadow: 0px 1px 4px #322572;
 
   h1 {
-    padding: 15px;
+    font-family: 'Georgia', 'Times New Roman', 'Georgia', serif;
+    padding: .5em;
     font-size: 1.2em;
     text-align: center;
-    padding-bottom: .5em;
     border-bottom: 1px solid #CDCDCD;
-
-    box-shadow: inset 10px 0px 5px -5px #D5D5D5;
-    -moz-box-shadow: inset 10px 0px 5px -5px #D5D5D5;
-    -webkit-box-shadow: inset 10px 0px 5px -5px #D5D5D5;
+    margin-bottom: .5em;
   }
 
   li {
     font-size: .9em;
     list-style-type: none;
-    padding: 5px 17px;
+    padding: 5px 15px;
     border-bottom: 1px solid #CDCDCD;
     background: #F2F2F2;
     a { color: #AAAAAA; text-decoration: none; }
   }
+
+  form {
+    display: block;
+  }
+  input.btn {
+    width: 100%;
+  }
+
+  span.hint {
+    font-family: 'Georgia', 'Times New Roman', 'Georgia', serif;
+    display: block;
+    font-size: .75em;
+    font-style: italic;
+    text-align: center;
+    padding-bottom: 1em;
+    border-bottom: 1px solid #CDCDCD;
+  }
 }
 
 .schedule-day {
-  //height: $block-height * $numblocks;
   width: $block-width;
   position: relative;
   background: #cccccc;
@@ -173,7 +222,7 @@ html, body {
 
   tr {
     display: block;
-    height: $block-height - 2;
+    height: $schedule-block-h - 2;
     width: 100%;
     background: #dddddd;
     border: 1px solid #aaaaac;
@@ -242,8 +291,8 @@ html, body {
       display: block;
       text-align: right;
       padding-right: 5px;
-      line-height: $block-height;
-      height: $block-height;
+      line-height: $schedule-block-h;
+      height: $schedule-block-h;
     }
   }
 }
