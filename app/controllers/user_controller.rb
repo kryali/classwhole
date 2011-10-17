@@ -63,6 +63,8 @@ class UserController < ApplicationController
   # Description: This function gets passed a list of course ids and adds it
   #   to the currently logged in user 
   #
+  # We should probably be looking up the id instead of doing a slow search here
+  #
   def add_courses
 		# If the person isn't logged into facebook, create a cookie
 		if !current_user
