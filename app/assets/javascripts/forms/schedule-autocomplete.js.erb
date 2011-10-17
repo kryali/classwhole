@@ -35,13 +35,13 @@ $(document).ready(function(){
     });
   
 
-  /* Keep track of the number of classes the user is inputting */
   var class_counter = 0;
   var spacebar_keycode = "32";
   var selected_classes = {};
   var autocomplete_div = "#autocomplete-course-list";
   var ajax_search_url = "courses/search/auto/subject/";
   var current_mode = "subject";
+  var has_classes = false;
 
   autocomplete_state = "closed";
 
@@ -76,6 +76,12 @@ $(document).ready(function(){
     current_mode = "course";
   }
 
+  function show_button() {
+    if( has_classes ) return;
+    $("#user-course-list .btn").removeClass("hidden");
+    $("#user-course-list .hint").hide("slow");
+  };
+
   /* In order to send a list of class ids to rails, we need to silently 
      keep track of the class ids in a hidden form as well as send the size of the list */
   var add_course_id_to_hidden_form = function( course_id ) { 
@@ -93,23 +99,38 @@ $(document).ready(function(){
       /* If the user hit a tab, we don't want to add it just yet */
       return;
     }
-
     /* Prevent input box being filled */ 
     event.preventDefault();
     $(autocomplete_div).val(""); 
 
     if ( ui.item ) {
+      show_button();
       var class_id = ui.item.value;
       if( class_id in selected_classes ){
         /* return if the user as already selected the class*/
-        pop_alert("error","class is already selected"); // REMOVE THIS LATER
+        pop_alert("error","class is already selected");
         return;
       } else {
         selected_classes[class_id] = class_counter;
       }
 
       /* Append the course to the currently populated list */
-      $("<li/>").text(ui.item.label).appendTo("#user-course-list ul");
+      var remove_course = $("<a/>").text("X").attr("href", "#").addClass("remove-link");
+      var course_li = $("<li/>").append(remove_course).append($("<span/>").text(ui.item.label)).appendTo("#user-course-list ul");
+      remove_course.click( function() {
+        var removed = 0;
+        $("#hidden-course-form").children().each( function(i) {
+          if($(this).val() == class_id){
+            $(this).remove();
+            removed++;
+          } else if ($(this).attr("name") == "size"){
+            var current_size = $(this).val();
+            $(this).val(current_size - removed );
+          };
+        });
+        course_li.remove();
+        $(this).remove();
+      });
 
       /* Add the course id to our hidden form */
       add_course_id_to_hidden_form(class_id);
