@@ -1,9 +1,16 @@
-%div#header
-  = link_to "ClassWhole", root_path, {:id => "logo"}
-  - if current_user
-    Welcome
-    = current_user.name
-    = link_to "Logout", logout_path
-    = link_to "Courses", show_university_path
-  - else
-    = render 'shared/misc/fb_login_button'
+%div.topbar-wrapper
+  %div.topbar{ "data-dropdown" => "dropdown" }
+    %div.topbar-inner
+      %div.container
+        %h3= link_to "ClassWhole", root_path, {:id => "logo"}
+        %ul.nav
+          %li= link_to "Courses", show_university_path
+          %li= link_to "Schedule", scheduler_new_path
+        %ul{ :class => "nav secondary-nav"}
+          - if current_user
+            %li.dropdown
+              = link_to current_user.name, "#", {:class => "dropdown-toggle"}
+              %ul.dropdown-menu
+                %li= link_to "Logout", logout_path
+          - else 
+            %li= render 'shared/misc/fb_login_button'
