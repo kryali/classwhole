@@ -74,7 +74,8 @@ function render_item(ul, item) {
     else {
         course_label = $("<div class='course-label'></span>").append(item.label);
     }
-    var course_title = $("<div class='course-title'></span>")["html"](item.title);
+    var title = truncate(item.title);
+    var course_title = $("<div class='course-title'></span>")["html"](title);
     return $("<li></li>")
         .data( "item.autocomplete", item )
         .append($("<a></a>").append( course_label ).append( course_title ))
@@ -134,6 +135,17 @@ Autocomplete.prototype.subject_select = function(event, ui) {
 };
 
 /* ========= Helper Functions ========= */
+
+max_string_length = undefined;
+function truncate( str ){
+    if( !max_string_length ){
+        max_string_length = $(".user-course-list-wrapper").width();
+        max_string_length = max_string_length/12;
+    }
+    if( str.length > max_string_length )
+        return str.substring( 0, max_string_length) + "...";
+    return str;
+}
 
 Autocomplete.prototype.list_closed = function() {
     menu.input_suggestion.text("");
