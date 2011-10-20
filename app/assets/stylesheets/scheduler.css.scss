@@ -88,15 +88,16 @@ html, body {
 }
 
 #class-search-box {
-  width: 370px;
+  width: 100%;
   margin: 0 auto;
-  height: 40px;
+  height: 30px;
   background: none;
   position:relative;
+  font-size: 1.2em;
 
-  #autocomplete-course-list {
+  #autocomplete-list {
     padding: 0 0px 0 10px;
-    font-size: 1.2em;
+    font-size: 1.0em;
     z-index: 5;
 
     width: 100%;
@@ -113,7 +114,7 @@ html, body {
     -webkit-box-shadow: none;
   }
 
-  #autocomplete-course-list-bg {
+  #autocomplete-list-bg {
     z-index: 0;
     position: absolute;
 
@@ -123,15 +124,15 @@ html, body {
     background: #e6e6e6;
     background: white;
     border: 1px solid #a2a2a2;
-    border-radius: 7px;
-    -moz-border-radius: 7px;
-    -webkit-border-radius: 7px;
+    //border-radius: 7px;
+    //-moz-border-radius: 7px;
+    //-webkit-border-radius: 7px;
     box-shadow: inset 0px 0px 4px #a2a2a2;
     -moz-box-shadow: inset 0px 0px 4px #a2a2a2;
     -webkit-box-shadow: inset 0px 0px 4px #a2a2a2;
   }
 
-  #autocomplete-course-completion {
+  #autocomplete-suggestion{
     font-family: Arial;
     z-index: 0;
     font-size: 1.2em;
