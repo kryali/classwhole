@@ -28,7 +28,6 @@ ClassList.prototype.add_class_callback = function(event, ui) {
     if ( ui.item ) {
         show_button();
         var class_id = ui.item.value;
-        console.log(class_id);
         if( class_id in selected_classes ){
             /* return if the user as already selected the class*/
             pop_alert("error", class_id, " is already selected");
