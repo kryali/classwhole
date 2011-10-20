@@ -18,6 +18,9 @@ $(document).ready(function () {
         
       global right now, see if this is correct later
   */
+
+  timeout = 2500;
+
  pop_alert = function(level, bold_message, message) {
 
     /* Build the html and insert it into the document */
@@ -33,13 +36,22 @@ $(document).ready(function () {
 
     alert_box.append(alert_close_box);
     alert_box.append(alert_message);
-    alert_box.css("display", "none");
+    alert_box.css("opacity", "0");
     
     /* Enable the close button on the box - Twitter bootstrap voodoo*/
     alert_box.alert();
     $('.alert-box').append(alert_box);
 
-    alert_box.slideDown();
+    alert_box.animate({
+      opacity: 1,
+    }, 100, undefined );
+
+    hide_timeout = setTimeout( function() {
+                                  alert_box.animate({
+                                    opacity: 0,
+                                    display: 'none',
+                                  }, 100, undefined );
+                               }, timeout);
   };
 
 });
