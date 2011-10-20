@@ -2,7 +2,16 @@ class_counter = 0;
 has_classes = false;
 selected_classes = {};
 
-function ClassList(){}
+function ClassList(){ }
+
+ClassList.prototype.init = function() {
+    console.log("init");
+    $(".user-course-list ul li .code").each( function(i, element) {
+        var class_id = element.innerHTML;
+        selected_classes[class_id] = class_counter;
+        class_counter++;
+    });
+}
 
 ClassList.prototype.add_class_callback = function(event, ui) {
     var keycode = $.ui.keyCode;
@@ -17,6 +26,7 @@ ClassList.prototype.add_class_callback = function(event, ui) {
     if ( ui.item ) {
         show_button();
         var class_id = ui.item.value;
+        console.log(class_id);
         if( class_id in selected_classes ){
             /* return if the user as already selected the class*/
             pop_alert("error","class is already selected");
