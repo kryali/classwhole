@@ -86,6 +86,19 @@ $course-list-bg     : white; //#E6E6E6;
     padding-top: 1em;
     border-bottom: 1px solid #CDCDCD;
   }
+
+  .alert-box {
+    position: absolute;
+    width: 92.5%;
+    margin: 0 auto;
+    top: -1.5em;
+
+    .alert-message {
+      /* HARDCODED WIDTH HACK */
+      width: 92.5%;
+      position: absolute;
+    }
+  }
 }
 
 .hidden-course-form {
