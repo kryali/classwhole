@@ -37,7 +37,7 @@ $course-list-bg     : white; //#E6E6E6;
     }
 
     span.code {
-      right: 17em;
+      right: 75%;
       font-size: 1em;
       color: #666;
       font-weight: bold;
@@ -45,7 +45,7 @@ $course-list-bg     : white; //#E6E6E6;
       // good-orange: #f68a42
     }
     span.label {
-      right: 18.5em;
+      right: 17em;
       font-size: .9em;
       background: #f68a42;
       // good-grey: #aaa;
@@ -54,7 +54,7 @@ $course-list-bg     : white; //#E6E6E6;
     }
 
     span.title {
-      left: 7em;
+      left: 30%;
       text-align: center
     }
 
@@ -99,7 +99,21 @@ $course-list-bg     : white; //#E6E6E6;
       position: absolute;
     }
   }
+
+  .hours {
+    position: absolute;
+    right: -3em;
+    bottom: -1.2em;
+    display: block;
+    color: #777;
+    z-index: 1000;
+    span {
+      font-size: 2em;
+    }
+  }
+
 }
+
 
 .hidden-course-form {
   height: 0px;

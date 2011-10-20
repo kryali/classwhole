@@ -10,3 +10,9 @@
       = render "scheduler/user_course_list"
     = form_tag({:controller => :user, :action=> :add_courses}, :method => :post, :class => "hidden-course-form" ) do
       =submit_tag("Schedule", {:class => 'btn primary'})
+    %div.hours
+      - if current_user
+        %span= current_user.total_course_hours
+      - else
+        %span= 0
+      hrs.
