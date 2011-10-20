@@ -1,11 +1,12 @@
+= javascript_include_tag "autocomplete"
+= javascript_include_tag "user.course.list"
+= javascript_include_tag "forms/schedule-autocomplete"
+
 %div#showcase-title 
 %div#content
   %h1 Make Your Class Schedule
   %div.user-course-list-wrapper
     %div.user-course-list
       = render "shared/user_course_list"
-    = form_tag({:controller => :user, :action=> :add_courses}, :method => :post, :id => "hidden-course-form" ) do
-      - unless current_user_has_courses?
-        =submit_tag("Schedule", {:class => 'btn primary hidden'})
-      - else
-        =submit_tag("Schedule", {:class => 'btn primary'})
+    = form_tag({:controller => :user, :action=> :add_courses}, :method => :post, :class => "hidden-course-form" ) do
+      =submit_tag("Schedule", {:class => 'btn primary'})
