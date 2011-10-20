@@ -1,6 +1,5 @@
 $(document).ready(function(){
   
-
   var class_list = new ClassList();
   var autocomplete = new Autocomplete();
   autocomplete.input_suggestion = ".autocomplete-suggestion";

@@ -126,7 +126,6 @@ Autocomplete.prototype.subject_select = function(event, ui) {
         subject_id = ui.item.value;
         /* Make autocomplete query for classes now */
 
-        console.log("SWITCH TO COURSE");
         menu.switch_to_course_mode(subject_id);
         /* Trigger the autocomplete */
         menu.input.autocomplete("search");
