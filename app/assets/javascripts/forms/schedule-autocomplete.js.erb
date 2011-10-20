@@ -2,9 +2,7 @@ $(document).ready(function(){
 
   /* Extend the autocomplete prototype to return class titles as well as codes */
   var proto = $.ui.autocomplete.prototype, initSource = proto._initSource;
-
-  /* Override the display form for the autocomplete, so we can make it all sexy and stuff */
-  var render_item = function(ul, item) {
+/* Override the display form for the autocomplete, so we can make it all sexy and stuff */ var render_item = function(ul, item) {
     var input_text = $(autocomplete_div).val(); 
     var bold_text = $("<strong></strong");
     var index = item.label.indexOf(input_text.toUpperCase());
@@ -38,7 +36,7 @@ $(document).ready(function(){
   var class_counter = 0;
   var spacebar_keycode = "32";
   var selected_classes = {};
-  var autocomplete_div = "#autocomplete-course-list";
+  var autocomplete_div = "#autocomplete-list";
   var ajax_search_url = "courses/search/auto/subject/";
   var current_mode = "subject";
   var has_classes = false;
@@ -78,8 +76,8 @@ $(document).ready(function(){
 
   function show_button() {
     if( has_classes ) return;
-    $("#user-course-list .btn").removeClass("hidden");
-    $("#user-course-list .hint").hide("slow");
+    $("#user-list .btn").removeClass("hidden");
+    $("#user-list .hint").hide("slow");
   };
 
   /* In order to send a list of class ids to rails, we need to silently 
@@ -192,7 +190,7 @@ $(document).ready(function(){
     }
     else if (event.keyCode == keycode.DOWN || event.keyCode == keycode.UP) {
       /* This means the user has used the arrows to select an item, thus clear the suggestion */
-      $("#autocomplete-course-completion").text("");
+      $("#autocomplete-suggestion").text("");
     }
   });
 
@@ -206,7 +204,7 @@ $(document).ready(function(){
   });
 
   function list_closed() {
-    $("#autocomplete-course-completion").text("");
+    $("#autocomplete-suggestion").text("");
     autocomplete_state = "closed";
   };
 
@@ -222,7 +220,7 @@ $(document).ready(function(){
       var replacement_string = ui.item.label; 
       if( input_text.length > 0 && is_lower_case(input_text[input_text.length-1]))
         replacement_string = replacement_string.toLowerCase();
-      $("#autocomplete-course-list").val(replacement_string);
+      $("#autocomplete-list").val(replacement_string);
       event.preventDefault();
     }
   };
@@ -269,12 +267,12 @@ $(document).ready(function(){
     var append_string = "";
 
     if( autocomplete_state == "open" && list.length != 0 ) {
-      current = $("#autocomplete-course-list").val();
+      current = $("#autocomplete-list").val();
       append_string = best_result.substring(current.length);
       if( is_lower_case(current[current.length-1]))
         append_string = append_string.toLowerCase();
       suggested_text = current + append_string;
-      $("#autocomplete-course-completion").text(suggested_text);
+      $("#autocomplete-suggestion").text(suggested_text);
     }
   };
 
