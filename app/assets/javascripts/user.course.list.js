@@ -53,6 +53,7 @@ ClassList.prototype.add_class_callback = function(event, ui) {
             });
             course_li.slideUp();
             $(this).remove();
+            delete selected_classes[class_id];
         });
 
         /* Add the course id to our hidden form */
