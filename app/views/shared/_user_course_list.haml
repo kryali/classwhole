@@ -8,7 +8,3 @@
         = link_to("X", remove_course_path(course.id), :remote => true, :class=>"remove-link")
         %span= course.to_s
 = render 'shared/class_search'
-
-= javascript_include_tag "autocomplete"
-= javascript_include_tag "user.course.list"
-= javascript_include_tag "forms/schedule-autocomplete"
