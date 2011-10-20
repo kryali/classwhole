@@ -1,5 +1,11 @@
 %div#showcase-title 
 %div#content
   %h1 Make Your Class Schedule
-  = render "shared/user_course_list"
-  =# render 'shared/misc/class_search'
+  %div.user-course-list-wrapper
+    %div.user-course-list
+      = render "shared/user_course_list"
+    = form_tag({:controller => :user, :action=> :add_courses}, :method => :post, :id => "hidden-course-form" ) do
+      - unless current_user_has_courses?
+        =submit_tag("Schedule", {:class => 'btn primary hidden'})
+      - else
+        =submit_tag("Schedule", {:class => 'btn primary'})

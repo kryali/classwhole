@@ -3,7 +3,7 @@ $(document).ready(function(){
   /* Extend the autocomplete prototype to return class titles as well as codes */
   var proto = $.ui.autocomplete.prototype, initSource = proto._initSource;
 /* Override the display form for the autocomplete, so we can make it all sexy and stuff */ var render_item = function(ul, item) {
-    var input_text = $(autocomplete_div).val(); 
+    var input_text = $input.val(); 
     var bold_text = $("<strong></strong");
     var index = item.label.indexOf(input_text.toUpperCase());
     var course_label;
@@ -40,6 +40,8 @@ $(document).ready(function(){
   var ajax_search_url = "courses/search/auto/subject/";
   var current_mode = "subject";
   var has_classes = false;
+  var $input_suggestion = $(".autocomplete-suggestion");
+  var $input = $("#autocomplete-list");
 
   autocomplete_state = "closed";
 
@@ -63,14 +65,14 @@ $(document).ready(function(){
    */
 
   function switch_to_subject_mode() {
-    $(autocomplete_div).autocomplete( "option", "select", subject_select ); 
-    $(autocomplete_div).autocomplete( "option", "source",  ajax_search_url ); 
+    $input.autocomplete( "option", "select", subject_select ); 
+    $input.autocomplete( "option", "source",  ajax_search_url ); 
     current_mode = "subject";
   }
 
   function switch_to_course_mode(subject_id) {
-    $(autocomplete_div).autocomplete( "option", "select", add_course_to_list ); 
-    $(autocomplete_div).autocomplete( "option", "source",  ajax_search_url + subject_id.toUpperCase()); 
+    $input.autocomplete( "option", "select", add_course_to_list ); 
+    $input.autocomplete( "option", "source",  ajax_search_url + subject_id.toUpperCase()); 
     current_mode = "course";
   }
 
@@ -99,7 +101,7 @@ $(document).ready(function(){
     }
     /* Prevent input box being filled */ 
     event.preventDefault();
-    $(autocomplete_div).val(""); 
+    $input.val(""); 
 
     if ( ui.item ) {
       show_button();
@@ -114,7 +116,7 @@ $(document).ready(function(){
 
       /* Append the course to the currently populated list */
       var remove_course = $("<a/>").text("X").attr("href", "#").addClass("remove-link");
-      var course_li = $("<li/>").append(remove_course).append($("<span/>").text(ui.item.label)).appendTo("#user-course-list ul");
+      var course_li = $("<li/>").append(remove_course).append($("<span/>").text(ui.item.label)).appendTo(".user-course-list ul");
       remove_course.click( function() {
         var removed = 0;
         $("#hidden-course-form").children().each( function(i) {
@@ -154,12 +156,12 @@ $(document).ready(function(){
 
       switch_to_course_mode(subject_id);
       /* Trigger the autocomplete */
-      $(autocomplete_div).autocomplete("search");
+      $input.autocomplete("search");
     }
   };
 
   function form_has_characters() {
-    var form_value = $(autocomplete_div).val();
+    var form_value = $input.val();
     for(var i = 0; i < form_value.length; i++){
 
       /* If character is a letter or a number */
@@ -172,7 +174,7 @@ $(document).ready(function(){
     return false;
   };
 
-  $(autocomplete_div).keyup(function(event) {
+  $input.keyup(function(event) {
 
     /* A keyup event signifies that the user has changed the input, thus do checks */
     watch_for_empty_form();
@@ -180,31 +182,31 @@ $(document).ready(function(){
     form_suggestion();
 
     var keycode = $.ui.keyCode;
-    var form_value = $(autocomplete_div).val();
+    var form_value = $input.val();
 
     if(event.keyCode == keycode.SPACE) {
       /* Switch to course mode when a user types a space on a non empty form */
       switch_to_course_mode(form_value.split(" ")[0]);
       /* Trigger the autocomplete */
-      $(autocomplete_div).autocomplete("search");
+      $input.autocomplete("search");
     }
     else if (event.keyCode == keycode.DOWN || event.keyCode == keycode.UP) {
       /* This means the user has used the arrows to select an item, thus clear the suggestion */
-      $("#autocomplete-suggestion").text("");
+      $input_suggestion.text("");
     }
   });
 
-  $(autocomplete_div).keydown(function(event) {
+  $input.keydown(function(event) {
     var keycode = $.ui.keyCode;
     if( event.keyCode == keycode.TAB ) {
       var best_result = $(".ui-autocomplete .ui-menu-item .course-label").first().text();
-      $(autocomplete_div).val(best_result);
+      $input.val(best_result);
       if( best_result != "" ) event.preventDefault();
     };
   });
 
   function list_closed() {
-    $("#autocomplete-suggestion").text("");
+    $input_suggestion.text("");
     autocomplete_state = "closed";
   };
 
@@ -215,7 +217,7 @@ $(document).ready(function(){
 
   /* THis is to fix lowercase being inserted into the input form */
   function input_focus(event, ui) {
-    var input_text = $(autocomplete_div).val(); 
+    var input_text = $input.val(); 
     if(ui.item) {
       var replacement_string = ui.item.label; 
       if( input_text.length > 0 && is_lower_case(input_text[input_text.length-1]))
@@ -225,7 +227,7 @@ $(document).ready(function(){
     }
   };
 
-  $(autocomplete_div).autocomplete({ 
+  $input.autocomplete({ 
     source: ajax_search_url,
     minLength: 1,
     delay: 0,
@@ -244,7 +246,7 @@ $(document).ready(function(){
 
     if( current_mode == "subject" && results_array.length == 1 ) {
       switch_to_course_mode(best_result);
-      $(autocomplete_div).autocomplete("search");
+      $input.autocomplete("search");
     }
   };
 
@@ -272,7 +274,7 @@ $(document).ready(function(){
       if( is_lower_case(current[current.length-1]))
         append_string = append_string.toLowerCase();
       suggested_text = current + append_string;
-      $("#autocomplete-suggestion").text(suggested_text);
+      $input_suggestion.text(suggested_text);
     }
   };
 

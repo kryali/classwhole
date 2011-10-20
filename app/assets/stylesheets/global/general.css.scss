@@ -1,27 +1,25 @@
-body {
-  background: #333333;
-}
-
-.left {
-  float: left;
-}
-
-.right {
-  float: right;
-}
-
-.hidden {
-  display: none;
-}
+$bg-color           : url('grey-bg.png');
+$default-font-color : #4D4D4D;
 
 .ui-autocomplete-loading {
   background: image-url("small-ajax-loading.gif");
 }
 
-strong {
-  font-weight: bold;
+html, body {
+  background: $bg-color;
+  line-height: 1.22;
+  font-family: 'Arial', 'Tahoma', sans-serif;
 }
 
-em {
-  font-style: italic;
+#wrapper {
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+  color: $default-font-color;
 }
+
+.left { float: left; }
+.right { float: right; }
+.hidden { display: none; }
+strong { font-weight: bold; }
+em { font-style: italic; }
