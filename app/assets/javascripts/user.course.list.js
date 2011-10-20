@@ -1,0 +1,75 @@
+class_counter = 0;
+has_classes = false;
+selected_classes = {};
+
+function ClassList(){}
+
+ClassList.prototype.add_class_callback = function(event, ui) {
+    var keycode = $.ui.keyCode;
+    if( event.keyCode == keycode.TAB ) {
+        /* If the user hit a tab, we don't want to add it just yet */
+        return;
+    }
+    /* Prevent input box being filled */ 
+    event.preventDefault();
+    this.value = ""; 
+
+    if ( ui.item ) {
+        show_button();
+        var class_id = ui.item.value;
+        if( class_id in selected_classes ){
+            /* return if the user as already selected the class*/
+            pop_alert("error","class is already selected");
+            return;
+        } else {
+            selected_classes[class_id] = class_counter;
+        }
+
+        /* Append the course to the currently populated list */
+        var remove_course = $("<a/>").text("X").attr("href", "#").addClass("remove-link");
+        var course_li = $("<li/>").append(remove_course).append($("<span/>").text(ui.item.label)).appendTo(".user-course-list ul");
+
+        remove_course.click( function() {
+            var removed = 0;
+            // Search through the hidden form and remove this element
+            $(".hidden-course-form").children().each( function(i) {
+                if($(this).val() == class_id){
+                    $(this).remove();
+                    removed++;
+                } else if ($(this).attr("name") == "size"){
+                    var current_size = $(this).val();
+                    $(this).val(current_size - removed );
+                };
+            });
+            course_li.remove();
+            $(this).remove();
+        });
+
+        /* Add the course id to our hidden form */
+        add_course_id_to_hidden_form(class_id);
+        class_counter++;
+
+        /* use a form to keep track of count */
+        $("<input>").val(class_counter)
+            .attr("type", "hidden")
+            .attr("name", "size")
+            .appendTo(".hidden-course-form");
+    }
+
+}
+
+function show_button() {
+    if( has_classes ) return;
+    $(".hidden-course-form .btn.primary.hidden").removeClass("hidden");
+    $(".user-course-list span.hint").hide("slow");
+    has_classes = true;
+};
+
+/* In order to send a list of class ids to rails, we need to silently 
+   keep track of the class ids in a hidden form as well as send the size of the list */
+var add_course_id_to_hidden_form = function( course_id ) { 
+    $("<input>").val(course_id)
+        .attr("type", "hidden")
+        .attr("name", class_counter)
+        .appendTo(".hidden-course-form");
+};

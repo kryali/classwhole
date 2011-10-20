@@ -1,0 +1,50 @@
+$course-list-bg     : white; //#E6E6E6;
+
+.user-course-list-wrapper {
+  width: 300px;
+  margin: 0 auto;
+  position: relative;
+  padding: 1em;
+
+  .user-course-list {
+    padding: 1em;
+    background: $course-list-bg;
+    border: 1px solid #bbbbbb;
+  }
+
+  h1 {
+    font-family: 'Georgia', 'Times New Roman', 'Georgia', serif;
+    font-size: 1.2em;
+    text-align: center;
+    border-bottom: 1px solid #CDCDCD;
+    padding-bottom: .5em;
+  }
+
+  li {
+    font-size: .9em;
+    list-style-type: none;
+    padding: 5px 15px;
+    border-bottom: 1px solid #CDCDCD;
+    background: #F2F2F2;
+    a { color: #AAAAAA; text-decoration: none; }
+  }
+
+  form {
+    display: block;
+  }
+  input.btn {
+    width: 100%;
+    font-size: 1.2em;
+  }
+
+  span.hint {
+    font-family: 'Georgia', 'Times New Roman', 'Georgia', serif;
+    display: block;
+    font-size: .75em;
+    font-style: italic;
+    text-align: center;
+    padding-bottom: 1em;
+    padding-top: 1em;
+    border-bottom: 1px solid #CDCDCD;
+  }
+}
