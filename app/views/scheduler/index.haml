@@ -5,7 +5,8 @@
 %div#showcase-title 
 %div#content
   %div.user-course-list-wrapper
+    %div.alert-box
     %div.user-course-list
-      = render "shared/user_course_list"
+      = render "scheduler/user_course_list"
     = form_tag({:controller => :user, :action=> :add_courses}, :method => :post, :class => "hidden-course-form" ) do
       =submit_tag("Schedule", {:class => 'btn primary'})

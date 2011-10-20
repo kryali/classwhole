@@ -5,12 +5,14 @@ selected_classes = {};
 function ClassList(){ }
 
 ClassList.prototype.init = function() {
-    console.log("init");
     $(".user-course-list ul li .code").each( function(i, element) {
         var class_id = element.innerHTML;
         selected_classes[class_id] = class_counter;
         class_counter++;
     });
+
+    //pop_alert("error", "cs 225", " is already selected" );
+    //pop_alert("error", "cs 105", " is already selected" );
 }
 
 ClassList.prototype.add_class_callback = function(event, ui) {
@@ -29,7 +31,7 @@ ClassList.prototype.add_class_callback = function(event, ui) {
         console.log(class_id);
         if( class_id in selected_classes ){
             /* return if the user as already selected the class*/
-            pop_alert("error","class is already selected");
+            pop_alert("error", class_id, " is already selected");
             return;
         } else {
             selected_classes[class_id] = class_counter;

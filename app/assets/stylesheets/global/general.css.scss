@@ -23,3 +23,10 @@ html, body {
 .hidden { display: none; }
 strong { font-weight: bold; }
 em { font-style: italic; }
+
+.alert-message {
+  .close {
+    font-size: 14px;
+  }
+  font-size: 14px;
+}

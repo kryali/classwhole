@@ -18,7 +18,7 @@ $(document).ready(function () {
         
       global right now, see if this is correct later
   */
- pop_alert = function(level, message) {
+ pop_alert = function(level, bold_message, message) {
 
     /* Build the html and insert it into the document */
     var alert_close_box = $('<a />', {
@@ -26,16 +26,20 @@ $(document).ready(function () {
       class: "close",
       text: "x"
     });
-    var alert_message = $('<p />', { text: message });
+    var alert_message = $('<p />')
+                            .append($("<strong/>").text(bold_message))
+                            .append(message);
     var alert_box = $('<div />', { class: "alert-message " + level + " fade in"});
 
     alert_box.append(alert_close_box);
     alert_box.append(alert_message);
+    alert_box.css("display", "none");
     
     /* Enable the close button on the box - Twitter bootstrap voodoo*/
     alert_box.alert();
+    $('.alert-box').append(alert_box);
 
-    $('body').prepend(alert_box);
+    alert_box.slideDown();
   };
 
 });
