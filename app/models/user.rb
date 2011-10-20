@@ -15,4 +15,12 @@ class User < ActiveRecord::Base
     end
     return friends
   end
+
+  def total_course_hours
+    hours = 0
+    courses.each do |course|
+      hours += course.hours 
+    end
+    return hours
+  end
 end
