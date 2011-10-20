@@ -47,13 +47,9 @@ input.autocomplete-list:focus {
   background: #e6e6e6;
   background: white;
   border: 1px solid #a2a2a2;
-  //border-radius: 7px;
-  //-moz-border-radius: 7px;
-  //-webkit-border-radius: 7px;
-  box-shadow: inset 0px 0px 4px #a2a2a2;
-  -moz-box-shadow: inset 0px 0px 4px #a2a2a2;
-  -webkit-box-shadow: inset 0px 0px 4px #a2a2a2;
-  //background: red;
+  box-shadow: inset 0px 0px 2px #a2a2a2;
+  -moz-box-shadow: inset 0px 0px 2px #a2a2a2;
+  -webkit-box-shadow: inset 0px 0px 2px #a2a2a2;
 }
 
 .autocomplete-suggestion{
@@ -76,7 +72,7 @@ input.autocomplete-list:focus {
 .autocomplete-search-box {
   width: 100%;
   height: 40px;
-  margin: 0 auto;
+  margin: 1.4em auto 0 auto;
   background: none;
   position:relative;
   font-size: 1.2em;
@@ -103,7 +99,7 @@ input.autocomplete-list:focus {
   }
   .ui-corner-all {
     display: block;
-    font-size: .9em;
+    font-size: 1em;
     width: 100%;
     font-family: 'Arial', 'Tahoma', sans-serif;
     position: relative;

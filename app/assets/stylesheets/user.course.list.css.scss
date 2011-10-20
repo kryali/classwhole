@@ -22,17 +22,38 @@ $course-list-bg     : white; //#E6E6E6;
   }
 
   li {
+    font-family: 'Arial', 'Tahoma', serif;
     font-size: .9em;
     list-style-type: none;
-    padding: 5px 15px;
-    border-bottom: 1px solid #CDCDCD;
-    background: #F2F2F2;
-    a { color: #AAAAAA; text-decoration: none; }
+    height: 2.5em;
+    border-bottom: 1px dotted #cccccc;
+    background: #fefefe;
+    color: #888;
+    position: relative;
+
+    span {
+      position: absolute;
+      top: 1em;
+      left: 1em;
+      font-size: .9em;
+    }
+
+    a.remove-link { 
+      position: absolute;
+      font-size: .75em;
+      color: #AAAAAA; 
+      text-decoration: none; 
+      right: 1em;
+      top: 1em;
+    }
   }
 
   input.btn {
     width: 100%;
     font-size: 1.2em;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
   }
 
   span.hint {
