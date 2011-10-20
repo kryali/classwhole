@@ -10,7 +10,7 @@ class Subject < ActiveRecord::Base
     end
     
     subjects = []
-    max_results = 10
+    max_results = 100
     possible_subjects.each do |subject_id|
       label = $redis.hget("id:subject:#{subject_id}", "label")
       title = $redis.hget("id:subject:#{subject_id}", "title")
