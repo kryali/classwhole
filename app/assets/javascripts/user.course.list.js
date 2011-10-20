@@ -35,7 +35,9 @@ ClassList.prototype.add_class_callback = function(event, ui) {
                             .append($("<span/>")
                                 .text(ui.item.title)
                                 .addClass("title"))
-                            .appendTo(".user-course-list ul");
+                            .css("display", "none");
+        course_li.appendTo(".user-course-list ul");
+        course_li.slideDown();
 
         remove_course.click( function() {
             var removed = 0;
@@ -49,7 +51,7 @@ ClassList.prototype.add_class_callback = function(event, ui) {
                     $(this).val(current_size - removed );
                 };
             });
-            course_li.remove();
+            course_li.slideUp();
             $(this).remove();
         });
 
@@ -69,7 +71,13 @@ ClassList.prototype.add_class_callback = function(event, ui) {
 function show_button() {
     if( has_classes ) return;
     $(".hidden-course-form .btn.primary.hidden").removeClass("hidden");
-    $(".user-course-list span.hint").hide("slow");
+    $(".user-course-list span.hint")
+        .animate({
+            opacity: 0,
+            display: 'none',
+          }, 200, function() {
+            $(this).slideUp();
+          });
     has_classes = true;
 };
 
