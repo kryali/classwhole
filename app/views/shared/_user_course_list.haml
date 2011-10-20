@@ -6,5 +6,6 @@
     - for course in current_user.courses
       %li
         = link_to("X", remove_course_path(course.id), :remote => true, :class=>"remove-link")
-        %span= course.to_s
+        %span.code= course.to_s
+        %span.title= course.title
 = render 'shared/class_search'
