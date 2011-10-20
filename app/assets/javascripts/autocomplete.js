@@ -57,6 +57,7 @@ function extend_autocomplete_plugin() {
 
 /* Override the display */
 function render_item(ul, item) {
+    //console.log(item);
     var input_text = this.element.val(); 
     var bold_text = $("<strong></strong");
     var index = item.label.indexOf(input_text.toUpperCase());

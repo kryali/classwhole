@@ -1,6 +1,7 @@
 $course-list-bg     : white; //#E6E6E6;
 
 .user-course-list-wrapper {
+  font-family: 'Arial', 'Tahoma', serif;
   width: 400px;
   margin: 0 auto;
   position: relative;
@@ -22,7 +23,6 @@ $course-list-bg     : white; //#E6E6E6;
   }
 
   li {
-    font-family: 'Arial', 'Tahoma', serif;
     font-size: .9em;
     list-style-type: none;
     height: 2.5em;
@@ -32,10 +32,30 @@ $course-list-bg     : white; //#E6E6E6;
     position: relative;
 
     span {
+      top: .85em;
       position: absolute;
-      top: 1em;
-      left: 1em;
+    }
+
+    span.code {
+      right: 17em;
+      font-size: 1em;
+      color: #666;
+      font-weight: bold;
+      // good-blue: #6a97c6
+      // good-orange: #f68a42
+    }
+    span.label {
+      right: 18.5em;
       font-size: .9em;
+      background: #f68a42;
+      // good-grey: #aaa;
+      // good-blue: #6a97c6
+      // good-orange: #f68a42
+    }
+
+    span.title {
+      left: 7em;
+      text-align: center
     }
 
     a.remove-link { 
