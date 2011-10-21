@@ -110,7 +110,10 @@ def add_sections_to_course(course, data)
         :start_date => start_date,
         :end_date => end_date,
         :building => section['building'],
-        :code => section['sectionId']
+        :code => section['sectionId'],
+        :course_subject_code => course.subject_code,
+        :course_title => course.title,
+        :course_number => course.number
         )
     end
   end

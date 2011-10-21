@@ -73,7 +73,9 @@ class UserController < ApplicationController
 		end
 
 		# Add each class to the current users classes
+    logger.info params["size"]
     params["size"].to_i.times do |i|
+      logger.info i
     	course = params[i.to_s].split(" ")
       subject = course[0]
       number = course[1]
