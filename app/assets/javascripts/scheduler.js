@@ -21,9 +21,7 @@ function time_range( schedule ) {
   var latest_end_time = 0;
   for( var i = 0 ; i < schedule.length; i++) {
     var section = schedule[i];
-    console.log( section );
     var start_time = new Date( Date.parse( section['start_time'] ) );
-    console.log( start_time.getUTCHours() );
     start_time = (start_time.getUTCHours() * 60) + start_time.getMinutes();
 
     var end_time   = new Date( Date.parse( section['end_time'] ) );
@@ -55,7 +53,10 @@ function draw_section( section, days ) {
     var day_element = document.createElement("div");    
     var hour_diff = end_time.getUTCHours() - start_time.getUTCHours();
     var min_diff = (end_time.getMinutes() - start_time.getMinutes())/60;
-    $(day_element).append($('<span/>')
+    var width = $("tr").width();
+    if( !width ) width = 149; /* HACK, need to set the description to the width */
+    $(day_element).css("width", width)
+                  .append($('<span/>')
                           .append(section['code'] )
                           .addClass('section-code'))
                   .append($('<span/>')
@@ -67,6 +68,7 @@ function draw_section( section, days ) {
     day_element.className = "schedule-block";
     day_element.style.top = ((start_time.getUTCHours() - DAY_START) * block_height) + "px";
     day_element.style.height = block_height * (hour_diff + min_diff) + "px";
+    console.log((day_element));
     days[ day_array[i] ].appendChild( day_element );
   }
 }
@@ -77,7 +79,6 @@ function draw_schedule( schedule) {
   draw_time_labels(container, DAY_START, DAY_END);
 
   range = time_range( schedule );
-  console.log( range );
   for( var key in days ) {
     day = document.createElement( 'table' );
     day.className = "schedule-day";
@@ -93,7 +94,7 @@ function draw_schedule( schedule) {
     draw_section( schedule[section_index], days );
   }
 
-  $( "#content" ).append( container );
+  $( ".scheduler-content" ).append( container );
   schedule_obj = { 'schedule': schedule, 'container': container, 'days': days };
   return schedule_obj;
 }
