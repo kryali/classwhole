@@ -14,7 +14,7 @@ var days = { "M": undefined,
              "F": undefined }; 
 var schedules = [];
 var schedule_obj = {};
-var block_height = 80;
+var block_height = 78;
 
 function time_range( schedule ) {
   var earliest_start_time = 24 * 60;
