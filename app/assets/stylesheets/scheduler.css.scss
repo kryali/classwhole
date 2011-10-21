@@ -23,7 +23,7 @@
 
 // schedule
 $block-width        : 150px;
-$schedule-block-h   : 80px;
+$schedule-block-h   : 79px;
 $numblocks          : 12;
 
 /* all colors */
@@ -84,15 +84,21 @@ $showcase-bg        : url('showcase-bg.png');
   background: #cccccc;
   float: left;
   margin: 0 0px 0 0px;
-  border-right: 1px solid red;
   overflow: hidden;
+  border-right: 2px solid #cccccc;
+  border-bottom: 1px solid #aaaaaa;
 
   tr {
     display: block;
     height: $schedule-block-h - 2;
     width: 100%;
     background: #dddddd;
-    border: 1px solid #aaaaac;
+    border-top: 1px solid #aaaaac;
+    border-left: 1px solid #aaaaac;
+    /* Highlight white inner */
+    box-shadow: inset 1px 1px 1px 0px white;
+    -moz-box-shadow: inset 1px 1px 1px 0px white;
+    -webkit-box-shadow: inset 1px 1px 1px 0px white;
   } 
 }
 
@@ -103,6 +109,10 @@ $block_padding: 10px;
   background: white;
   position: absolute;
   border: 1px solid #999999;
+
+  box-shadow: 1px 2px 2px 1px #cccccc;
+  -webkit-box-shadow: 1px 2px 2px 1px #cccccc;
+  -mox-box-shadow: 1px 2px 2px 1px #cccccc;
 
   .section-code {
     position: absolute;
@@ -133,16 +143,31 @@ $block_padding: 10px;
   clear: both;
   overflow: hidden;
   margin-bottom: 50px;
+  position: relative;
+
   .time-label {
     float: left;
     li {
       display: block;
       text-align: right;
-      padding-right: 5px;
+      padding-right: 15px;
       line-height: $schedule-block-h;
       height: $schedule-block-h;
     }
   }
+}
+
+.scheduler-content {
+  font-family: 'Arial', 'Tahoma', sans-serif;
+  padding: 40px;
+  position: relative;
+  background: white;
+  border: 1px solid #aaaaaa;
+  h1 {
+    text-align: center;
+    font-size: 1.3em;
+  }
+  margin-top: 3em;
 }
 
 

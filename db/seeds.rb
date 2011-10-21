@@ -131,10 +131,20 @@ def parse_hours( start_time_string, end_time_string)
   end_time_match = /(?<hour>\d\d):(?<min>\d\d)\s*(?<am_pm>\w+)/.match(end_time_string)
   return nil if not end_time_match
 
+  start_hour = start_time_match[:hour].to_i
+  end_hour = end_time_match[:hour].to_i
+
+  if( start_time_match[:am_pm] == "PM" and start_time_match[:hour].to_i != 12)
+    start_hour += 12 
+  end
+  if( end_time_match[:am_pm] == "PM" and end_time_match[:hour].to_i != 12)
+    end_hour += 12 
+  end
+
   # this year month and day do not matter, as long as it is consistent    
   # TODO: Don't hardcode year you moron
-  start_time = Time.utc(1990, 7, 1, start_time_match[:hour].to_i, start_time_match[:min].to_i)
-    end_time = Time.utc(1990, 7, 1, end_time_match[:hour].to_i,   end_time_match[:min].to_i)
+  start_time = Time.utc(1990, 7, 1, start_hour, start_time_match[:min].to_i)
+    end_time = Time.utc(1990, 7, 1, end_hour,   end_time_match[:min].to_i)
   return start_time, end_time
 end
 
