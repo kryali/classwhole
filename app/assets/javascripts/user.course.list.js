@@ -5,14 +5,10 @@ selected_classes = {};
 function ClassList(){ }
 
 ClassList.prototype.init = function() {
-    $(".user-course-list ul li .code").each( function(i, element) {
-        var class_id = element.innerHTML;
-        selected_classes[class_id] = class_counter;
-        class_counter++;
+    $(".user-course-list ul li ").each( function(index) { 
+        var class_id = $(this).find(".code").text(); 
+        selected_classes[class_id] = $(this);
     });
-
-    //pop_alert("error", "cs 225", " is already selected" );
-    //pop_alert("error", "cs 105", " is already selected" );
 }
 
 ClassList.prototype.add_class_callback = function(event, ui) {
@@ -31,10 +27,16 @@ ClassList.prototype.add_class_callback = function(event, ui) {
         if( class_id in selected_classes ){
             /* return if the user as already selected the class*/
             pop_alert("error", class_id, " is already selected");
+            selected_classes[class_id].animate({
+                backgroundColor: '#F08080',
+            }, 100, function() {
+                $(this).animate({backgroundColor: 'white'}, 500, undefined);
+            });
+
+            test = selected_classes[class_id];
+            //test.css("background", "red");
             return;
-        } else {
-            selected_classes[class_id] = class_counter;
-        }
+        } 
 
         /* Append the course to the currently populated list */
         var remove_course = $("<a/>").text("X").attr("href", "#").addClass("remove-link");
@@ -66,6 +68,8 @@ ClassList.prototype.add_class_callback = function(event, ui) {
             $(this).remove();
             delete selected_classes[class_id];
         });
+
+        selected_classes[class_id] = course_li;
 
         /* Add the course id to our hidden form */
         add_course_id_to_hidden_form(class_id);
