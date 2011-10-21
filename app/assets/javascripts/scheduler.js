@@ -12,14 +12,38 @@ var days = { "M": undefined,
              "W": undefined,
              "R": undefined,
              "F": undefined }; 
-var schedules =[];
+var schedules = [];
 var schedule_obj = {};
 var block_height = 80;
+
+function time_range( schedule ) {
+  var earliest_start_time = 24 * 60;
+  var latest_end_time = 0;
+  for( var i = 0 ; i < schedule.length; i++) {
+    var section = schedule[i];
+    console.log( section );
+    var start_time = new Date( Date.parse( section['start_time'] ) );
+    console.log( start_time.getUTCHours() );
+    start_time = (start_time.getUTCHours() * 60) + start_time.getMinutes();
+
+    var end_time   = new Date( Date.parse( section['end_time'] ) );
+    end_time = (end_time.getUTCHours() * 60) + end_time.getMinutes();
+
+    if ( start_time < earliest_start_time )
+      earliest_start_time = start_time;
+    if ( end_time > latest_end_time )
+      latest_end_time = end_time;
+  }
+  
+  earliest_start_time = Math.ceil( earliest_start_time/60 );
+  latest_end_time = Math.ceil( latest_end_time/60 );
+  return [earliest_start_time, latest_end_time]
+}
 
 function draw_all_schedules( all_schedules ) {
   schedules = new Array( all_schedules.length );
   for( var i = 0; i < all_schedules.length; i++ ) {
-    schedules[i] = draw_schedule( all_schedules[i] );
+    schedules[i] = draw_schedule( all_schedules[i]);
   }
 }
 
@@ -47,10 +71,13 @@ function draw_section( section, days ) {
   }
 }
 
-function draw_schedule( schedule ) {
+function draw_schedule( schedule) {
   container = document.createElement( 'div' );
   container.className = "schedule-wrapper";
-  draw_time_labels(container);
+  draw_time_labels(container, DAY_START, DAY_END);
+
+  range = time_range( schedule );
+  console.log( range );
   for( var key in days ) {
     day = document.createElement( 'table' );
     day.className = "schedule-day";
@@ -71,10 +98,10 @@ function draw_schedule( schedule ) {
   return schedule_obj;
 }
 
-function draw_time_labels( container ) {
+function draw_time_labels( container, day_start, day_end ) {
   var label_list = document.createElement( 'ul' );
   label_list.className = "time-label";
-  for(var i = DAY_START; i < DAY_END; i++){
+  for(var i = day_start; i < day_end; i++){
     var time_item = document.createElement( 'li' );
     if( i > 12 )
       time_item.innerHTML = (i-12) + " pm";
