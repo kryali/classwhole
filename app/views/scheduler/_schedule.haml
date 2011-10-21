@@ -1,0 +1,20 @@
+- range = hour_range(sections)
+- start_hour = range[0]
+- end_hour = range[1]
+- matrix = section_matrix(sections)
+%table
+  %thead
+    %tr
+      %td Monday
+      %td Tuesday
+      %td Wednesday
+      %td Thursday
+      %td Friday
+  %tbody
+    - for hour in (start_hour..end_hour)
+      %tr.hour-block
+        %td= matrix["M"][hour].inspect
+        %td= matrix["T"][hour].inspect
+        %td= matrix["W"][hour].inspect
+        %td= matrix["R"][hour].inspect
+        %td= matrix["F"][hour].inspect

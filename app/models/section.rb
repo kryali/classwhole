@@ -22,4 +22,7 @@ class Section < ActiveRecord::Base
     return time_conflict?(section.days, section.start_time, section.end_time)
   end
 
+  def course_to_s
+    return "#{course_subject_code} #{course_number}"
+  end
 end

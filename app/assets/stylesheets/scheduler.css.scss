@@ -23,13 +23,12 @@
 
 // schedule
 $block-width        : 150px;
-$schedule-block-h   : 40px;
+$schedule-block-h   : 80px;
 $numblocks          : 12;
 
 /* all colors */
 // These are the main element colors 
 $default-font-color : #4D4D4D;
-$content-bg-color   : url('grey-bg.png');
 $accent-font-color  : #333333;
 $header-bg          : #E6E6E6;
 $header-bg          : url('grey-bg.png');
@@ -57,18 +56,6 @@ $showcase-bg        : url('showcase-bg.png');
   #fb-button {
     float: right;
   }
-}
-
-#content {
-  padding: 40px;
-  position: relative;
-  background: $content-bg-color;
-
-  h1 {
-    text-align: center;
-    font-size: 1.3em;
-  }
-
 }
 
 #showcase {
@@ -109,11 +96,39 @@ $showcase-bg        : url('showcase-bg.png');
   } 
 }
 
+
+$block_padding: 10px;
 .schedule-block {
   width: 100%;
   background: white;
   position: absolute;
   border: 1px solid #999999;
+
+  .section-code {
+    position: absolute;
+    bottom: $block_padding;
+    left:   $block_padding;
+    color: #aaa;
+    font-size: 0.8em;
+  }
+  .course-name {
+    position: absolute;
+    top:    $block_padding;
+    left:   $block_padding;
+    color: #444;
+  }
+  .section-type {
+    position: absolute;
+    top:    $block_padding;
+    right:   $block_padding;
+    //color: #888;
+    background: #0069D6;
+  }
+
+  .course-title {
+    font-size: 0.6em;
+  }
+
 }
 .schedule-wrapper {
   clear: both;
@@ -130,6 +145,7 @@ $showcase-bg        : url('showcase-bg.png');
     }
   }
 }
+
 
 strong {
   font-weight: bold;

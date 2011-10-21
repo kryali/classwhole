@@ -14,7 +14,7 @@ var days = { "M": undefined,
              "F": undefined }; 
 var schedules =[];
 var schedule_obj = {};
-var block_height = 40;
+var block_height = 80;
 
 function draw_all_schedules( all_schedules ) {
   schedules = new Array( all_schedules.length );
@@ -28,10 +28,18 @@ function draw_section( section, days ) {
   var end_time   = new Date( Date.parse( section['end_time'] ) );
   var day_array = section[ 'days' ].split( "" );
   for( var i in day_array)  {
-    var day_element = document.createElement("li");    
+    var day_element = document.createElement("div");    
     var hour_diff = end_time.getUTCHours() - start_time.getUTCHours();
     var min_diff = (end_time.getMinutes() - start_time.getMinutes())/60;
-    day_element.innerHTML = section[ 'code' ];
+    $(day_element).append($('<span/>')
+                          .append(section['code'] )
+                          .addClass('section-code'))
+                  .append($('<span/>')
+                          .append(section['course_subject_code'] + " " + section['course_number'] )
+                          .addClass('course-name'))
+                  .append($('<span/>')
+                          .append(section['section_type'] )
+                          .addClass('section-type label'));
     day_element.className = "schedule-block";
     day_element.style.top = ((start_time.getUTCHours() - DAY_START) * block_height) + "px";
     day_element.style.height = block_height * (hour_diff + min_diff) + "px";
@@ -40,7 +48,6 @@ function draw_section( section, days ) {
 }
 
 function draw_schedule( schedule ) {
-  console.log( schedule );
   container = document.createElement( 'div' );
   container.className = "schedule-wrapper";
   draw_time_labels(container);
