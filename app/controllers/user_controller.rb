@@ -82,7 +82,7 @@ class UserController < ApplicationController
       current_user.courses << Course.find_by_subject_code_and_number(subject, number)
 			add_course_to_cookie(subject, number)
     end
-		redirect_to(root_path)
+		redirect_to(scheduler_new_path)
   end
 
   #
