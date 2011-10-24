@@ -30,33 +30,10 @@ $numblocks          : 12;
 // These are the main element colors 
 $default-font-color : #4D4D4D;
 $accent-font-color  : #333333;
-$header-bg          : #E6E6E6;
-$header-bg          : url('grey-bg.png');
 
 
 $showcase-bg        : url('showcase-bg.png');
 
-#header {
-  background: $header-bg;
-  height: 40px;
-  padding: 2em 1em 1em 1em;
-  border-bottom: 2px1solid #E4DFDF;
-
-  a#logo {
-    float: left; 
-    display: block;
-    font-size: 1.2em;
-    text-decoration: none;
-  }
-
-  a#logo:visited {
-    color: #4D4D4D;
-  }
-
-  #fb-button {
-    float: right;
-  }
-}
 
 #showcase {
   width: 100%;
