@@ -6,6 +6,7 @@ function ClassList(){ }
 
 ClassList.prototype.init = function() {
     $(".user-course-list ul li ").each( function(index) { 
+        has_classes = true;
         var class_id = $(this).find(".code").text(); 
         selected_classes[class_id] = $(this);
     });
@@ -86,7 +87,14 @@ ClassList.prototype.add_class_callback = function(event, ui) {
 
 function show_button() {
     if( has_classes ) return;
-    $(".hidden-course-form .btn.primary.hidden").removeClass("hidden");
+    /*
+    $(".hidden-course-form .btn.primary.hidden")
+        .animate({
+            display: 'inline',
+          }, 200, undefined)
+        .removeClass("hidden");
+    */
+
     $(".user-course-list span.hint")
         .animate({
             opacity: 0,
@@ -94,6 +102,13 @@ function show_button() {
           }, 200, function() {
             $(this).slideUp();
           });
+
+
+    var course_list = $(".user-course-list");
+    var header = $("<h1/>").text("Spring 2011").addClass("hidden");
+    course_list.prepend(header);
+    header.slideDown();
+
     has_classes = true;
 };
 

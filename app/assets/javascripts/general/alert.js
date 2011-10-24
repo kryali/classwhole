@@ -46,12 +46,13 @@ $(document).ready(function () {
       opacity: 1,
     }, 100, undefined );
 
-    hide_timeout = setTimeout( function() {
+    var hide_timeout = setTimeout( function() {
                                   alert_box.animate({
                                     opacity: 0,
                                     display: 'none',
-                                  }, 100, undefined );
+                                  }, 400, undefined );
                                }, timeout);
+    var rem_timeout = setTimeout( function() { alert_box.remove(); }, timeout + 400);
   };
 
 });

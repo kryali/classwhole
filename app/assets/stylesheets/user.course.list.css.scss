@@ -2,11 +2,11 @@ $course-list-bg     : white; //#E6E6E6;
 
 .user-course-list-wrapper {
   font-family: 'Arial', 'Tahoma', serif;
-  width: 400px;
-  margin: 0 auto;
+  width: 550px;
+  margin: 5% auto 0 auto;
   position: relative;
   padding: 1em;
-  font-size: 1.1em;
+  font-size: 1.6em;
 
   .user-course-list {
     padding: 1em;
@@ -15,21 +15,31 @@ $course-list-bg     : white; //#E6E6E6;
   }
 
   h1 {
-    font-family: 'Georgia', 'Times New Roman', 'Georgia', serif;
-    font-size: 1.2em;
-    text-align: center;
+    //font-family: 'Georgia', 'Times New Roman', 'Georgia', serif;
+    font-size: 1em;
+    text-align: left;
     border-bottom: 1px solid #CDCDCD;
-    padding-bottom: .5em;
+    padding-bottom: .7em;
+    color: #999;
+    padding-left: 5.9em;
   }
 
   li {
-    font-size: .9em;
+    font-size: .8em;
     list-style-type: none;
     height: 2.5em;
     border-bottom: 1px dotted #cccccc;
     background: #fefefe;
     color: #888;
     position: relative;
+
+    .header {
+      font-size: .8em;
+      .code {
+        color: #888;
+        font-weight: lighter;
+      }
+    }
 
     span {
       top: .85em;
@@ -70,7 +80,7 @@ $course-list-bg     : white; //#E6E6E6;
 
   input.btn {
     width: 100%;
-    font-size: 1.2em;
+    font-size: .8em;
     border-radius: 2px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
@@ -83,21 +93,17 @@ $course-list-bg     : white; //#E6E6E6;
     font-style: italic;
     text-align: center;
     padding-bottom: 1em;
-    padding-top: 1em;
+    //padding-top: 1em;
     border-bottom: 1px solid #CDCDCD;
   }
 
   .alert-box {
     position: absolute;
     width: 92.5%;
+    width: 200px;
     margin: 0 auto;
-    top: -1.5em;
+    bottom: -15px;
 
-    .alert-message {
-      /* HARDCODED WIDTH HACK */
-      width: 92.5%;
-      position: absolute;
-    }
   }
 
   .hours {

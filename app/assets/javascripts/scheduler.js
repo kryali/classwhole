@@ -68,7 +68,6 @@ function draw_section( section, days ) {
     day_element.className = "schedule-block";
     day_element.style.top = ((start_time.getUTCHours() - DAY_START) * block_height) + "px";
     day_element.style.height = block_height * (hour_diff + min_diff) + "px";
-    console.log((day_element));
     days[ day_array[i] ].appendChild( day_element );
   }
 }
@@ -82,10 +81,15 @@ function draw_schedule( schedule) {
   for( var key in days ) {
     day = document.createElement( 'table' );
     day.className = "schedule-day";
+    var header = $("<thead/>").append($("<tr/>")
+                         .append($("<td/>").text("Friday")));
+    $(day).append(header);
+    var body = $("<tbody/>");
     for(var i = DAY_START; i < DAY_END; i++){
-      var hour = document.createElement( 'tr' );
-      day.appendChild( hour );
+      var hour = $("<tr/>");
+      body.append(hour);
     }
+    $(day).append(body);
     days[key] = day;
     container.appendChild( day );
   }
