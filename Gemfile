@@ -5,6 +5,8 @@ gem 'rails', '3.1.1'
 gem 'passenger'
 gem 'dalli'
 
+gem 'mechanize'
+
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
