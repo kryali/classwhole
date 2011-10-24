@@ -101,7 +101,7 @@ input.autocomplete-list:focus {
   }
   .ui-corner-all {
     display: block;
-    font-size: 1em;
+    font-size: 1.4em;
     width: 100%;
     font-family: 'Arial', 'Tahoma', sans-serif;
     position: relative;
@@ -115,10 +115,11 @@ input.autocomplete-list:focus {
 
   .course-title {
     color: #777;
-    padding: .7em;
+    padding: 1em;
     position: absolute;
     top: 0px;
     right: 0px;
+    font-size: .8em;
   }
 
 }
