@@ -212,3 +212,28 @@ strong {
 .color-4 {
   background: #F3fba2;
 }
+
+ul.pagination {
+  position: absolute;
+  top: 0em;
+  right: 5em;
+}
+
+.next {
+  position: absolute;
+  top: 200px;
+  right: -24px;
+  width: 24px;
+  height: 43px;
+  background: red;
+  background: image-url("arrow-next.png");
+}
+
+.prev {
+  position: absolute;
+  top: 200px;
+  left: -24px;
+  width: 24px;
+  height: 43px;
+  background: image-url("arrow-prev.png");
+}
