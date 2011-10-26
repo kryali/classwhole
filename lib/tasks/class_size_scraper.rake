@@ -36,7 +36,11 @@ end
 namespace :scrape do 
 
   task :setup do
-	class_size_scrape
+    class_size_scrape
+  end
+
+  task :size, :user, :pass do | t, args |
+    puts "#{args[:user]}, #{args[:pass]}"
   end
   
 end
