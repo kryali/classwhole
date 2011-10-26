@@ -31,7 +31,20 @@ class Section < ActiveRecord::Base
   end
 
   def duration_s
-    return "#{start_time.hour}:#{start_time.min}-#{end_time.hour}:#{end_time.min}"
+    return "#{print_time(start_time)}-#{print_time(end_time)}"
   end
 
+  def print_time(time)
+    hour = time.hour
+    if( time.hour > 12 and time.hour < 24)
+      return "#{time.hour-12}:%02dpm" % time.min
+    elsif ( hour < 12 and hour != 0)
+      return "#{time.hour}:%02dam" % time.min
+    elsif ( hour == 24 )
+      return "#{time.hour-12}:%02dam" % time.min
+    elsif ( hour == 12 )
+      return "#{time.hour}:%02dpm" % time.min
+    end
+    return "nil"
+  end
 end
