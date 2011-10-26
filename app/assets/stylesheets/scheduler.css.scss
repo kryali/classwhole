@@ -80,7 +80,7 @@ $showcase-bg        : url('showcase-bg.png');
 }
 
 
-$block_padding: 10px;
+$block_padding: 8px;
 .schedule-block {
   width: 100%;
   background: white;
@@ -115,15 +115,16 @@ $block_padding: 10px;
 
   .course-title {
     font-size: .7em;
-    top: $block_padding * 2.9;
+    top: $block_padding * 3.4;
     left: $block_padding;
     color: #888;
   }
 
   .duration {
-    font-size: .8em;
-    bottom: $block_padding;
+    font-size: .7em;
+    bottom: $block_padding + 1;
     right: $block_padding;
+    text-transform: uppercase;
     color: #444;
   }
 
