@@ -1,6 +1,9 @@
 = javascript_include_tag "scheduler.js"
 %div.scheduler-content
+  - i = 0
   - @possible_schedules.each do |sections|
+    - i += 1
+    %h1= "Schedule Rank: #{i}"
     = render "schedule", :sections => sections
 - #javascript:
 - #//draw_all_schedules(#{@possible_schedules});
