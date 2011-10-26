@@ -27,6 +27,11 @@ class Section < ActiveRecord::Base
   end
 
   def duration
-    end_time.hour - start_time.hour
+    return (end_time.hour - start_time.hour) + (end_time.min - start_time.min)/60.0
   end
+
+  def duration_s
+    return "#{start_time.hour}:#{start_time.min}-#{end_time.hour}:#{end_time.min}"
+  end
+
 end
