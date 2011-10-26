@@ -81,9 +81,11 @@ function draw_schedule( schedule) {
   for( var key in days ) {
     day = document.createElement( 'table' );
     day.className = "schedule-day";
+    /*
     var header = $("<thead/>").append($("<tr/>")
                          .append($("<td/>").text("Friday")));
     $(day).append(header);
+    */
     var body = $("<tbody/>");
     for(var i = DAY_START; i < DAY_END; i++){
       var hour = $("<tr/>");

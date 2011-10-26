@@ -91,28 +91,40 @@ $block_padding: 10px;
   -webkit-box-shadow: 1px 2px 2px 1px #cccccc;
   -mox-box-shadow: 1px 2px 2px 1px #cccccc;
 
-  .section-code {
+  span {
     position: absolute;
+
+  }
+
+  .section-code {
     bottom: $block_padding;
     left:   $block_padding;
-    color: #aaa;
+    color: #444;
     font-size: 0.8em;
   }
   .course-name {
-    position: absolute;
     top:    $block_padding;
     left:   $block_padding;
     color: #444;
   }
   .section-type {
-    position: absolute;
     top:    $block_padding;
     right:   $block_padding;
     background: #0069D6;
   }
 
   .course-title {
-    font-size: 0.6em;
+    font-size: .7em;
+    top: $block_padding * 2.9;
+    left: $block_padding;
+    color: #888;
+  }
+
+  .duration {
+    font-size: .8em;
+    bottom: $block_padding;
+    right: $block_padding;
+    color: #444;
   }
 
 }
@@ -122,14 +134,44 @@ $block_padding: 10px;
   margin-bottom: 50px;
   position: relative;
 
-  .time-label {
+  ul.time-label {
+    margin-top: 2em;
     float: left;
+
     li {
       display: block;
       text-align: right;
       padding-right: 15px;
       line-height: $schedule-block-h;
       height: $schedule-block-h;
+      border: 1px solid transparent;
+    }
+  }
+
+  ul.schedule-day {
+    overflow:hidden;
+    position: relative;
+
+    li.header {
+      background: white;
+      height: 100%;
+      text-align: center;
+      padding: .5em;
+    }
+    
+    li {
+      height: $schedule-block-h;
+      border: 1px solid #eeeeee;
+      display: block;
+      height: $schedule-block-h - 2;
+      width: 100%;
+      background: #dddddd;
+      border-top: 1px solid #aaaaac;
+      border-left: 1px solid #aaaaac;
+      /* Highlight white inner */
+      box-shadow: inset 1px 1px 1px 0px white;
+      -moz-box-shadow: inset 1px 1px 1px 0px white;
+      -webkit-box-shadow: inset 1px 1px 1px 0px white;
     }
   }
 }
