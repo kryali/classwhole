@@ -82,7 +82,7 @@ module SchedulerHelper
     colors = Hash.new
     colors_current = 0
     sections.each do |section|
-      unless colors[section.course_id]
+      unless colors.has_key?(section.course_id)
         colors[section.course_id] = "color-#{colors_current}"
         colors_current += 1 
       end
