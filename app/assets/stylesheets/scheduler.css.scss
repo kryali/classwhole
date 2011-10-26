@@ -23,7 +23,7 @@
 
 // schedule
 $block-width        : 150px;
-$schedule-block-h   : 79px;
+$schedule-block-h   : 74px;
 $numblocks          : 12;
 
 /* all colors */
@@ -86,6 +86,7 @@ $block_padding: 8px;
   background: white;
   position: absolute;
   border: 1px solid #999999;
+  cursor: pointer;
 
   box-shadow: 1px 2px 2px 1px #cccccc;
   -webkit-box-shadow: 1px 2px 2px 1px #cccccc;
@@ -193,4 +194,20 @@ $block_padding: 8px;
 
 strong {
   font-weight: bold;
+}
+
+.color-0 {
+  background: #F2FCFF;
+}
+.color-1 {
+  background: #F3FFF2;
+}
+.color-2 {
+  background: #FFF2FF;
+}
+.color-3 {
+  background: #FFF4F2;
+}
+.color-4 {
+  background: blue;
 }
