@@ -6,10 +6,10 @@
 - start_hour = range[0] - 1
 - end_hour = range[1] + 1
 - sections_in_days = sections_by_days(sections)
-- logger.info "start_hour: #{start_hour} end_hour: #{end_hour}"
-- logger.info  sections.inspect
+= javascript_include_tag "slides.min.jquery.js"
 
-%div.schedule-wrapper
+%div{:class => "schedule-wrapper" }
+  %h1= "Schedule Rank: #{rank}"
   %ul.time-label
     - for hour in (start_hour..end_hour)
       %li= print_hour(hour)
