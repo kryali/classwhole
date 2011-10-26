@@ -25,4 +25,8 @@ class Section < ActiveRecord::Base
   def course_to_s
     return "#{course_subject_code} #{course_number}"
   end
+
+  def duration
+    end_time.hour - start_time.hour
+  end
 end
