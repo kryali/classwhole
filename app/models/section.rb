@@ -34,6 +34,7 @@ class Section < ActiveRecord::Base
     return "#{print_time(start_time)}-#{print_time(end_time)}"
   end
 
+  # NOTE: move this somewhere where every method can use it
   def print_time(time)
     hour = time.hour
     if( time.hour > 12 and time.hour < 24)
