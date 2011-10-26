@@ -1,8 +1,39 @@
 module SchedulerHelper
 
+  def print_day(day_short_code)
+    case day_short_code
+    when "M"
+      return "Monday"
+    when "T"
+      return "Tuesday"
+    when "W"
+      return "Wednesday"
+    when "R"
+      return "Thursday"
+    when "F"
+      return "Friday"
+    else
+      return "nil"
+    end
+  end
+
+  def print_hour(hour)
+    if( hour > 12 and hour < 24)
+      return "#{hour-12} pm"
+    elsif ( hour < 12 and hour != 0)
+      return "#{hour} am"
+    elsif ( hour == 24 )
+      return "#{hour-12} am"
+    elsif ( hour == 12 )
+      return "#{hour} pm"
+    end
+    return "nil"
+  end
+
   def hour_range(sections)
     earliest_start_hour = 24 * 60
     latest_end_time = 0
+    logger.info sections.inspect
     sections.each do |section|
       current_start_time = section.start_time.hour * 60 + section.start_time.min
       current_end_time = section.end_time.hour * 60 + section.end_time.min
@@ -20,17 +51,31 @@ module SchedulerHelper
     return earliest_start_hour, latest_end_hour
   end
 
-  def section_matrix(sections)
-    matrix = Hash.new
+  def sections_by_days(sections)
+    sections_by_days = Hash.new
+    ["M","T","W","R","F"].each do |day|
+      sections_by_days[day] = Array.new
+    end
 
     sections.each do |section|
       days = section.days.split("")
       days.each do |day|
-        matrix[day] = Array.new unless matrix[day]
+        sections_by_days[day].push(section)
       end
     end
-    
-    return matrix
+
+    return  sections_by_days
+  end
+
+  def section_top_px( section, start_hour )
+    scheduler_block_height = 77 + 2
+    top_px = (section.start_time.hour - start_hour) * scheduler_block_height
+    return top_px
+  end
+
+  def section_height_px( section )
+    scheduler_block_height = 77 + 2
+    return section.duration * scheduler_block_height
   end
 
 end

@@ -72,7 +72,7 @@ class SchedulerController < ApplicationController
     end
 =end
 
-    @possible_schedules = valid_schedules[0,5].to_json
+    @possible_schedules = valid_schedules[0,5]
     render 'show'
   end
     
