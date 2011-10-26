@@ -68,14 +68,25 @@ module SchedulerHelper
   end
 
   def section_top_px( section, start_hour )
-    scheduler_block_height = 77 + 2
+    scheduler_block_height = 74
     top_px = (section.start_time.hour - start_hour) * scheduler_block_height
     return top_px
   end
 
   def section_height_px( section )
-    scheduler_block_height = 77 + 2
+    scheduler_block_height = 74
     return section.duration * scheduler_block_height
   end
 
+  def section_colors( sections )
+    colors = Hash.new
+    colors_current = 0
+    sections.each do |section|
+      unless colors[section.course_id]
+        colors[section.course_id] = "color-#{colors_current}"
+        colors_current += 1 
+      end
+    end
+    return colors 
+  end
 end
