@@ -7,7 +7,7 @@ class HomeController < ApplicationController
   caches_page :index
 
   def index
-    render "scheduler/index"
+    redirect_to scheduler_index_path
   end
 
 end
