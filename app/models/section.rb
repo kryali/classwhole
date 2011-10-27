@@ -2,6 +2,15 @@ class Section < ActiveRecord::Base
   belongs_to :course
 #  has_and_belongs_to_many :users
 
+  # this may need to become more advanced depending on if we discover unusual courses
+  def configuration_key
+    key = self.code.at(0)
+    #append number to key if it exists at 1 (for mathematica sections B8, X8, etc)
+    at1 = self.code.at(1)
+    key << at1 if (true if Integer(at1) rescue false)
+    return key
+  end
+
   # Description: Checks to see if there is a time conflict
   def time_conflict?(days, start_time, end_time)
     day_array = days.split("")
@@ -32,6 +41,13 @@ class Section < ActiveRecord::Base
   #   Method: Make sure that sectionb's start and end time is not between sectiona's start and end time
   def section_conflict?(section)
     return time_conflict?(section.days, section.start_time, section.end_time)
+  end
+
+  def schedule_conflict?(schedule)
+    schedule.each do |section|
+      return true if self.section_conflict?(section)
+    end
+    return false
   end
 
   def course_to_s
