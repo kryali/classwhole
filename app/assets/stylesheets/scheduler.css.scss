@@ -23,53 +23,17 @@
 
 // schedule
 $block-width        : 150px;
-$schedule-block-h   : 40px;
+$schedule-block-h   : 74px;
 $numblocks          : 12;
 
 /* all colors */
 // These are the main element colors 
 $default-font-color : #4D4D4D;
-$content-bg-color   : url('grey-bg.png');
 $accent-font-color  : #333333;
-$header-bg          : #E6E6E6;
-$header-bg          : url('grey-bg.png');
 
 
 $showcase-bg        : url('showcase-bg.png');
 
-#header {
-  background: $header-bg;
-  height: 40px;
-  padding: 2em 1em 1em 1em;
-  border-bottom: 2px1solid #E4DFDF;
-
-  a#logo {
-    float: left; 
-    display: block;
-    font-size: 1.2em;
-    text-decoration: none;
-  }
-
-  a#logo:visited {
-    color: #4D4D4D;
-  }
-
-  #fb-button {
-    float: right;
-  }
-}
-
-#content {
-  padding: 40px;
-  position: relative;
-  background: $content-bg-color;
-
-  h1 {
-    text-align: center;
-    font-size: 1.3em;
-  }
-
-}
 
 #showcase {
   width: 100%;
@@ -97,40 +61,179 @@ $showcase-bg        : url('showcase-bg.png');
   background: #cccccc;
   float: left;
   margin: 0 0px 0 0px;
-  border-right: 1px solid red;
   overflow: hidden;
+  border-right: 2px solid #cccccc;
+  border-bottom: 1px solid #aaaaaa;
 
   tr {
     display: block;
     height: $schedule-block-h - 2;
     width: 100%;
     background: #dddddd;
-    border: 1px solid #aaaaac;
+    border-top: 1px solid #aaaaac;
+    border-left: 1px solid #aaaaac;
+    /* Highlight white inner */
+    box-shadow: inset 1px 1px 1px 0px white;
+    -moz-box-shadow: inset 1px 1px 1px 0px white;
+    -webkit-box-shadow: inset 1px 1px 1px 0px white;
   } 
 }
 
+
+$block_padding: 8px;
 .schedule-block {
   width: 100%;
   background: white;
   position: absolute;
   border: 1px solid #999999;
+  cursor: pointer;
+
+  box-shadow: 1px 2px 2px 1px #cccccc;
+  -webkit-box-shadow: 1px 2px 2px 1px #cccccc;
+  -mox-box-shadow: 1px 2px 2px 1px #cccccc;
+
+  span {
+    position: absolute;
+
+  }
+
+  .section-code {
+    bottom: $block_padding;
+    left:   $block_padding;
+    color: #444;
+    font-size: 0.8em;
+  }
+  .course-name {
+    top:    $block_padding;
+    left:   $block_padding;
+    color: #444;
+  }
+  .section-type {
+    top:    $block_padding;
+    right:   $block_padding;
+    background: #0069D6;
+  }
+
+  .course-title {
+    font-size: .7em;
+    top: $block_padding * 3.4;
+    left: $block_padding;
+    color: #888;
+  }
+
+  .duration {
+    font-size: .7em;
+    bottom: $block_padding + 1;
+    right: $block_padding;
+    text-transform: uppercase;
+    color: #444;
+  }
+
 }
 .schedule-wrapper {
   clear: both;
   overflow: hidden;
   margin-bottom: 50px;
-  .time-label {
+  position: relative;
+
+  ul.time-label {
+    margin-top: 2em;
     float: left;
+
     li {
       display: block;
       text-align: right;
-      padding-right: 5px;
+      padding-right: 15px;
       line-height: $schedule-block-h;
       height: $schedule-block-h;
+      border: 1px solid transparent;
+    }
+  }
+
+  ul.schedule-day {
+    overflow:hidden;
+    position: relative;
+
+    li.header {
+      background: white;
+      height: 100%;
+      text-align: center;
+      padding: .5em;
+    }
+    
+    li {
+      height: $schedule-block-h;
+      border: 1px solid #eeeeee;
+      display: block;
+      height: $schedule-block-h - 2;
+      width: 100%;
+      background: #dddddd;
+      border-top: 1px solid #aaaaac;
+      border-left: 1px solid #aaaaac;
+      /* Highlight white inner */
+      box-shadow: inset 1px 1px 1px 0px white;
+      -moz-box-shadow: inset 1px 1px 1px 0px white;
+      -webkit-box-shadow: inset 1px 1px 1px 0px white;
     }
   }
 }
 
+.scheduler-content {
+  font-family: 'Arial', 'Tahoma', sans-serif;
+  padding: 40px;
+  position: relative;
+  background: white;
+  border: 1px solid #aaaaaa;
+  h1 {
+    text-align: center;
+    font-size: 1.3em;
+    padding: 1em;
+  }
+  margin-top: 3em;
+}
+
+
 strong {
   font-weight: bold;
+}
+
+.color-0 {
+  background: #F2FCFF;
+}
+.color-1 {
+  background: #F3FFF2;
+}
+.color-2 {
+  background: #FFF2FF;
+}
+.color-3 {
+  background: #FFF4F2;
+}
+.color-4 {
+  background: #F3fba2;
+}
+
+ul.pagination {
+  position: absolute;
+  top: 0em;
+  right: 5em;
+}
+
+.next {
+  position: absolute;
+  top: 200px;
+  right: -24px;
+  width: 24px;
+  height: 43px;
+  background: red;
+  background: image-url("arrow-next.png");
+}
+
+.prev {
+  position: absolute;
+  top: 200px;
+  left: -24px;
+  width: 24px;
+  height: 43px;
+  background: image-url("arrow-prev.png");
 }
