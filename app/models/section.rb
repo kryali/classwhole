@@ -16,6 +16,18 @@ class Section < ActiveRecord::Base
     return false
   end
 
+  def has_time_conflict?(section, time_constraints)
+    if time_constraints == nil
+      return false
+    end
+    time_constaints.each do |time_constraint|
+      if section.time_conflict?(time_constraint.days, time_constraint.start_time, time_constraint.end_time)
+        return true
+      end
+    end
+    return false
+  end
+
   # Description: This function ensures that no two sections are conflicting
   #   Method: Make sure that sectionb's start and end time is not between sectiona's start and end time
   def section_conflict?(section)
