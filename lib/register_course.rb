@@ -25,9 +25,9 @@ class Register_Course
 
   # this may need to become more advanced depending on if we discover unusual courses
   def configuration_key(section)
-    key = section.code.at(0)
+    key = section.course_subject_code.at(0)
     #append number to key if it exists at 1 (for mathematica sections B8, X8, etc)
-    at1 = section.code.at(1)
+    at1 = section.course_subject_code.at(1)
     key << at1 if true if Integer(at1) rescue false
     return key
   end
