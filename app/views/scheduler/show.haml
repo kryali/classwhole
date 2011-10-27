@@ -1,4 +1,17 @@
-%div#content
-  = javascript_include_tag "scheduler.js"
-  :javascript
-    draw_all_schedules(#{@possible_schedules});
+= javascript_include_tag "scheduler.js"
+%div.scheduler-content
+  %div#slides
+    %div.slides_container
+      - i = 0
+      - @possible_schedules.each do |sections|
+        - i += 1
+        = render "schedule", :sections => sections, :rank => i
+    %a{:href=>"#", :class=>"prev"}
+    %a{:href=>"#", :class=>"next"}
+:javascript
+  $(function(){
+    $("#slides").slides({
+      autoHeight: true,
+      generatePagination: true
+    });
+  });

@@ -1,0 +1,82 @@
+$header-bg          : url('grey-bg.png');
+$header-color       : #333;
+
+.topbar-wrapper {
+  font-family: sans-serif;
+
+}
+
+.topbar {
+  a {
+    text-shadow: none;
+  }
+
+  p {
+    line-height: 10px;
+  }
+
+  h3 {
+    a {
+      color: $header-color;
+    }
+  }
+
+  .nav {
+    a { 
+      padding: 16px 10px 11px;
+      color: #888;
+    }
+
+    a:hover {
+      color: #3A90E0;
+      text-decoration: underline;
+    }
+  }
+
+  /* LOGO HOVER */
+  h3 a:hover,
+  .brand a:hover,
+  ul .active > a {
+    background-color: #333;
+    background-color: rgba(255,255,255,.05);
+    color: black;
+    text-decoration: none;
+  }
+
+  h3 {
+    a { padding: 13px 20px 12px; }
+  }
+
+}
+.alert-message {
+  width: 200px;
+  height: 13px;
+  margin: 0 auto;
+}
+
+.topbar-inner, .topbar .fill {
+  background: white;
+  border:1px solid #aaa;
+  box-shadow: none;
+}
+
+#header {
+  background: $header-bg;
+  height: 40px;
+  padding: 2em 1em 1em 1em;
+
+  a#logo {
+    float: left; 
+    display: block;
+    font-size: 1.2em;
+    text-decoration: none;
+  }
+
+  a#logo:visited {
+    color: #4D4D4D;
+  }
+
+  #fb-button {
+    float: right;
+  }
+}

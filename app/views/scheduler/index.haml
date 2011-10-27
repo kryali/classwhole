@@ -2,14 +2,12 @@
 = javascript_include_tag "user.course.list"
 = javascript_include_tag "scheduler.index.js"
 
-%div#showcase-title 
 %div#content
   %div.user-course-list-wrapper
-    %div.alert-box
     %div.user-course-list
       = render "scheduler/user_course_list"
     = form_tag({:controller => :user, :action=> :add_courses}, :method => :post, :class => "hidden-course-form" ) do
-      =submit_tag("Schedule", {:class => 'btn primary'})
+      =submit_tag("Schedule", {:class => 'btn primary schedule'})
     %div.hours
       - if current_user
         %span= current_user.total_course_hours

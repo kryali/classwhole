@@ -1,8 +1,9 @@
-%h1 Your Courses 
 - unless current_user_has_courses?
-  %span.hint Don't have any classes yet, add some?
+  %span.hint Registering for classes made easy.
 %ul
   - if current_user
+    - if not current_user.courses.empty?
+      %h1 Spring 2011
     - for course in current_user.courses
       %li
         = link_to("X", remove_course_path(course.id), :remote => true, :class=>"remove-link")

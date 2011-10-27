@@ -30,8 +30,13 @@ class SchedulerController < ApplicationController
       logger.error num_holes(schedule)
     end
 =end
+<<<<<<< HEAD
     logger.error valid_schedules[0,5].to_json
     @possible_schedules = valid_schedules[0,5].to_json
+=======
+
+    @possible_schedules = valid_schedules[0,5]
+>>>>>>> f72a47b788359a37b089b44b94f6e67eca909bda
     render 'show'
   end
     
