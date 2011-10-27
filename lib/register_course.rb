@@ -11,7 +11,7 @@ class Register_Course
   def generate_hash
     @configurations_hash ||= {}
     @course.sections.each do |section|
-      key = configuration_key(section)
+      key = section.configuration_key
       @configurations_hash[key] ||= {}
       @configurations_hash[key][section.section_type] ||= []
       @configurations_hash[key][section.section_type] << section
@@ -30,12 +30,4 @@ class Register_Course
     end
   end
 
-  # this may need to become more advanced depending on if we discover unusual courses
-  def configuration_key(section)
-    key = section.code.at(0)
-    #append number to key if it exists at 1 (for mathematica sections B8, X8, etc)
-    at1 = section.code.at(1)
-    key << at1 if (true if Integer(at1) rescue false)
-    return key
-  end
 end

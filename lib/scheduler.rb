@@ -14,13 +14,6 @@ class Scheduler
     schedule_course_recursive(0)
   end
 
-  def has_conflicts?(schedule, target_section)
-    schedule.each do |section|
-      return true if section.section_conflict?(target_section)
-    end
-    return false
-  end
-
   def schedule_course_recursive(course_index)
     if course_index >= @courses.size #valid schedule!
       @valid_schedules << @schedule.clone
@@ -39,7 +32,7 @@ class Scheduler
     end
     sections = configuration[sections_index]
     sections.each do |section|
-      unless has_conflicts?(@schedule, section)
+      unless section.schedule_conflict?(@schedule)
         @schedule.push(section)
         schedule_configuration_sections_recursive(configuration, sections_index+1, course_index)
         @schedule.pop
