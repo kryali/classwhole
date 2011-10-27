@@ -77,6 +77,21 @@ $(function(){
   });
 
   init();
-  get_schedule_ids( function(schedule) { console.log(schedule) });
+  get_schedule_ids( function(schedule) { 
+    console.log(schedule);
+    console.log(schedule[0]);
+
+    $.ajax({
+      type: 'POST',
+      data: { section: schedule[0], schedule: schedule},
+      url:  '/user/scheduler/move_section',
+      dataType: 'json',
+      success: function(data, textStatus, jqXHR ) {
+        console.log("request completed successfully!");
+        console.log(data);
+      },
+    });
+
+  });
 
 });
