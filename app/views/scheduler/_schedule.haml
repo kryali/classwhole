@@ -18,7 +18,7 @@
     %ul.schedule-day
       %li.header= print_day(day_code)
       - for hour in (start_hour..end_hour)
-        %li
+        %li.droppable
       - sections.each do |section|
         - header_height = 34
         - top_px = section_top_px(section, start_hour) + header_height

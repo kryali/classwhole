@@ -79,6 +79,10 @@ $showcase-bg        : url('showcase-bg.png');
   } 
 }
 
+.droppable {
+  background: red;
+  border: 1px dashed blue;
+}
 
 $block_padding: 8px;
 .schedule-block {
@@ -86,7 +90,8 @@ $block_padding: 8px;
   background: white;
   position: absolute;
   border: 1px solid #999999;
-  //cursor: move;
+  z-index: 900000;
+  cursor: move;
 
   box-shadow: 1px 2px 2px 1px #cccccc;
   -webkit-box-shadow: 1px 2px 2px 1px #cccccc;
@@ -137,21 +142,22 @@ $block_padding: 8px;
   position: relative;
 
   ul.time-label {
-    margin-top: 2em;
+    margin-top: 1.6em;
     float: left;
 
     li {
       display: block;
       text-align: right;
       padding-right: 15px;
-      line-height: $schedule-block-h;
+      //line-height: $schedule-block-h;
       height: $schedule-block-h;
+      height: 72px;
       border: 1px solid transparent;
     }
   }
 
   ul.schedule-day {
-    overflow:hidden;
+    //overflow:hidden;
     position: relative;
 
     li.header {
