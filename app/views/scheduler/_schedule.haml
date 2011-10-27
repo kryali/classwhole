@@ -4,7 +4,7 @@
 -#
 - range = hour_range(sections)
 - start_hour = range[0] - 1
-- end_hour = range[1] + 1
+- end_hour = range[1]
 - sections_in_days = sections_by_days(sections)
 = javascript_include_tag "slides.min.jquery.js"
 
@@ -30,3 +30,14 @@
           %span.course-title= section.course_title
           %span{:class => "section-type label"}= section.section_type
           %span.duration= section.duration_s
+          - course = Course.find(section.course_id)
+          %ul.hidden-data{ :style => "top: #{height_px}px;" }
+            %li
+              %span.title Credit Hours
+              %span.data= "#{course.hours} hr."
+            %li
+              %span.title Professor
+              %span.data= section.instructor
+            %li
+              %span.title Description
+              %span.data= shorten(course.description, 130)
