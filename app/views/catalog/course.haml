@@ -1,5 +1,55 @@
-Showing Course
-= @subject.code + " " + @course.number.to_s
-- for section in @course.sections
-  <br/>
-  = section.code
+/* The Course Page */
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+-uppercase_string = @semester.season[0,1].upcase + @semester.season[1..-1] + " " + @semester.year
+-name_and_number =  @subject.code + " " + @course.number.to_s
+%div.breadcrumb	
+	=link_to uppercase_string, "/courses"
+	>> 
+	= link_to  "Majors", "/"+cookies["major_breadcrumb"]
+	>> 
+	= link_to @subject.code, "/"+cookies["courses_breadcrumb"]
+	>> 
+	=name_and_number
+%div.course_box
+	%h1{:id => "course_num"}
+		=name_and_number
+	%hw{:id => "course_name"}
+		=@course.title
+	<br/>
+	<br/>
+	<br/>
+	%p{:id => "course_description"}
+		=@course.description
+
+
+<br/>
+<br/>
+<br/>
+%ul{:class => "tabs"}
+	%li{:class => "active"}
+		=link_to "Sections", "#poop"
+	%li
+		=link_to "Muffins", "#muffins"
+
+%div{:class => "pill-content"}
+	%div{:class => "active", :id => "poop"}
+		hey
+	%div{:id => "muffins"}
+		yooo
+
+:javascript
+	$(function () {
+		$('.tabs').tabs();
+	});
+
+
+-for section in @course.sections
+	<br/>
+	= section.code
+	= section.start_time
+	= section.end_time
+	= section.section_type
