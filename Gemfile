@@ -31,6 +31,7 @@ end
 gem 'jquery-rails'
 
 gem 'rack', '1.3.3'
+gem 'rack-ssl', :require => 'rack/ssl'
 
 # Use unicorn as the web server
 # gem 'unicorn'
