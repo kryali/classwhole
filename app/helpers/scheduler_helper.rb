@@ -89,4 +89,11 @@ module SchedulerHelper
     end
     return colors 
   end
+
+  def shorten(text, length, end_string = ' ...')
+    return text if( text.length <= length )
+    letters = text.split("")
+    return letters[0..(length-1)].join + "..."
+  end
+
 end

@@ -8,10 +8,3 @@
         = render "schedule", :sections => sections, :rank => i
     %a{:href=>"#", :class=>"prev"}
     %a{:href=>"#", :class=>"next"}
-:javascript
-  $(function(){
-    $("#slides").slides({
-      autoHeight: true,
-      generatePagination: true
-    });
-  });

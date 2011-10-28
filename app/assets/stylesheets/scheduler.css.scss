@@ -61,8 +61,8 @@ $showcase-bg        : url('showcase-bg.png');
   background: #cccccc;
   float: left;
   margin: 0 0px 0 0px;
-  overflow: hidden;
-  border-right: 2px solid #cccccc;
+  //overflow: hidden;
+  border-right: 1px solid #cccccc;
   border-bottom: 1px solid #aaaaaa;
 
   tr {
@@ -79,6 +79,10 @@ $showcase-bg        : url('showcase-bg.png');
   } 
 }
 
+.droppable {
+  background: red;
+  border: 1px dashed blue;
+}
 
 $block_padding: 8px;
 .schedule-block {
@@ -86,7 +90,8 @@ $block_padding: 8px;
   background: white;
   position: absolute;
   border: 1px solid #999999;
-  cursor: pointer;
+  z-index: 900000;
+  cursor: move;
 
   box-shadow: 1px 2px 2px 1px #cccccc;
   -webkit-box-shadow: 1px 2px 2px 1px #cccccc;
@@ -132,26 +137,27 @@ $block_padding: 8px;
 }
 .schedule-wrapper {
   clear: both;
-  overflow: hidden;
+  //overflow: hidden;
   margin-bottom: 50px;
   position: relative;
 
   ul.time-label {
-    margin-top: 2em;
+    margin-top: 1.6em;
     float: left;
 
     li {
       display: block;
       text-align: right;
       padding-right: 15px;
-      line-height: $schedule-block-h;
+      //line-height: $schedule-block-h;
       height: $schedule-block-h;
+      height: 72px;
       border: 1px solid transparent;
     }
   }
 
   ul.schedule-day {
-    overflow:hidden;
+    //overflow:hidden;
     position: relative;
 
     li.header {
@@ -176,6 +182,44 @@ $block_padding: 8px;
       -webkit-box-shadow: inset 1px 1px 1px 0px white;
     }
   }
+
+  ul.hidden-data {
+    position: absolute;
+    display: none;
+    border-bottom: 1px solid #ccc;
+    z-index: 10000;
+
+    li {
+      border: none;
+      background: white;
+      height: 100%;
+      box-shadow: none;
+      -moz-box-shadow: none;
+      -webkit-box-shadow: none;
+      font-size: .8em;
+
+      span {
+        position: relative;
+        padding: .35em;
+        display: block;
+      }
+
+      span.data {
+        color: #555;
+      }
+
+      span.title {
+        background: #eee;
+        border-top: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+      }
+    }
+
+    ul:first-child {
+      border: none;
+    }
+  }
+
 }
 
 .scheduler-content {
@@ -192,16 +236,15 @@ $block_padding: 8px;
   margin-top: 3em;
 }
 
-
 strong {
   font-weight: bold;
 }
 
 .color-0 {
-  background: #F2FCFF;
+  background: #E0F8FF;
 }
 .color-1 {
-  background: #F3FFF2;
+  background: #EAFFD9;
 }
 .color-2 {
   background: #FFF2FF;
