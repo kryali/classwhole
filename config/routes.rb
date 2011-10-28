@@ -20,7 +20,7 @@ Whiteboard::Application.routes.draw do
   match 'user/courses/destroy/:course_id' => 'user#remove_course', :as => :remove_course
   match 'user/logout', :as => 'logout'
 
-  match 'user/scheduler/move_section' => 'user#move_section', :via => :post
+  match 'scheduler/move_section' => 'scheduler#move_section', :via => :post
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

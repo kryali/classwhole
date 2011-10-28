@@ -79,11 +79,6 @@ $showcase-bg        : url('showcase-bg.png');
   } 
 }
 
-.droppable {
-  background: red;
-  border: 1px dashed blue;
-}
-
 $block_padding: 8px;
 .schedule-block {
   width: 100%;
@@ -153,6 +148,8 @@ $block_padding: 8px;
       height: $schedule-block-h;
       height: 72px;
       border: 1px solid transparent;
+      font-size: .8em;
+      text-transform: uppercase;
     }
   }
 
@@ -220,6 +217,16 @@ $block_padding: 8px;
     }
   }
 
+}
+
+.droppable {
+  opacity: .5;
+  border: 1px dashed #888; 
+  cursor: pointer;
+}
+
+.hover {
+  opacity: .8;
 }
 
 .scheduler-content {
