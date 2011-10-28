@@ -20,24 +20,4 @@
       - for hour in (start_hour..end_hour)
         %li
       - sections.each do |section|
-        - header_height = 34
-        - top_px = section_top_px(section, start_hour) + header_height
-        - height_px = section_height_px( section )
-        %div.schedule-block{ :style => "top: #{top_px}px; height: #{height_px}px;", :class=>"#{colors[section.course_id]}"}
-          %span.hidden= section.id
-          %span.section-code= section.code
-          %span.course-name= "#{section.course_subject_code} #{section.course_number}"
-          %span.course-title= section.course_title
-          %span{:class => "section-type label"}= section.section_type
-          %span.duration= section.duration_s
-          - course = section.course
-          %ul.hidden-data{ :style => "top: #{height_px}px;" }
-            %li
-              %span.title Credit Hours
-              %span.data= "#{course.hours} hr."
-            %li
-              %span.title Professor
-              %span.data= section.instructor
-            %li
-              %span.title Description
-              %span.data= shorten(course.description, 130)
+        = render 'section', :section => section, :start_hour => start_hour, :colors => colors
