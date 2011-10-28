@@ -15,7 +15,7 @@
       %li= print_hour(hour)
   - colors = section_colors( sections )
   - sections_in_days.each do |day_code, sections|
-    %ul.schedule-day
+    %ul{:class => "schedule-day #{day_code}"}
       %li.header= print_day(day_code)
       - for hour in (start_hour..end_hour)
         %li
