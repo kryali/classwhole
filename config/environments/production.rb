@@ -1,6 +1,6 @@
 Whiteboard::Application.configure do
 
-  config.middleware.insert_before ActionDispatch::Static, Rack::SSL, :exclude => proc { |env| env['HTTPS'] != 'on' }
+  config.middleware.insert_before ActionDispatch::Cookies, Rack::SSL, :exclude => proc { |env| env['HTTPS'] != 'on' }
   # Settings specified here will take precedence over those in config/application.rb
 
   # Code is not reloaded between requests
