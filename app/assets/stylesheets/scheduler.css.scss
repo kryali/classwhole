@@ -222,6 +222,7 @@ ul.hidden-data {
 }
 
 .droppable {
+  z-index: 2;
   border: 1px dashed #888; 
   .ui-draggable {
     opacity: .5;

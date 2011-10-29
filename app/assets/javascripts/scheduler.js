@@ -44,6 +44,9 @@ $(function(){
 
   function init_draggable() {
     $(".schedule-block").draggable(options.draggable);
+    $(".schedule-block").mouseup( function(){ 
+      $(".droppable").fadeOut(120);
+    });
   }
 
   function add_hours( num_hours ){
@@ -114,7 +117,7 @@ $(function(){
     $("#slides").append(selected_box);
 
     // Add the content to the page
-    current_schedule.empty().append(data);
+    current_schedule.empty().append( contents );
 
     // Find the day of the section we're trying to add
     var current_day = current_schedule.find("." + day );
@@ -143,8 +146,13 @@ $(function(){
     //section_hints.draggable( 'disable' );
     section_hints.css( "cursor","pointer" );
 
+    // Adjust the height of the slides window to contain the new schedule
     var new_height = current_schedule.height();
     $('.slides_control').height( new_height );
+
+    // Make the schedule blocks fade in
+    current_schedule.find(".ui-droppable").addClass("hidden");
+    current_schedule.find(".ui-droppable").fadeIn(450);
 
   }
 
@@ -290,8 +298,9 @@ $(function(){
   }
 
   function stop_drag_event( event, ui ) {
-    //console.log("Removing droppables");
-    //$('.droppable').remove();
+    console.log("Removing droppables");
+    $(".droppable").fadeOut(120);
+    $('.droppable').remove();
     is_dragging = false;
   }
 
