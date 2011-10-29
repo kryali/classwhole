@@ -12,6 +12,7 @@ $(function(){
       revert:      true,
       revertDuration: 200,
       scope:        'section_hint',
+      zIndex:       1,
     },
     droppable: {
       accept:      '.ui-draggable',
