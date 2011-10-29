@@ -5,13 +5,19 @@ $(function(){
   var is_dragging = false;
 
   var options = {
-
     draggable: {
-      snap:        '.droppable',
+      snap:        '.ui-droppable',
       start:       start_drag_event,
       stop:        stop_drag_event,
       revert:      true,
       revertDuration: 200,
+      scope:        'section_hint',
+    },
+    droppable: {
+      accept:      '.ui-draggable',
+      hoverClass:  'hover',
+      drop:        handle_drop,
+      scope:        'section_hint',
     }
   }
 
@@ -65,7 +71,7 @@ $(function(){
         move_element( $(children[i]), selector, target );
       } else {
         target.append($(children[i]));
-        console.log(target);
+        //console.log(target);
         $(children[i]).remove();
         return;
       }
@@ -115,9 +121,9 @@ $(function(){
     // Remove the duplicate section given to us by the server (selected section)
     remove_section_from_day( current_day, selected_section_id);
   
+    // If we aren't given a position to insert the selected box, don't add 
     if( !day ){
       selected_box.draggable("destroy");
-      console.log("Destroyed box, go away!!");
       selected_box.remove();
     }
 
@@ -128,12 +134,8 @@ $(function(){
     init_draggable();
 
     // Make the hints droppable
-    var section_hints = current_day.find(".droppable").find(".schedule-block")
-    section_hints.droppable({
-        accept:      '.schedule-block',
-        hoverClass:  'hover',
-        drop:        handle_drop
-    });
+    var section_hints = current_day.find(".droppable").find(".schedule-block");
+    section_hints.droppable(options.droppable);
 
     // Make the hints undraggable
     $(".droppable").find(".schedule-block").draggable( 'disable' );
@@ -155,11 +157,7 @@ $(function(){
           var schedule_day = schedule.find("." + days_a[i]);
           $(this).addClass("droppable");
           var section_hint = $(this).clone().addClass("droppable");
-          section_hint.droppable({
-              accept:      '.schedule-block',
-              hoverClass:  'hover',
-              drop:        handle_drop
-          });
+          section_hint.droppable( options.droppable );
           schedule_day.append(section_hint);
         }
       }
@@ -242,10 +240,10 @@ $(function(){
     if (idx!=-1) schedule_ids.splice(idx,1);
     schedule_ids.push(new_section_id);
 
-    console.log("OLD Id: " + curr_section_id);
-    console.log("new Id: " + new_section_id);
-    console.log("Asking for updated schedule");
-    console.log( schedule_ids );
+    //console.log("OLD Id: " + curr_section_id);
+    //console.log("new Id: " + new_section_id);
+    //console.log("Asking for updated schedule");
+    //console.log( schedule_ids );
 
     $.ajax({
       type: 'POST',
@@ -276,9 +274,9 @@ $(function(){
     current_section.draggable( 'option', 'revert', true );
     var section = current_section.find(".hidden").text();
     var schedule_ids = get_schedule_ids();
-    //console.log(schedule_ids);
-    console.log( section );
-    console.log( schedule_ids );
+    //console.log( "requesting hints" );
+    //console.log( section );
+    //console.log( schedule_ids );
     $.ajax({
       type: 'POST',
       data: { section: section, schedule:schedule_ids},
@@ -291,8 +289,8 @@ $(function(){
   }
 
   function stop_drag_event( event, ui ) {
-    console.log("Removing droppables");
-    $('.droppable').remove();
+    //console.log("Removing droppables");
+    //$('.droppable').remove();
     is_dragging = false;
   }
 

@@ -176,7 +176,6 @@ $block_padding: 8px;
       box-shadow: inset 1px 1px 1px 0px white;
       -moz-box-shadow: inset 1px 1px 1px 0px white;
       -webkit-box-shadow: inset 1px 1px 1px 0px white;
-      z-index: -1;
     }
   }
 
@@ -223,11 +222,12 @@ ul.hidden-data {
 }
 
 .droppable {
+  border: 1px dashed #888; 
   .ui-draggable {
     opacity: .5;
     border: 1px dashed #888; 
     cursor: pointer;
-    z-index: 0;
+    //z-index: 0;
   }
 }
 
@@ -292,4 +292,6 @@ ul.pagination {
   width: 24px;
   height: 43px;
   background: image-url("arrow-prev.png");
+    // If we aren't given a position to insert the selected box, don't add 
+      // If we aren't given a position to insert the selected box, don't add 
 }
