@@ -85,7 +85,6 @@ $block_padding: 8px;
   background: white;
   position: absolute;
   border: 1px solid #999999;
-  z-index: 900000;
   cursor: move;
 
   box-shadow: 1px 2px 2px 1px #cccccc;
@@ -177,6 +176,7 @@ $block_padding: 8px;
       box-shadow: inset 1px 1px 1px 0px white;
       -moz-box-shadow: inset 1px 1px 1px 0px white;
       -webkit-box-shadow: inset 1px 1px 1px 0px white;
+      z-index: -1;
     }
   }
 
@@ -184,7 +184,6 @@ $block_padding: 8px;
     position: absolute;
     display: none;
     border-bottom: 1px solid #ccc;
-    z-index: 10000;
 
     li {
       border: none;
@@ -224,9 +223,12 @@ ul.hidden-data {
 }
 
 .droppable {
-  opacity: .5;
-  border: 1px dashed #888; 
-  cursor: pointer;
+  .ui-draggable {
+    opacity: .5;
+    border: 1px dashed #888; 
+    cursor: pointer;
+    z-index: 0;
+  }
 }
 
 .hover {

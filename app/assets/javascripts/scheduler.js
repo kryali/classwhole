@@ -1,6 +1,7 @@
 $(function(){
 
-  var block_height = 74;
+  //var block_height = 74;
+  var block_height = $(".schedule-blcok").height();
 
   function init() {
 
@@ -215,6 +216,7 @@ $(function(){
   }
 
   function handle_drop( event, ui ) {
+    // console.log("handle_drop");
     // Find the section that the user is holding 
     var curr_section =  $(ui.draggable[0]);
     var curr_section_id = curr_section.find(".hidden").text();
