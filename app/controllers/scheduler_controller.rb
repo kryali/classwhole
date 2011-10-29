@@ -21,9 +21,9 @@ class SchedulerController < ApplicationController
 
     section = Section.find(params["section"].to_i)
     course = Register_Course.new(section.course)
-    @possible_moves = course.configurations_hash[section.configuration_key][section.section_type]
+    @section_hints = course.configurations_hash[section.configuration_key][section.section_type]
 
-    @possible_moves.delete_if{|move| move.schedule_conflict?(schedule)}
+    @section_hints.delete_if{|move| move.schedule_conflict?(schedule)}
     @schedule = schedule
     render :partial => 'section_ajax', :layout => false
   end

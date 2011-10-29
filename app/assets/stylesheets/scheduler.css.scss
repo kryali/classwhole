@@ -219,6 +219,10 @@ $block_padding: 8px;
 
 }
 
+ul.hidden-data {
+  display: none;
+}
+
 .droppable {
   opacity: .5;
   border: 1px dashed #888; 

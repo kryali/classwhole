@@ -4,16 +4,31 @@ $(function(){
   var added_hours = false;
 
   function init() {
-    init_events();
-  }
 
-  function init_events() {
+    // Setup the slidejs plugin
+    $("#slides").slides({
+      autoHeight: true,
+      generatePagination: true
+    });
+
+    // Additional menus on hover over
     $(".schedule-block").mouseover( function(){
       //$(this).find("ul.hidden-data").fadeIn('fast');
     });
-
     $(".schedule-block").mouseleave( function(){
       //$(this).find("ul.hidden-data").fadeOut('slow');
+    });
+
+    init_draggable();
+
+  }
+
+  function init_draggable() {
+    $(".schedule-block").draggable({
+      snap:        '.droppable',
+      start:       start_drag_event,
+      stop:        stop_drag_event,
+      revert:      true
     });
   }
 
@@ -30,6 +45,66 @@ $(function(){
       var current_height = $(".slides_control").height();
       $(".slides_control").height(current_height + block_height * num_hours);
     });
+  }
+
+  function move_element(element, selector, target) {
+    var children = element.children();
+
+    if ( children.length == 0 ) {
+      return;
+    }
+    for( var i = 0; i < children.length; i++) {
+      if( children[i].className.indexOf(selector) == -1 ) {
+        move_element( $(children[i]), selector, target );
+      } else {
+        target.append($(children[i]));
+        console.log(target);
+        $(children[i]).remove();
+        return;
+      }
+    }
+    return;
+  }
+
+  function get_section_id( section ) {
+    return section.find("hidden").text()
+  }
+
+  /* 
+
+  This function removes a section from a day selector
+    
+   */
+  remove_section_from_day = function( day, section_id) {
+    var schedule_blocks = day.find(".schedule-block");
+    for( var i = 0; i < schedule_blocks.length; i++) {
+      var current_section =  $(schedule_blocks[i]);
+      var current_section_id = current_section.find(".hidden").text();
+      if (  section_id  == current_section_id ) {
+        current_section.remove();
+      }
+    }
+  }
+
+  function update_schedule(data, textStatus, jqXHR, day) {
+
+    var contents = $(data).children();
+    var current_schedule = get_current_schedule();
+    var current_schedule_contents = current_schedule.children();
+    //move_element(current_schedule, "ui-draggable-dragging", day);
+    //current_schedule.append(contents);
+
+    var selected_box = $(".ui-draggable-dragging");
+    var selected_section_id = selected_box.find(".hidden").text();
+
+    contents.find("." + day).append(selected_box);
+    //console.log(current_schedule_contents);
+    //current_schedule_contents.remove();
+    //remove_section_from_day( day, selected_section_id );
+    //day.append(selected_box);
+
+    //current_schedule_contents.remove();
+    //init_draggable();
   }
 
   function insert_suggestions(data, textStatus, jqXHR) {
@@ -76,12 +151,6 @@ $(function(){
     return sections;
   }
 
-  // Setup the slidejs plugin
-  $("#slides").slides({
-    autoHeight: true,
-    generatePagination: true
-  });
-
   function remove_droppable( section_id ) { 
     $(".schedule-block").each( function() {
       var current_id = $(this).find(".hidden").text(); 
@@ -101,6 +170,7 @@ $(function(){
   }
 
   function handle_drop( event, ui ) {
+    console.log("handle_drop");
     var current_course =  $(ui.draggable[0]);
     remove_section( current_course.find(".hidden").text() );
     remove_droppable( $(this).find(".hidden").text() );
@@ -123,20 +193,24 @@ $(function(){
   }
 
   function start_drag_event( event, ui ) {
+    console.log("Start Drag");
     if( !added_hours ) { 
-      add_hours(4);
+      //add_hours(4);
       added_hours = true;
     }
     var current_section = $(ui.helper[0]);
     current_section.draggable( 'option', 'revert', true );
     var section = current_section.find(".hidden").text();
     var schedule_ids = get_schedule_ids();
-    console.log(schedule_ids);
+    //console.log(schedule_ids);
     $.ajax({
       type: 'POST',
       data: { section: section, schedule:schedule_ids},
       url:  '/scheduler/move_section',
-      success: insert_suggestions,
+      success: function(data, textStatus, jqXHR) {
+        var day = $(ui.helper[0]).parent().attr("day");
+        update_schedule(data, textStatus, jqXHR, day);
+      }
     });
   }
 
@@ -144,13 +218,6 @@ $(function(){
     console.log("Removing droppables");
     $('.droppable').remove();
   }
-
-  $(".schedule-block").draggable({
-    snap:        '.droppable',
-    start:       start_drag_event,
-    stop:        stop_drag_event,
-    revert:      true,
-  });
 
   init();
 
