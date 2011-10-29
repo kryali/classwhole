@@ -105,19 +105,14 @@ function render_item(ul, item) {
 Autocomplete.prototype.switch_to_subject_mode = function() {
     this.input.autocomplete( "option", "select", this.subject_select ); 
     this.input.autocomplete( "option", "source",  this.ajax_search_url ); 
+    this.input.autocomplete( "search" );
     this.mode = "subject";
 }
 
 Autocomplete.prototype.switch_to_course_mode = function (subject_id) {
-/*
-    this.input.autocomplete( "option", "select", function() {
-        console.log(menu);
-        menu.course_select();
-        menu.switch_to_subject_mode();
-    }); 
-*/ 
     this.input.autocomplete( "option", "select", this.course_select ); 
     this.input.autocomplete( "option", "source",  this.ajax_search_url + subject_id.toUpperCase()); 
+    this.input.autocomplete( "search" );
     this.mode = "course";
 }
 
