@@ -175,11 +175,11 @@ $(function(){
     var all_section_ids = schedule.find(".schedule-block .hidden");
     for( var i = 0; i < all_section_ids.size(); i++ ){
       var current_section_id = all_section_ids[i].innerHTML;
-      if( sections.indexOf(current_section_id) == -1 ) {
-        sections.push(current_section_id);
+      if( sections.indexOf(parseInt(current_section_id)) == -1 ) {
+        sections.push(parseInt(current_section_id));
       }
     }
-    return sections;
+    return sections.sort();
   }
 
   function remove_droppable( section_id ) { 
