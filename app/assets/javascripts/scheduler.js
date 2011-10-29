@@ -2,6 +2,18 @@ $(function(){
 
   //var block_height = 74;
   var block_height = $(".schedule-blcok").height();
+  var is_dragging = false;
+
+  var options = {
+
+    draggable: {
+      snap:        '.droppable',
+      start:       start_drag_event,
+      stop:        stop_drag_event,
+      revert:      true,
+      revertDuration: 200,
+    }
+  }
 
   function init() {
 
@@ -24,12 +36,7 @@ $(function(){
   }
 
   function init_draggable() {
-    $(".schedule-block").draggable({
-      snap:        '.droppable',
-      start:       start_drag_event,
-      stop:        stop_drag_event,
-      revert:      true
-    });
+    $(".schedule-block").draggable(options.draggable);
   }
 
   function add_hours( num_hours ){
@@ -169,14 +176,21 @@ $(function(){
     }
   }
 
+  // scan through the currently selected schedule and build all the section ids
   function get_schedule_ids() {
     var schedule = get_current_schedule();
     var sections = [];
     var all_section_ids = schedule.find(".schedule-block .hidden");
     for( var i = 0; i < all_section_ids.size(); i++ ){
-      var current_section_id = all_section_ids[i].innerHTML;
-      if( sections.indexOf(parseInt(current_section_id)) == -1 ) {
-        sections.push(parseInt(current_section_id));
+      
+      // Ignore droppable sections
+      if (!$(all_section_ids[i]).parent().hasClass("ui-droppable")) {
+        var current_section_id = all_section_ids[i].innerHTML;
+
+        // Make sure we don't already have the section in our array
+        if( sections.indexOf(parseInt(current_section_id)) == -1 ) {
+          sections.push(parseInt(current_section_id));
+        }
       }
     }
     return sections.sort();
@@ -186,6 +200,7 @@ $(function(){
     $(".schedule-block").each( function() {
       var current_id = $(this).find(".hidden").text(); 
       if( current_id == section_id ) {
+        console.log($(this));
         $(this).removeClass("droppable");
       }
     });
@@ -219,13 +234,18 @@ $(function(){
     // console.log("handle_drop");
     // Find the section that the user is holding 
     var curr_section =  $(ui.draggable[0]);
-    var curr_section_id = curr_section.find(".hidden").text();
-    var new_section_id = $(this).find(".hidden").text();
+    var curr_section_id = parseInt(curr_section.find(".hidden").text());
+    var new_section_id = parseInt($(this).find(".hidden").text());
     var schedule_ids = get_schedule_ids();
 
     var idx = schedule_ids.indexOf(curr_section_id);
     if (idx!=-1) schedule_ids.splice(idx,1);
     schedule_ids.push(new_section_id);
+
+    console.log("OLD Id: " + curr_section_id);
+    console.log("new Id: " + new_section_id);
+    console.log("Asking for updated schedule");
+    console.log( schedule_ids );
 
     $.ajax({
       type: 'POST',
@@ -247,6 +267,9 @@ $(function(){
   }
 
   function start_drag_event( event, ui ) {
+
+    if( is_dragging ) return;
+    is_dragging = true;
     //console.log(ui);
     //console.log(event);
     var current_section = $(ui.helper[0]);
@@ -270,6 +293,7 @@ $(function(){
   function stop_drag_event( event, ui ) {
     console.log("Removing droppables");
     $('.droppable').remove();
+    is_dragging = false;
   }
 
   init();
