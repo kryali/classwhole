@@ -115,19 +115,22 @@ Autocomplete.prototype.switch_to_course_mode = function (subject_id) {
         menu.course_select();
         menu.switch_to_subject_mode();
     }); 
-*/
+*/ 
     this.input.autocomplete( "option", "select", this.course_select ); 
     this.input.autocomplete( "option", "source",  this.ajax_search_url + subject_id.toUpperCase()); 
     this.mode = "course";
 }
 
 Autocomplete.prototype.subject_select = function(event, ui) {
+    console.log("Subject Select");
+    console.log(ui.item);
     /* Prevent input box being filled */ 
-    // event.preventDefault();
+    event.preventDefault();
     if ( ui.item ) {
         subject_id = ui.item.value;
-        /* Make autocomplete query for classes now */
+        menu.input.val(subject_id);
 
+        /* Make autocomplete query for classes now */
         menu.switch_to_course_mode(subject_id);
         /* Trigger the autocomplete */
         menu.input.autocomplete("search");
