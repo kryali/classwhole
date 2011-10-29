@@ -6,18 +6,24 @@
 - start_hour = range[0] - 1
 - end_hour = range[1]
 - sections_in_days = sections_by_days(sections)
-= javascript_include_tag "slides.min.jquery.js"
+
+- if @section_hints
+  - section_hints_in_days = sections_by_days(@section_hints)
+- else 
+  - section_hints_in_days = {}
 
 %div{:class => "schedule-wrapper" }
-  %h1= "Schedule Rank: #{rank}"
   %ul.time-label
     - for hour in (start_hour..end_hour)
       %li= print_hour(hour)
   - colors = section_colors( sections )
   - sections_in_days.each do |day_code, sections|
-    %ul{:class => "schedule-day #{day_code}"}
+    %ul{:class => "schedule-day #{day_code}", :day => day_code }
       %li.header= print_day(day_code)
       - for hour in (start_hour..end_hour)
         %li
       - sections.each do |section|
         = render 'section', :section => section, :start_hour => start_hour, :colors => colors
+      - if section_hints_in_days[day_code]
+        - section_hints_in_days[day_code].each do |section|
+          %div.droppable= render 'section', :section => section, :start_hour => start_hour, :colors => colors
