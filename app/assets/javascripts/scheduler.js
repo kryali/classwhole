@@ -132,6 +132,9 @@ $(function(){
     //section_hints.draggable( 'disable' );
     section_hints.css( "cursor","pointer" );
 
+    var new_height = current_schedule.height();
+    $('.slides_control').height( new_height );
+
   }
 
   function insert_suggestions(data, textStatus, jqXHR) {
