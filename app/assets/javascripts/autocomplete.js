@@ -117,8 +117,6 @@ Autocomplete.prototype.switch_to_course_mode = function (subject_id) {
 }
 
 Autocomplete.prototype.subject_select = function(event, ui) {
-    console.log("Subject Select");
-    console.log(ui.item);
     /* Prevent input box being filled */ 
     event.preventDefault();
     if ( ui.item ) {
