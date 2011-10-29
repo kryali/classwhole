@@ -8,16 +8,31 @@
 	%div.breadcrumb
 		= link_to uppercase_string, "/courses/"
 		>> Majors
+	%div{:class => "pagination"}
+		%ul
+			%li{:class=>"active"}
+				=link_to "2", "/"	
+			%li
+				=link_to "3", "#bottom"
+
+
 	%p{:class => "catalog_title"}
 		=uppercase_string	+ " Courses"
 	<br/>
 	<br/>
-	%table{:id => "major_table"}	
-		-for subject in @semester.subjects															
+	
+
+
+
+	%table{:class => "major_table"}	
+		-first_letter = '-1'		
+		-for subject in @semester.subjects																		
 			%tr			
 				%td{:class => 'major_cells'}
 					= subject.code
 				%td{:class => 'major_cells'}									
 					= link_to subject.title, show_subject_path(:year => @semester.year, :season => @semester.season, :subject_code => subject.code)		
 
-	
+%p
+	%a{:name => "bottom"}
+	fucking a man!

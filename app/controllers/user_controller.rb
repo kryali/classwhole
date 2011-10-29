@@ -134,5 +134,9 @@ class UserController < ApplicationController
     possible_moves.delete_if{|move| move.schedule_conflict?(schedule)}
     render :json => possible_moves
   end
+	
+	def test
+		logger.info "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx"
+	end
 
 end

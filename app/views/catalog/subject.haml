@@ -15,12 +15,15 @@
 	=@subject.title
 <br/>
 <br/>
-%table{:class => "course_table"}	
-	-for course in @courses														
-		%tr			
-			%td{:class => 'course_cells_code'}
-				= @subject.code + " " + course.number.to_s()
-			%td{:class => 'course_cells_title'}									
-				= link_to( course.title, show_course_path(:year => @semester.year, :season => @semester.season, :subject_code => @subject.code, :course_number => course.number ) )		
+-#%table{:class => "course_table"}	
 
-	
+
+-last_letter = '-1'
+-for course in @courses														
+	%tr			
+		%td{:class => 'course_cells_code'}
+			= @subject.code + " " + course.number.to_s()
+		%td{:class => 'course_cells_title'}									
+			= link_to( course.title, show_course_path(:year => @semester.year, :season => @semester.season, :subject_code => @subject.code, :course_number => course.number ) )		
+
+

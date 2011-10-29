@@ -76,4 +76,9 @@ class Section < ActiveRecord::Base
     end
     return "nil"
   end
+
+	#NOTE: move tihs somewhere where every method can use it
+	def full_name(abbreviation)
+	end
+
 end

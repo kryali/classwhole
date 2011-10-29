@@ -15,8 +15,12 @@
 	>> 
 	=name_and_number
 %div.course_box
-	%h1{:id => "course_num"}
-		=name_and_number
+	%span{:id => "course_num"}
+		=name_and_number		
+	%button{:class => "large btn success", :id=> "add_class_button", :type => "submit"}	
+		%span{:class => "font"} 
+			Add Class
+	<br/>
 	%hw{:id => "course_name"}
 		=@course.title
 	<br/>
@@ -29,27 +33,52 @@
 <br/>
 <br/>
 <br/>
-%ul{:class => "tabs"}
-	%li{:class => "active"}
-		=link_to "Sections", "#poop"
-	%li
-		=link_to "Muffins", "#muffins"
 
-%div{:class => "pill-content"}
-	%div{:class => "active", :id => "poop"}
-		hey
-	%div{:id => "muffins"}
-		yooo
+%div.section_tabs
+	%ul{:class => "tabs"}
+		-for type in @types_of_sections
+			%li
+				-name = type			
+				-if @translations.include?type			
+					-name = @translations[type]
+				=link_to name, "#"+type
+		
+%div.sections_table
+	%div{:class => "pill-content"}
+		-for type in @types_of_sections	
+			%table{:class => "zebra-striped", :id => "#{type}"}				
+				%th
+					Time
+				%th
+					Days
+				%th
+					Professor
+				%th
+					Building
+				%th
+					Section			
+				-for section in @course.sections
+					-if type == section.section_type
+						%tr
+							%td
+								-if !section.start_time.nil?								
+									= section.duration_s						
+							%td
+								-if !section.days.nil?	
+									= section.days						
+							%td
+								-if !section.instructor.nil?	
+									= section.instructor
+							%td
+								-if !section.building.nil?	
+									= section.building
+							%td
+								-if !section.code.nil?	
+									= section.code
+
 
 :javascript
 	$(function () {
 		$('.tabs').tabs();
 	});
 
-
--for section in @course.sections
-	<br/>
-	= section.code
-	= section.start_time
-	= section.end_time
-	= section.section_type

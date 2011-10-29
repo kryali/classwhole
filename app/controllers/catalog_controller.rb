@@ -76,8 +76,33 @@ class CatalogController < ApplicationController
   def course
     @course = get_course(params)
     @sections = @course.sections     
+		@types_of_sections = get_different_sections()
+		@translations = Hash.new
+		@translations["LEC"] = "Lectures"		
+		@translations["LCD"] = "Lecture-Discussions"
+		@translations["DIS"] = "Discussions"
+		@translations["ONL"] = "Online"
+		@translations["IND"] = "Independent Study"
+		@translations["STA"] = "Study Abroad"
 		render 'course'
   end
+
+	# Description:
+	#   -Figure out the various types of sections for a course
+	#   - (lecture, discussion, etc)
+	#	  - used to make the tabs for the sections table on course page
+	#
+	def get_different_sections()	
+		list = []		
+		for section in @sections do
+			if !list.include? section.section_type
+				list << section.section_type
+			end		
+		end		
+		return list
+	end
+
+ 	
 
   # Description:
   # - Return a json formatted list of classes for autocomplete
