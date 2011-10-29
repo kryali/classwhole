@@ -1,7 +1,6 @@
 $(function(){
 
   var block_height = 74;
-  var added_hours = false;
 
   function init() {
 
@@ -86,25 +85,53 @@ $(function(){
     }
   }
 
+  /* 
+    Update schedule refreshes the schedule content with the new schedule
+      from the server. It's an AJAX `success` callback function */
   function update_schedule(data, textStatus, jqXHR, day) {
-
     var contents = $(data).children();
     var current_schedule = get_current_schedule();
-    var current_schedule_contents = current_schedule.children();
-    //move_element(current_schedule, "ui-draggable-dragging", day);
-    //current_schedule.append(contents);
 
     var selected_box = $(".ui-draggable-dragging");
     var selected_section_id = selected_box.find(".hidden").text();
+    
+    // Move the dragndrop to an element on the page to keep it in the document
+    $("#slides").append(selected_box);
 
-    contents.find("." + day).append(selected_box);
-    //console.log(current_schedule_contents);
-    //current_schedule_contents.remove();
-    //remove_section_from_day( day, selected_section_id );
-    //day.append(selected_box);
+    // Add the content to the page
+    current_schedule.empty().append(data);
 
-    //current_schedule_contents.remove();
-    //init_draggable();
+    // Find the day of the section we're trying to add
+    var current_day = current_schedule.find("." + day );
+
+    // Remove the duplicate section given to us by the server (selected section)
+    remove_section_from_day( current_day, selected_section_id);
+  
+    if( !day ){
+      selected_box.draggable("destroy");
+      console.log("Destroyed box, go away!!");
+      selected_box.remove();
+    }
+
+    // Re-insert the dragndrop to the page
+    current_day.append(selected_box);
+
+    // Enable the new sections to be draggable
+    init_draggable();
+
+    // Make the hints droppable
+    var section_hints = current_day.find(".droppable").find(".schedule-block")
+    section_hints.droppable({
+        accept:      '.schedule-block',
+        hoverClass:  'hover',
+        drop:        handle_drop
+    });
+
+    // Make the hints undraggable
+    $(".droppable").find(".schedule-block").draggable( 'disable' );
+    //section_hints.draggable( 'disable' );
+    section_hints.css( "cursor","pointer" );
+
   }
 
   function insert_suggestions(data, textStatus, jqXHR) {
@@ -169,40 +196,61 @@ $(function(){
     });
   }
 
-  function handle_drop( event, ui ) {
-    console.log("handle_drop");
-    var current_course =  $(ui.draggable[0]);
-    remove_section( current_course.find(".hidden").text() );
-    remove_droppable( $(this).find(".hidden").text() );
-    current_course.remove();
-    //ui.draggable.draggable( 'disable' );
-    $(this).removeClass("droppable");
-    ui.draggable.addClass( 'correct' );
-    $(this).droppable( 'disable' );
-    ui.draggable.position( { of: $(this), my: 'left top', at: 'left top' } );
-    ui.draggable.draggable( 'option', 'revert', false );
+  /* Unhide the new sections */
+  function setup_new_sections( section_id ) {
+    get_current_schedule().find(".droppable").each( function() {
+      if( $(this).find(".hidden").text() == section_id ){
 
-    $(this).draggable({
-      snap:        '.droppable',
-      start:       start_drag_event,
-      stop:        stop_drag_event,
-      revert:      true,
+        // Enable draggable for new sections
+        $(this).find(".schedule-block").draggable( 'enable' );
+        $(this).find(".schedule-block").removeClass("ui-droppable");
+
+        // Disable droppable for new sections
+        $(this).removeClass("droppable");
+      };
     });
+  }
 
+  function handle_drop( event, ui ) {
+    // Find the section that the user is holding 
+    var curr_section =  $(ui.draggable[0]);
+    var curr_section_id = curr_section.find(".hidden").text();
+    var new_section_id = $(this).find(".hidden").text();
+    var schedule_ids = get_schedule_ids();
+
+    var idx = schedule_ids.indexOf(curr_section_id);
+    if (idx!=-1) schedule_ids.splice(idx,1);
+    schedule_ids.push(new_section_id);
+
+    $.ajax({
+      type: 'POST',
+      data: { schedule:schedule_ids},
+      url:  '/scheduler/move_section',
+      success: function(data, textStatus, jqXHR) {
+        ///var day = $(ui.helper[0]).parent().attr("day");
+        update_schedule(data, textStatus, jqXHR, undefined);
+      }
+    });
+    /*
+    // Remove those sections from the view
+    remove_section( curr_section_id );
+    setup_new_sections( new_section_id );
+
+    // Clean up
     stop_drag_event( undefined, undefined );
+    */
   }
 
   function start_drag_event( event, ui ) {
-    console.log("Start Drag");
-    if( !added_hours ) { 
-      //add_hours(4);
-      added_hours = true;
-    }
+    //console.log(ui);
+    //console.log(event);
     var current_section = $(ui.helper[0]);
     current_section.draggable( 'option', 'revert', true );
     var section = current_section.find(".hidden").text();
     var schedule_ids = get_schedule_ids();
     //console.log(schedule_ids);
+    console.log( section );
+    console.log( schedule_ids );
     $.ajax({
       type: 'POST',
       data: { section: section, schedule:schedule_ids},
