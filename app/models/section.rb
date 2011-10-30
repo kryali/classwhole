@@ -15,7 +15,7 @@ class Section < ActiveRecord::Base
   def time_conflict?(days, start_time, end_time)
     day_array = days.split("")
     day_array.each do |day|
-      if( days.include?(day) )
+      if( self.days.include?(day) )
         if (self.start_time.to_i   >= start_time.to_i and self.start_time.to_i <= end_time.to_i) or 
            (  self.end_time.to_i   >= start_time.to_i and   self.end_time.to_i <= end_time.to_i)
           return true
