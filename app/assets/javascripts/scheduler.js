@@ -45,7 +45,7 @@ $(function(){
   function init_draggable() {
     $(".schedule-block").draggable(options.draggable);
     $(".schedule-block").mouseup( function(){ 
-      //$(".droppable").fadeOut(120);
+      $(".droppable").fadeOut(120);
     });
   }
 
@@ -237,7 +237,6 @@ $(function(){
   }
 
   function handle_drop( event, ui ) {
-    console.log("handle_drop");
     // Find the section that the user is holding 
     var curr_section =  $(ui.draggable[0]);
     var curr_section_id = parseInt(curr_section.find(".hidden").text());
@@ -300,12 +299,14 @@ $(function(){
 
   function stop_drag_event( event, ui ) {
     is_dragging = false;
-    return;
+    
+    var droppable_timeout = 220;
 
-    $(".droppable").fadeOut(220);
+    $(".droppable").fadeOut( droppable_timeout );
     setTimeout( function() {
       $('.droppable').remove();
-    }, 221);
+    },  droppable_timeout );
+
   }
 
   init();
