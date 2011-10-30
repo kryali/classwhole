@@ -65,7 +65,8 @@ class UserController < ApplicationController
   #
   # We should probably be looking up the id instead of doing a slow search here
   #
-  def add_courses
+  def add_courses		
+		logger.info "HHHHHHHHHHHHHHEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEYYYYYYYYYYYYYY"		
 		# If the person isn't logged into facebook, create a cookie
 		if !current_user
 			cookies["classes"] = { :value => "", :expires => 1.year.from_now }# create a cookie!			
@@ -114,6 +115,7 @@ class UserController < ApplicationController
  #
  #
 	def add_course_to_cookie(subject, number)
+		logger.info "HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEY"		
 		if cookies["classes"]
 			course_id_string = Course.find_by_subject_code_and_number(subject, number).id.to_s			
 			cook = cookies["classes"] # this is used in the next line, so I didn't have to deal with quotes inside a string		
@@ -121,6 +123,7 @@ class UserController < ApplicationController
 		end
 	end
 
+<<<<<<< HEAD
   def move_section
     schedule = []
     params["schedule"].each do |section_id|
@@ -139,4 +142,6 @@ class UserController < ApplicationController
 		logger.info "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx"
 	end
 
+=======
+>>>>>>> 7cd4fbf2855eaf53616373a37411522c8db914e4
 end

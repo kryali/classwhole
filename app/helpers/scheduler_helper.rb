@@ -33,7 +33,6 @@ module SchedulerHelper
   def hour_range(sections)
     earliest_start_hour = 24 * 60
     latest_end_time = 0
-    logger.info sections.inspect
     sections.each do |section|
       current_start_time = section.start_time.hour * 60 + section.start_time.min
       current_end_time = section.end_time.hour * 60 + section.end_time.min

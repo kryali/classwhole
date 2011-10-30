@@ -1,0 +1,5 @@
+- colors = section_colors( @schedule )
+- start_hour = hour_range( @schedule )[0] - 1
+- logger.info "Start hour: #{start_hour}"
+- @possible_moves.each do |section|
+  = render 'section', :section => section, :start_hour => start_hour, :colors => colors
