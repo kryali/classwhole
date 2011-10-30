@@ -45,7 +45,7 @@ $(function(){
   function init_draggable() {
     $(".schedule-block").draggable(options.draggable);
     $(".schedule-block").mouseup( function(){ 
-      $(".droppable").fadeOut(120);
+      //$(".droppable").fadeOut(120);
     });
   }
 
@@ -138,12 +138,11 @@ $(function(){
     init_draggable();
 
     // Make the hints droppable
-    var section_hints = current_day.find(".droppable").find(".schedule-block");
+    var section_hints = current_schedule.find(".droppable").find(".schedule-block");
     section_hints.droppable(options.droppable);
 
     // Make the hints undraggable
-    $(".droppable").find(".schedule-block").draggable( 'disable' );
-    //section_hints.draggable( 'disable' );
+    section_hints.draggable( 'disable' );
     section_hints.css( "cursor","pointer" );
 
     // Adjust the height of the slides window to contain the new schedule
@@ -151,8 +150,8 @@ $(function(){
     $('.slides_control').height( new_height );
 
     // Make the schedule blocks fade in
-    current_schedule.find(".ui-droppable").addClass("hidden");
-    current_schedule.find(".ui-droppable").fadeIn(450);
+    current_schedule.find(".droppable").addClass("hidden");
+    current_schedule.find(".droppable").fadeIn(450);
 
   }
 
@@ -238,7 +237,7 @@ $(function(){
   }
 
   function handle_drop( event, ui ) {
-    // console.log("handle_drop");
+    console.log("handle_drop");
     // Find the section that the user is holding 
     var curr_section =  $(ui.draggable[0]);
     var curr_section_id = parseInt(curr_section.find(".hidden").text());
@@ -263,6 +262,8 @@ $(function(){
         update_schedule(data, textStatus, jqXHR, undefined);
       }
     });
+
+    curr_section.draggable( "option", "revert", "false" );
     /*
     // Remove those sections from the view
     remove_section( curr_section_id );
@@ -298,10 +299,13 @@ $(function(){
   }
 
   function stop_drag_event( event, ui ) {
-    console.log("Removing droppables");
-    $(".droppable").fadeOut(120);
-    $('.droppable').remove();
     is_dragging = false;
+    return;
+
+    $(".droppable").fadeOut(220);
+    setTimeout( function() {
+      $('.droppable').remove();
+    }, 221);
   }
 
   init();
