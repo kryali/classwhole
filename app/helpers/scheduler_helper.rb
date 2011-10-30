@@ -80,6 +80,7 @@ module SchedulerHelper
   def section_colors( sections )
     colors = Hash.new
     colors_current = 0
+    sections.sort!
     sections.each do |section|
       unless colors.has_key?(section.course_id)
         colors[section.course_id] = "color-#{colors_current}"

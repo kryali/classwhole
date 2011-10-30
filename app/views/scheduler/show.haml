@@ -2,9 +2,9 @@
 %div.scheduler-content
   %div#slides
     %div.slides_container
-      - i = 0
+      - i = 1
       - @possible_schedules.each do |sections|
+        = render "schedule", :sections => sections
         - i += 1
-        = render "schedule", :sections => sections, :rank => i
     %a{:href=>"#", :class=>"prev"}
     %a{:href=>"#", :class=>"next"}
