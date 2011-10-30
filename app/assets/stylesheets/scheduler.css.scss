@@ -85,7 +85,6 @@ $block_padding: 8px;
   background: white;
   position: absolute;
   border: 1px solid #999999;
-  z-index: 900000;
   cursor: move;
 
   box-shadow: 1px 2px 2px 1px #cccccc;
@@ -184,7 +183,6 @@ $block_padding: 8px;
     position: absolute;
     display: none;
     border-bottom: 1px solid #ccc;
-    z-index: 10000;
 
     li {
       border: none;
@@ -219,10 +217,19 @@ $block_padding: 8px;
 
 }
 
+ul.hidden-data {
+  display: none;
+}
+
 .droppable {
-  opacity: .5;
-  border: 1px dashed #888; 
-  cursor: pointer;
+  z-index: 2;
+  //border: 1px dashed #888; 
+  .ui-draggable {
+    opacity: .5;
+    border: 1px dashed #888; 
+    cursor: pointer;
+    //z-index: 0;
+  }
 }
 
 .hover {
@@ -286,4 +293,6 @@ ul.pagination {
   width: 24px;
   height: 43px;
   background: image-url("arrow-prev.png");
+    // If we aren't given a position to insert the selected box, don't add 
+      // If we aren't given a position to insert the selected box, don't add 
 }
