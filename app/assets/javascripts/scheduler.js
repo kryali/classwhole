@@ -32,7 +32,23 @@ $(function(){
 
     // Additional menus on hover over
     $(".schedule-block").mouseover( function(){
-      //$(this).find("ul.hidden-data").fadeIn('fast');
+
+      console.log("MOUSEOVER");
+
+      var current_section = $(this);
+      current_section.draggable( 'option', 'revert', true );
+      var section = current_section.find(".hidden").text();
+      var schedule_ids = get_schedule_ids();
+
+      $.ajax({
+        type: 'POST',
+        data: { section: section, schedule:schedule_ids},
+        url:  '/scheduler/move_section',
+        success: function(data, textStatus, jqXHR) {
+          update_schedule(data, textStatus, jqXHR, undefined);
+        }
+      });
+
     });
     $(".schedule-block").mouseleave( function(){
       //$(this).find("ul.hidden-data").fadeOut('slow');

@@ -2,11 +2,12 @@
 -# This view is responsible for displaying a user's schedule
 -# - see scheduler_helper for any unfamiliar functions
 -#
+-# arr_sections = 
 - range = hour_range(sections)
 - start_hour = range[0] - 1
 - end_hour = range[1]
-- start_hour = 7
-- end_hour  = 21
+-#start_hour = 7
+-#end_hour  = 21
 - sections_in_days = sections_by_days(sections)
 
 - if @section_hints
