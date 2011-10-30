@@ -21,7 +21,7 @@ Whiteboard::Application.routes.draw do
   match 'user/logout', :as => 'logout'
 
 
-  match 'user/scheduler/move_section' => 'user#move_section', :via => :post
+  match 'scheduler/move_section' => 'scheduler#move_section', :via => :post
 	match 'add/' => 'user#test'
 
   # The priority is based upon order of creation:
