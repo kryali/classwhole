@@ -123,25 +123,5 @@ class UserController < ApplicationController
 		end
 	end
 
-<<<<<<< HEAD
-  def move_section
-    schedule = []
-    params["schedule"].each do |section_id|
-      schedule << Section.find(section_id.to_i)
-    end
 
-    section = Section.find(params["section"].to_i)
-    course = Register_Course.new(section.course)
-    possible_moves = course.configurations_hash[section.configuration_key][section.section_type]
-
-    possible_moves.delete_if{|move| move.schedule_conflict?(schedule)}
-    render :json => possible_moves
-  end
-	
-	def test
-		logger.info "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx"
-	end
-
-=======
->>>>>>> 7cd4fbf2855eaf53616373a37411522c8db914e4
 end
