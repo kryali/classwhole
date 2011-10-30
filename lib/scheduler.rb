@@ -12,6 +12,7 @@ class Scheduler
 
   def schedule_courses
     schedule_course_recursive(0)
+    #@valid_schedules.sort{|x,y| holes(x) <=> holes(y)}
   end
 
   def schedule_course_recursive(course_index)
@@ -42,11 +43,10 @@ class Scheduler
 
   # find out how many classwholes our schedule has (lol)
   # considering a hole to be if section1 has no classes within 15 minutes before it
-=begin
-  def holes
+  def holes(schedule)
     num_holes = 0
-    @sections.each do |section1|
-      @sections.each do |section2|
+    schedule.each do |section1|
+      schedule.each do |section2|
         next if section1 == section2
         day_array = section1.days.split("")
         day_array.each do |day|
@@ -59,5 +59,4 @@ class Scheduler
     end
     return num_holes
   end
-=end
 end

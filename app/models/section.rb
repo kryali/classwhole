@@ -4,10 +4,14 @@ class Section < ActiveRecord::Base
 
   # this may need to become more advanced depending on if we discover unusual courses
   def configuration_key
-    key = self.code.at(0)
-    #append number to key if it exists at 1 (for mathematica sections B8, X8, etc)
-    at1 = self.code.at(1)
-    key << at1 if (true if Integer(at1) rescue false)
+    if self.course_subject_code == "PHYS" #PHYSICS DEPARTMENT Y U NO CONSISTENT?
+      key = self.course_subject_code
+    else
+      key = self.code.at(0)
+      #append number to key if it exists at 1 (for mathematica sections B8, X8, etc)
+      at1 = self.code.at(1)
+      key << at1 if (true if Integer(at1) rescue false)
+    end
     return key
   end
 
