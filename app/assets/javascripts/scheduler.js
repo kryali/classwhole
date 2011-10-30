@@ -80,33 +80,8 @@ $(function(){
     });
   }
 
-  function move_element(element, selector, target) {
-    var children = element.children();
-
-    if ( children.length == 0 ) {
-      return;
-    }
-    for( var i = 0; i < children.length; i++) {
-      if( children[i].className.indexOf(selector) == -1 ) {
-        move_element( $(children[i]), selector, target );
-      } else {
-        target.append($(children[i]));
-        //console.log(target);
-        $(children[i]).remove();
-        return;
-      }
-    }
-    return;
-  }
-
-  function get_section_id( section ) {
-    return section.find("hidden").text()
-  }
-
   /* 
-
   This function removes a section from a day selector
-    
    */
   remove_section_from_day = function( day, section_id) {
     var schedule_blocks = day.find(".schedule-block");

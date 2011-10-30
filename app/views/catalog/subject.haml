@@ -1,5 +1,26 @@
-Showing Subject
-= @subject.code
-- for course in @courses
-  <br/>
-  = link_to( course.number, show_course_path(:year => @semester.year, :season => @semester.season, :subject_code => @subject.code, :course_number => course.number ) )
+/* dsfsf */
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+-uppercase_string = @semester.season[0,1].upcase + @semester.season[1..-1] + " " + @semester.year
+%div.breadcrumb	
+	=link_to uppercase_string, "/courses"
+	>> 
+	= link_to "Majors", "/"+cookies["major_breadcrumb"]
+	>> 
+	= @subject.code
+%p{:class => "catalog_title"}
+	=@subject.title
+<br/>
+<br/>
+%table{:id => "course_table"}	
+	-for course in @courses														
+		%tr			
+			%td{:class => 'course_cells_code'}
+				= @subject.code + " " + course.number.to_s()
+			%td{:class => 'course_cells_title'}									
+				= link_to( course.title, show_course_path(:year => @semester.year, :season => @semester.season, :subject_code => @subject.code, :course_number => course.number ) )		
+
+

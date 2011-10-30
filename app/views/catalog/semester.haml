@@ -1,7 +1,41 @@
-Showing semester 
-= @semester.season + " " + @semester.year 
-<br/>
-Subjects
-- for subject in @semester.subjects
-  <br/>
-  = link_to subject.code, show_subject_path(:year => @semester.year, :season => @semester.season, :subject_code => subject.code)
+%div.subject_list 
+	<br/>
+	<br/>
+	<br/>
+	<br/>
+	<br/>
+	-uppercase_string = @semester.season[0,1].upcase + @semester.season[1..-1] + " " + @semester.year
+	%div.breadcrumb
+		= link_to uppercase_string, "/courses/"
+		>> Majors
+	-alphabet = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","P","R","S","T","U","V","W","Y","Z"]	
+	%div{:class => "pagination"}
+		%ul
+		-for letter in alphabet 			
+			%li
+				=link_to letter, "#"+letter	
+					
+		
+
+
+	%p{:class => "catalog_title"}
+		=uppercase_string	+ " Courses"
+
+
+
+	%table{:class => "major_table"}	
+		-first_letter = '-1'		
+		-for subject in @semester.subjects																		
+			-if first_letter != subject.code[0]
+				-first_letter = subject.code[0]
+				%tr
+					%td
+						%a{:name => "#{first_letter}"}
+							<br/>
+						<br/>
+			%tr			
+				%td{:class => 'major_cells'}
+					= subject.code
+				%td{:class => 'major_cells'}									
+					= link_to subject.title, show_subject_path(:year => @semester.year, :season => @semester.season, :subject_code => subject.code)		
+

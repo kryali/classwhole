@@ -14,8 +14,8 @@ class CatalogController < ApplicationController
   def get_semester(params)
     @year = params[:year]
     @season = params[:season] 
-    @semester = Semester.find_by_year_and_season(@year, @season)
-  end
+    @semester = Semester.find_by_year_and_season(@year, @season)  
+	end
 
   def get_subject(params)
     @semester = get_semester(params)
@@ -37,8 +37,8 @@ class CatalogController < ApplicationController
   # Route:
   #   courses/
   def index
-    @semesters = Semester.all
-    render 'index'
+    @semesters = Semester.all   
+		render 'index'
   end
 
   # Description:
@@ -50,7 +50,8 @@ class CatalogController < ApplicationController
   def semester
     @semester = get_semester(params)
     @subjects = @semester.subjects
-    render 'semester'
+		cookies["major_breadcrumb"] = "courses/"+@season+"/"+@year     
+		render 'semester'
   end
 
   # Description:
@@ -62,7 +63,8 @@ class CatalogController < ApplicationController
   def subject
     @subject = get_subject(params)
     @courses = @subject.courses
-    render 'subject'
+    cookies["courses_breadcrumb"] = cookies["major_breadcrumb"]+"/"+@subject.code
+		render 'subject'
   end
 
   # Description:
@@ -73,9 +75,34 @@ class CatalogController < ApplicationController
   #   courses/:season/:year/:subject_code/:courseNumber
   def course
     @course = get_course(params)
-    @sections = @course.sections
-    render 'course'
+    @sections = @course.sections     
+		@types_of_sections = get_different_sections()
+		@translations = Hash.new
+		@translations["LEC"] = "Lectures"		
+		@translations["LCD"] = "Lecture-Discussions"
+		@translations["DIS"] = "Discussions"
+		@translations["ONL"] = "Online"
+		@translations["IND"] = "Independent Study"
+		@translations["STA"] = "Study Abroad"
+		render 'course'
   end
+
+	# Description:
+	#   -Figure out the various types of sections for a course
+	#   - (lecture, discussion, etc)
+	#	  - used to make the tabs for the sections table on course page
+	#
+	def get_different_sections()	
+		list = []		
+		for section in @sections do
+			if !list.include? section.section_type
+				list << section.section_type
+			end		
+		end		
+		return list
+	end
+
+ 	
 
   # Description:
   # - Return a json formatted list of classes for autocomplete
