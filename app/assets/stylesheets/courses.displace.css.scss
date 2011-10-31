@@ -1,0 +1,151 @@
+/* This is the title of the page where you select
+   which semester's course list you want to see */
+.semester_list
+{
+color:blue;
+font-family: 'Arial', 'Tahoma', sans-serif;
+font-size:20pt;
+font-weight:bold;
+}
+
+
+
+/* This is for the table that lists
+   the different majors */
+.major_table
+{
+font-family: 'Arial', 'Tahoma', sans-serif;
+font-size:13pt;
+border-collapse: collapse;
+}
+
+/* This is for the cells inside of the table above */
+.major_cells
+{
+padding: 0px;
+border: 0px solid black;
+}
+
+/* This is the title of the page where you select
+   which major's classes you want to see and also
+	 which class within a major you choose */
+.catalog_title
+{
+font-family: 'Arial', 'Tahoma', sans-serif;
+font-size:20pt;
+font-weight:bold;
+}
+
+/* This is for the table that lists
+   the different courses in a major */
+#course_table
+{
+font-family: 'Arial', 'Tahoma', sans-serif;
+font-size:13pt;
+border-collapse: collapse;
+}
+
+/* This is for the cells inside of the tables above */
+.course_cells_code
+{
+font-family: 'Arial', 'Tahoma', sans-serif;
+width: 110px;
+padding: 0px;
+border: 0px solid black;
+}
+
+/* the other cells inside the course list table */
+.course_cells_title
+{
+font-family: 'Arial', 'Tahoma', sans-serif;
+padding: 0px;
+border: 0px solid black;
+}
+
+/*these are the breadcrumbs links */
+.breadcrumb
+{
+font-size:14pt;
+font-family: 'Arial', 'Tahoma', sans-serif;
+}
+
+/* The number of the course on the course page */
+#course_num
+{
+color: #222222;
+font-size:26pt;
+font-family: 'Arial', 'Tahoma', sans-serif;
+font-weight:bolder;
+padding-bottom:1%;
+}
+
+/* The name of the course on the course page */
+#course_name
+{
+color:#515151;
+font-weight:bold;
+font-size:19pt;
+font-family: 'Arial', 'Tahoma', sans-serif;
+}
+
+/* The course description */
+#course_description
+{
+font-family: 'Arial', 'Tahoma', sans-serif;
+line-height:115%;
+}
+
+/* the box on the course page with the title, description, etc. */
+.course_box
+{
+margin:0 auto;
+padding: 3px;
+background-color: white;
+width: 65%;
+border: 1px solid #cccccc;
+-moz-border-radius: 5px;
+border-radius: 5px;
+}
+
+/* the add class button on the course page */
+#add_class_button
+{
+float:right;
+}
+
+#class_already_added
+{
+float:right;
+}
+/* button font for add class */
+.font
+{
+font-family: 'Arial', 'Tahoma', sans-serif;
+font-size:15pt;
+font-weight:bold;
+text-align: right;
+}
+
+#test_button
+{
+float: right;
+}
+
+/* the table that displays section, professor, etc on course page */
+.sections_table
+{
+font-family: 'Arial', 'Tahoma', sans-serif;
+font-size:14pt;
+}
+
+.section_tabs
+{
+font-family: 'Arial', 'Tahoma', sans-serif;
+font-size:14pt;
+}
+
+/* setting the background for all the pages in the course list */
+.catalog_page
+{
+
+}

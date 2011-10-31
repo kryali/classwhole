@@ -127,7 +127,7 @@
 										= section.instructor
 								%td
 									-if !section.building.nil?	
-										= section.building
+										= section.building[1..-1]
 								%td
 									-if !section.code.nil?	
 										= section.code
