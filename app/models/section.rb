@@ -2,6 +2,7 @@ class Section < ActiveRecord::Base
   belongs_to :course
 #  has_and_belongs_to_many :users
 
+  # Configuration Key to access the configurations_hash of a register_course
   # this may need to become more advanced depending on if we discover unusual courses
   def configuration_key
     if self.course_subject_code == "PHYS" #PHYSICS DEPARTMENT Y U NO CONSISTENT?

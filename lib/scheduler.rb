@@ -10,9 +10,32 @@ class Scheduler
     end
   end
 
+=begin
+  def schedule_course(course)
+    @valid_schedules
+    course.configurations_array.each do |configuration|
+      schedule_configuration(configuration, 0)
+    end
+  end
+
+  def schedule_configuration(configuration, sections_index)
+    if sections_index >= configuration.size
+      schedule_course_recursive(course_index+1)
+      return
+    end
+    sections = configuration[sections_index]
+    sections.each do |section|
+      unless section.schedule_conflict?(@schedule)
+        @schedule.push(section)
+        schedule_configuration_sections_recursive(configuration, sections_index+1, course_index)
+        @schedule.pop
+      end
+    end
+  end
+=end
   def schedule_courses
     schedule_course_recursive(0)
-    #@valid_schedules.sort{|x,y| holes(x) <=> holes(y)}
+    @valid_schedules.sort{|x,y| holes(x) <=> holes(y)}
   end
 
   def schedule_course_recursive(course_index)
