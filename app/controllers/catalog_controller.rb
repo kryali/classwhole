@@ -84,6 +84,8 @@ class CatalogController < ApplicationController
 		@translations["ONL"] = "Online"
 		@translations["IND"] = "Independent Study"
 		@translations["STA"] = "Study Abroad"
+		@translations["LBD"] = "Lab-Discussions"
+		@translations["LAB"] = "Lab"
 		render 'course'
   end
 

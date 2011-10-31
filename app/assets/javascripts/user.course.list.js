@@ -23,6 +23,7 @@ ClassList.prototype.add_class_callback = function(event, ui) {
     this.value = ""; 
 
     if ( ui.item ) {
+				console.log( ui.item );
         show_button();
         var class_id = ui.item.value;
         if( class_id in selected_classes ){
@@ -54,17 +55,11 @@ ClassList.prototype.add_class_callback = function(event, ui) {
         course_li.slideDown();
 
         remove_course.click( function() {
-            var removed = 0;
-            // Search through the hidden form and remove this element
-            $(".hidden-course-form").children().each( function(i) {
-                if($(this).val() == class_id){
-                    $(this).remove();
-                    removed++;
-                } else if ($(this).attr("name") == "size"){
-                    var current_size = $(this).val();
-                    $(this).val(current_size - removed );
-                };
-            });
+						      var removed = 0;
+					$.ajax({
+								type: 'GET',
+								url:  '/user/courses/destroy/'+ui.item.id,
+							});
             course_li.slideUp();
             $(this).remove();
             delete selected_classes[class_id];
@@ -72,27 +67,14 @@ ClassList.prototype.add_class_callback = function(event, ui) {
 
         selected_classes[class_id] = course_li;
 
-        /* Add the course id to our hidden form */
-        add_course_id_to_hidden_form(class_id);
-        class_counter++;
-			
 					/* Call add courses */
 			var string_class_id = class_id.toString();		    
 			$.ajax({
 		      type: 'POST',
 		      data: { size: "1", 0:string_class_id},
 		      url:  '/user/courses/new',
-		      success: function(data, textStatus, jqXHR) {
-		        update_schedule(data, textStatus, jqXHR, undefined);
-		      }
 		    });
 				
-
-        /* use a form to keep track of count */
-        $("<input>").val(class_counter)
-            .attr("type", "hidden")
-            .attr("name", "size")
-            .appendTo(".hidden-course-form");
     }
 
 }

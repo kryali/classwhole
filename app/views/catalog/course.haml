@@ -1,4 +1,5 @@
 /* The Course Page */
+
 <br/>
 <br/>
 <br/>
@@ -14,34 +15,40 @@
 	= link_to @subject.code, "/"+cookies["courses_breadcrumb"]
 	&#47 
 	=name_and_number
-%div.course_box
 
-	%form{:action =>  "/user/courses/new", :class => "hidden-course-form", :method => "post"}
-		%input{:type=>"hidden", :value=>"#{name_and_number}", :name=>"0"}
-		%input{:type=>"hidden", :value=>"1", :name=>"size"}
-		%input{:type=>"hidden", :value=>"1", :name=>"from_button"}
-		%button{:class => "btn large success", :id=> "add_class_button", :type => "submit"}
+-class_already_added = 0
+-for course in current_user.courses
+	-if course.to_s == name_and_number
+		-class_already_added = 1
+
+%div.course_box
+	-if class_already_added == 0		
+		%form{:action =>  "/user/courses/new", :class => "hidden-course-form", :method => "post"}
+			%input{:type=>"hidden", :value=>"#{name_and_number}", :name=>"0"}
+			%input{:type=>"hidden", :value=>"1", :name=>"size"}
+			%input{:type=>"hidden", :value=>"1", :name=>"from_button"}
+			%button{:class => "btn large success", :id=> "add_class_button", :type => "submit"}
+				%span{:class => "font"}						
+					Add Class
+	-else
+		%button{:class => "btn large danger", :id => "class_already_added"}
 			%span{:class => "font"}						
-				Add Class
+				Class Already Added
 
 	%span{:id => "course_num"}
 		=name_and_number		
-   
+	 
 
 	<br/>
-	%hw{:id => "course_name"}
+	%h1{:id => "course_name"}
 		=@course.title
 	<br/>
 	<br/>
-	<br/>
+
 	%p{:id => "course_description"}
 		=@course.description
 
-
 <br/>
-<br/>
-<br/>
-
 -first_flag = 1;
 %div.section_tabs
 	%ul{:class => "tabs"}
@@ -50,20 +57,12 @@
 			-if first_flag==0
 				-first_flag=0
 				%li	
-					-name = type			
-					-if @translations.include?type			
-						-name = @translations[type]
-					=link_to name, "#"+type
-		
-
+					=link_to full_name(type), "#"+type
 
 			-if first_flag==1
 				-first_flag=0
 				%li{:class => "active"}							
-					-name = type			
-					-if @translations.include?type			
-						-name = @translations[type]
-					=link_to name, "#"+type
+					=link_to full_name(type), "#"+type
 
 -first_flag = 1;		
 %div.sections_table

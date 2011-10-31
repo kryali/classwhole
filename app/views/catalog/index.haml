@@ -1,10 +1,11 @@
-<br/>
-<br/>
-<br/>
-<br/>
-%div.semester_list
+%div.catalog_page
 	<br/>
-	- for semester in Semester.all
-		-uppercase_string = semester.season[0,1].upcase + semester.season[1..-1]		#change fall to Fall and spring to Spring
-		= link_to uppercase_string + " " + semester.year + " Course List"	, show_semester_path(semester.season,semester.year)
+	<br/>
+	<br/>
+	<br/>
+	%div.semester_list
+		<br/>
+		- for semester in Semester.all
+			-uppercase_string = semester.season[0,1].upcase + semester.season[1..-1]		#change fall to Fall and spring to Spring
+			= link_to uppercase_string + " " + semester.year + " Course List"	, show_semester_path(semester.season,semester.year)
 
