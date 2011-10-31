@@ -31,9 +31,31 @@ module SchedulerHelper
   end
 
   def hour_range(sections)
+
+    finished_courses = []
+    all_possible_sections = []
+    sections.each do |section|
+
+      course = section.course
+      next if finished_courses.include?(course.id)
+
+      # Build up a list of all possible sections for the course
+      course.sections.each do |course_section|
+        # Add it if we don't already have the section
+        if !all_possible_sections.include?(course_section)
+          all_possible_sections << course_section
+        end
+      end
+
+      # Mark the course as already processed so we dont do it again
+      finished_courses << course.id
+    end
+
     earliest_start_hour = 24 * 60
     latest_end_time = 0
-    sections.each do |section|
+    
+    all_possible_sections.each do |section|
+      next if !section.start_time
       current_start_time = section.start_time.hour * 60 + section.start_time.min
       current_end_time = section.end_time.hour * 60 + section.end_time.min
 
