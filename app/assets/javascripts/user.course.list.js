@@ -1,14 +1,27 @@
 class_counter = 0;
 has_classes = false;
 selected_classes = {};
+var course_destroy_url  = '/user/courses/destroy/';
 
 function ClassList(){ }
 
 ClassList.prototype.init = function() {
-    $(".user-course-list ul li ").each( function(index) { 
+    $(".user-course-list ul li ").each( function() { 
         has_classes = true;
         var class_id = $(this).find(".code").text(); 
         selected_classes[class_id] = $(this);
+
+        var class_real_id = $(this).find(".id").text();
+        var class_li = $(this);
+        $(this).find(".remove-link").click( function() {
+					$.ajax({
+								type: 'GET',
+                url: course_destroy_url + class_real_id,
+                success: function() {
+                  class_li.slideUp(function(){ $(this).remove() });
+                }
+					});
+        });
     });
 }
 
