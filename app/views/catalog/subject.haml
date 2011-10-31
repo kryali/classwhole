@@ -7,9 +7,9 @@
 -uppercase_string = @semester.season[0,1].upcase + @semester.season[1..-1] + " " + @semester.year
 %div.breadcrumb	
 	=link_to uppercase_string, "/courses"
-	>> 
-	= link_to "Majors", "/"+cookies["major_breadcrumb"]
-	>> 
+	&#47 
+	= link_to "Subjects", "/"+cookies["major_breadcrumb"]
+	&#47 
 	= @subject.code
 %p{:class => "catalog_title"}
 	=@subject.title

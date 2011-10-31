@@ -8,18 +8,26 @@
 -name_and_number =  @subject.code + " " + @course.number.to_s
 %div.breadcrumb	
 	=link_to uppercase_string, "/courses"
-	>> 
-	= link_to  "Majors", "/"+cookies["major_breadcrumb"]
-	>> 
+	&#47 
+	= link_to  "Subjects", "/"+cookies["major_breadcrumb"]
+	&#47 
 	= link_to @subject.code, "/"+cookies["courses_breadcrumb"]
-	>> 
+	&#47 
 	=name_and_number
 %div.course_box
+
+	%form{:action =>  "/user/courses/new", :class => "hidden-course-form", :method => "post"}
+		%input{:type=>"hidden", :value=>"#{name_and_number}", :name=>"0"}
+		%input{:type=>"hidden", :value=>"1", :name=>"size"}
+		%input{:type=>"hidden", :value=>"1", :name=>"from_button"}
+		%button{:class => "btn large success", :id=> "add_class_button", :type => "submit"}
+			%span{:class => "font"}						
+				Add Class
+
 	%span{:id => "course_num"}
 		=name_and_number		
-	%button{:class => "large btn success", :id=> "add_class_button", :type => "submit"}	
-		%span{:class => "font"} 
-			Add Class
+   
+
 	<br/>
 	%hw{:id => "course_name"}
 		=@course.title

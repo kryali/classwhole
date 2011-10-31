@@ -65,8 +65,7 @@ class UserController < ApplicationController
   #
   # We should probably be looking up the id instead of doing a slow search here
   #
-  def add_courses		
-		logger.info "HHHHHHHHHHHHHHEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEYYYYYYYYYYYYYY"		
+  def add_courses			
 		# If the person isn't logged into facebook, create a cookie
 		if !current_user
 			cookies["classes"] = { :value => "", :expires => 1.year.from_now }# create a cookie!			
@@ -74,17 +73,21 @@ class UserController < ApplicationController
 		end
 
 		# Add each class to the current users classes
-    logger.info params["size"]
     params["size"].to_i.times do |i|
-      logger.info i
     	course = params[i.to_s].split(" ")
       subject = course[0]
       number = course[1]
       current_user.courses << Course.find_by_subject_code_and_number(subject, number)
 			add_course_to_cookie(subject, number)
     end
-		redirect_to(scheduler_new_path)
-  end
+		# check whether ot not add_courses is being called by clicking schedule,
+		# or if it is being called from the Course page (ADD CLASS BUTTON)s
+		if params.include? "from_button"
+			redirect_to :back
+		else		
+			redirect_to(scheduler_new_path)
+ 		end
+	 end
 
   #
   # Description: This function gets passed a course ids and removes the course

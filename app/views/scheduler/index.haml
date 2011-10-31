@@ -6,7 +6,7 @@
   %div.user-course-list-wrapper
     %div.user-course-list
       = render "scheduler/user_course_list"
-    = form_tag({:controller => :user, :action=> :add_courses}, :method => :post, :class => "hidden-course-form" ) do
+    %form{:method => "link", :action =>"/scheduler/new"}
       =submit_tag("Schedule", {:class => 'btn primary schedule'})
     %div.hours
       - if current_user
@@ -14,3 +14,7 @@
       - else
         %span= 0
       hrs.
+
+
+
+
