@@ -118,7 +118,6 @@ class UserController < ApplicationController
  #
  #
 	def add_course_to_cookie(subject, number)
-		logger.info "HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEY"		
 		if cookies["classes"]
 			course_id_string = Course.find_by_subject_code_and_number(subject, number).id.to_s			
 			cook = cookies["classes"] # this is used in the next line, so I didn't have to deal with quotes inside a string		
