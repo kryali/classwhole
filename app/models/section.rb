@@ -84,28 +84,7 @@ class Section < ActiveRecord::Base
     return "nil"
   end
 
-	#NOTE: move tihs somewhere where every method can use it
-	def full_name(abbreviation)
-		case abbreviation			
-		when "LEC" 
-			return "Lectures"		
-		when "LCD" 
-			return "Lecture-Discussions"
-		when "DIS"
-			return "Discussions"
-		when "ONL"
-			return "Online"
-		when "IND"
-			return "Independent Study"
-		when "STA"
-			return "Study Abroad"
-		when "LBD"
-			return "Lab-Discussions"
-		when "LAB"
-			return "Lab"	
-		else
-			return abbreviation
-		end	
-	end
+
+
 
 end
