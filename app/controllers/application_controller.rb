@@ -46,7 +46,8 @@ class ApplicationController < ActionController::Base
 		@current_user = User.new		
 		class_ids = cookies["classes"].split('|')		
 		class_ids.each do |id|
-			@current_user.courses << Course.find(id.to_i)
+      course = Course.find_by_id(id.to_i)
+			@current_user.courses << course if course
 		end
 		return @current_user	
 	end
