@@ -1,26 +1,27 @@
 /* dsfsf */
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
--uppercase_string = @semester.season[0,1].upcase + @semester.season[1..-1] + " " + @semester.year
-%div.breadcrumb	
-	=link_to uppercase_string, "/courses"
-	&#47 
-	= link_to "Subjects", "/"+cookies["major_breadcrumb"]
-	&#47 
-	= @subject.code
-%p{:class => "catalog_title"}
-	=@subject.title
-<br/>
-<br/>
-%table{:id => "course_table"}	
-	-for course in @courses														
-		%tr			
-			%td{:class => 'course_cells_code'}
-				= @subject.code + " " + course.number.to_s()
-			%td{:class => 'course_cells_title'}									
-				= link_to( course.title, show_course_path(:year => @semester.year, :season => @semester.season, :subject_code => @subject.code, :course_number => course.number ) )		
+%div.catalog_page
+	<br/>
+	<br/>
+	<br/>
+	<br/>
+	<br/>
+	-uppercase_string = @semester.season[0,1].upcase + @semester.season[1..-1] + " " + @semester.year
+	%div.breadcrumb	
+		=link_to uppercase_string, "/courses"
+		&#47 
+		= link_to "Subjects", "/"+cookies["major_breadcrumb"]
+		&#47 
+		= @subject.code
+	%p{:class => "catalog_title"}
+		=@subject.title
+	<br/>
+	<br/>
+	%table{:id => "course_table"}	
+		-for course in @courses														
+			%tr			
+				%td{:class => 'course_cells_code'}
+					= @subject.code + " " + course.number.to_s()
+				%td{:class => 'course_cells_title'}									
+					= link_to( course.title, show_course_path(:year => @semester.year, :season => @semester.season, :subject_code => @subject.code, :course_number => course.number ) )		
 
 

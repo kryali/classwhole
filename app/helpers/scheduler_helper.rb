@@ -112,10 +112,22 @@ module SchedulerHelper
     return colors 
   end
 
-  def shorten(text, length, end_string = ' ...')
+  # Remove online and arranged sections
+  def remove_onl_sections( sections )
+    onl_sections = []
+    sections.each do |section|
+      if section.start_time.nil?
+        onl_sections << section
+        sections.delete(section)
+      end
+    end
+    return onl_sections
+  end
+
+  def shorten(text, length, end_string = '...')
     return text if( text.length <= length )
     letters = text.split("")
-    return letters[0..(length-1)].join + "..."
+    return letters[0..(length-1)].join + end_string
   end
 
 end

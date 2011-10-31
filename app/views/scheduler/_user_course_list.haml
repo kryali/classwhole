@@ -6,7 +6,7 @@
       %h1 Spring 2011
     - for course in current_user.courses
       %li
-        = link_to("X", remove_course_path(course.id), :remote => true, :class=>"remove-link")
+        = link_to("X", "#", :class=>"remove-link")
         %span.code= course.to_s
         %span.title= course.title
         %span{ :class=> "hidden id"}= course.id

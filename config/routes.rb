@@ -18,7 +18,8 @@ Whiteboard::Application.routes.draw do
   match 'user/register' => 'user#register', :via => :post
   match 'user/courses/new' => 'user#add_courses', :via => :post, :as => :add_courses
   match 'user/courses/destroy/:course_id' => 'user#remove_course', :as => :remove_course
-  match 'user/logout', :as => 'logout'
+	match 'user/courses/remove' => 'user#remove_course', :via => :post  
+	match 'user/logout', :as => 'logout'
 	
 	match '/scheduler/add_class' => 'user#add_courses', :via => :post, :as => :add_courses
   match 'scheduler/move_section' => 'scheduler#move_section', :via => :post

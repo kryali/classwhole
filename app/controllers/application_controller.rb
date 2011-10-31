@@ -3,6 +3,15 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user
 
+
+
+  def set_cache_buster
+    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
+  end
+
+
   # This looks weird to me.. I'll look at this again when I don't suck at ruby
   protected
   def current_user    

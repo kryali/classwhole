@@ -6,15 +6,12 @@
   %div.user-course-list-wrapper
     %div.user-course-list
       = render "scheduler/user_course_list"
-    %form{:method => "link", :action =>"/scheduler/new"}
-      =submit_tag("Schedule", {:class => 'btn primary schedule'})
+    =link_to "Schedule", scheduler_new_path,:class => 'btn primary schedule'
     %div.hours
       - if current_user
         %span= current_user.total_course_hours
       - else
         %span= 0
       hrs.
-
-
 
 

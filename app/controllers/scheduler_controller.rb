@@ -1,5 +1,5 @@
 class SchedulerController < ApplicationController
-
+ before_filter :set_cache_buster
   def index
   end
     

@@ -78,12 +78,13 @@ $course-list-bg     : white; //#E6E6E6;
     }
   }
 
-  input.btn {
-    width: 100%;
+  a.btn {
+    width: 94.75%;
     font-size: .8em;
     border-radius: 2px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
+    text-align: center;
   }
 
   span.hint {

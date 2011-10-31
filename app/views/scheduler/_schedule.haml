@@ -3,6 +3,7 @@
 -# - see scheduler_helper for any unfamiliar functions
 -#
 -# arr_sections = 
+- onl_sections = remove_onl_sections(sections)
 - range = hour_range(sections)
 - start_hour = range[0] - 1
 - end_hour = range[1]
@@ -30,3 +31,8 @@
       - if section_hints_in_days[day_code]
         - section_hints_in_days[day_code].each do |section|
           %div.droppable= render 'section', :section => section, :start_hour => start_hour, :colors => colors
+  %ol.onl_sections
+    %li
+    - onl_sections.each do |onl_section|
+      %span.code=onl_section.code
+      %span.type=onl_section.section_type

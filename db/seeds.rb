@@ -8,7 +8,7 @@ require 'xmlsimple'
 @semester_end_date   = Time.parse("07-Dec-11")
 
 def main
-  ParseSemester( '2011', 'fall' )
+  ParseSemester( '2012', 'spring' )
 end
 
 def ParseSemester(year, season)
