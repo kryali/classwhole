@@ -112,7 +112,7 @@ function show_button() {
 
 
     var course_list = $(".user-course-list");
-    var header = $("<h1/>").text("Spring 2011").addClass("hidden");
+    var header = $("<h1/>").text("Spring 2012").addClass("hidden");
     course_list.prepend(header);
     header.slideDown();
 
