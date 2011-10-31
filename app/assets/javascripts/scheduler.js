@@ -10,7 +10,7 @@ $(function(){
     draggable: {
       snap:        '.ui-droppable',
       snapMode:    'inner',
-      snapTolerance: 8,
+      snapTolerance: 20,
       start:       start_drag_event,
       stop:        stop_drag_event,
       revert:      true,
@@ -210,15 +210,6 @@ $(function(){
       }
     });
   }
-  /* This function removes sections with a given section id */
-  function remove_section( section_id ) {
-    get_current_schedule().find(".schedule-block").each( function() {
-      var current_id = $(this).find(".hidden").text(); 
-      if( current_id == section_id ) {
-        $(this).remove();
-      }
-    });
-  }
 
   /* Unhide the new sections */
   function setup_new_sections( section_id ) {
@@ -236,7 +227,7 @@ $(function(){
   }
 
   function handle_drop( event, ui ) {
-    //handled_drop = true;
+
     // Find the section that the user is holding 
     var curr_section =  $(ui.draggable[0]);
     var curr_section_id = parseInt(curr_section.find(".hidden").text());
@@ -247,30 +238,24 @@ $(function(){
     if (idx!=-1) schedule_ids.splice(idx,1);
     schedule_ids.push(new_section_id);
 
-    //console.log("OLD Id: " + curr_section_id);
-    //console.log("new Id: " + new_section_id);
-    //console.log("Asking for updated schedule");
-    //console.log( schedule_ids );
+    //curr_section.draggable( "option", "revert", "false" );
+    curr_section.fadeOut(1000, function() {
+      curr_section.remove();
+    });
 
     $.ajax({
       type: 'POST',
       data: { schedule:schedule_ids},
       url:  '/scheduler/move_section',
       success: function(data, textStatus, jqXHR) {
-        ///var day = $(ui.helper[0]).parent().attr("day");
+        curr_section.draggable( "option", "revert", "false" );
         update_schedule(data, textStatus, jqXHR, undefined);
       }
     });
 
-    curr_section.draggable( "option", "revert", "false" );
-    /*
-    // Remove those sections from the view
-    remove_section( curr_section_id );
-    setup_new_sections( new_section_id );
+    is_dragging = false;
+    is_showing_hints = false;
 
-    // Clean up
-    stop_drag_event( undefined, undefined );
-    */
   }
 
   function start_drag_event( event, ui ) {
