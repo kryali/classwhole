@@ -83,7 +83,7 @@ ClassList.prototype.add_class_callback = function(event, ui) {
 		      data: { size: "1", 0:string_class_id},
 		      url:  '/user/courses/new',
 		      success: function(data, textStatus, jqXHR) {
-		        update_schedule(data, textStatus, jqXHR, undefined);
+		        //update_schedule(data, textStatus, jqXHR, undefined);
 		      }
 		    });
 				
