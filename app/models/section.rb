@@ -19,7 +19,7 @@ class Section < ActiveRecord::Base
 
   # Description: Checks to see if there is a time conflict
   def time_conflict?(days, start_time, end_time)
-    return false if self.start_time == nil or start_time == nil
+    return false if self.start_time.nil? or start_time.nil?
     day_array = days.split("")
     day_array.each do |day|
       if( self.days.include?(day) )
