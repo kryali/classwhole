@@ -73,8 +73,8 @@ ClassList.prototype.add_class_callback = function(event, ui) {
         selected_classes[class_id] = course_li;
 
         /* Add the course id to our hidden form */
-       /* add_course_id_to_hidden_form(class_id);
-        class_counter++; */
+        add_course_id_to_hidden_form(class_id);
+        class_counter++;
 			
 					/* Call add courses */
 			var string_class_id = class_id.toString();		    
@@ -89,11 +89,11 @@ ClassList.prototype.add_class_callback = function(event, ui) {
 				
 
         /* use a form to keep track of count */
-/*        $("<input>").val(class_counter)
+        $("<input>").val(class_counter)
             .attr("type", "hidden")
             .attr("name", "size")
             .appendTo(".hidden-course-form");
-    }*/
+    }
 
 }
 
