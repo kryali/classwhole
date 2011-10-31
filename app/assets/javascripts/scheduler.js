@@ -3,15 +3,20 @@ $(function(){
   //var block_height = 74;
   var block_height = $(".schedule-blcok").height();
   var is_dragging = false;
+  var is_showing_hints = false;
+  var handled_drop = false;
 
   var options = {
     draggable: {
       snap:        '.ui-droppable',
+      snapMode:    'inner',
+      snapTolerance: 8,
       start:       start_drag_event,
       stop:        stop_drag_event,
       revert:      true,
       revertDuration: 200,
       scope:        'section_hint',
+      refreshPositions: true,
       zIndex:       1,
     },
     droppable: {
@@ -30,10 +35,19 @@ $(function(){
       generatePagination: true
     });
 
-    // Additional menus on hover over
-    $(".schedule-block").mouseover( function(){
+    init_draggable();
 
-      console.log("MOUSEOVER");
+  }
+
+  function init_draggable() {
+    $(".schedule-block").draggable(options.draggable);
+    $(".schedule-block").mouseup( function(){ 
+      $(".droppable").fadeOut(120);
+    });
+
+    $(".schedule-block").mouseover( function(){
+      if( is_showing_hints || handled_drop ) return;
+      is_showing_hints = true;
 
       var current_section = $(this);
       current_section.draggable( 'option', 'revert', true );
@@ -48,21 +62,16 @@ $(function(){
           update_schedule(data, textStatus, jqXHR, undefined);
         }
       });
-
     });
+    
     $(".schedule-block").mouseleave( function(){
-      //$(this).find("ul.hidden-data").fadeOut('slow');
+      if( is_dragging) return;
+      handled_drop = false;
+      is_showing_hints = false;
+
+      stop_drag_event( undefined, undefined );
     });
 
-    init_draggable();
-
-  }
-
-  function init_draggable() {
-    $(".schedule-block").draggable(options.draggable);
-    $(".schedule-block").mouseup( function(){ 
-      $(".droppable").fadeOut(120);
-    });
   }
 
   function add_hours( num_hours ){
@@ -197,7 +206,6 @@ $(function(){
     $(".schedule-block").each( function() {
       var current_id = $(this).find(".hidden").text(); 
       if( current_id == section_id ) {
-        console.log($(this));
         $(this).removeClass("droppable");
       }
     });
@@ -228,6 +236,7 @@ $(function(){
   }
 
   function handle_drop( event, ui ) {
+    //handled_drop = true;
     // Find the section that the user is holding 
     var curr_section =  $(ui.draggable[0]);
     var curr_section_id = parseInt(curr_section.find(".hidden").text());
@@ -266,8 +275,9 @@ $(function(){
 
   function start_drag_event( event, ui ) {
 
-    if( is_dragging ) return;
+    if( is_dragging) return;
     is_dragging = true;
+    if( is_showing_hints) return;
     //console.log(ui);
     //console.log(event);
     var current_section = $(ui.helper[0]);
@@ -290,13 +300,13 @@ $(function(){
 
   function stop_drag_event( event, ui ) {
     is_dragging = false;
-    
     var droppable_timeout = 220;
 
     $(".droppable").fadeOut( droppable_timeout );
     setTimeout( function() {
       $('.droppable').remove();
     },  droppable_timeout );
+    is_showing_hints = false;
 
   }
 
