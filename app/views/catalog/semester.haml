@@ -7,7 +7,7 @@
 	-uppercase_string = @semester.season[0,1].upcase + @semester.season[1..-1] + " " + @semester.year
 	%div.breadcrumb
 		= link_to uppercase_string, "/courses/"
-		>> Majors
+		&#47 Subjects
 	-alphabet = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","P","R","S","T","U","V","W","Y","Z"]	
 	%div{:class => "pagination"}
 		%ul

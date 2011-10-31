@@ -75,6 +75,18 @@ ClassList.prototype.add_class_callback = function(event, ui) {
         /* Add the course id to our hidden form */
         add_course_id_to_hidden_form(class_id);
         class_counter++;
+			
+					/* Call add courses */
+			var string_class_id = class_id.toString();		    
+			$.ajax({
+		      type: 'POST',
+		      data: { size: "1", 0:string_class_id},
+		      url:  '/user/courses/new',
+		      success: function(data, textStatus, jqXHR) {
+		        update_schedule(data, textStatus, jqXHR, undefined);
+		      }
+		    });
+				
 
         /* use a form to keep track of count */
         $("<input>").val(class_counter)
