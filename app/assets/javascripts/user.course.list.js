@@ -36,7 +36,6 @@ ClassList.prototype.add_class_callback = function(event, ui) {
     this.value = ""; 
 
     if ( ui.item ) {
-				console.log( ui.item );
         show_button();
         var class_id = ui.item.value;
         if( class_id in selected_classes ){
