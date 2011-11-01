@@ -217,19 +217,14 @@ $block_padding: 8px;
 
 }
 
-ul.hidden-data {
-  display: none;
+.ui-droppable {
+  opacity: .5;
+  border: 1px dashed #888; 
+  cursor: pointer;
 }
 
-.droppable {
-  z-index: 2;
-  //border: 1px dashed #888; 
-  .ui-draggable {
-    opacity: .5;
-    border: 1px dashed #888; 
-    cursor: pointer;
-    //z-index: 0;
-  }
+ul.hidden-data {
+  display: none;
 }
 
 .hover {
