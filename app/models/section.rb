@@ -1,16 +1,18 @@
 class Section < ActiveRecord::Base
   belongs_to :course
-#  has_and_belongs_to_many :users
+  #belongs_to :schedule
 
   # Configuration Key to access the configurations_hash of a register_course
   # this may need to become more advanced depending on if we discover unusual courses
   def configuration_key
     if self.course_subject_code == "PHYS" #PHYSICS DEPARTMENT Y U NO CONSISTENT?
       key = self.course_subject_code
-    elsif self.code == nil
+    elsif self.code == nil #If there is no code, assume all courses are in the same configuration
+      key = self.course_subject_code
+    elsif (true if Integer(self.code) rescue false) #If the code is an integer, assume the courses should be in the same configuration
       key = self.course_subject_code
     else
-      key = self.code.at(0)
+      at0 = self.code.at(0)
       #append number to key if it exists at 1 (for mathematica sections B8, X8, etc)
       at1 = self.code.at(1)
       key << at1 if (true if Integer(at1) rescue false)
