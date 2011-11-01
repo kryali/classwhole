@@ -3,7 +3,7 @@
 %ul
   - if current_user
     - if not current_user.courses.empty?
-      %h1 Spring 2011
+      %h1 Spring 2012
     - for course in current_user.courses
       %li
         = link_to("X", "#", :class=>"remove-link")
