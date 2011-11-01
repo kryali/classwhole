@@ -24,6 +24,7 @@ Whiteboard::Application.routes.draw do
 	match '/scheduler/add_class' => 'user#add_courses', :via => :post, :as => :add_courses
   match 'scheduler/move_section' => 'scheduler#move_section', :via => :post
 	match 'scheduler/new' => 'scheduler#new'
+  match 'scheduler/save' => 'scheduler#save', :via => :post
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

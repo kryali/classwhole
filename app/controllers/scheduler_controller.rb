@@ -8,8 +8,8 @@ class SchedulerController < ApplicationController
 
   def new
     scheduler = Scheduler.new(current_user.courses)
-    scheduler.schedule_courses
-    @possible_schedules = scheduler.valid_schedules[0,5]
+    scheduler.schedule_configurations
+    @possible_schedules = scheduler.valid_schedules#[0,5]
     render 'show'
   end
 
@@ -18,7 +18,7 @@ class SchedulerController < ApplicationController
 
     schedule = []
     params["schedule"].each do |section_id|
-      schedule << Section.find(section_id.to_i)
+      schedule << Section.find_by_id(section_id.to_i)
     end
 
     if params["section"]

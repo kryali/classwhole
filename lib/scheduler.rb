@@ -2,40 +2,41 @@ class Scheduler
   attr_accessor :valid_schedules
 
   def initialize(user_courses)
-    @valid_schedules = []
-    @schedule = []
     @courses = []
     user_courses.each do |course|
       @courses << Register_Course.new(course)
     end
   end
 
-=begin
-  def schedule_course(course)
-    @valid_schedules
-    course.configurations_array.each do |configuration|
-      schedule_configuration(configuration, 0)
-    end
+  # schedule configurations
+  def schedule_configurations
+    @valid_schedules = []
+    @schedule = []
+    schedule_course_configurations_recursive(0)
   end
 
-  def schedule_configuration(configuration, sections_index)
-    if sections_index >= configuration.size
-      schedule_course_recursive(course_index+1)
+  def schedule_course_configurations_recursive(course_index)
+    if course_index >= @courses.size #valid schedule!
+      @valid_schedules << @schedule.clone
       return
     end
-    sections = configuration[sections_index]
-    sections.each do |section|
-      unless section.schedule_conflict?(@schedule)
-        @schedule.push(section)
-        schedule_configuration_sections_recursive(configuration, sections_index+1, course_index)
+    course = @courses[course_index]
+    course.configurations_array.each do |configuration|
+      configuration.each do |sections|
+        @schedule.push(sections[0])
+      end
+      schedule_course_configurations_recursive(course_index+1)
+      for i in (0...configuration.length)
         @schedule.pop
       end
     end
   end
-=end
+
+  # schedule courses
   def schedule_courses
+    @valid_schedules = []
+    @schedule = []
     schedule_course_recursive(0)
-    @valid_schedules.sort{|x,y| holes(x) <=> holes(y)}
   end
 
   def schedule_course_recursive(course_index)
