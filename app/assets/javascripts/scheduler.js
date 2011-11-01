@@ -4,6 +4,7 @@ $(function(){
   var block_height = $(".schedule-blcok").height();
   var is_dragging = false;
   var is_showing_hints = false;
+  var is_updating = false;
   var handled_drop = false;
 
   var options = {
@@ -40,19 +41,17 @@ $(function(){
   }
 
   function init_draggable() {
-    $(".schedule-block").draggable(options.draggable);
-    $(".schedule-block").mouseup( function(){ 
-      $(".droppable").fadeOut(120);
-    });
-
-    $(".schedule-block").mouseover( function(){
-      if( is_showing_hints || handled_drop ) return;
+    $(".schedule-block:not(.ui-droppable)").draggable(options.draggable);
+    $(".schedule-block:not(.ui-droppable)").mouseover( function(){
+      if( is_showing_hints ) return;
       is_showing_hints = true;
 
       var current_section = $(this);
       current_section.draggable( 'option', 'revert', true );
       var section = current_section.find(".hidden").text();
       var schedule_ids = get_schedule_ids();
+      //console.log( "Selected" + section );
+      //console.log( schedule_ids );
 
       $.ajax({
         type: 'POST',
@@ -64,12 +63,18 @@ $(function(){
       });
     });
     
-    $(".schedule-block").mouseleave( function(){
-      if( is_dragging) return;
-      handled_drop = false;
-      is_showing_hints = false;
+    $(".schedule-block:not(.ui-droppable)").mouseleave( function(){
+      // Sometimes a mouseleave gets fired when a user is dragging
+      if( is_dragging) { 
+        //console.log("IS DRAGGING!");
+        return; 
+      }
 
-      stop_drag_event( undefined, undefined );
+      //console.log("REMOVING STUFF");
+      is_showing_hints = false;
+      $(".droppable").stop().fadeOut( 200, function() {
+        $(this).remove();
+      });
     });
 
   }
@@ -107,35 +112,48 @@ $(function(){
     Update schedule refreshes the schedule content with the new schedule
       from the server. It's an AJAX `success` callback function */
   function update_schedule(data, textStatus, jqXHR, day) {
+
+    // Make sure we aren't updating the schedule when another update is in progress
+    if( is_updating ) return;
+
+    // This happens when the user stops hovering before the schedule is updated
+    if( !is_showing_hints ) return; 
+    is_updating = true;
+
     var contents = $(data).children();
     var current_schedule = get_current_schedule();
 
     var selected_box = $(".ui-draggable-dragging");
     var selected_section_id = selected_box.find(".hidden").text();
-    
-    // Move the dragndrop to an element on the page to keep it in the document
-    $("#slides").append(selected_box);
 
-    // Add the content to the page
-    current_schedule.empty().append( contents );
-
-    // Find the day of the section we're trying to add
-    var current_day = current_schedule.find("." + day );
-
-    // Remove the duplicate section given to us by the server (selected section)
-    remove_section_from_day( current_day, selected_section_id);
-  
     // If we aren't given a position to insert the selected box, don't add 
-    if( !day ){
-      selected_box.draggable("destroy");
-      selected_box.remove();
+    if( day ){
+      // Move the dragndrop to an element on the page to keep it in the document
+      $("#slides").append(selected_box);
+
+      // Add the content to the page
+      current_schedule.empty().append( contents );
+
+      // Find the day of the section we're trying to add
+      var current_day = current_schedule.find("." + day );
+
+      // Remove the duplicate section given to us by the server (selected section)
+      remove_section_from_day( current_day, selected_section_id);
+
+      // Re-insert the dragndrop to the page
+      current_day.append(selected_box);
+    } 
+    else {
+      if( selected_box.length > 0) {
+        //console.log("REMOVING LAME BOX");
+        selected_box.draggable("destroy");
+        selected_box.remove();
+      }
+
+      // Add the content to the page
+      current_schedule.empty().append( contents );
     }
 
-    // Re-insert the dragndrop to the page
-    current_day.append(selected_box);
-
-    // Enable the new sections to be draggable
-    init_draggable();
 
     // Make the hints droppable
     var section_hints = current_schedule.find(".droppable").find(".schedule-block");
@@ -153,6 +171,12 @@ $(function(){
     current_schedule.find(".droppable").addClass("hidden");
     current_schedule.find(".droppable").fadeIn(450);
 
+    // Enable the new sections to be draggable
+    init_draggable();
+
+    //console.log("Schedule updated");
+    is_updating = false;
+    is_dragging = false;
   }
 
   function insert_suggestions(data, textStatus, jqXHR) {
@@ -234,27 +258,34 @@ $(function(){
     var new_section_id = parseInt($(this).find(".hidden").text());
     var schedule_ids = get_schedule_ids();
 
+    // Generate the list of the new schedule to render
     var idx = schedule_ids.indexOf(curr_section_id);
     if (idx!=-1) schedule_ids.splice(idx,1);
     schedule_ids.push(new_section_id);
+    schedule_ids.sort();
 
-    //curr_section.draggable( "option", "revert", "false" );
-    curr_section.fadeOut(1000, function() {
-      curr_section.remove();
-    });
+    //console.log(ui.draggable);
+    ui.draggable.addClass( 'correct' );
+    ui.draggable.draggable( 'disable' );
+    $(this).droppable( 'disable' );
+    ui.draggable.position( { of: $(this), my: 'left top', at: 'left top' } );
+    ui.draggable.draggable( 'option', 'revert', false );
+    ui.draggable.remove();
+
+    //console.log( "selected: " + curr_section_id );
+    //console.log( schedule_ids );
 
     $.ajax({
       type: 'POST',
       data: { schedule:schedule_ids},
       url:  '/scheduler/move_section',
       success: function(data, textStatus, jqXHR) {
-        curr_section.draggable( "option", "revert", "false" );
+        //curr_section.draggable( "option", "revert", "false" );
         update_schedule(data, textStatus, jqXHR, undefined);
+        is_showing_hints = false;
       }
     });
 
-    is_dragging = false;
-    is_showing_hints = false;
 
   }
 
@@ -287,14 +318,14 @@ $(function(){
     is_dragging = false;
     var droppable_timeout = 220;
 
-    $(".droppable").fadeOut( droppable_timeout );
-    setTimeout( function() {
-      $('.droppable').remove();
-    },  droppable_timeout );
-    is_showing_hints = false;
+    $(".droppable").stop().fadeOut( droppable_timeout, function() {
+      $(this).remove();
+      is_showing_hints = false;
+    });
 
   }
 
   init();
+
 
 });
