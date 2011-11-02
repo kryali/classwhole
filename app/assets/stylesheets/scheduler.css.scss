@@ -22,10 +22,10 @@
 }
 
 // schedule
-$block-width        : 150px;
+$block-width        : 130px;
 $schedule-block-h   : 60px;
 $numblocks          : 12;
-
+$scheduler-content-width: 780px;
 /* all colors */
 // These are the main element colors 
 $default-font-color : #4D4D4D;
@@ -115,7 +115,7 @@ $block_padding: 4px;
 
   .course-title {
     font-size: .7em;
-    top: $block_padding * 5.5;
+    top: $block_padding * 5.25;
     left: $block_padding;
     color: #888;
   }
@@ -129,6 +129,11 @@ $block_padding: 4px;
   }
 
 }
+
+.slides_container {
+  margin-top: 2em;
+}
+
 .schedule-wrapper {
   clear: both;
   //overflow: hidden;
@@ -213,7 +218,6 @@ $block_padding: 4px;
       border: none;
     }
   }
-
 }
 
 .ui-droppable {
@@ -241,7 +245,15 @@ ul.hidden-data {
     font-size: 1.3em;
     padding: 1em;
   }
-  margin-top: 3em;
+  margin: 1em auto 0 auto;
+  width: $scheduler-content-width;
+
+  ul.pagination {
+    //position: absolute;
+    //top: 0em;
+    //left: 5em;
+  }
+
 }
 
 strong {
@@ -262,12 +274,6 @@ strong {
 }
 .color-4 {
   background: #F3fba2;
-}
-
-ul.pagination {
-  position: absolute;
-  top: 0em;
-  right: 5em;
 }
 
 .next {
