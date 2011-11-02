@@ -50,7 +50,6 @@ class CatalogController < ApplicationController
   def semester
     @semester = get_semester(params)
     @subjects = @semester.subjects
-		cookies["major_breadcrumb"] = "courses/"+@season+"/"+@year     
 		render 'semester'
   end
 
@@ -63,7 +62,6 @@ class CatalogController < ApplicationController
   def subject
     @subject = get_subject(params)
     @courses = @subject.courses
-    cookies["courses_breadcrumb"] = cookies["major_breadcrumb"]+"/"+@subject.code
 		render 'subject'
   end
 
@@ -77,15 +75,6 @@ class CatalogController < ApplicationController
     @course = get_course(params)
     @sections = @course.sections     
 		@types_of_sections = get_different_sections()
-		@translations = Hash.new
-		@translations["LEC"] = "Lectures"		
-		@translations["LCD"] = "Lecture-Discussions"
-		@translations["DIS"] = "Discussions"
-		@translations["ONL"] = "Online"
-		@translations["IND"] = "Independent Study"
-		@translations["STA"] = "Study Abroad"
-		@translations["LBD"] = "Lab-Discussions"
-		@translations["LAB"] = "Lab"
 		render 'course'
   end
 

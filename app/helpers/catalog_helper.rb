@@ -56,5 +56,13 @@ module CatalogHelper
 		end	
 	end
 
+	def get_previous_url(url)
+		array = url.split('/')
+		previous_url = ''
+		for i in (0..array.size-2)
+			previous_url += array[i] + '/'
+		end
+		return previous_url
+	end
 
 end
