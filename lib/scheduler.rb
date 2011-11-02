@@ -35,7 +35,7 @@ class Scheduler
 =end
   def schedule_courses
     schedule_course_recursive(0)
-    @valid_schedules.sort{|x,y| holes(x) <=> holes(y)}
+    #@valid_schedules.sort{|x,y| holes(x) <=> holes(y)}
   end
 
   def schedule_course_recursive(course_index)
