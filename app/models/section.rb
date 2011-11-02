@@ -7,7 +7,7 @@ class Section < ActiveRecord::Base
   def configuration_key
     if self.course_subject_code == "PHYS" #PHYSICS DEPARTMENT Y U NO CONSISTENT?
       key = self.course_subject_code
-    elsif self.code == nil #If there is no code, assume all courses are in the same configuration
+    elsif self.code.nil? #If there is no code, assume all courses are in the same configuration
       key = self.course_subject_code
     elsif (true if Integer(self.code) rescue false) #If the code is an integer, assume the courses should be in the same configuration
       key = self.course_subject_code
@@ -36,7 +36,7 @@ class Section < ActiveRecord::Base
   end
 
   def has_time_conflict?(section, time_constraints)
-    if time_constraints == nil
+    if time_constraints.nil?
       return false
     end
     time_constaints.each do |time_constraint|
