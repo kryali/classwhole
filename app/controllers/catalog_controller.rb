@@ -84,12 +84,37 @@ class CatalogController < ApplicationController
 	#	  - used to make the tabs for the sections table on course page
 	#
 	def get_different_sections()	
-		list = []		
+		lecture_exists = 0		
+		list = []
+		lecture_index = -1
+		lecture_discussion_index = -1		
+		index = 0
 		for section in @sections do
 			if !list.include? section.section_type
-				list << section.section_type
+				list << section.section_type			
+				if section.section_type == 'LEC'
+					lecture_index = index			
+				end
+				if section.section_type == 'LCD'
+					lecture_discussion_index = index				
+				end
+				index = index + 1				
 			end		
 		end		
+		# This code puts Lecture and Lecture-Discussions at the front of the list 		
+		if lecture_index != -1
+			lecture_exists = 1			
+			temp = list[0]
+			list[0] = list[lecture_index]
+			list[lecture_index] = temp
+		end
+		if lecture_discussion_index != -1
+			if lecture_exists != 1
+				temp = list[0]
+				list[0] = list[lecture_discussion_index]
+				list[lecture_discussion_index] = temp
+			end			
+		end
 		return list
 	end
 
