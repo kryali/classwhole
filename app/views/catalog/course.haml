@@ -10,16 +10,17 @@
 %div.breadcrumb	
 	=link_to uppercase_string, "/courses"
 	&#47 
-	= link_to  "Subjects", "/"+cookies["major_breadcrumb"]
+	= link_to  "Subjects", get_previous_url(get_previous_url(request.url))
 	&#47 
-	= link_to @subject.code, "/"+cookies["courses_breadcrumb"]
+	= link_to @subject.code, get_previous_url(request.url)
 	&#47 
 	=name_and_number
 
 -class_already_added = 0
--for course in current_user.courses
-	-if course.to_s == name_and_number
-		-class_already_added = 1
+-if !current_user.nil?
+	-for course in current_user.courses
+		-if course.to_s == name_and_number
+			-class_already_added = 1
 
 %div.course_box
 	-if class_already_added == 0		

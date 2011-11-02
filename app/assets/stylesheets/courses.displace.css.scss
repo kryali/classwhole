@@ -136,6 +136,8 @@ float: right;
 {
 font-family: 'Arial', 'Tahoma', sans-serif;
 font-size:14pt;
+float: left;
+
 }
 
 .section_tabs
@@ -148,4 +150,10 @@ font-size:14pt;
 .catalog_page
 {
 
+}
+
+/* pagination on subjects page */
+.pag
+{
+width: 110%;
 }
