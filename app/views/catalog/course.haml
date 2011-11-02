@@ -17,9 +17,10 @@
 	=name_and_number
 
 -class_already_added = 0
--for course in current_user.courses
-	-if course.to_s == name_and_number
-		-class_already_added = 1
+-if !current_user.nil?
+	-for course in current_user.courses
+		-if course.to_s == name_and_number
+			-class_already_added = 1
 
 %div.course_box
 	-if class_already_added == 0		
