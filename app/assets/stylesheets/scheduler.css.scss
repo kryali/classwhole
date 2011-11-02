@@ -23,7 +23,7 @@
 
 // schedule
 $block-width        : 150px;
-$schedule-block-h   : 74px;
+$schedule-block-h   : 60px;
 $numblocks          : 12;
 
 /* all colors */
@@ -79,7 +79,7 @@ $showcase-bg        : url('showcase-bg.png');
   } 
 }
 
-$block_padding: 8px;
+$block_padding: 4px;
 .schedule-block {
   width: 100%;
   background: white;
@@ -115,7 +115,7 @@ $block_padding: 8px;
 
   .course-title {
     font-size: .7em;
-    top: $block_padding * 3.4;
+    top: $block_padding * 5.5;
     left: $block_padding;
     color: #888;
   }
@@ -136,7 +136,7 @@ $block_padding: 8px;
   position: relative;
 
   ul.time-label {
-    margin-top: 1.6em;
+    margin-top: 1.8em;
     float: left;
 
     li {
@@ -145,8 +145,7 @@ $block_padding: 8px;
       padding-right: 15px;
       //line-height: $schedule-block-h;
       height: $schedule-block-h;
-      height: 72px;
-      border: 1px solid transparent;
+      //border: 1px solid transparent;
       font-size: .8em;
       text-transform: uppercase;
     }

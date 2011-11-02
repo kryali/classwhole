@@ -1,4 +1,5 @@
 module SchedulerHelper
+  @schedule_block_height = 50
 
   def print_day(day_short_code)
     case day_short_code
@@ -89,14 +90,12 @@ module SchedulerHelper
   end
 
   def section_top_px( section, start_hour )
-    scheduler_block_height = 74
-    top_px = (section.start_time.hour - start_hour + (section.start_time.min/60.0)) * scheduler_block_height
+    top_px = (section.start_time.hour - start_hour + (section.start_time.min/60.0)) * 60 # scheduler_block_height
     return top_px
   end
 
   def section_height_px( section )
-    scheduler_block_height = 74
-    return section.duration * scheduler_block_height
+    return section.duration * 60#@scheduler_block_height
   end
 
   def section_colors( sections )
