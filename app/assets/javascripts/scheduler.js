@@ -33,10 +33,24 @@ $(function(){
     // Setup the slidejs plugin
     $("#slides").slides({
       autoHeight: true,
-      generatePagination: true
+      pagination: true,
+      paginationClass: 'mini-pagination',
+      generatePagination: false,
     });
 
     init_draggable();
+
+    // Use the keyboard to select other schedules
+    $(document).keydown( function(event) {
+        var keycode = $.ui.keyCode;
+        if( event.keyCode == keycode.LEFT ) {
+          $(".prev").click();
+          event.preventDefault();
+        } else if( event.keyCode == keycode.RIGHT) {
+          $(".next").click();
+          event.preventDefault();
+        }
+    });
 
   }
 

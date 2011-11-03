@@ -14,7 +14,6 @@ class SchedulerController < ApplicationController
   end
 
   def move_section
-    logger.info "Section: #{params["section"]}"
 
     schedule = []
     params["schedule"].each do |section_id|

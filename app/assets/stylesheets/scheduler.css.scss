@@ -54,29 +54,29 @@ $showcase-bg        : url('showcase-bg.png');
   }
 }
 
+.small-width {
+  width: $block-width/10;
+}
+
+.large-width {
+  width: $block-width;
+}
+
+.small-height {
+  height: $schedule-block-h/10;
+}
+.large-height {
+  height: $schedule-block-h;
+}
 
 .schedule-day {
-  width: $block-width;
   position: relative;
+  width: $block-width;
   background: #cccccc;
   float: left;
   margin: 0 0px 0 0px;
-  //overflow: hidden;
   border-right: 1px solid #cccccc;
   border-bottom: 1px solid #aaaaaa;
-
-  tr {
-    display: block;
-    height: $schedule-block-h - 2;
-    width: 100%;
-    background: #dddddd;
-    border-top: 1px solid #aaaaac;
-    border-left: 1px solid #aaaaac;
-    /* Highlight white inner */
-    box-shadow: inset 1px 1px 1px 0px white;
-    -moz-box-shadow: inset 1px 1px 1px 0px white;
-    -webkit-box-shadow: inset 1px 1px 1px 0px white;
-  } 
 }
 
 $block_padding: 4px;
@@ -131,7 +131,7 @@ $block_padding: 4px;
 }
 
 .slides_container {
-  margin-top: 2em;
+  margin-top: 120px;
 }
 
 .schedule-wrapper {
@@ -148,9 +148,7 @@ $block_padding: 4px;
       display: block;
       text-align: right;
       padding-right: 15px;
-      //line-height: $schedule-block-h;
       height: $schedule-block-h;
-      //border: 1px solid transparent;
       font-size: .8em;
       text-transform: uppercase;
     }
@@ -168,7 +166,6 @@ $block_padding: 4px;
     }
     
     li {
-      height: $schedule-block-h;
       border: 1px solid #eeeeee;
       display: block;
       height: $schedule-block-h - 2;
@@ -319,6 +316,60 @@ ul.onl_sections {
 .F {
   border-right: 3px solid #AAA;
 }
+
+$mini-schedule-width: 130px;
+$mini-schedule-height: 90px;
+$mini-schedule-border-color: #aaa;
+ul.mini-pagination {
+  position: absolute;
+  top: 29px;
+  left: 132px;
+  border: 1px solid $mini-schedule-border-color;
+
+  li {
+    overflow: hidden;
+    display: block;
+    width: $mini-schedule-width;
+    float: left;
+    border-left: 1px solid $mini-schedule-border-color;
+  }
+
+  li:first-child {
+    border: none;
+  }
+
+  a {
+    width: $mini-schedule-width;
+    z-index: 10;
+    height: $mini-schedule-height;
+    position: absolute;
+  }
+
+  a:hover {
+    background: #fff;
+    opacity: .2;
+  }
+
+  .current a{
+    background: #fff;
+    opacity: .3;
+  }
+}
+
+.mini-schedule {
+  width: $mini-schedule-width;
+  height: $mini-schedule-height;
+  background: #ddd;
+  margin: 1px;
+  float: left;
+  position: relative;
+
+  .mini-section {
+    position: absolute;
+    border: 1px solid #888;
+  }
+}
+
 
 .prev {
   position: absolute;
