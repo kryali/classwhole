@@ -5,7 +5,11 @@ gem 'rails', '3.1.1'
 gem 'passenger'
 gem 'dalli'
 
+# simulate a web browser
 gem 'mechanize'
+
+# memory logger
+gem 'oink'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'

@@ -8,7 +8,7 @@ Whiteboard::Application.routes.draw do
   match  'courses/search/auto/subject/:subject_code' => 'catalog#course_auto_search'
   match  'courses/search' => 'catalog#simple_search', :via => :post
 
-  match  'courses/' => 'catalog#index', :as => 'show_university'
+  match  'courses/' => 'catalog#semester', :as => 'show_university'
   match  'courses/:season/:year/' => 'catalog#semester', :as => 'show_semester'
   match  'courses/:season/:year/:subject_code' => 'catalog#subject', :as => 'show_subject'
   match  'courses/:season/:year/:subject_code/:course_number' => 'catalog#course', :as => 'show_course'
@@ -16,7 +16,7 @@ Whiteboard::Application.routes.draw do
   root :to => 'home#index'
   match 'user/login' => 'user#login', :via => :post
   match 'user/register' => 'user#register', :via => :post
-  match 'user/courses/new' => 'user#add_courses', :via => :post, :as => :add_courses
+  match 'user/courses/new' => 'user#add_course', :via => :post, :as => :add_course
   match 'user/courses/destroy/:course_id' => 'user#remove_course', :as => :remove_course
 	match 'user/courses/remove' => 'user#remove_course', :via => :post  
 	match 'user/logout', :as => 'logout'

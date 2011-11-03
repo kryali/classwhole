@@ -65,7 +65,7 @@ class UserController < ApplicationController
   #
   # We should probably be looking up the id instead of doing a slow search here
   #
-  def add_courses			
+  def add_course
 		# If the person isn't logged into facebook, create a cookie
 		if !current_user
 			cookies["classes"] = { :value => "", :expires => 1.year.from_now }# create a cookie!			
@@ -73,13 +73,9 @@ class UserController < ApplicationController
 		end
 
 		# Add each class to the current users classes
-    params["size"].to_i.times do |i|
-    	course = params[i.to_s].split(" ")
-      subject = course[0]
-      number = course[1]
-      current_user.courses << Course.find_by_subject_code_and_number(subject, number)
-			add_course_to_cookie(subject, number)
-    end
+    current_user.courses << Course.find( params["id"].to_i )
+    add_course_to_cookie( params["id"] )
+    current_user.save
 		# check whether ot not add_courses is being called by clicking schedule,
 		# or if it is being called from the Course page (ADD CLASS BUTTON)s
 		if params.include? "from_button"
@@ -117,9 +113,9 @@ class UserController < ApplicationController
  # Description: This function simply adds the course_id to a the coookie
  #
  #
-	def add_course_to_cookie(subject, number)
+	def add_course_to_cookie(id)
 		if cookies["classes"]
-			course_id_string = Course.find_by_subject_code_and_number(subject, number).id.to_s			
+			course_id_string = id.to_s			
 			cook = cookies["classes"] # this is used in the next line, so I didn't have to deal with quotes inside a string		
 			cookies["classes"] = { :value => "#{cook}#{course_id_string}|", :expires => 1.year.from_now } 				
 		end

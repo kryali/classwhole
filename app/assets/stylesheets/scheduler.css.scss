@@ -22,10 +22,10 @@
 }
 
 // schedule
-$block-width        : 150px;
-$schedule-block-h   : 74px;
+$block-width        : 144px;
+$schedule-block-h   : 60px;
 $numblocks          : 12;
-
+$scheduler-content-width: 780px;
 /* all colors */
 // These are the main element colors 
 $default-font-color : #4D4D4D;
@@ -79,7 +79,7 @@ $showcase-bg        : url('showcase-bg.png');
   } 
 }
 
-$block_padding: 8px;
+$block_padding: 4px;
 .schedule-block {
   width: 100%;
   background: white;
@@ -115,7 +115,7 @@ $block_padding: 8px;
 
   .course-title {
     font-size: .7em;
-    top: $block_padding * 3.4;
+    top: $block_padding * 5.25;
     left: $block_padding;
     color: #888;
   }
@@ -129,6 +129,11 @@ $block_padding: 8px;
   }
 
 }
+
+.slides_container {
+  margin-top: 2em;
+}
+
 .schedule-wrapper {
   clear: both;
   //overflow: hidden;
@@ -136,7 +141,7 @@ $block_padding: 8px;
   position: relative;
 
   ul.time-label {
-    margin-top: 1.6em;
+    margin-top: 1.8em;
     float: left;
 
     li {
@@ -145,8 +150,7 @@ $block_padding: 8px;
       padding-right: 15px;
       //line-height: $schedule-block-h;
       height: $schedule-block-h;
-      height: 72px;
-      border: 1px solid transparent;
+      //border: 1px solid transparent;
       font-size: .8em;
       text-transform: uppercase;
     }
@@ -160,7 +164,7 @@ $block_padding: 8px;
       background: white;
       height: 100%;
       text-align: center;
-      padding: .5em;
+      padding: 0.5em 0em;
     }
     
     li {
@@ -214,7 +218,6 @@ $block_padding: 8px;
       border: none;
     }
   }
-
 }
 
 .ui-droppable {
@@ -242,7 +245,15 @@ ul.hidden-data {
     font-size: 1.3em;
     padding: 1em;
   }
-  margin-top: 3em;
+  margin: 1em auto 0 auto;
+  width: $scheduler-content-width;
+
+  ul.pagination {
+    //position: absolute;
+    //top: 0em;
+    //left: 5em;
+  }
+
 }
 
 strong {
@@ -265,15 +276,39 @@ strong {
   background: #F3fba2;
 }
 
-ul.pagination {
-  position: absolute;
-  top: 0em;
-  right: 5em;
+ul.onl_sections {
+  width: 150px;
+  min-height: 10px;
+  background: white;
+  display: block;
+  padding: 5px 0 ;
+  clear: both;
+  text-align: center;
+  margin: 0 auto 0 auto;
+  
+  li.header {
+    border-bottom: 1px solid #aaa;
+    font-size: .9em;
+    text-transform: uppercase;
+    color: #555;
+    margin-top: 1em;
+    margin-bottom: 5px;
+    padding-bottom: .5em;
+  }
+
+  li {
+    font-size: .9em;
+    color: #aaa;
+
+    .course {
+      font-weight: bold;
+    }
+  }
 }
 
 .next {
   position: absolute;
-  top: 200px;
+  top: 40%;
   right: -24px;
   width: 24px;
   height: 43px;
@@ -281,9 +316,13 @@ ul.pagination {
   background: image-url("arrow-next.png");
 }
 
+.F {
+  border-right: 3px solid #AAA;
+}
+
 .prev {
   position: absolute;
-  top: 200px;
+  top: 40%;
   left: -24px;
   width: 24px;
   height: 43px;

@@ -4,7 +4,7 @@
       %div.container
         %h3= link_to "Classrroom", root_path, {:id => "logo"}
         %ul.nav
-          %li= link_to "Course List", show_university_path
+          %li= link_to "Course List", show_semester_path(Semester.first.season, Semester.first.year)
           %li= link_to "Schedule", scheduler_index_path
         %ul{ :class => "nav secondary-nav"}
           - if current_user

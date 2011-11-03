@@ -72,7 +72,7 @@ font-family: 'Arial', 'Tahoma', sans-serif;
 /* The number of the course on the course page */
 #course_num
 {
-color: #222222;
+color: #1A1A1A;
 font-size:26pt;
 font-family: 'Arial', 'Tahoma', sans-serif;
 font-weight:bolder;
@@ -82,7 +82,7 @@ padding-bottom:1%;
 /* The name of the course on the course page */
 #course_name
 {
-color:#515151;
+color:#2F2F2F;
 font-weight:bold;
 font-size:19pt;
 font-family: 'Arial', 'Tahoma', sans-serif;
@@ -136,6 +136,8 @@ float: right;
 {
 font-family: 'Arial', 'Tahoma', sans-serif;
 font-size:14pt;
+float: left;
+
 }
 
 .section_tabs
@@ -147,5 +149,19 @@ font-size:14pt;
 /* setting the background for all the pages in the course list */
 .catalog_page
 {
+margin-top: 20px;
 
+}
+/* the text displaying the number of hours a class is */
+#hours
+{
+font-family: 'Arial', 'Tahoma', sans-serif;
+font-size:14pt;
+margin-top: 7px;
+font-weight:bold;
+}
+/* pagination on subjects page, make it wider so the Z doesn't overlaop on mozilla */
+.pag
+{
+width: 110%;
 }
