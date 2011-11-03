@@ -1,4 +1,5 @@
 module SchedulerHelper
+  @schedule_block_height = 50
 
   def print_day(day_short_code)
     case day_short_code
@@ -79,6 +80,7 @@ module SchedulerHelper
     end
 
     sections.each do |section|
+      next if not section.days
       days = section.days.split("")
       days.each do |day|
         sections_by_days[day].push(section)
@@ -89,14 +91,12 @@ module SchedulerHelper
   end
 
   def section_top_px( section, start_hour )
-    scheduler_block_height = 74
-    top_px = (section.start_time.hour - start_hour + (section.start_time.min/60.0)) * scheduler_block_height
+    top_px = (section.start_time.hour - start_hour + (section.start_time.min/60.0)) * 60 # scheduler_block_height
     return top_px
   end
 
   def section_height_px( section )
-    scheduler_block_height = 74
-    return section.duration * scheduler_block_height
+    return section.duration * 60#@scheduler_block_height
   end
 
   def section_colors( sections )
@@ -114,13 +114,16 @@ module SchedulerHelper
 
   # Remove online and arranged sections
   def remove_onl_sections( sections )
+
     onl_sections = []
     sections.each do |section|
-      if section.start_time.nil?
-        onl_sections << section
-        sections.delete(section)
-      end
+      onl_sections << section if section.start_time.nil?
     end
+
+    onl_sections.each do |onl_section|
+      sections.delete(onl_section)
+    end
+
     return onl_sections
   end
 

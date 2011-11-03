@@ -65,18 +65,18 @@ $(function(){
     
     $(".schedule-block:not(.ui-droppable)").mouseleave( function(){
       // Sometimes a mouseleave gets fired when a user is dragging
-      if( is_dragging) { 
-        //console.log("IS DRAGGING!");
-        return; 
-      }
-
-      //console.log("REMOVING STUFF");
+      if( is_dragging) { return; }
       is_showing_hints = false;
       $(".droppable").stop().fadeOut( 200, function() {
         $(this).remove();
       });
     });
 
+    $(".schedule-block").each( function() {
+      if( $(this).height() < 50 ) {
+        $(this).find(".course-title").hide();
+      }
+    });
   }
 
   function add_hours( num_hours ){

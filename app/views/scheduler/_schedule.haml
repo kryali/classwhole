@@ -21,18 +21,29 @@
     - for hour in (start_hour..end_hour)
       %li= print_hour(hour)
   - colors = section_colors( sections )
+  - all_sections = sections
   - sections_in_days.each do |day_code, sections|
-    %ul{:class => "schedule-day #{day_code}", :day => day_code }
-      %li.header= print_day(day_code)
-      - for hour in (start_hour..end_hour)
-        %li
-      - sections.each do |section|
-        = render 'section', :section => section, :start_hour => start_hour, :colors => colors
-      - if section_hints_in_days[day_code]
-        - section_hints_in_days[day_code].each do |section|
-          %div.droppable= render 'section', :section => section, :start_hour => start_hour, :colors => colors
-  %ol.onl_sections
-    %li
-    - onl_sections.each do |onl_section|
-      %span.code=onl_section.code
-      %span.type=onl_section.section_type
+    -if all_sections.empty? and onl_sections.size > 0
+      %h1 This schedule has only online and arranged sections.
+      - break
+    -elsif all_sections.empty?
+      %h1 Sorry, we couldn't find a possible schedule.
+      - break
+    -else
+      %ul{:class => "schedule-day #{day_code}", :day => day_code }
+        %li.header= print_day(day_code)
+        - for hour in (start_hour..end_hour)
+          %li
+        - sections.each do |section|
+          = render 'section', :section => section, :start_hour => start_hour, :colors => colors
+        - if section_hints_in_days[day_code]
+          - section_hints_in_days[day_code].each do |section|
+            %div.droppable= render 'section', :section => section, :start_hour => start_hour, :colors => colors
+  - if !onl_sections.empty?
+    %ul.onl_sections
+      %li.header Online/Arranged
+      %li
+        - onl_sections.each do |onl_section|
+          %span.course=onl_section.course.to_s
+          %span.code=onl_section.code
+          %span.type=onl_section.section_type
