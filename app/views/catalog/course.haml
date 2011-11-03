@@ -25,14 +25,13 @@
 %div.course_box
 	-if class_already_added == 0		
 		%form{:action =>  "/user/courses/new", :class => "hidden-course-form", :method => "post"}
-			%input{:type=>"hidden", :value=>"#{name_and_number}", :name=>"0"}
-			%input{:type=>"hidden", :value=>"1", :name=>"size"}
+			%input{:type=>"hidden", :value=>"#{@course.id}", :name=>"id"}
 			%input{:type=>"hidden", :value=>"1", :name=>"from_button"}
 			%button{:class => "btn large success", :id=> "add_class_button", :type => "submit"}
 				%span{:class => "font"}						
 					Add Class
 	-else
-		%button{:class => "btn large danger disabled", :id => "class_already_added"}
+		%button{:class => "btn large disabled", :id => "class_already_added"}
 			%span{:class => "font"}						
 				Class Added
 
