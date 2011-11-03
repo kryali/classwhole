@@ -69,7 +69,7 @@ $(function(){
 
       $.ajax({
         type: 'POST',
-        data: { section: section, schedule:schedule_ids, authenticity_token: AUTH_TOKEN},
+        data: { section: section, schedule:schedule_ids },
         url:  '/scheduler/move_section',
         success: function(data, textStatus, jqXHR) {
           update_schedule(data, textStatus, jqXHR, undefined);
@@ -291,7 +291,7 @@ $(function(){
 
     $.ajax({
       type: 'POST',
-      data: { schedule:schedule_ids, authenticity_token: AUTH_TOKEN},
+      data: { schedule:schedule_ids },
       url:  '/scheduler/move_section',
       success: function(data, textStatus, jqXHR) {
         //curr_section.draggable( "option", "revert", "false" );
@@ -319,7 +319,7 @@ $(function(){
     //console.log( schedule_ids );
     $.ajax({
       type: 'POST',
-      data: { section: section, schedule:schedule_ids, authenticity_token: AUTH_TOKEN},
+      data: { section: section, schedule:schedule_ids },
       url:  '/scheduler/move_section',
       success: function(data, textStatus, jqXHR) {
         var day = $(ui.helper[0]).parent().attr("day");
