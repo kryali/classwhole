@@ -11,6 +11,8 @@ class Section < ActiveRecord::Base
       key = self.course_subject_code
     elsif (true if Integer(self.code) rescue false) #If the code is an integer, assume the courses should be in the same configuration
       key = self.course_subject_code
+    elsif self.code.length == 1
+      key = self.course_subject_code
     else
       key = self.code.at(0)
       #append number to key if it exists at 1 (for mathematica sections B8, X8, etc)

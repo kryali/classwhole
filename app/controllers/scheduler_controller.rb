@@ -9,7 +9,7 @@ class SchedulerController < ApplicationController
   def new
     scheduler = Scheduler.new(current_user.courses)
     scheduler.schedule_courses
-    @possible_schedules = scheduler.valid_schedules[0,5]
+    @possible_schedules = scheduler.valid_schedules
     render 'show'
   end
 
@@ -17,7 +17,7 @@ class SchedulerController < ApplicationController
 
     schedule = []
     params["schedule"].each do |section_id|
-      schedule << Section.find(section_id.to_i)
+      schedule << Section.find_by_id(section_id.to_i)
     end
 
     if params["section"]
@@ -30,4 +30,14 @@ class SchedulerController < ApplicationController
 
     render :partial => 'section_ajax', :layout => false
   end
+
+  def save
+    schedule = Schedule.create()
+    Schedule.transaction do
+      params["schedule"].each do |section_id|
+        schedule.sections.add(Section.find_by_id(section_id.to_i))
+      end
+    end
+  end
+
 end
