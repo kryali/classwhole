@@ -22,7 +22,7 @@
 }
 
 // schedule
-$block-width        : 130px;
+$block-width        : 144px;
 $schedule-block-h   : 60px;
 $numblocks          : 12;
 $scheduler-content-width: 780px;
@@ -276,9 +276,39 @@ strong {
   background: #F3fba2;
 }
 
+ul.onl_sections {
+  width: 150px;
+  min-height: 10px;
+  background: white;
+  display: block;
+  padding: 5px 0 ;
+  clear: both;
+  text-align: center;
+  margin: 0 auto 0 auto;
+  
+  li.header {
+    border-bottom: 1px solid #aaa;
+    font-size: .9em;
+    text-transform: uppercase;
+    color: #555;
+    margin-top: 1em;
+    margin-bottom: 5px;
+    padding-bottom: .5em;
+  }
+
+  li {
+    font-size: .9em;
+    color: #aaa;
+
+    .course {
+      font-weight: bold;
+    }
+  }
+}
+
 .next {
   position: absolute;
-  top: 200px;
+  top: 40%;
   right: -24px;
   width: 24px;
   height: 43px;
@@ -292,7 +322,7 @@ strong {
 
 .prev {
   position: absolute;
-  top: 200px;
+  top: 40%;
   left: -24px;
   width: 24px;
   height: 43px;
