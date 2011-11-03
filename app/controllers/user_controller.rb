@@ -75,7 +75,7 @@ class UserController < ApplicationController
 		# Add each class to the current users classes
     current_user.courses << Course.find( params["id"].to_i )
     add_course_to_cookie( params["id"] )
-    
+    current_user.save
 		# check whether ot not add_courses is being called by clicking schedule,
 		# or if it is being called from the Course page (ADD CLASS BUTTON)s
 		if params.include? "from_button"

@@ -7,7 +7,7 @@
           %li= link_to "Course List", show_semester_path(Semester.first.season, Semester.first.year)
           %li= link_to "Schedule", scheduler_index_path
         %ul{ :class => "nav secondary-nav"}
-          - if !current_user.nil? and current_user.fb_token
+          - if current_user
             %li.dropdown
               = link_to current_user.name, current_user.name, {:class => "dropdown-toggle"}
               %ul.dropdown-menu
