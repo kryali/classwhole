@@ -1,0 +1,14 @@
+- onl_sections = remove_onl_sections( sections )
+- days = sections_by_days(sections)
+%div{ :class => "mini-schedule" }
+  -# 14 hour range 7am - 9pm
+  -# height is 84px
+  -# width is  130px, each day width is 130/5
+  -# 84/14 = 6px block height
+  - i = 0
+  - colors = section_colors( sections )
+  - days.each do |day, sections|
+    - sections.each do |section|
+      %div{ :class => "mini-section #{colors[section.course_id]}", 
+            :style=>"top:#{ mini_section_top_px( section )}px; height: #{ mini_section_height_px( section )}px; width: #{130/5 - 1}px; left: #{i * (130/5)}px;" }
+    - i += 1

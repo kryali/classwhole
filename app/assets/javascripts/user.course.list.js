@@ -83,7 +83,7 @@ ClassList.prototype.add_class_callback = function(event, ui) {
 			var string_class_id = class_id.toString();		    
 			$.ajax({
 		      type: 'POST',
-		      data: { id: class_id},
+		      data: { id: class_id },
 		      url:  '/user/courses/new',
 		    });
 				

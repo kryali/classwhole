@@ -52,9 +52,9 @@ $(document).ready(function() {
 
   FB.getLoginStatus(function(response) {
     if(response.authResponse){
-      console.log( "User is logged into facebook already!" );
+      //console.log( "User is logged into facebook already!" );
       /* User is logged in to facebook, let him in */
-      console.log( response.authResponse );
+      //console.log( response.authResponse );
       //post_to_url(LOGIN_PATH, response["authResponse"]);
     }
   });

@@ -133,4 +133,14 @@ module SchedulerHelper
     return letters[0..(length-1)].join + end_string
   end
 
+  def mini_section_top_px( section )
+    logger.info "TOP: #{section}"
+    top_px = (section.start_time.hour - 7 + (section.start_time.min/60.0)) * 6
+    return top_px
+  end
+
+  def mini_section_height_px( section )
+    return section.duration * 6
+  end
+
 end

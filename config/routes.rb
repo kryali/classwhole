@@ -21,7 +21,6 @@ Whiteboard::Application.routes.draw do
 	match 'user/courses/remove' => 'user#remove_course', :via => :post  
 	match 'user/logout', :as => 'logout'
 	
-	match '/scheduler/add_class' => 'user#add_courses', :via => :post, :as => :add_courses
   match 'scheduler/move_section' => 'scheduler#move_section', :via => :post
 	match 'scheduler/new' => 'scheduler#new'
   match 'scheduler/save' => 'scheduler#save', :via => :post

@@ -34,7 +34,9 @@ $(function(){
     // Setup the slidejs plugin
     $("#slides").slides({
       autoHeight: true,
-      generatePagination: true
+      pagination: true,
+      paginationClass: 'mini-pagination',
+      generatePagination: false,
     });
 
     $(".save-schedule").click( function() {
@@ -51,6 +53,18 @@ $(function(){
     });
 
     init_draggable();
+
+    // Use the keyboard to select other schedules
+    $(document).keydown( function(event) {
+        var keycode = $.ui.keyCode;
+        if( event.keyCode == keycode.LEFT ) {
+          $(".prev").click();
+          event.preventDefault();
+        } else if( event.keyCode == keycode.RIGHT) {
+          $(".next").click();
+          event.preventDefault();
+        }
+    });
 
   }
 
@@ -69,7 +83,7 @@ $(function(){
 
       $.ajax({
         type: 'POST',
-        data: { section: section, schedule:schedule_ids},
+        data: { section: section, schedule:schedule_ids },
         url:  '/scheduler/move_section',
         success: function(data, textStatus, jqXHR) {
           update_schedule(data, textStatus, jqXHR, undefined);
@@ -291,7 +305,7 @@ $(function(){
 
     $.ajax({
       type: 'POST',
-      data: { schedule:schedule_ids},
+      data: { schedule:schedule_ids },
       url:  '/scheduler/move_section',
       success: function(data, textStatus, jqXHR) {
         //curr_section.draggable( "option", "revert", "false" );
@@ -319,7 +333,7 @@ $(function(){
     //console.log( schedule_ids );
     $.ajax({
       type: 'POST',
-      data: { section: section, schedule:schedule_ids},
+      data: { section: section, schedule:schedule_ids },
       url:  '/scheduler/move_section',
       success: function(data, textStatus, jqXHR) {
         var day = $(ui.helper[0]).parent().attr("day");
