@@ -43,6 +43,9 @@
 	<br/>
 	%h1{:id => "course_name"}
 		=@course.title
+	%div{:id => "hours"}	
+		= @course.hours.to_s + " credit hours"
+		
 	<br/>
 	<br/>
 
