@@ -80,6 +80,7 @@ module SchedulerHelper
     end
 
     sections.each do |section|
+      next if not section.days
       days = section.days.split("")
       days.each do |day|
         sections_by_days[day].push(section)
@@ -113,13 +114,20 @@ module SchedulerHelper
 
   # Remove online and arranged sections
   def remove_onl_sections( sections )
+
     onl_sections = []
     sections.each do |section|
       if section.start_time.nil?
         onl_sections << section
-        sections.delete(section)
+      else 
+        logger.info "#{section.start_time}"
       end
     end
+
+    onl_sections.each do |onl_section|
+      sections.delete(onl_section)
+    end
+
     return onl_sections
   end
 
