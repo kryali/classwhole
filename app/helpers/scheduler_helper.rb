@@ -117,11 +117,7 @@ module SchedulerHelper
 
     onl_sections = []
     sections.each do |section|
-      if section.start_time.nil?
-        onl_sections << section
-      else 
-        logger.info "#{section.start_time}"
-      end
+      onl_sections << section if section.start_time.nil?
     end
 
     onl_sections.each do |onl_section|
