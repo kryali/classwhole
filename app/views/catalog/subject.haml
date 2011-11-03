@@ -4,11 +4,8 @@
 	<br/>
 	<br/>
 	<br/>
-	<br/>
 	-uppercase_string = @semester.season[0,1].upcase + @semester.season[1..-1] + " " + @semester.year
 	%div.breadcrumb	
-		=link_to uppercase_string, "/courses"
-		&#47 
 		= link_to "Subjects", get_previous_url(request.url)
 		&#47 
 		= @subject.code
