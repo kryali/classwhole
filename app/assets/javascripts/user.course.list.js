@@ -8,16 +8,16 @@ function ClassList(){ }
 ClassList.prototype.init = function() {
     $(".user-course-list ul li ").each( function() { 
         has_classes = true;
-        var class_id = $(this).find(".code").text(); 
+        var class_id = $(this).find(".id").text(); 
         selected_classes[class_id] = $(this);
 
-        var class_real_id = $(this).find(".id").text();
         var class_li = $(this);
         $(this).find(".remove-link").click( function() {
 					$.ajax({
 								type: 'GET',
-                url: course_destroy_url + class_real_id,
+                url: course_destroy_url + class_id,
                 success: function() {
+                  delete selected_classes[ class_id ];
                   class_li.slideUp(function(){ $(this).remove() });
                 }
 					});
@@ -37,20 +37,17 @@ ClassList.prototype.add_class_callback = function(event, ui) {
 
     if ( ui.item ) {
         show_button();
-        var class_id = ui.item.value;
+        var class_id = ui.item.id;
         if( class_id in selected_classes ){
             /* return if the user as already selected the class*/
-            pop_alert("error", class_id, " is already selected");
+            pop_alert("error", ui.item.value, " is already selected");
             selected_classes[class_id].animate({
                 backgroundColor: '#F08080',
             }, 100, function() {
                 $(this).animate({backgroundColor: 'white'}, 500, undefined);
             });
-
-            test = selected_classes[class_id];
-            //test.css("background", "red");
             return;
-        } 
+        }
 
         /* Append the course to the currently populated list */
         var remove_course = $("<a/>").text("X").attr("href", "#").addClass("remove-link");
@@ -62,13 +59,16 @@ ClassList.prototype.add_class_callback = function(event, ui) {
                             .append($("<span/>")
                                 .text(ui.item.title)
                                 .addClass("title"))
+                            .append($("<span/>")
+                                .text(ui.item.title)
+                                .addClass("hidden id"))
                             .css("display", "none");
         course_li.appendTo(".user-course-list ul");
         course_li.slideDown();
 
         remove_course.click( function() {
-						      var removed = 0;
-					$.ajax({
+            var removed = 0;
+            $.ajax({
 								type: 'GET',
 								url:  '/user/courses/destroy/'+ui.item.id,
 							});
@@ -83,7 +83,7 @@ ClassList.prototype.add_class_callback = function(event, ui) {
 			var string_class_id = class_id.toString();		    
 			$.ajax({
 		      type: 'POST',
-		      data: { size: "1", 0:string_class_id},
+		      data: { id: class_id},
 		      url:  '/user/courses/new',
 		    });
 				
