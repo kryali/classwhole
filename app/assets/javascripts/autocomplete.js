@@ -246,9 +246,6 @@ Autocomplete.prototype.override_keydown = function() {
           menu.input.val(best_result);
           if( best_result != "" ) event.preventDefault();
         }
-        else if ( event.keyCode == keycode.ENTER ) {
-          menu.input.autocomplete("search");
-        };
     });
 }
 
