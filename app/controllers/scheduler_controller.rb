@@ -33,12 +33,16 @@ class SchedulerController < ApplicationController
   end
 
   def save
-    schedule = Schedule.create()
+    schedule = Schedule.new
+    current_user.schedule = schedule
     Schedule.transaction do
+      schedule.user = current_user
       params["schedule"].each do |section_id|
-        schedule.sections.add(Section.find_by_id(section_id.to_i))
+        schedule.sections << Section.find_by_id(section_id.to_i)
       end
     end
+    schedule.save
+    render :text => "fuck."
   end
 
 end

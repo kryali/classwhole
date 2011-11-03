@@ -1,5 +1,6 @@
 = javascript_include_tag "scheduler.js"
 %div.scheduler-content
+  = link_to "Save", "#", { :class => "save-schedule" }
   %div#slides
     %div.slides_container
       - i = 1
@@ -8,4 +9,4 @@
         - i += 1
     %a{:href=>"#", :class=>"prev"}
     %a{:href=>"#", :class=>"next"}
-  =link_to "Save", scheduler_save_path,:class => 'btn primary schedule'
+
