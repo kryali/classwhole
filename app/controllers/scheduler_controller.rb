@@ -4,13 +4,16 @@ class SchedulerController < ApplicationController
   end
     
   def show
+    all_possible_schedules = Rails.cache.fetch( :courses => current_user.courses,   
+                                                :data => 'valid_schedules' ) {
+      scheduler = Scheduler.new(current_user.courses)
+      scheduler.schedule_courses
+      scheduler.valid_schedules
+    }
+    @possible_schedules = all_possible_schedules
   end
 
   def new
-    scheduler = Scheduler.new(current_user.courses)
-    scheduler.schedule_courses
-    @possible_schedules = scheduler.valid_schedules
-    render 'show'
   end
 
   def move_section

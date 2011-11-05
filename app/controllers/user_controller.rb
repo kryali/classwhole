@@ -80,8 +80,6 @@ class UserController < ApplicationController
 		# or if it is being called from the Course page (ADD CLASS BUTTON)s
 		if params.include? "from_button"
 			redirect_to :back
-		else		
-			redirect_to(scheduler_new_path)
  		end
 	 end
 
