@@ -1,6 +1,5 @@
 class Section < ActiveRecord::Base
   belongs_to :course
-  #belongs_to :schedule
 
   # Configuration Key to access the configurations_hash of a register_course
   # this may need to become more advanced depending on if we discover unusual courses
@@ -29,7 +28,7 @@ class Section < ActiveRecord::Base
     day_array.each do |day|
       if( self.days.include?(day) )
         if (self.start_time.to_i   >= start_time.to_i and self.start_time.to_i <= end_time.to_i) or 
-           (  self.end_time.to_i   >= start_time.to_i and   self.end_time.to_i <= end_time.to_i)
+           (start_time.to_i   >= self.start_time.to_i and start_time.to_i <= self.end_time.to_i)
           return true
         end
       end

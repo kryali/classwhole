@@ -6,6 +6,7 @@ $(function(){
   var is_showing_hints = false;
   var is_updating = false;
   var handled_drop = false;
+  var save_schedule_path = "/scheduler/save";
 
   var options = {
     draggable: {
@@ -36,6 +37,19 @@ $(function(){
       pagination: true,
       paginationClass: 'mini-pagination',
       generatePagination: false,
+    });
+
+    $(".save-schedule").click( function() {
+
+      var schedule_ids = get_schedule_ids();
+      $.ajax({
+        type: 'POST',
+        data: { schedule:schedule_ids},
+        url:  save_schedule_path,
+        success: function(data, textStatus, jqXHR) {
+          pop_alert("error", "it worked");
+        }
+      });
     });
 
     init_draggable();
