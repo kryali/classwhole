@@ -11,11 +11,15 @@ class SchedulerController < ApplicationController
 
   def new
     if current_user    
-      scheduler = Scheduler.new(current_user.courses, 0)
+      scheduler = Scheduler.new(current_user.courses)
     else
+			course_id_list = []
       course_list = []
-      course_list = cookies["classes"].split('|')
-      scheduler = Scheduler.new(course_list, 1)
+      course_id_list = cookies["classes"].split('|')
+			for id in course_id_list
+				course_list << Course.find(id)
+			end      
+			scheduler = Scheduler.new(course_list)
     end    
     scheduler.schedule_courses
     @possible_schedules = scheduler.valid_schedules[0,5]

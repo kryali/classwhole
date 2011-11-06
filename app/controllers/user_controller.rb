@@ -2,6 +2,7 @@
 # Handles user login/registration interaction
 #
 class UserController < ApplicationController
+include ApplicationHelper
 
   def login
     user_id = params["userID"]
@@ -14,6 +15,7 @@ class UserController < ApplicationController
       max_try -= 1
       retry if max_try > 0
     ensure
+		  cookies.delete("classes")
       redirect_to(root_path)
     end
   end
@@ -46,11 +48,13 @@ class UserController < ApplicationController
     #  friends.each { |friend| $redis.sadd("#{@user.id}:friends", friend["id"]) }
     #end
 
-    #if they added some classes before logging in...
+    #if they added some classes obefore logging in...
     for id in cookie_class_list
+      logger.info(id.to_s)
+      logger.info("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP")
       @user.courses << Course.find(id)
     end
-
+    logger.info("XXXXXDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD")
     @user.save
     return @user.id  
   end
@@ -79,16 +83,10 @@ class UserController < ApplicationController
 		# Add each class to the current users classes
     if current_user
       current_user.courses << Course.find( params["id"].to_i )
-    else      
+    else
       add_course_to_cookie( params["id"] )
     end
-		# check whether ot not add_courses is being called by clicking schedule,
-		# or if it is being called from the Course page (ADD CLASS BUTTON)s
-		if params.include? "from_button"
-			redirect_to :back
-		else		
-			redirect_to(scheduler_new_path)
- 		end
+		render :json => { :status => "success", :message => "Class added" }
 	 end
 
   #
