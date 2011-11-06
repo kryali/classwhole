@@ -50,10 +50,19 @@ class UserController < ApplicationController
     for id in cookie_class_list
       @user.courses << Course.find(id)
     end
-    cookies.delete("classes")
-		cookies.delete("classes")
-    redirect_to(root_path)
+
+    @user.save
+    return @user.id  
   end
+
+ 
+ def logout
+   session[:user_id] = nil
+   cookies.delete("classes")
+   redirect_to(root_path)
+ end
+
+  
 
   #
   # Description: This function gets passed a list of course ids and adds it
