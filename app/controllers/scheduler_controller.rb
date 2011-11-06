@@ -1,5 +1,8 @@
 class SchedulerController < ApplicationController
  before_filter :set_cache_buster
+ helper_method :cookie_class_list
+ include ApplicationHelper
+
   def index
   end
     
@@ -7,7 +10,13 @@ class SchedulerController < ApplicationController
   end
 
   def new
-    scheduler = Scheduler.new(current_user.courses)
+    if current_user    
+      scheduler = Scheduler.new(current_user.courses, 0)
+    else
+      course_list = []
+      course_list = cookies["classes"].split('|')
+      scheduler = Scheduler.new(course_list, 1)
+    end    
     scheduler.schedule_courses
     @possible_schedules = scheduler.valid_schedules[0,5]
     render 'show'
