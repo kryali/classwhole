@@ -3,6 +3,7 @@ class Scheduler
 
   def initialize(user_courses)
     @courses = []
+
     user_courses.each do |course|
       @courses << Register_Course.new(course)
     end

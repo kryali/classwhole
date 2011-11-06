@@ -43,7 +43,7 @@ $(document).ready(function() {
    * also, the facebook "sdk" sucks.
    */
   FB.init({
-    appId  : '155445894543736',
+    appId  : '227782147288218',
     status : true, // check login status
     cookie : true, // enable cookies to allow the server to access the session
     xfbml  : true, // parse XFBML

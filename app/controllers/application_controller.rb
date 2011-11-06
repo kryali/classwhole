@@ -16,41 +16,18 @@ class ApplicationController < ActionController::Base
   protected
   def current_user    
 		if session[:user_id]     	
-			return @current_user ||= User.find(session[:user_id])
-    elsif cookies["classes"]        #if they're not in the database, but have a cookie for classwhole
-			return temp_current_user 	
+			return @current_user ||= User.find(session[:user_id]) 	
 		else    
 			return nil
     end
   end 
 
   def current_user=(new_user)
-		if cookies["classes"]		
-			@current_user = User.new
-		end
 		@current_user = new_user
     session[:user_id] = new_user.id
   end
 
-	#
-	# Description: Function to create a temporary current_user for non-facebook users
-	#  			
 
-	def temp_current_user
-		#if we already have made a temp current user, just return that one		
-		if @current_user
-				return @current_user
-		end
-		# otherwise, create a temp current_user based on the cookie
-    # that holds the users class id's 		
-		@current_user = User.new		
-		class_ids = cookies["classes"].split('|')		
-		class_ids.each do |id|
-      course = Course.find_by_id(id.to_i)
-			@current_user.courses << course if course
-		end
-		return @current_user	
-	end
 
 
 end
