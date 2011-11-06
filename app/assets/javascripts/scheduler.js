@@ -52,7 +52,12 @@ $(function(){
         data: { schedule:schedule_ids},
         url:  save_schedule_path,
         success: function(data, textStatus, jqXHR) {
-          pop_alert("error", "it worked");
+          if (data["status"] == "success") {
+            pop_alert("info", data["message"]);
+          }
+          else if (data["status"] == "error") {
+            pop_alert("error", data["message"]);
+          }          
         }
       });
     });

@@ -2,6 +2,7 @@
 # Handles user login/registration interaction
 #
 class UserController < ApplicationController
+include ApplicationHelper
 
   def login
     user_id = params["userID"]
@@ -14,6 +15,7 @@ class UserController < ApplicationController
       max_try -= 1
       retry if max_try > 0
     ensure
+		  cookies.delete("classes")
       redirect_to(root_path)
     end
   end
@@ -79,14 +81,11 @@ class UserController < ApplicationController
 		# Add each class to the current users classes
     if current_user
       current_user.courses << Course.find( params["id"].to_i )
-    else      
+    else
       add_course_to_cookie( params["id"] )
     end
-		# check whether ot not add_courses is being called by clicking schedule,
-		# or if it is being called from the Course page (ADD CLASS BUTTON)s
-		if params.include? "from_button"
-			redirect_to :back
- 		end
+
+		render :json => { :status => "success", :message => "Class added" }
 	 end
 
   #
