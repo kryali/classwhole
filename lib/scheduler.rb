@@ -1,11 +1,17 @@
 class Scheduler
   attr_accessor :valid_schedules
 
-  def initialize(user_courses)
+  def initialize(user_courses, is_temp_user)
     @courses = []
-    user_courses.each do |course|
-      @courses << Register_Course.new(course)
-    end
+    if is_temp_user == 1 #if its temp user
+      for id in user_courses
+        @courses << Register_Course.new(Course.find(id))      
+      end
+    else #facebook user
+      user_courses.each do |course|
+        @courses << Register_Course.new(course)
+      end
+    end  
   end
 
   # schedule courses

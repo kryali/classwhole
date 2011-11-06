@@ -10,4 +10,16 @@
         %span.code= course.to_s
         %span.title= course.title
         %span{ :class=> "hidden id"}= course.id
+  -else
+    -for course in cookie_class_list
+      %li      
+        = link_to("X", "#", :class=>"remove-link")
+        %span.code 
+          = Course.find(course).to_s
+        %span.title 
+          = Course.find(course).title
+        %span{ :class=> "hidden id"} 
+          = Course.find(course).id
+
+
 = render 'shared/class_search'
