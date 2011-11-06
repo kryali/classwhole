@@ -1,5 +1,5 @@
 /* The Course Page */
-
+= javascript_include_tag "course"
 <br/>
 <br/>
 <br/>
@@ -14,24 +14,13 @@
 	&#47 
 	=name_and_number
 
--class_already_added = 0
--if !current_user.nil?
-	-for course in current_user.courses
-		-if course.to_s == name_and_number
-			-class_already_added = 1
 
-%div.course_box
-	-if class_already_added == 0		
-		%form{:action =>  "/user/courses/new", :class => "hidden-course-form", :method => "post"}
-			%input{:type=>"hidden", :value=>"#{@course.id}", :name=>"id"}
-			%input{:type=>"hidden", :value=>"1", :name=>"from_button"}
-			%button{:class => "btn large success", :id=> "add_class_button", :type => "submit"}
-				%span{:class => "font"}						
-					Add Class
-	-else
-		%button{:class => "btn large disabled", :id => "class_already_added"}
-			%span{:class => "font"}						
-				Class Added
+%div.course_box		
+	%button{:class => "btn large success", :id=> "add_class_button", :type => "submit"}
+		%span{:class => "hidden id"}
+			=@course.id
+		%span{:class => "font"}						
+			Add Class
 
 	%span{:id => "course_num"}
 		=name_and_number		
