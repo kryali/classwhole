@@ -41,16 +41,21 @@ class SchedulerController < ApplicationController
   end
 
   def save
-    schedule = Schedule.new
-    current_user.schedule = schedule
-    Schedule.transaction do
-      schedule.user = current_user
+    if current_user.nil?
+      render :json => {:status => "error", :message => "Log in to save schedule."}
+    else
       params["schedule"].each do |section_id|
-        schedule.sections << Section.find_by_id(section_id.to_i)
+        $redis.sadd("user:#{current_user.id}:schedule", section_id.to_i)
       end
+      render :json => {:status => "success", :message => "Schedule saved."}
     end
-    schedule.save
-    render :text => "fuck."
   end
 
+  def register
+    crns = []
+    params["schedule"].each do |section_id|
+      crns << Section.find_by_id(section_id.to_i).reference_number
+    end
+    render :json => {:crns => crns}
+  end
 end
