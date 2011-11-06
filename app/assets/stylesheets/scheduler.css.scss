@@ -130,8 +130,11 @@ $block_padding: 4px;
 
 }
 
-.slides_container {
-  margin-top: 120px;
+#slides {
+  overflow: hidden;
+  .slides_container {
+    margin-top: 120px;
+  }
 }
 
 .schedule-wrapper {
@@ -320,39 +323,68 @@ ul.onl_sections {
 $mini-schedule-width: 130px;
 $mini-schedule-height: 90px;
 $mini-schedule-border-color: #aaa;
-ul.mini-pagination {
+
+.mini-pagination-top {
   position: absolute;
   top: 29px;
-  left: 132px;
-  border: 1px solid $mini-schedule-border-color;
+  left: 130px;
 
-  li {
-    overflow: hidden;
-    display: block;
-    width: $mini-schedule-width;
-    float: left;
-    border-left: 1px solid $mini-schedule-border-color;
-  }
-
-  li:first-child {
-    border: none;
-  }
-
-  a {
-    width: $mini-schedule-width;
-    z-index: 10;
-    height: $mini-schedule-height;
+  .mini-prev {
     position: absolute;
+    left: -20px;
+    top: 20px;
   }
 
-  a:hover {
-    background: #fff;
-    opacity: .2;
+  .mini-next {
+    position: absolute;
+    right: -20px;
+    top: 20px;
   }
+  .mini-pagination-container {
+    border: 1px solid $mini-schedule-border-color;
+    //height: 92px;
+    height: 106px;
+    width: 654px;
+    //overflow: hidden;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    position: relative;
 
-  .current a{
-    background: #fff;
-    opacity: .3;
+    ul.mini-pagination {
+      //width: 9000px;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+
+      li {
+        overflow: hidden;
+        display: block;
+        width: $mini-schedule-width;
+        float: left;
+        border-left: 1px solid $mini-schedule-border-color;
+      }
+
+      li:first-child {
+        border: none;
+      }
+
+      a {
+        width: $mini-schedule-width;
+        z-index: 10;
+        height: $mini-schedule-height;
+        position: absolute;
+      }
+
+      a:hover {
+        background: #fff;
+        opacity: .2;
+      }
+
+      .current a{
+        background: #fff;
+        opacity: .3;
+      }
+    }
   }
 }
 

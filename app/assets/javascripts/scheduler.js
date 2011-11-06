@@ -7,6 +7,10 @@ $(function(){
   var is_updating = false;
   var handled_drop = false;
   var save_schedule_path = "/scheduler/save";
+  var paginate_path = "/scheduler/paginate";
+  var current_selected = 1;
+  var mini_grids_showing = 5;
+  var mini_grids_count = 5;
 
   var options = {
     draggable: {
@@ -26,18 +30,19 @@ $(function(){
       hoverClass:  'hover',
       drop:        handle_drop,
       scope:        'section_hint',
+    },
+    slides: {
+      autoHeight: true,
+      pagination: true,
+      paginationClass: 'mini-pagination',
+      generatePagination: false,
     }
   }
 
   function init() {
 
     // Setup the slidejs plugin
-    $("#slides").slides({
-      autoHeight: true,
-      pagination: true,
-      paginationClass: 'mini-pagination',
-      generatePagination: false,
-    });
+    $("#slides").slides(options.slides);
 
     $(".save-schedule").click( function() {
 
@@ -53,6 +58,7 @@ $(function(){
     });
 
     init_draggable();
+    //init_mini_pagination();
 
     // Use the keyboard to select other schedules
     $(document).keydown( function(event) {
@@ -66,6 +72,80 @@ $(function(){
         }
     });
 
+    // TODO: BUG IF YOU CLICK TOO FAST
+    $(".prev").click( function() {
+      if( current_selected > 1 )
+        current_selected--;
+      else {
+        $(".mini-prev").click();
+        current_selected = mini_grids_showing;
+      }
+    });
+
+    $(".next").click( function() {
+      current_selected++;
+      if( current_selected > mini_grids_showing ){
+        $(".mini-next").click();
+        current_selected = 1;
+      }
+    });
+
+    var children = $(".mini-pagination").children();
+    $('.mini-pagination').css("width", children.width() * children.length +8);
+  }
+
+  function init_mini_pagination() {
+    var width = $(".mini-pagination-container").width() + 1;
+    var mini_pagination = $(".mini-pagination");
+    var children = $(".mini-pagination").children();
+    var start = 0;
+    var end = mini_grids_showing;
+
+    mini_pagination.css("width", children.width() * children.length);
+
+    $(".mini-prev").click( function() {
+      var current_pos = mini_pagination.position().left;
+      // Make sure it's not already the the most left
+      if( current_pos != 0) {
+        end = start;
+        start -= mini_grids_showing;
+        mini_pagination.animate({ left: current_pos + width + "px"}, 250, undefined);
+      }
+    });
+
+    $(".mini-next").click( function() {
+      var current_pos = mini_pagination.position().left;
+      if( end <= mini_grids_count) {
+        console.log("starting a request");
+        $.ajax({
+          type: 'POST',
+          url: paginate_path,
+          data: { 
+            courses: course_ids, 
+            start: start, 
+            end: end,
+          },
+          success: function(data, textStatus, jqXHR) {
+            console.log( textStatus );
+            console.log( $(data) );
+            var full = $(data).first();
+            var mini = $(data).last();
+            $(".slides_control").append( full.children() );
+            mini_pagination.append( mini.children() );
+
+            var children = mini_pagination.children();
+            mini_pagination.css("width", children.width() * children.length);
+            mini_pagination.animate({ left: current_pos - width + "px"}, 250, undefined);
+            $("#slides").slides(options.slides);
+          }
+        });
+      } else {
+        start = end;
+        end = end + mini_grids_showing;
+        mini_grids_count += mini_grids_showing;
+        mini_pagination.animate({ left: current_pos - width + "px"}, 250, undefined);
+      }
+    });
   }
 
   function init_draggable() {
@@ -351,6 +431,9 @@ $(function(){
       is_showing_hints = false;
     });
 
+  }
+
+  function append_pagination( data, textStatus, jqXHR ) {
   }
 
   init();

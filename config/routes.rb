@@ -22,6 +22,7 @@ Whiteboard::Application.routes.draw do
 	match 'user/logout', :as => 'logout'
 	
   match 'scheduler/move_section' => 'scheduler#move_section', :via => :post
+  match 'scheduler/paginate' => 'scheduler#paginate', :via => :post
 	match 'scheduler/new' => 'scheduler#new'
   match 'scheduler/save' => 'scheduler#save', :via => :post
 
