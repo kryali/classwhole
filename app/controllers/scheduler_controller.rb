@@ -17,7 +17,8 @@ class SchedulerController < ApplicationController
       course_list = []
       course_id_list = cookies["classes"].split('|')
 			for id in course_id_list
-				course_list << Course.find(id)
+        course = Course.find_by_id(id)
+				course_list << course if course
 			end      
 			scheduler = Scheduler.new(course_list)
     end    
