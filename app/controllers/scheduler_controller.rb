@@ -56,11 +56,4 @@ class SchedulerController < ApplicationController
     end
   end
 
-  def register
-    crns = []
-    params["schedule"].each do |section_id|
-      crns << Section.find_by_id(section_id.to_i).reference_number
-    end
-    render :json => {:crns => crns}
-  end
 end
