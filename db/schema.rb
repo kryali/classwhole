@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(:version => 20111106040806) do
 
   create_table "courses", :force => true do |t|
     t.integer  "number"
-    t.integer  "hours",        :limit => 255
+    t.integer  "hours"
     t.text     "description"
     t.string   "title"
     t.string   "subject_code"

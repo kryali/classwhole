@@ -94,7 +94,8 @@ include ApplicationHelper
       target_course = Course.find(params["course_id"].to_i)
       if current_user      
         current_user.courses.delete(target_course)
-      else			
+      end
+      if current_user.is_temp?		
         remove_class_from_cookie(params["course_id"].to_i)     
       end			
       redirect_to(root_path)
