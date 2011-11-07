@@ -49,9 +49,9 @@ include ApplicationHelper
     #end
 
     #if they added some classes before logging in...
-    #for id in cookie_class_list
-    #  @user.courses << Course.find(id)
-    #end
+    for id in cookie_class_list
+      @user.courses << Course.find(id)
+    end
 
     @user.save
     return @user.id  
@@ -74,19 +74,27 @@ include ApplicationHelper
   #
   def add_course
 		# If the person isn't logged into facebook, create a cookie, but don't overwrite it
-		if !current_user and cookies["classes"].nil?
-			cookies["classes"] = { :value => "", :expires => 1.year.from_now }# create a cookie!			
-		#	self.current_user = User.new #create a blank current_user		
-		end
-		# Add each class to the current users classes
-    if current_user
-      current_user.courses << Course.find( params["id"].to_i )
-    else
-      add_course_to_cookie( params["id"] )
+    if cookies["classes"].nil?
+		  cookies["classes"] = { :value => "", :expires => 1.year.from_now }			
     end
-
+    current_user.courses << Course.find( params["id"].to_i )
+    add_course_to_cookie( params["id"] )
 		render :json => { :status => "success", :message => "Class added" }
 	 end
+  
+  # Description: This function is called when someone isn't logged in,
+  #              but a cookie exists. It creates a fake user with the class
+  #              list represented in the coookie
+  #
+  
+  def create_fake_user_from_cookie  
+    self.current_user = Fake_user.new
+    for id in cookie_class_list
+      self.current_user.courses << Course.find(id)  
+    end
+  end
+
+
 
   #
   # Description: This function gets passed a course ids and removes the course
