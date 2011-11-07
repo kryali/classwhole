@@ -7,7 +7,7 @@
         %ul.course
           %li{:class=> "course-header #{colors[course.id]}"}
             %span.course-name= course.to_s
-            %span.course-title= shorten(course.title, 19)
+            %span.course-title= shorten(course.title, 18)
             %span.course-hours= "(#{course.hours} hr)"
           -if nil
             %li 
