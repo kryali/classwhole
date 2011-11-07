@@ -9,6 +9,9 @@
   %span{:class => "section-type label"}= section.section_type
   %span.duration= section.duration_s
   %ul.hidden-data{ :style => "top: #{height_px}px;" }
+    %li
+      %span.title CRN
+      %span.data= "#{section.reference_number}"
     %li 
       - course = section.course
       %span.title Credit Hours

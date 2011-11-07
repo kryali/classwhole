@@ -62,6 +62,25 @@ $(function(){
       });
     });
 
+    $(".register-schedule").click( function() {
+      var schedule = get_current_schedule();
+      var crns = [];
+      var all_section_ids = schedule.find(".schedule-block .hidden");
+      for( var i = 0; i < all_section_ids.size(); i++ ){
+        
+        // Ignore droppable sections
+        if (!$(all_section_ids[i]).parent().hasClass("ui-droppable")) {
+          var current_section_id = all_section_ids[i].innerHTML;
+
+          // Make sure we don't already have the section in our array
+          if( sections.indexOf(parseInt(current_section_id)) == -1 ) {
+            sections.push(parseInt(current_section_id));
+          }
+        }
+      }
+      return sections.sort();
+    });
+
     init_draggable();
     //init_mini_pagination();
 
