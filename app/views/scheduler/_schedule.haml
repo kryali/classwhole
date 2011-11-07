@@ -39,37 +39,7 @@
         - if section_hints_in_days[day_code]
           - section_hints_in_days[day_code].each do |section|
             %div.droppable= render 'section', :section => section, :start_hour => start_hour, :colors => colors
-  %div.sidebar
-    %ul.courses
-      - courses, course_section_hash = courses_from_sections( sections )
-      - courses.each do |course|
-        - sections = course_section_hash[course.id]
-        %li.course-item
-          %ul.course
-          %li
-            %span.course-name= course.to_s
-            %span.course-title= course.title
-          %li 
-            %span.title Credit Hours
-            %span.data= "#{course.hours} hr."
-          %li 
-            %span.title Description
-            %span.data= shorten(course.description, 130)
-          - sections.each do |section|
-            %ul.sections
-              %li.header Sections
-              - if section.instructor
-                %li 
-                  %span.title Professor
-                  %span.data= section.instructor
-              %li 
-                %span.title Code
-                %span.data= section.code
-              %li 
-                %span.title Time
-                %span.data= section.duration_s
-    %a{ :class => "btn default save-schedule"} Save
-    %a{ "data-controls-modal" => "register-modal", "data-backdrop" => "static", "data-keyboard" => "true", :class => "btn primary register-schedule"} Register
+  = render "sidebar" , :sections => sections
       
   - if !onl_sections.empty?
     %ul.onl_sections
