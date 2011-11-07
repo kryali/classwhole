@@ -17,24 +17,18 @@ $(document).ready(function() {
    */
   function post_to_url(path, params, method) {
       method = method || "post"; // Set method to post by default, if not specified.
-
-      // The rest of this code assumes you are not using a library.
-      // It can be made less wordy if you use one.
-      var form = document.createElement("form");
-      form.setAttribute("method", method);
-      form.setAttribute("action", path);
-      form.setAttribute("authenticity_token", AUTH_TOKEN);
-
-      for(var key in params) {
-          var hiddenField = document.createElement("input");
-          hiddenField.setAttribute("type", "hidden");
-          hiddenField.setAttribute("name", key);
-          hiddenField.setAttribute("value", params[key]);
-          hiddenField.setAttribute("authenticity_token", AUTH_TOKEN);
-          form.appendChild(hiddenField);
-      }
-      document.body.appendChild(form);    // Not entirely sure if this is necessary
-      form.submit();
+      $.ajax({
+        type: 'POST',
+        url: path,
+        data: params,
+        success: function( data, textStatus, xqHR){
+          //pop_alert( textStatus, data["message"] );
+          //console.log(data["user"]["name"]);
+          $("ul.secondary-nav li").empty().append( $("<a/>").text( data["user"]["name"] ) );
+          $("#save-modal").modal("hide");
+          $(document).trigger("logged-in");
+        }
+      });
   }
 
 
@@ -60,14 +54,14 @@ $(document).ready(function() {
   });
 
   /* When a user clicks a button, */
-  $('#fb-button').click( function(event) {
+  $('.fb-button').click( function(event) {
 
+    //console.log("Button clicked!");
     /* FB.getLoginStatus allows you to determine if a user is 
      * logged into facebook.*/
     FB.getLoginStatus(function(response) {
       if(response.authResponse){
         /* User is logged in to facebook, let him in */
-        console.log( response.authResponse );
         post_to_url(LOGIN_PATH, response["authResponse"]);
       }
     });

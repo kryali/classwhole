@@ -39,13 +39,7 @@ $(function(){
     }
   }
 
-  function init() {
-
-    // Setup the slidejs plugin
-    $("#slides").slides(options.slides);
-
-    $(".save-schedule").click( function() {
-
+  function save_schedule() {
       var schedule_ids = get_schedule_ids();
       $.ajax({
         type: 'POST',
@@ -57,18 +51,35 @@ $(function(){
           }
           else if (data["status"] == "error") {
             pop_alert("error", data["message"]);
+            $('#save-modal').modal('show');            
+            $(document).bind('logged-in', function() {
+              $(document).unbind('logged-in');
+              save_schedule();
+              return true;
+            });
           }          
         }
       });
+  }
+
+  function init() {
+
+
+    // Setup the slidejs plugin
+    $("#slides").slides(options.slides);
+
+    $(".save-schedule").click( function() {
+      save_schedule();
     });
 
     $(".close-modal").click( function() {
       $('#register-modal').modal('hide');
+      $('#save-modal').modal('hide');
     });
     $(".register-schedule").click( function() {
+      $('#crns').empty()
       var schedule = get_current_schedule();
       var crns = [];
-      var crnstring = "Your CRNs: ";
       var all_section_crns = schedule.find(".schedule-block .crn");
       for( var i = 0; i < all_section_crns.size(); i++ ){
         
@@ -79,11 +90,10 @@ $(function(){
           // Make sure we don't already have the section in our array
           if( crns.indexOf(current_section_crn) == -1 ) {
             crns.push(current_section_crn)
-            crnstring = crnstring + current_section_crn + " "
+            $('#crns').append("<li>" + current_section_crn + "</li>");
           }
         }
       }
-      $('#crns').text(crnstring);
       $('#register-modal').modal('show');
     });
 
