@@ -68,6 +68,7 @@ $(function(){
     $(".register-schedule").click( function() {
       var schedule = get_current_schedule();
       var crns = [];
+      var crnstring = "Your CRNs: ";
       var all_section_crns = schedule.find(".schedule-block .crn");
       for( var i = 0; i < all_section_crns.size(); i++ ){
         
@@ -78,10 +79,11 @@ $(function(){
           // Make sure we don't already have the section in our array
           if( crns.indexOf(current_section_crn) == -1 ) {
             crns.push(current_section_crn)
-            $('#crns').append("<p>" + current_section_crn + "</p>");
+            crnstring = crnstring + current_section_crn + " "
           }
         }
       }
+      $('#crns').text(crnstring);
       $('#register-modal').modal('show');
     });
 
