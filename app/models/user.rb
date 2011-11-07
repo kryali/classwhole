@@ -23,4 +23,9 @@ class User < ActiveRecord::Base
     end
     return hours
   end
+
+  def is_temp?
+    return false
+  end
+
 end
