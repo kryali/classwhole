@@ -1,7 +1,7 @@
 $(function(){
 
   //var block_height = 74;
-  var block_height = $(".schedule-blcok").height();
+  var block_height = $(".schedule-block").height();
   var is_dragging = false;
   var is_showing_hints = false;
   var is_updating = false;
@@ -186,7 +186,7 @@ $(function(){
 
       var current_section = $(this);
       current_section.draggable( 'option', 'revert', true );
-      var section = current_section.find(".hidden").text();
+      var section = current_section.find(".id").text();
       var schedule_ids = get_schedule_ids();
       //console.log( "Selected" + section );
       //console.log( schedule_ids );
@@ -239,7 +239,7 @@ $(function(){
     var schedule_blocks = day.find(".schedule-block");
     for( var i = 0; i < schedule_blocks.length; i++) {
       var current_section =  $(schedule_blocks[i]);
-      var current_section_id = current_section.find(".hidden").text();
+      var current_section_id = current_section.find(".id").text();
       if (  section_id  == current_section_id ) {
         current_section.remove();
       }
@@ -262,7 +262,7 @@ $(function(){
     var current_schedule = get_current_schedule();
 
     var selected_box = $(".ui-draggable-dragging");
-    var selected_section_id = selected_box.find(".hidden").text();
+    var selected_section_id = selected_box.find(".id").text();
 
     // If we aren't given a position to insert the selected box, don't add 
     if( day ){
@@ -307,7 +307,7 @@ $(function(){
 
     // Make the schedule blocks fade in
     current_schedule.find(".droppable").addClass("hidden");
-    current_schedule.find(".droppable").fadeIn(450);
+    current_schedule.find(".droppable").fadeIn(150);
 
     // Enable the new sections to be draggable
     init_draggable();
@@ -348,7 +348,7 @@ $(function(){
   function get_schedule_ids() {
     var schedule = get_current_schedule();
     var sections = [];
-    var all_section_ids = schedule.find(".schedule-block .hidden");
+    var all_section_ids = schedule.find(".schedule-block .id");
     for( var i = 0; i < all_section_ids.size(); i++ ){
       
       // Ignore droppable sections
@@ -366,7 +366,7 @@ $(function(){
 
   function remove_droppable( section_id ) { 
     $(".schedule-block").each( function() {
-      var current_id = $(this).find(".hidden").text(); 
+      var current_id = $(this).find(".id").text(); 
       if( current_id == section_id ) {
         $(this).removeClass("droppable");
       }
@@ -376,7 +376,7 @@ $(function(){
   /* Unhide the new sections */
   function setup_new_sections( section_id ) {
     get_current_schedule().find(".droppable").each( function() {
-      if( $(this).find(".hidden").text() == section_id ){
+      if( $(this).find(".id").text() == section_id ){
 
         // Enable draggable for new sections
         $(this).find(".schedule-block").draggable( 'enable' );
@@ -392,8 +392,8 @@ $(function(){
 
     // Find the section that the user is holding 
     var curr_section =  $(ui.draggable[0]);
-    var curr_section_id = parseInt(curr_section.find(".hidden").text());
-    var new_section_id = parseInt($(this).find(".hidden").text());
+    var curr_section_id = parseInt(curr_section.find(".id").text());
+    var new_section_id = parseInt($(this).find(".id").text());
     var schedule_ids = get_schedule_ids();
 
     // Generate the list of the new schedule to render
@@ -436,7 +436,7 @@ $(function(){
     //console.log(event);
     var current_section = $(ui.helper[0]);
     current_section.draggable( 'option', 'revert', true );
-    var section = current_section.find(".hidden").text();
+    var section = current_section.find(".id").text();
     var schedule_ids = get_schedule_ids();
     //console.log( "requesting hints" );
     //console.log( section );
