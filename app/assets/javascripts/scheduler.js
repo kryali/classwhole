@@ -1,7 +1,7 @@
 $(function(){
 
   //var block_height = 74;
-  var block_height = $(".schedule-blcok").height();
+  var block_height = $(".schedule-block").height();
   var is_dragging = false;
   var is_showing_hints = false;
   var is_updating = false;

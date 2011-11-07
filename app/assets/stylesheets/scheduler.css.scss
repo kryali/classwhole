@@ -22,10 +22,11 @@
 }
 
 // schedule
-$block-width        : 144px;
 $schedule-block-h   : 60px;
 $numblocks          : 12;
-$scheduler-content-width: 780px;
+$scheduler-content-width: 900px;
+$scheduler-content-padding: 15px;
+$schedule-day-width : 120px;
 /* all colors */
 // These are the main element colors 
 $default-font-color : #4D4D4D;
@@ -55,11 +56,11 @@ $showcase-bg        : url('showcase-bg.png');
 }
 
 .small-width {
-  width: $block-width/10;
+  width: $schedule-day-width/10;
 }
 
 .large-width {
-  width: $block-width;
+  width: $schedule-day-width;
 }
 
 .small-height {
@@ -71,7 +72,7 @@ $showcase-bg        : url('showcase-bg.png');
 
 .schedule-day {
   position: relative;
-  width: $block-width;
+  width: $schedule-day-width;
   background: #cccccc;
   float: left;
   margin: 0 0px 0 0px;
@@ -236,22 +237,17 @@ ul.hidden-data {
 
 .scheduler-content {
   font-family: 'Arial', 'Tahoma', sans-serif;
-  padding: 40px;
+  padding: $scheduler-content-padding;
   position: relative;
   background: white;
   border: 1px solid #aaaaaa;
+  margin: 1em auto 0 auto;
+  width: $scheduler-content-width;
+
   h1 {
     text-align: center;
     font-size: 1.3em;
     padding: 1em;
-  }
-  margin: 1em auto 0 auto;
-  width: $scheduler-content-width;
-
-  ul.pagination {
-    //position: absolute;
-    //top: 0em;
-    //left: 5em;
   }
 
 }
@@ -341,12 +337,12 @@ $mini-schedule-border-color: #aaa;
     top: 20px;
   }
   .mini-pagination-container {
-    border: 1px solid $mini-schedule-border-color;
+    //border: 1px solid $mini-schedule-border-color;
     //height: 92px;
     height: 106px;
     width: 654px;
     //overflow: hidden;
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: hidden;
     position: relative;
 
