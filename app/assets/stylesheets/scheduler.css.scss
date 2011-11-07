@@ -420,3 +420,32 @@ $mini-schedule-border-color: #aaa;
     // If we aren't given a position to insert the selected box, don't add 
       // If we aren't given a position to insert the selected box, don't add 
 }
+
+.modal {
+  left: 25%;
+  width: 90%;
+  height: 85%;
+  .modal-header {
+    h3 {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+    .x-button {
+      cursor: pointer;
+      font-size: 1.5em;
+      position: absolute;
+      top: 0px;
+      right: 5px;
+      color: black;
+    }
+  }
+  .modal-body {
+    iframe{
+      width: 100%;
+      height: 70%;
+    }
+  }
+  .modal-footer {
+  }
+}
