@@ -23,7 +23,18 @@
                   %a{ :href => "##{i-1}" }
                   = render 'mini_schedule', :sections => sections
               - i += 1
-      %a{ :href => "#", :class => "btn default save-schedule"} Save
-      %a{ :href => "#", :class => "btn primary register-schedule"} Register
+      %a{ :class => "btn default save-schedule"} Save
+      %a{ "data-controls-modal" => "register-modal", "data-backdrop" => "static", "data-keyboard" => "true", :class => "btn primary register-schedule"} Register
+
+  %div{ :id => "register-modal", :class => "modal hidden" }
+    %div.modal-header
+      %a{ :class => "close-modal", :style => "cursor:pointer" }×
+      %h3 Register
+    %div.modal-body
+      %p#crns Example CRNS:
+      %iframe{ :src => "https://apps.uillinois.edu/selfservice/", :width => "100%", :height => "350px" }
+    %div.modal-footer
+      %a{:class=>"btn primary close-modal"} Close
+
 :javascript
   var course_ids = #{@course_ids};

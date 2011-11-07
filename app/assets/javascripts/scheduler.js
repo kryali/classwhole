@@ -62,23 +62,27 @@ $(function(){
       });
     });
 
+    $(".close-modal").click( function() {
+      $('#register-modal').modal('hide');
+    });
     $(".register-schedule").click( function() {
       var schedule = get_current_schedule();
       var crns = [];
-      var all_section_ids = schedule.find(".schedule-block .hidden");
-      for( var i = 0; i < all_section_ids.size(); i++ ){
+      var all_section_crns = schedule.find(".schedule-block .crn");
+      for( var i = 0; i < all_section_crns.size(); i++ ){
         
         // Ignore droppable sections
-        if (!$(all_section_ids[i]).parent().hasClass("ui-droppable")) {
-          var current_section_id = all_section_ids[i].innerHTML;
+        if (!$(all_section_crns[i]).parent().hasClass("ui-droppable")) {
+          var current_section_crn = all_section_crns[i].innerHTML;
 
           // Make sure we don't already have the section in our array
-          if( sections.indexOf(parseInt(current_section_id)) == -1 ) {
-            sections.push(parseInt(current_section_id));
+          if( crns.indexOf(current_section_crn) == -1 ) {
+            crns.push(current_section_crn)
+            $('#crns').append("<p>" + current_section_crn + "</p>");
           }
         }
       }
-      return sections.sort();
+      $('#register-modal').modal('show');
     });
 
     init_draggable();
