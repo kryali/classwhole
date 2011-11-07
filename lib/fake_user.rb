@@ -17,10 +17,6 @@ class Fake_user
   end
 
 
-  def name
-    return "Scott is awesome"
-  end
-
   def is_temp?
     return true
   end
