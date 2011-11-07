@@ -142,10 +142,7 @@ $showcase-bg        : url('showcase-bg.png');
   .sidebar {
     float: right;
     width: 220px;
-    background: #eee;
-    border: 1px solid #ccc;
     margin: 0em 0em 0em 1.5em;
-    padding: .7em;
     font-size: .9em;
 
     .btn {
@@ -155,41 +152,36 @@ $showcase-bg        : url('showcase-bg.png');
       margin-top: .7em;
     }
 
-    ul {
-      //position: absolute;
-      //display: none;
-      border-bottom: 1px solid #ccc;
+    .label {
+      //background: blue;
+      margin: 0;
+      display: block;
+      float: left;
+      margin-right: 5px;
+    }
 
-      li {
-        border: none;
-        background: white;
-        height: 100%;
-        box-shadow: none;
-        -moz-box-shadow: none;
-        -webkit-box-shadow: none;
-        //font-size: .8em;
+    ul.courses {
+      background: #fefefe;
 
-        span {
-          position: relative;
-          padding: .35em;
-          display: block;
-        }
+      li.course-item {
+        ul.course{
+          border: 1px solid #ccc;
 
-        span.data {
-          color: #555;
-        }
+          li.course-header { padding: .7em; }
+          li {
+            padding: .3em;
+            span.course-name {
+              font-weight: bold;
+              color: #888;
+              font-size: 1.2em;
+            }
+            span.course-title {
 
-        span.title {
-          background: #eee;
-          border-top: 1px solid #ccc;
-          border-bottom: 1px solid #ccc;
+            }
+          }
         }
       }
-
-      ul:first-child {
-        border: none;
-      }
-  }
+    }
   }
 }
 
