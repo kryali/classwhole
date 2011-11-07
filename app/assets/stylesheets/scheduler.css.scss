@@ -430,9 +430,6 @@ $mini-schedule-border-color: #aaa;
 }
 
 .modal {
-  left: 25%;
-  width: 90%;
-  height: 85%;
   .modal-header {
     h3 {
       font-size: 1.5em;
@@ -449,10 +446,11 @@ $mini-schedule-border-color: #aaa;
     }
   }
   .modal-body {
-    iframe{
-      width: 100%;
-      height: 70%;
+    li {
+      margin-top: 5px;
+      margin-left: 15px;
     }
+    font-size: 1.2em;
   }
   .modal-footer {
   }

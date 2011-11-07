@@ -16,7 +16,8 @@ include ApplicationHelper
       retry if max_try > 0
     ensure
 		  cookies.delete("classes")
-      redirect_to(root_path)
+      render :json => { :status => "success", :user => @user, :message => "Logged in" }
+      #redirect_to(root_path)
     end
   end
 
