@@ -5,27 +5,26 @@
       - sections = course_section_hash[course.id]
       %li.course-item
         %ul.course
-        %li
-          %span.course-name= course.to_s
-          %span.course-title= course.title
-        %li 
-          %span.title Credit Hours
-          %span.data= "#{course.hours} hr."
-        %li 
-          %span.title Description
-          %span.data= shorten(course.description, 130)
-        - sections.each do |section|
+          %li{:class=> "course-header #{colors[course.id]}"}
+            %span.course-name= course.to_s
+            %span.course-title= shorten(course.title, 19)
+            %span.course-hours= "(#{course.hours} hr)"
+          -if nil
+            %li 
+              %span.title Description
+              %span.data= shorten(course.description, 130)
           %ul.sections
-            %li.header Sections
-            - if section.instructor
+            -if nil
+              %li.header Sections
+            - sections.each do |section|
               %li 
-                %span.title Professor
-                %span.data= section.instructor
-            %li 
-              %span.title Code
-              %span.data= section.code
-            %li 
-              %span.title Time
-              %span.data= section.duration_s
+                %div
+                  %span{:class=>"section-type label"}= section.section_type
+                  -if section.instructor
+                    %span.instructor= section.instructor
+                  -else 
+                    %span.instructor TBD
+                  %span.code= section.code
+                  -#%span.time= section.duration_s
   %a{ :class => "btn default save-schedule"} Save
   %a{ "data-controls-modal" => "register-modal", "data-backdrop" => "static", "data-keyboard" => "true", :class => "btn primary register-schedule"} Register
