@@ -144,6 +144,7 @@ $showcase-bg        : url('showcase-bg.png');
     width: 220px;
     margin: 0em 0em 0em 1.5em;
     font-size: .9em;
+    color: #555;
 
     .btn {
       font-size: 1.3em;
@@ -153,30 +154,64 @@ $showcase-bg        : url('showcase-bg.png');
     }
 
     .label {
-      //background: blue;
+      background: #0069D6;
+      background: #97B2CF;
       margin: 0;
       display: block;
       float: left;
       margin-right: 5px;
     }
 
+    li {
+      color: #555;
+      overflow: hidden;
+    }
+
     ul.courses {
       background: #fefefe;
+      //border: 1px solid #ccc;
 
       li.course-item {
-        ul.course{
-          border: 1px solid #ccc;
+        margin-bottom: 1em;
+        ul.course {
+          border: none;
 
-          li.course-header { padding: .7em; }
-          li {
-            padding: .3em;
+          ul.sections {
+            font-size: .9em;
+            position: relative;
+
+            li {
+              padding: .4em;
+            }
+            span.code {
+              float: right;
+            }
+
+            span.instructor {
+              position: absolute;
+              left: 40px;
+            }
+          }
+
+          li.course-header { 
+            padding: .5em; 
+            border-bottom: 1px solid #ccc;
+            border-top: 1px solid #ccc;
             span.course-name {
-              font-weight: bold;
-              color: #888;
               font-size: 1.2em;
             }
             span.course-title {
+              font-size: .8em;
+            }
+            span.course-hours {
+              font-size: .8em;
+            }
+          }
+          li {
+            padding: .3em;
 
+            ul.course {
+              border: none;
             }
           }
         }
