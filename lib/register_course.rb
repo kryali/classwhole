@@ -26,6 +26,7 @@ class Register_Course
       @configurations_array[i] = @configurations_array[i][1].sort_by{|k,sections| sections.length}
       for j in 0...@configurations_array[i].length
         @configurations_array[i][j] = @configurations_array[i][j][1]
+        @configurations_array[i][j].sort!{|x,y| x.start_time.to_i <=> y.start_time.to_i}
       end
     end
   end

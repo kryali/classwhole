@@ -5,7 +5,7 @@
 # TODO: Too many queries right now, (i.e we look up semester for every single one). Need to find a better way, maybe pass along the object?
 #
 class CatalogController < ApplicationController
-  
+  include ApplicationHelper  
 
   # <helpers> 
   # Description:

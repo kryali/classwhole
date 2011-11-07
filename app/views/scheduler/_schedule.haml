@@ -68,8 +68,8 @@
               %li 
                 %span.title Time
                 %span.data= section.duration_s
-    %a{ :href => "#", :class => "btn default save-schedule"} Save
-    %a{ :href => "#", :class => "btn primary register-schedule"} Register
+    %a{ :class => "btn default save-schedule"} Save
+    %a{ "data-controls-modal" => "register-modal", "data-backdrop" => "static", "data-keyboard" => "true", :class => "btn primary register-schedule"} Register
       
   - if !onl_sections.empty?
     %ul.onl_sections

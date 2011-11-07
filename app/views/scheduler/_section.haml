@@ -2,16 +2,14 @@
 - top_px = section_top_px(section, start_hour) + header_height
 - height_px = section_height_px( section )
 %div.schedule-block{ :style => "top: #{top_px}px; height: #{height_px}px;", :class=>"#{colors[section.course_id]}", :days => "#{section.days}"}
-  %span.hidden= section.id
+  %span{ :class => "hidden id"}= section.id
+  %span{ :class => "hidden crn" }= section.reference_number
   %span.section-code= section.code
   %span.course-name= "#{section.course_subject_code} #{section.course_number}"
   %span.course-title= shorten(section.course_title, 23)
   %span{:class => "section-type label"}= section.section_type
   %span.duration= section.duration_s
   %ul.hidden-data{ :style => "top: #{height_px}px;" }
-    %li
-      %span.title CRN
-      %span.data= "#{section.reference_number}"
     %li 
       - course = section.course
       %span.title Credit Hours
