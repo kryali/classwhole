@@ -49,9 +49,14 @@ class Section < ActiveRecord::Base
   end
 
   # Description: This function ensures that no two sections are conflicting
-  #   Method: Make sure that sectionb's start and end time is not between sectiona's start and end time
+  #   Method: check that these sections fall within the same semester slot then
+  #     Make sure that sectionb's start and end time is not between sectiona's start and end time
   def section_conflict?(section)
-    return time_conflict?(section.days, section.start_time, section.end_time)
+    if self.semester_slot & section.semester_slot > 0
+      return time_conflict?(section.days, section.start_time, section.end_time)
+    else 
+      return false
+    end
   end
 
   def schedule_conflict?(schedule)
@@ -87,8 +92,5 @@ class Section < ActiveRecord::Base
     end
     return "nil"
   end
-
-
-
 
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111103050132) do
+ActiveRecord::Schema.define(:version => 20111106040806) do
 
   create_table "courses", :force => true do |t|
     t.integer  "number"
@@ -30,11 +30,6 @@ ActiveRecord::Schema.define(:version => 20111103050132) do
     t.integer "user_id"
   end
 
-  create_table "schedules", :force => true do |t|
-    t.integer "user_id"
-    t.integer "sections_id"
-  end
-
   create_table "sections", :force => true do |t|
     t.integer  "room"
     t.integer  "reference_number"
@@ -49,11 +44,10 @@ ActiveRecord::Schema.define(:version => 20111103050132) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "code"
-    t.datetime "start_date"
-    t.datetime "end_date"
     t.string   "course_subject_code"
     t.string   "course_title"
     t.integer  "course_number"
+    t.integer  "semester_slot",       :default => 0
   end
 
   create_table "semesters", :force => true do |t|
@@ -79,16 +73,15 @@ ActiveRecord::Schema.define(:version => 20111103050132) do
   end
 
   create_table "users", :force => true do |t|
-    t.string  "fb_id"
-    t.string  "fb_token"
-    t.string  "g_token"
-    t.string  "email"
-    t.string  "name"
-    t.string  "first_name"
-    t.string  "last_name"
-    t.string  "link"
-    t.string  "gender"
-    t.integer "schedule_id"
+    t.string "fb_id"
+    t.string "fb_token"
+    t.string "g_token"
+    t.string "email"
+    t.string "name"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "link"
+    t.string "gender"
   end
 
 end

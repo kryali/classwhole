@@ -1,0 +1,10 @@
+%div.full
+  - @possible_schedules.each do |schedule|
+    = render 'schedule', :sections => schedule
+%div.mini
+  - i = @range_end + 1
+  - @possible_schedules.each do |schedule|
+    %li
+      %a{ :href => "##{i-1}" }
+      = render 'mini_schedule', :sections => schedule
+      - i += 1

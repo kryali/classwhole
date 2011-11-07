@@ -22,14 +22,16 @@
 }
 
 // schedule
-$block-width        : 144px;
-$schedule-block-h   : 60px;
+$schedule-block-h   : 48px;
 $numblocks          : 12;
-$scheduler-content-width: 780px;
+$scheduler-content-width: 940px;
+$scheduler-content-padding: 15px;
+$schedule-day-width : 120px;
 /* all colors */
 // These are the main element colors 
 $default-font-color : #4D4D4D;
 $accent-font-color  : #333333;
+$schedule_block_padding: 5px;
 
 
 $showcase-bg        : url('showcase-bg.png');
@@ -55,11 +57,11 @@ $showcase-bg        : url('showcase-bg.png');
 }
 
 .small-width {
-  width: $block-width/10;
+  width: $schedule-day-width/10;
 }
 
 .large-width {
-  width: $block-width;
+  width: $schedule-day-width;
 }
 
 .small-height {
@@ -71,7 +73,7 @@ $showcase-bg        : url('showcase-bg.png');
 
 .schedule-day {
   position: relative;
-  width: $block-width;
+  width: $schedule-day-width;
   background: #cccccc;
   float: left;
   margin: 0 0px 0 0px;
@@ -79,7 +81,6 @@ $showcase-bg        : url('showcase-bg.png');
   border-bottom: 1px solid #aaaaaa;
 }
 
-$block_padding: 4px;
 .schedule-block {
   width: 100%;
   background: white;
@@ -97,41 +98,126 @@ $block_padding: 4px;
   }
 
   .section-code {
-    bottom: $block_padding;
-    left:   $block_padding;
-    color: #444;
-    font-size: 0.8em;
+    bottom: $schedule_block_padding;
+    left:   $schedule_block_padding;
+    color: #888;
+    font-size: 0.7em;
   }
   .course-name {
-    top:    $block_padding;
-    left:   $block_padding;
+    top:    $schedule_block_padding;
+    left:   $schedule_block_padding;
     color: #444;
   }
   .section-type {
-    top:    $block_padding;
-    right:   $block_padding;
+    top:    $schedule_block_padding;
+    right:   $schedule_block_padding;
     background: #0069D6;
   }
 
   .course-title {
     font-size: .7em;
-    top: $block_padding * 5.25;
-    left: $block_padding;
+    top: 22px;
+    left: $schedule_block_padding;
     color: #888;
   }
 
   .duration {
     font-size: .7em;
-    bottom: $block_padding + 1;
-    right: $block_padding;
+    bottom: $schedule_block_padding;
+    right: $schedule_block_padding;
     text-transform: uppercase;
     color: #444;
   }
 
 }
 
-.slides_container {
-  margin-top: 120px;
+#slides {
+  overflow: hidden;
+  margin-top: 30px;
+  .slides_container {
+    //width: 660px;
+    float: left;
+  }
+
+  .sidebar {
+    float: right;
+    width: 220px;
+    margin: 0em 0em 0em 1.5em;
+    font-size: .9em;
+    color: #555;
+
+    .btn {
+      font-size: 1.3em;
+      display: block;
+      text-align: center;
+      margin-top: .7em;
+    }
+
+    .label {
+      background: #0069D6;
+      background: #97B2CF;
+      margin: 0;
+      display: block;
+      float: left;
+      margin-right: 5px;
+    }
+
+    li {
+      color: #555;
+      overflow: hidden;
+    }
+
+    ul.courses {
+      background: #fefefe;
+      //border: 1px solid #ccc;
+
+      li.course-item {
+        margin-bottom: 1em;
+        ul.course {
+          border: none;
+
+          ul.sections {
+            font-size: .9em;
+            position: relative;
+
+            li {
+              padding: .4em;
+            }
+            span.code {
+              float: right;
+            }
+
+            span.instructor {
+              position: absolute;
+              left: 40px;
+            }
+          }
+
+          li.course-header { 
+            padding: .5em; 
+            border-bottom: 1px solid #ccc;
+            border-top: 1px solid #ccc;
+            span.course-name {
+              font-size: 1.2em;
+            }
+            span.course-title {
+              font-size: .8em;
+            }
+            span.course-hours {
+              font-size: .8em;
+            }
+          }
+          li {
+            padding: .3em;
+
+            ul.course {
+              border: none;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 .schedule-wrapper {
@@ -179,42 +265,6 @@ $block_padding: 4px;
       -webkit-box-shadow: inset 1px 1px 1px 0px white;
     }
   }
-
-  ul.hidden-data {
-    position: absolute;
-    display: none;
-    border-bottom: 1px solid #ccc;
-
-    li {
-      border: none;
-      background: white;
-      height: 100%;
-      box-shadow: none;
-      -moz-box-shadow: none;
-      -webkit-box-shadow: none;
-      font-size: .8em;
-
-      span {
-        position: relative;
-        padding: .35em;
-        display: block;
-      }
-
-      span.data {
-        color: #555;
-      }
-
-      span.title {
-        background: #eee;
-        border-top: 1px solid #ccc;
-        border-bottom: 1px solid #ccc;
-      }
-    }
-
-    ul:first-child {
-      border: none;
-    }
-  }
 }
 
 .ui-droppable {
@@ -233,22 +283,17 @@ ul.hidden-data {
 
 .scheduler-content {
   font-family: 'Arial', 'Tahoma', sans-serif;
-  padding: 40px;
+  padding: $scheduler-content-padding;
   position: relative;
   background: white;
   border: 1px solid #aaaaaa;
+  margin: 1em auto 0 auto;
+  width: $scheduler-content-width;
+
   h1 {
     text-align: center;
     font-size: 1.3em;
     padding: 1em;
-  }
-  margin: 1em auto 0 auto;
-  width: $scheduler-content-width;
-
-  ul.pagination {
-    //position: absolute;
-    //top: 0em;
-    //left: 5em;
   }
 
 }
@@ -320,39 +365,68 @@ ul.onl_sections {
 $mini-schedule-width: 130px;
 $mini-schedule-height: 90px;
 $mini-schedule-border-color: #aaa;
-ul.mini-pagination {
-  position: absolute;
-  top: 29px;
-  left: 132px;
-  border: 1px solid $mini-schedule-border-color;
 
-  li {
-    overflow: hidden;
-    display: block;
-    width: $mini-schedule-width;
-    float: left;
-    border-left: 1px solid $mini-schedule-border-color;
-  }
+.mini-pagination-top {
+  //position: absolute;
+  bottom: 29px;
+  left: 130px;
 
-  li:first-child {
-    border: none;
-  }
-
-  a {
-    width: $mini-schedule-width;
-    z-index: 10;
-    height: $mini-schedule-height;
+  .mini-prev {
     position: absolute;
+    left: -20px;
+    top: 20px;
   }
 
-  a:hover {
-    background: #fff;
-    opacity: .2;
+  .mini-next {
+    position: absolute;
+    right: -20px;
+    top: 20px;
   }
+  .mini-pagination-container {
+    //border: 1px solid $mini-schedule-border-color;
+    //height: 92px;
+    height: 106px;
+    width: 654px;
+    //overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
+    position: relative;
 
-  .current a{
-    background: #fff;
-    opacity: .3;
+    ul.mini-pagination {
+      //width: 9000px;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+
+      li {
+        overflow: hidden;
+        display: block;
+        width: $mini-schedule-width;
+        float: left;
+        border-left: 1px solid $mini-schedule-border-color;
+      }
+
+      li:first-child {
+        border: none;
+      }
+
+      a {
+        width: $mini-schedule-width;
+        z-index: 10;
+        height: $mini-schedule-height;
+        position: absolute;
+      }
+
+      a:hover {
+        background: #fff;
+        opacity: .2;
+      }
+
+      .current a{
+        background: #fff;
+        opacity: .3;
+      }
+    }
   }
 }
 
@@ -380,4 +454,33 @@ ul.mini-pagination {
   background: image-url("arrow-prev.png");
     // If we aren't given a position to insert the selected box, don't add 
       // If we aren't given a position to insert the selected box, don't add 
+}
+
+.modal {
+  left: 25%;
+  width: 90%;
+  height: 85%;
+  .modal-header {
+    h3 {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+    .x-button {
+      cursor: pointer;
+      font-size: 1.5em;
+      position: absolute;
+      top: 0px;
+      right: 5px;
+      color: black;
+    }
+  }
+  .modal-body {
+    iframe{
+      width: 100%;
+      height: 70%;
+    }
+  }
+  .modal-footer {
+  }
 }

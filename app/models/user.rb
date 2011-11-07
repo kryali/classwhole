@@ -2,7 +2,6 @@ class User < ActiveRecord::Base
   has_many :sections
   has_many :courses
   has_many :friendships
-  has_one :schedule
 
   def friends
     friends = []
@@ -24,4 +23,9 @@ class User < ActiveRecord::Base
     end
     return hours
   end
+
+  def is_temp?
+    return false
+  end
+
 end

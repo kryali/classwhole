@@ -1,12 +1,16 @@
 $(function(){
 
   //var block_height = 74;
-  var block_height = $(".schedule-blcok").height();
+  var block_height = $(".schedule-block").height();
   var is_dragging = false;
   var is_showing_hints = false;
   var is_updating = false;
   var handled_drop = false;
   var save_schedule_path = "/scheduler/save";
+  var paginate_path = "/scheduler/paginate";
+  var current_selected = 1;
+  var mini_grids_showing = 5;
+  var mini_grids_count = 5;
 
   var options = {
     draggable: {
@@ -26,18 +30,19 @@ $(function(){
       hoverClass:  'hover',
       drop:        handle_drop,
       scope:        'section_hint',
+    },
+    slides: {
+      autoHeight: true,
+      pagination: true,
+      paginationClass: 'mini-pagination',
+      generatePagination: false,
     }
   }
 
   function init() {
 
     // Setup the slidejs plugin
-    $("#slides").slides({
-      autoHeight: true,
-      pagination: true,
-      paginationClass: 'mini-pagination',
-      generatePagination: false,
-    });
+    $("#slides").slides(options.slides);
 
     $(".save-schedule").click( function() {
 
@@ -47,12 +52,43 @@ $(function(){
         data: { schedule:schedule_ids},
         url:  save_schedule_path,
         success: function(data, textStatus, jqXHR) {
-          pop_alert("error", "it worked");
+          if (data["status"] == "success") {
+            pop_alert("info", data["message"]);
+          }
+          else if (data["status"] == "error") {
+            pop_alert("error", data["message"]);
+          }          
         }
       });
     });
 
+    $(".close-modal").click( function() {
+      $('#register-modal').modal('hide');
+    });
+    $(".register-schedule").click( function() {
+      var schedule = get_current_schedule();
+      var crns = [];
+      var crnstring = "Your CRNs: ";
+      var all_section_crns = schedule.find(".schedule-block .crn");
+      for( var i = 0; i < all_section_crns.size(); i++ ){
+        
+        // Ignore droppable sections
+        if (!$(all_section_crns[i]).parent().hasClass("ui-droppable")) {
+          var current_section_crn = all_section_crns[i].innerHTML;
+
+          // Make sure we don't already have the section in our array
+          if( crns.indexOf(current_section_crn) == -1 ) {
+            crns.push(current_section_crn)
+            crnstring = crnstring + current_section_crn + " "
+          }
+        }
+      }
+      $('#crns').text(crnstring);
+      $('#register-modal').modal('show');
+    });
+
     init_draggable();
+    //init_mini_pagination();
 
     // Use the keyboard to select other schedules
     $(document).keydown( function(event) {
@@ -66,6 +102,80 @@ $(function(){
         }
     });
 
+    // TODO: BUG IF YOU CLICK TOO FAST
+    $(".prev").click( function() {
+      if( current_selected > 1 )
+        current_selected--;
+      else {
+        $(".mini-prev").click();
+        current_selected = mini_grids_showing;
+      }
+    });
+
+    $(".next").click( function() {
+      current_selected++;
+      if( current_selected > mini_grids_showing ){
+        $(".mini-next").click();
+        current_selected = 1;
+      }
+    });
+
+    var children = $(".mini-pagination").children();
+    $('.mini-pagination').css("width", children.width() * children.length +8);
+  }
+
+  function init_mini_pagination() {
+    var width = $(".mini-pagination-container").width() + 1;
+    var mini_pagination = $(".mini-pagination");
+    var children = $(".mini-pagination").children();
+    var start = 0;
+    var end = mini_grids_showing;
+
+    mini_pagination.css("width", children.width() * children.length);
+
+    $(".mini-prev").click( function() {
+      var current_pos = mini_pagination.position().left;
+      // Make sure it's not already the the most left
+      if( current_pos != 0) {
+        end = start;
+        start -= mini_grids_showing;
+        mini_pagination.animate({ left: current_pos + width + "px"}, 250, undefined);
+      }
+    });
+
+    $(".mini-next").click( function() {
+      var current_pos = mini_pagination.position().left;
+      if( end <= mini_grids_count) {
+        console.log("starting a request");
+        $.ajax({
+          type: 'POST',
+          url: paginate_path,
+          data: { 
+            courses: course_ids, 
+            start: start, 
+            end: end,
+          },
+          success: function(data, textStatus, jqXHR) {
+            console.log( textStatus );
+            console.log( $(data) );
+            var full = $(data).first();
+            var mini = $(data).last();
+            $(".slides_control").append( full.children() );
+            mini_pagination.append( mini.children() );
+
+            var children = mini_pagination.children();
+            mini_pagination.css("width", children.width() * children.length);
+            mini_pagination.animate({ left: current_pos - width + "px"}, 250, undefined);
+            $("#slides").slides(options.slides);
+          }
+        });
+      } else {
+        start = end;
+        end = end + mini_grids_showing;
+        mini_grids_count += mini_grids_showing;
+        mini_pagination.animate({ left: current_pos - width + "px"}, 250, undefined);
+      }
+    });
   }
 
   function init_draggable() {
@@ -76,7 +186,7 @@ $(function(){
 
       var current_section = $(this);
       current_section.draggable( 'option', 'revert', true );
-      var section = current_section.find(".hidden").text();
+      var section = current_section.find(".id").text();
       var schedule_ids = get_schedule_ids();
       //console.log( "Selected" + section );
       //console.log( schedule_ids );
@@ -129,7 +239,7 @@ $(function(){
     var schedule_blocks = day.find(".schedule-block");
     for( var i = 0; i < schedule_blocks.length; i++) {
       var current_section =  $(schedule_blocks[i]);
-      var current_section_id = current_section.find(".hidden").text();
+      var current_section_id = current_section.find(".id").text();
       if (  section_id  == current_section_id ) {
         current_section.remove();
       }
@@ -152,7 +262,7 @@ $(function(){
     var current_schedule = get_current_schedule();
 
     var selected_box = $(".ui-draggable-dragging");
-    var selected_section_id = selected_box.find(".hidden").text();
+    var selected_section_id = selected_box.find(".id").text();
 
     // If we aren't given a position to insert the selected box, don't add 
     if( day ){
@@ -197,7 +307,7 @@ $(function(){
 
     // Make the schedule blocks fade in
     current_schedule.find(".droppable").addClass("hidden");
-    current_schedule.find(".droppable").fadeIn(450);
+    current_schedule.find(".droppable").fadeIn(150);
 
     // Enable the new sections to be draggable
     init_draggable();
@@ -238,7 +348,7 @@ $(function(){
   function get_schedule_ids() {
     var schedule = get_current_schedule();
     var sections = [];
-    var all_section_ids = schedule.find(".schedule-block .hidden");
+    var all_section_ids = schedule.find(".schedule-block .id");
     for( var i = 0; i < all_section_ids.size(); i++ ){
       
       // Ignore droppable sections
@@ -256,7 +366,7 @@ $(function(){
 
   function remove_droppable( section_id ) { 
     $(".schedule-block").each( function() {
-      var current_id = $(this).find(".hidden").text(); 
+      var current_id = $(this).find(".id").text(); 
       if( current_id == section_id ) {
         $(this).removeClass("droppable");
       }
@@ -266,7 +376,7 @@ $(function(){
   /* Unhide the new sections */
   function setup_new_sections( section_id ) {
     get_current_schedule().find(".droppable").each( function() {
-      if( $(this).find(".hidden").text() == section_id ){
+      if( $(this).find(".id").text() == section_id ){
 
         // Enable draggable for new sections
         $(this).find(".schedule-block").draggable( 'enable' );
@@ -282,8 +392,8 @@ $(function(){
 
     // Find the section that the user is holding 
     var curr_section =  $(ui.draggable[0]);
-    var curr_section_id = parseInt(curr_section.find(".hidden").text());
-    var new_section_id = parseInt($(this).find(".hidden").text());
+    var curr_section_id = parseInt(curr_section.find(".id").text());
+    var new_section_id = parseInt($(this).find(".id").text());
     var schedule_ids = get_schedule_ids();
 
     // Generate the list of the new schedule to render
@@ -326,7 +436,7 @@ $(function(){
     //console.log(event);
     var current_section = $(ui.helper[0]);
     current_section.draggable( 'option', 'revert', true );
-    var section = current_section.find(".hidden").text();
+    var section = current_section.find(".id").text();
     var schedule_ids = get_schedule_ids();
     //console.log( "requesting hints" );
     //console.log( section );
@@ -351,6 +461,9 @@ $(function(){
       is_showing_hints = false;
     });
 
+  }
+
+  function append_pagination( data, textStatus, jqXHR ) {
   }
 
   init();

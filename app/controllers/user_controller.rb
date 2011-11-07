@@ -2,6 +2,7 @@
 # Handles user login/registration interaction
 #
 class UserController < ApplicationController
+include ApplicationHelper
 
   def login
     user_id = params["userID"]
@@ -14,6 +15,7 @@ class UserController < ApplicationController
       max_try -= 1
       retry if max_try > 0
     ensure
+		  cookies.delete("classes")
       redirect_to(root_path)
     end
   end
@@ -46,18 +48,23 @@ class UserController < ApplicationController
     #  friends.each { |friend| $redis.sadd("#{@user.id}:friends", friend["id"]) }
     #end
 
+    #if they added some classes before logging in...
+    for id in cookie_class_list
+      @user.courses << Course.find(id)
+    end
+
     @user.save
-    return @user.id
+    return @user.id  
   end
 
-  #
-  # destroy the session so the user is no longer logged in
-  # delete the cookie 
-  def logout
-    session[:user_id] = nil
-		cookies.delete("classes")
-    redirect_to(root_path)
-  end
+ 
+ def logout
+   session[:user_id] = nil
+   cookies.delete("classes")
+   redirect_to(root_path)
+ end
+
+  
 
   #
   # Description: This function gets passed a list of course ids and adds it
@@ -66,24 +73,17 @@ class UserController < ApplicationController
   # We should probably be looking up the id instead of doing a slow search here
   #
   def add_course
-		# If the person isn't logged into facebook, create a cookie
-		if !current_user
-			cookies["classes"] = { :value => "", :expires => 1.year.from_now }# create a cookie!			
-			self.current_user = User.new #create a blank current_user		
-		end
-
-		# Add each class to the current users classes
+		# If the person isn't logged into facebook, create a cookie, but don't overwrite it
+    if cookies["classes"].nil?
+		  cookies["classes"] = { :value => "", :expires => 1.year.from_now }			
+    end
     current_user.courses << Course.find( params["id"].to_i )
-    add_course_to_cookie( params["id"] )
-    current_user.save
-		# check whether ot not add_courses is being called by clicking schedule,
-		# or if it is being called from the Course page (ADD CLASS BUTTON)s
-		if params.include? "from_button"
-			redirect_to :back
-		else		
-			redirect_to(scheduler_new_path)
- 		end
+    if current_user.is_temp?
+      add_course_to_cookie( params["id"] )
+    end
+		render :json => { :status => "success", :message => "Class added" }
 	 end
+
 
   #
   # Description: This function gets passed a course ids and removes the course
@@ -92,9 +92,12 @@ class UserController < ApplicationController
   def remove_course
     begin
       target_course = Course.find(params["course_id"].to_i)
-      current_user.courses.delete(target_course)
-			remove_class_from_cookie(params["course_id"].to_i)     
-			redirect_to(root_path)
+      if current_user      
+        current_user.courses.delete(target_course)
+      else			
+        remove_class_from_cookie(params["course_id"].to_i)     
+      end			
+      redirect_to(root_path)
     end
   end
 	
@@ -120,6 +123,5 @@ class UserController < ApplicationController
 			cookies["classes"] = { :value => "#{cook}#{course_id_string}|", :expires => 1.year.from_now } 				
 		end
 	end
-
 
 end

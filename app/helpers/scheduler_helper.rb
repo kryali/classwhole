@@ -91,12 +91,12 @@ module SchedulerHelper
   end
 
   def section_top_px( section, start_hour )
-    top_px = (section.start_time.hour - start_hour + (section.start_time.min/60.0)) * 60 # scheduler_block_height
+    top_px = (section.start_time.hour - start_hour + (section.start_time.min/60.0)) * 48 # scheduler_block_height
     return top_px
   end
 
   def section_height_px( section )
-    return section.duration * 60#@scheduler_block_height
+    return section.duration * 48#@scheduler_block_height
   end
 
   def section_colors( sections )
@@ -134,13 +134,24 @@ module SchedulerHelper
   end
 
   def mini_section_top_px( section )
-    logger.info "TOP: #{section}"
     top_px = (section.start_time.hour - 7 + (section.start_time.min/60.0)) * 6
     return top_px
   end
 
   def mini_section_height_px( section )
     return section.duration * 6
+  end
+
+  def courses_from_sections( sections )
+    courses = []
+    course_section_hash = {}
+    sections.each do |section|
+      course = section.course
+      courses << section.course if !courses.include?(section.course)
+      course_section_hash[course.id] ||= []
+      course_section_hash[course.id] << section
+    end
+    return courses, course_section_hash
   end
 
 end

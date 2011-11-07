@@ -26,6 +26,47 @@ def ParseSemester(year, season)
   current_semester = Semester.create(:year => year, :season => season)
 
   add_subjects_to_semester(current_semester, catalog)
+
+  url_first8week = @base_url + "/schedule/first8weeks/index.xml"
+  url_second8week = @base_url + "/schedule/second8weeks/index.xml"
+  xml_data_first8week = Net::HTTP.get_response(URI.parse(url_first8week)).body
+  xml_data_second8week = Net::HTTP.get_response(URI.parse(url_second8week)).body
+  catalog_first8week = XmlSimple.xml_in(xml_data_first8week, 'ForceArray' => ['subject'], 'SuppressEmpty' => nil)
+  catalog_second8week = XmlSimple.xml_in(xml_data_second8week, 'ForceArray' => ['subject'], 'SuppressEmpty' => nil)
+  semester_slot("first8weeks/", 1, catalog_first8week)
+  semester_slot("second8weeks/", 2, catalog_second8week)
+
+  puts "-------\nsemester slots\n-------\n"
+  puts "#{Section.all.size} sections"
+  Section.transaction do
+    Section.all.each do |section|
+      section.semester_slot = 3 if section.semester_slot == 0
+      section.save
+    end
+  end
+end
+
+def semester_slot(weeks, val, data)
+  puts "-------\n#{weeks}\n-------\n"
+  subject_catalog = data['subject']
+  subject_catalog.each do |subject|
+    puts "#{subject['subjectCode']}"
+    # Build a url based off of the current subject code
+    subject_url = @base_url + "/schedule/" + weeks + subject['subjectCode'] + "/index.xml"
+    # Fetch the courses for the subject and decrypt the data from the url
+    subject_xml_data = Net::HTTP.get_response(URI.parse(subject_url)).body
+    subject_courses = XmlSimple.xml_in(subject_xml_data, 'ForceArray' => ['course','section'], 'SuppressEmpty' => nil)['subject']['course']
+    subject_courses.each do |course|
+      course['section'].each do |section|
+        puts "#{section['referenceNumber']}"
+        Section.transaction do
+          section = Section.find_by_reference_number(section['referenceNumber'].to_i)
+          section.semester_slot = val
+          section.save
+        end
+      end
+    end
+  end
 end
 
 # Parses data to populate all the subject and course data for the semester
@@ -84,17 +125,6 @@ def add_sections_to_course(course, data)
   course_sections = data
   Section.transaction do
     course_sections.each do |section|
-      # If there is a date rage specified, use it, otherwise default to semester
-      # omg this totally worked... I think...?
-      quarter_duration = section['sectionDateRange']
-      if not quarter_duration
-        start_date = @semester_start_date
-          end_date = @semester_end_date
-      else
-        dates = quarter_duration.split(" - ")
-        start_date = Time.parse(dates[0])
-        end_date = Time.parse(dates[1])
-      end
       section_start_time, section_end_time = parse_hours(section['startTime'], section['endTime'])
 
       current_section = course.sections.create(
@@ -107,8 +137,6 @@ def add_sections_to_course(course, data)
         # Time value can be "ARRANGED", not an actual time, so this is stored as nil
         :start_time => section_start_time,
         :end_time => section_end_time,
-        :start_date => start_date,
-        :end_date => end_date,
         :building => section['building'],
         :code => section['sectionId'],
         :course_subject_code => course.subject_code,

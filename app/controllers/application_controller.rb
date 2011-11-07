@@ -1,9 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-
   helper_method :current_user
-
-
 
   def set_cache_buster
     response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
@@ -11,46 +8,45 @@ class ApplicationController < ActionController::Base
     response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
   end
 
-
   # This looks weird to me.. I'll look at this again when I don't suck at ruby
   protected
   def current_user    
 		if session[:user_id]     	
-			return @current_user ||= User.find(session[:user_id])
-    elsif cookies["classes"]        #if they're not in the database, but have a cookie for classwhole
-			return temp_current_user 	
-		else    
-			return nil
+			return @current_user ||= User.find(session[:user_id]) 	
+     elsif @current_user #a temp user has already been created
+      return @current_user    
+    else
+      return create_temp_user
     end
   end 
 
   def current_user=(new_user)
-		if cookies["classes"]		
-			@current_user = User.new
-		end
 		@current_user = new_user
     session[:user_id] = new_user.id
   end
 
-	#
-	# Description: Function to create a temporary current_user for non-facebook users
-	#  			
+ # def current_user.is_temp?
+ #   return false
+ # end
 
-	def temp_current_user
-		#if we already have made a temp current user, just return that one		
-		if @current_user
-				return @current_user
-		end
-		# otherwise, create a temp current_user based on the cookie
-    # that holds the users class id's 		
-		@current_user = User.new		
-		class_ids = cookies["classes"].split('|')		
-		class_ids.each do |id|
-      course = Course.find_by_id(id.to_i)
-			@current_user.courses << course if course
-		end
-		return @current_user	
-	end
+  def create_temp_user
+    if cookies["classes"].nil?
+      @current_user = Fake_user.new  
+    else
+      @current_user = Fake_user.new
+      for id in cookie_class_list
+        @current_user.courses << Course.find(id)
+      end
+    return @current_user
+    end  
+  end
 
+  def user_is_temp?
+    if !@current_user.is_temp.nil?
+      return true  
+    else
+      return false
+    end  
+  end
 
 end
