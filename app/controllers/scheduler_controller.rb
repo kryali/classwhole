@@ -13,8 +13,15 @@ class SchedulerController < ApplicationController
     end
     all_possible_schedules = Rails.cache.fetch( :courses => course_ids,   
                                                 :data => 'valid_schedules' ) {
+
+      begin      
       scheduler = Scheduler.new(current_user.courses)
-      scheduler.schedule_courses
+      status = Timeout::timeout(5) {     
+        scheduler.schedule_courses
+      } 
+      rescue Timeout::Error
+        redirect_to "/500.html"
+      end
       scheduler.valid_schedules
     }
     @course_ids = course_ids.to_json
@@ -66,9 +73,10 @@ class SchedulerController < ApplicationController
   end
 
   def save
-    if current_user.nil?
+    if current_user.is_temp?
       render :json => {:status => "error", :message => "Log in to save schedule."}
     else
+      # TODO remove redis
       params["schedule"].each do |section_id|
         $redis.sadd("user:#{current_user.id}:schedule", section_id.to_i)
       end
