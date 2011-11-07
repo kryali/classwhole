@@ -22,7 +22,7 @@
 }
 
 // schedule
-$schedule-block-h   : 60px;
+$schedule-block-h   : 48px;
 $numblocks          : 12;
 $scheduler-content-width: 900px;
 $scheduler-content-padding: 15px;
@@ -31,6 +31,7 @@ $schedule-day-width : 120px;
 // These are the main element colors 
 $default-font-color : #4D4D4D;
 $accent-font-color  : #333333;
+$schedule_block_padding: 5px;
 
 
 $showcase-bg        : url('showcase-bg.png');
@@ -80,7 +81,6 @@ $showcase-bg        : url('showcase-bg.png');
   border-bottom: 1px solid #aaaaaa;
 }
 
-$block_padding: 4px;
 .schedule-block {
   width: 100%;
   background: white;
@@ -98,33 +98,33 @@ $block_padding: 4px;
   }
 
   .section-code {
-    bottom: $block_padding;
-    left:   $block_padding;
-    color: #444;
-    font-size: 0.8em;
+    bottom: $schedule_block_padding;
+    left:   $schedule_block_padding;
+    color: #888;
+    font-size: 0.7em;
   }
   .course-name {
-    top:    $block_padding;
-    left:   $block_padding;
+    top:    $schedule_block_padding;
+    left:   $schedule_block_padding;
     color: #444;
   }
   .section-type {
-    top:    $block_padding;
-    right:   $block_padding;
+    top:    $schedule_block_padding;
+    right:   $schedule_block_padding;
     background: #0069D6;
   }
 
   .course-title {
     font-size: .7em;
-    top: $block_padding * 5.25;
-    left: $block_padding;
+    top: 22px;
+    left: $schedule_block_padding;
     color: #888;
   }
 
   .duration {
     font-size: .7em;
-    bottom: $block_padding + 1;
-    right: $block_padding;
+    bottom: $schedule_block_padding;
+    right: $schedule_block_padding;
     text-transform: uppercase;
     color: #444;
   }
@@ -133,8 +133,16 @@ $block_padding: 4px;
 
 #slides {
   overflow: hidden;
+  margin-top: 30px;
   .slides_container {
-    margin-top: 120px;
+    //width: 660px;
+    float: left;
+  }
+
+  .sidebar {
+    float: right;
+    width: 200px;
+    background: red;
   }
 }
 
@@ -321,8 +329,8 @@ $mini-schedule-height: 90px;
 $mini-schedule-border-color: #aaa;
 
 .mini-pagination-top {
-  position: absolute;
-  top: 29px;
+  //position: absolute;
+  bottom: 29px;
   left: 130px;
 
   .mini-prev {

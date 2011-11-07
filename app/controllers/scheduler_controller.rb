@@ -1,7 +1,7 @@
 class SchedulerController < ApplicationController
- before_filter :set_cache_buster
- helper_method :cookie_class_list
- include ApplicationHelper
+  before_filter :set_cache_buster
+  helper_method :cookie_class_list
+  include ApplicationHelper
 
   def index
   end

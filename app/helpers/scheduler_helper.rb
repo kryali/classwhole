@@ -91,12 +91,12 @@ module SchedulerHelper
   end
 
   def section_top_px( section, start_hour )
-    top_px = (section.start_time.hour - start_hour + (section.start_time.min/60.0)) * 60 # scheduler_block_height
+    top_px = (section.start_time.hour - start_hour + (section.start_time.min/60.0)) * 48 # scheduler_block_height
     return top_px
   end
 
   def section_height_px( section )
-    return section.duration * 60#@scheduler_block_height
+    return section.duration * 48#@scheduler_block_height
   end
 
   def section_colors( sections )
