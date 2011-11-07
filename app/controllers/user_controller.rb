@@ -15,8 +15,14 @@ include ApplicationHelper
       max_try -= 1
       retry if max_try > 0
     ensure
-		  cookies.delete("classes")
-      redirect_to(root_path)
+      if !cookies["classes"].nil? #if there is a cookie, overwrite any courses in db
+        @user.courses.delete_all        
+        for id in cookie_class_list
+          @user.courses << Course.find(id)
+          end   
+        cookies.delete("classes")  
+      end
+      render :json => { :status => "success", :user => @user, :message => "Logged in" }    
     end
   end
 
@@ -47,12 +53,6 @@ include ApplicationHelper
     #$redis.multi do
     #  friends.each { |friend| $redis.sadd("#{@user.id}:friends", friend["id"]) }
     #end
-
-    #if they added some classes before logging in...
-    for id in cookie_class_list
-      @user.courses << Course.find(id)
-    end
-
     @user.save
     return @user.id  
   end
@@ -74,7 +74,7 @@ include ApplicationHelper
   #
   def add_course
 		# If the person isn't logged into facebook, create a cookie, but don't overwrite it
-    if cookies["classes"].nil?
+    if cookies["classes"].nil? and current_user.is_temp?
 		  cookies["classes"] = { :value => "", :expires => 1.year.from_now }			
     end
     current_user.courses << Course.find( params["id"].to_i )

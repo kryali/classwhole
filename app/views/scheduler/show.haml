@@ -24,13 +24,24 @@
                   = render 'mini_schedule', :sections => sections
               - i += 1
 
-  %div{ :id => "register-modal", :class => "modal hidden" }
+  %div{ :id => "save-modal", :class => "modal hide" }
+    %div.modal-header
+      %a{ :class => "close-modal x-button"}×
+      %h3 Save
+    %div.modal-body
+      %h2 You must log in to save your schedule.
+      %a= render 'shared/fb_login_button'
+    %div.modal-footer
+      %a{:class=>"btn primary close-modal"} Close
+
+  %div{ :id => "register-modal", :class => "modal hide" }
     %div.modal-header
       %a{ :class => "close-modal x-button"}×
       %h3 Register
     %div.modal-body
-      %h2#crns Your CRNs:
-      %iframe{ :src => "https://webprod.admin.uillinois.edu/ssa/servlet/SelfServiceLogin?appName=edu.uillinois.aits.SelfServiceLogin&dad=BANPROD1" }
+      %h2 Your CRNs:
+      %ul#crns 
+      -#%iframe{ :src => "https://webprod.admin.uillinois.edu/ssa/servlet/SelfServiceLogin?appName=edu.uillinois.aits.SelfServiceLogin&dad=BANPROD1", :width => "100%" }
     %div.modal-footer
       %a{:class=>"btn primary close-modal"} Close
 
