@@ -93,7 +93,4 @@ class Section < ActiveRecord::Base
     return "nil"
   end
 
-
-
-
 end

@@ -142,4 +142,16 @@ module SchedulerHelper
     return section.duration * 6
   end
 
+  def courses_from_sections( sections )
+    courses = []
+    course_section_hash = {}
+    sections.each do |section|
+      course = section.course
+      courses << section.course if !courses.include?(section.course)
+      course_section_hash[course.id] ||= []
+      course_section_hash[course.id] << section
+    end
+    return courses, course_section_hash
+  end
+
 end

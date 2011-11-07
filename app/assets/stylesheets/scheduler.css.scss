@@ -24,7 +24,7 @@
 // schedule
 $schedule-block-h   : 48px;
 $numblocks          : 12;
-$scheduler-content-width: 900px;
+$scheduler-content-width: 940px;
 $scheduler-content-padding: 15px;
 $schedule-day-width : 120px;
 /* all colors */
@@ -141,8 +141,55 @@ $showcase-bg        : url('showcase-bg.png');
 
   .sidebar {
     float: right;
-    width: 200px;
-    background: red;
+    width: 220px;
+    background: #eee;
+    border: 1px solid #ccc;
+    margin: 0em 0em 0em 1.5em;
+    padding: .7em;
+    font-size: .9em;
+
+    .btn {
+      font-size: 1.3em;
+      display: block;
+      text-align: center;
+      margin-top: .7em;
+    }
+
+    ul {
+      //position: absolute;
+      //display: none;
+      border-bottom: 1px solid #ccc;
+
+      li {
+        border: none;
+        background: white;
+        height: 100%;
+        box-shadow: none;
+        -moz-box-shadow: none;
+        -webkit-box-shadow: none;
+        //font-size: .8em;
+
+        span {
+          position: relative;
+          padding: .35em;
+          display: block;
+        }
+
+        span.data {
+          color: #555;
+        }
+
+        span.title {
+          background: #eee;
+          border-top: 1px solid #ccc;
+          border-bottom: 1px solid #ccc;
+        }
+      }
+
+      ul:first-child {
+        border: none;
+      }
+  }
   }
 }
 
@@ -189,42 +236,6 @@ $showcase-bg        : url('showcase-bg.png');
       box-shadow: inset 1px 1px 1px 0px white;
       -moz-box-shadow: inset 1px 1px 1px 0px white;
       -webkit-box-shadow: inset 1px 1px 1px 0px white;
-    }
-  }
-
-  ul.hidden-data {
-    position: absolute;
-    display: none;
-    border-bottom: 1px solid #ccc;
-
-    li {
-      border: none;
-      background: white;
-      height: 100%;
-      box-shadow: none;
-      -moz-box-shadow: none;
-      -webkit-box-shadow: none;
-      font-size: .8em;
-
-      span {
-        position: relative;
-        padding: .35em;
-        display: block;
-      }
-
-      span.data {
-        color: #555;
-      }
-
-      span.title {
-        background: #eee;
-        border-top: 1px solid #ccc;
-        border-bottom: 1px solid #ccc;
-      }
-    }
-
-    ul:first-child {
-      border: none;
     }
   }
 }

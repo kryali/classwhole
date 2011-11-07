@@ -41,23 +41,33 @@
             %div.droppable= render 'section', :section => section, :start_hour => start_hour, :colors => colors
   %div.sidebar
     %ul.courses
-      - sections.each do |section|
-        - course = section.course
-        %li.section-item
-          %ul.section
-            %li
-              %span.course-name= course.to_s
-              %span.course-title= course.title
-            %li 
-              %span.title Credit Hours
-              %span.data= "#{course.hours} hr."
-            - if section.instructor
+      - courses, course_section_hash = courses_from_sections( sections )
+      - courses.each do |course|
+        - sections = course_section_hash[course.id]
+        %li.course-item
+          %ul.course
+          %li
+            %span.course-name= course.to_s
+            %span.course-title= course.title
+          %li 
+            %span.title Credit Hours
+            %span.data= "#{course.hours} hr."
+          %li 
+            %span.title Description
+            %span.data= shorten(course.description, 130)
+          - sections.each do |section|
+            %ul.sections
+              %li.header Sections
+              - if section.instructor
+                %li 
+                  %span.title Professor
+                  %span.data= section.instructor
               %li 
-                %span.title Professor
-                %span.data= section.instructor
-            %li 
-              %span.title Description
-              %span.data= shorten(course.description, 130)
+                %span.title Code
+                %span.data= section.code
+              %li 
+                %span.title Time
+                %span.data= section.duration_s
     %a{ :href => "#", :class => "btn default save-schedule"} Save
     %a{ :href => "#", :class => "btn primary register-schedule"} Register
       
