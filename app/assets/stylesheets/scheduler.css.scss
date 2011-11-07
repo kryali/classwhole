@@ -142,11 +142,9 @@ $showcase-bg        : url('showcase-bg.png');
   .sidebar {
     float: right;
     width: 220px;
-    background: #eee;
-    border: 1px solid #ccc;
     margin: 0em 0em 0em 1.5em;
-    padding: .7em;
     font-size: .9em;
+    color: #555;
 
     .btn {
       font-size: 1.3em;
@@ -155,41 +153,70 @@ $showcase-bg        : url('showcase-bg.png');
       margin-top: .7em;
     }
 
-    ul {
-      //position: absolute;
-      //display: none;
-      border-bottom: 1px solid #ccc;
+    .label {
+      background: #0069D6;
+      background: #97B2CF;
+      margin: 0;
+      display: block;
+      float: left;
+      margin-right: 5px;
+    }
 
-      li {
-        border: none;
-        background: white;
-        height: 100%;
-        box-shadow: none;
-        -moz-box-shadow: none;
-        -webkit-box-shadow: none;
-        //font-size: .8em;
+    li {
+      color: #555;
+      overflow: hidden;
+    }
 
-        span {
-          position: relative;
-          padding: .35em;
-          display: block;
-        }
+    ul.courses {
+      background: #fefefe;
+      //border: 1px solid #ccc;
 
-        span.data {
-          color: #555;
-        }
+      li.course-item {
+        margin-bottom: 1em;
+        ul.course {
+          border: none;
 
-        span.title {
-          background: #eee;
-          border-top: 1px solid #ccc;
-          border-bottom: 1px solid #ccc;
+          ul.sections {
+            font-size: .9em;
+            position: relative;
+
+            li {
+              padding: .4em;
+            }
+            span.code {
+              float: right;
+            }
+
+            span.instructor {
+              position: absolute;
+              left: 40px;
+            }
+          }
+
+          li.course-header { 
+            padding: .5em; 
+            border-bottom: 1px solid #ccc;
+            border-top: 1px solid #ccc;
+            span.course-name {
+              font-size: 1.2em;
+            }
+            span.course-title {
+              font-size: .8em;
+            }
+            span.course-hours {
+              font-size: .8em;
+            }
+          }
+          li {
+            padding: .3em;
+
+            ul.course {
+              border: none;
+            }
+          }
         }
       }
-
-      ul:first-child {
-        border: none;
-      }
-  }
+    }
   }
 }
 
