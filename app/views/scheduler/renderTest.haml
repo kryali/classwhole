@@ -1,1 +1,3 @@
-= render "render", :sections => current_user.schedule
+%div.scheduler-content
+  = render "render", :sections => current_user.schedule
+  %a{ :class => "btn primary download-schedule"} Download

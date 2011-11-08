@@ -1,24 +1,52 @@
 $(function(){
-  var example = document.getElementById('schedule-render');
-  example.width = 1000;
-  example.height = 1000;
-  var context = example.getContext('2d');
+  var render = document.getElementById('schedule-render');
+
   var course_colors = ["#E0F8FF", "#EAFFD9", "FFF2FF", "FFF4F2", "F3FBA2", "#F0C4F0"];
   var background_colors = ["#DDDDDD", "#AAAAAC", "EEEEEE"];
   
   var left_offset = 50;
-  var top_offset = 50;
+  var top_offset = 30;
   var block_width = 122
-  var block_height = 48;
+  var block_height = 75;
+  var text_offset = 5;
 
-  draw_background(7, 21);
+  var start_time;
+  var end_time;
+
   for (var i = 0; i < sections.length; i++) {
-    draw_section(sections[i], course_colors[i]);
+    start = new Date(sections[i]["start_time"]);
+    end = new Date(sections[i]["end_time"]);
+    if(start_time == null || start < start_time)
+      start_time = start;
+    if(end_time == null || end > end_time)
+      end_time = end;
   }
+
+  start_hour = start_time.getUTCHours() - 1;
+  end_hour = end_time.getUTCHours() + 2;
+
+  render.width = left_offset + (5 * block_width);
+  render.height = top_offset + ((end_hour-start_hour) * block_height);
+  var context = render.getContext('2d');
+
+  draw_background(start_hour, end_hour);
+  uniques = []
+  for (var i = 0; i < sections.length; i++) {
+    section = sections[i];
+    code = section["course_subject_code"] + section["course_number"];
+    if( uniques.indexOf(code) == -1 ) {
+      uniques.push(code);
+    }
+    draw_section(time_float(start_time) - 1, section, course_colors[uniques.indexOf(code)]);
+  }
+
+  $(".download-schedule").click( function() {
+    Canvas2Image.saveAsPNG(render);
+  });
 
   function draw_background(start_hour, end_hour) {
     var hours = end_hour - start_hour;
-    context.font = "12pt Arial";
+    context.font = "10pt Arial";
     context.fillStyle = "#000000";
 
     // draw days of week
@@ -66,20 +94,19 @@ $(function(){
     }
   }
 
-  function draw_section(section, color) {
-    context.textBaseline = "top";
-    context.textAlign = "left";
+  function draw_section(start_hour, section, color) {
     var start_time = new Date(section["start_time"]);
     var end_time = new Date(section["end_time"]);
-    var start = float_time(start_time);
-    var end = float_time(end_time);
-    section_start = block_height * start;
-    section_height = block_height * (end - start); 
+    var start_position = block_height * (time_float(start_time) - start_hour);
+    var end_position = block_height * (time_float(end_time) - start_hour);
+    var height = end_position - start_position;
+
     var days = section["days"];
 
     var section_name = section["course_subject_code"] + " " + section["course_number"];
     var section_type = section["section_type"];
-    var section_time = string_time(start_time) + " - " + string_time(end_time);
+    var section_time = time_string(start_time) + " - " + time_string(end_time);
+    var section_room = section["room"] + " " + section["building"];
 
     for(var i = 0; i < days.length; i++) {
       var index = day_index(days.charAt(i));
@@ -87,25 +114,32 @@ $(function(){
         continue; 
       }
       var x = left_offset + index * block_width;
-      var y = top_offset + section_start;
+      var y = top_offset + start_position;
       // block
       context.fillStyle = color;
-      context.fillRect(x, y, block_width, section_height);
+      context.fillRect(x, y, block_width, height);
       context.fillStyle = "black";
-      context.strokeRect(x, y, block_width, section_height);
+      context.strokeRect(x, y, block_width, height);
       // text
-      context.fillText(section_name, x, y);
-      context.fillText(section_type, x, y + 15);
-      context.fillText(section_time, x, y + 30);
+      context.textBaseline = "top";
+      context.textAlign = "left";
+      context.fillText(section_name, x + text_offset, y + text_offset);
+      context.textAlign = "right";
+      context.fillText(section_type, x + block_width - text_offset, y + text_offset);
+      context.fillText(section_room, x + block_width - text_offset, y + text_offset + 20);
+      context.textBaseline = "bottom";
+      context.fillText(section_time, x + block_width - text_offset, top_offset + end_position - text_offset);
     }
   }
   
-  function string_time(time) {
-    return time.toLocaleTimeString();
+  function time_string(time) {
+    hour = time.getUTCHours() % 12;
+    if(hour == 0) hour = 12;
+    return hour + ":" + ("0" + time.getUTCMinutes()).slice(-2);
   }
 
-  function float_time(time) {
-    return time.getHours() + (time.getMinutes() / 60);
+  function time_float(time) {
+    return time.getUTCHours() + (time.getUTCMinutes() / 60);
   }
 
   function day_index(day) {
@@ -128,8 +162,7 @@ $(function(){
       default:
         return -1;
       break;
-    }
-    
+    }    
   };
 
 });
