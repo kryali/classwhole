@@ -7,15 +7,6 @@
     = csrf_meta_tags
     = javascript_tag          "var AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? 
     :javascript
-      /*
-      $(document).ajaxSend( function(e, xhr, options) {
-        if ( settings.type == 'post' ) {
-          settings.data = (settings.data ? settings.data + "&" : "") + "authenticity_token=" + encodeURIComponent( AUTH_TOKEN );
-        }
-        xhr.setRequestHeader("X-CSRF-Token", AUTH_TOKEN);
-      } );
-      */
-
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-20351006-4']);
       _gaq.push(['_trackPageview']);
