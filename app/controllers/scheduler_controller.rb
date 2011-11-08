@@ -6,7 +6,11 @@ class SchedulerController < ApplicationController
   end
     
   def show
+    @user = User.find( params["id"].to_i )
+    @sections = @user.schedule
+  end
 
+  def new
     course_ids = []
     current_user.courses.each do |course|
       course_ids << course.id
@@ -27,9 +31,6 @@ class SchedulerController < ApplicationController
     @course_ids = course_ids.to_json
     @possible_schedules = all_possible_schedules
     #@possible_schedules = all_possible_schedules[0..5]
-  end
-
-  def new
   end
 
   def paginate
@@ -76,9 +77,10 @@ class SchedulerController < ApplicationController
     if current_user.is_temp?
       render :json => {:status => "error", :message => "Log in to save schedule."}
     else
-      # TODO remove redis
+      redis_key  ="user:#{current_user.id}:schedule"
+      $redis.del(redis_key)
       params["schedule"].each do |section_id|
-        $redis.sadd("user:#{current_user.id}:schedule", section_id.to_i)
+        $redis.sadd(redis_key, section_id.to_i)
       end
       render :json => {:status => "success", :message => "Schedule saved."}
     end

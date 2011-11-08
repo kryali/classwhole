@@ -7,7 +7,7 @@
         %ul.course
           %li{:class=> "course-header #{colors[course.id]}"}
             %span.course-name= course.to_s
-            %span.course-title= shorten(course.title, 19)
+            %span.course-title= shorten(course.title, 18)
             %span.course-hours= "(#{course.hours} hr)"
           -if nil
             %li 
@@ -25,6 +25,6 @@
                   -else 
                     %span.instructor TBD
                   %span.code= section.code
-                  -#%span.time= section.duration_s
+                  %span.time= section.duration_s
   %a{ "data-controls-modal" => "save-modal", "data-keyboard" => "true", :class => "btn default save-schedule"} Save
   %a{ "data-controls-modal" => "register-modal", "data-keyboard" => "true", :class => "btn primary register-schedule"} Register

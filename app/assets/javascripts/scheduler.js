@@ -54,6 +54,7 @@ $(function(){
             $('#save-modal').modal('show');            
             $(document).bind('logged-in', function() {
               $(document).unbind('logged-in');
+              $("#save-modal").modal("hide");
               save_schedule();
               return true;
             });
@@ -62,13 +63,8 @@ $(function(){
       });
   }
 
-  function init() {
-
-
-    // Setup the slidejs plugin
-    $("#slides").slides(options.slides);
-
-    $(".save-schedule").click( function() {
+  function init_modals() {
+    $(".save-schedule").unbind('click').click( function() {
       save_schedule();
     });
 
@@ -76,7 +72,7 @@ $(function(){
       $('#register-modal').modal('hide');
       $('#save-modal').modal('hide');
     });
-    $(".register-schedule").click( function() {
+    $(".register-schedule").unbind('click').click( function() {
       $('#crns').empty()
       var schedule = get_current_schedule();
       var crns = [];
@@ -96,8 +92,14 @@ $(function(){
       }
       $('#register-modal').modal('show');
     });
+  }
+
+  function init() {
+    // Setup the slidejs plugin
+    $("#slides").slides(options.slides);
 
     init_draggable();
+    init_modals();
     //init_mini_pagination();
 
     // Use the keyboard to select other schedules
@@ -321,6 +323,7 @@ $(function(){
 
     // Enable the new sections to be draggable
     init_draggable();
+    init_modals();
 
     //console.log("Schedule updated");
     is_updating = false;

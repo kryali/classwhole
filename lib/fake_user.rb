@@ -20,5 +20,4 @@ class Fake_user
   def is_temp?
     return true
   end
-
 end

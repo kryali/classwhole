@@ -1,28 +1,6 @@
 = javascript_include_tag "scheduler.js"
 %div.scheduler-content
-  %div#slides
-    %div.slides_container
-      - @possible_schedules.each do |sections|
-        = render "schedule", :sections => sections
-    %a{:href=>"#", :class=>"prev"}
-    %a{:href=>"#", :class=>"next"}
-    -if !@possible_schedules.empty?
-      %div.mini-pagination-top
-        -#%a{:href=>"#", :class=>"mini-prev"} <
-        -#%a{:href=>"#", :class=>"mini-next"} >
-        %div.mini-pagination-container
-          %ul.mini-pagination
-            - i = 1
-            - @possible_schedules.each do |sections|
-              - if i == 1
-                %li.current
-                  %a{ :href => "##{i-1}" }
-                  = render 'mini_schedule', :sections => sections
-              -else 
-                %li
-                  %a{ :href => "##{i-1}" }
-                  = render 'mini_schedule', :sections => sections
-              - i += 1
+  = render "schedule", :sections => @sections
 
   %div{ :id => "save-modal", :class => "modal hide" }
     %div.modal-header
@@ -44,6 +22,3 @@
       -#%iframe{ :src => "https://webprod.admin.uillinois.edu/ssa/servlet/SelfServiceLogin?appName=edu.uillinois.aits.SelfServiceLogin&dad=BANPROD1", :width => "100%" }
     %div.modal-footer
       %a{:class=>"btn primary close-modal"} Close
-
-:javascript
-  var course_ids = #{@course_ids};

@@ -22,11 +22,14 @@ $(document).ready(function() {
         url: path,
         data: params,
         success: function( data, textStatus, xqHR){
-          //pop_alert( textStatus, data["message"] );
+          pop_alert( textStatus, "Logged in" );
           //console.log(data["user"]["name"]);
-          $("ul.secondary-nav li").empty().append( $("<a/>").text( data["user"]["name"] ) );
-          $("#save-modal").modal("hide");
+          $("ul.secondary-nav").empty().append( $(data) );
           $(document).trigger("logged-in");
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.log( jqXHR );
+          pop_alert( textStatus, errorThrown.toString() );
         }
       });
   }
@@ -37,7 +40,7 @@ $(document).ready(function() {
    * also, the facebook "sdk" sucks.
    */
   FB.init({
-    appId  : '227782147288218',
+    appId  : <%= Facebook::APP_ID %>,
     status : true, // check login status
     cookie : true, // enable cookies to allow the server to access the session
     xfbml  : true, // parse XFBML
@@ -54,7 +57,7 @@ $(document).ready(function() {
   });
 
   /* When a user clicks a button, */
-  $('.fb-button').click( function(event) {
+  $('.fb-button').unbind('click').click( function(event) {
 
     //console.log("Button clicked!");
     /* FB.getLoginStatus allows you to determine if a user is 

@@ -6,7 +6,7 @@ $(document).ready(function() {
 		                    		data: { id: class_id },
 		                    		url:  '/user/courses/new',
 														success: function( data, textStatus, xqHR ) {
-															console.log( data );
+															//console.log( data );
 															pop_alert(data.status, data.message);
 															$("#add_class_button").addClass("disabled");
 															$("#add_class_button").removeClass("success");	

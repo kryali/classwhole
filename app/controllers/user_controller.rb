@@ -6,15 +6,12 @@ include ApplicationHelper
 
   def login
     user_id = params["userID"]
-    max_try = 5
     begin 
       @user = User.find(user_id)
-      self.current_user=@user
     rescue ActiveRecord::RecordNotFound
-      user_id = register(params["accessToken"], params["userID"]);
-      max_try -= 1
-      retry if max_try > 0
+      @user = register(params["accessToken"], params["userID"])
     ensure
+      self.current_user=@user
       if !cookies["classes"].nil? #if there is a cookie, overwrite any courses in db
         @user.courses.delete_all        
         for id in cookie_class_list
@@ -22,7 +19,9 @@ include ApplicationHelper
           end   
         cookies.delete("classes")  
       end
-      render :json => { :status => "success", :user => @user, :message => "Logged in" }    
+      @status = "success"
+      @message = "Logged in"
+      render :partial => 'shared/user_nav', :layout => false
     end
   end
 
@@ -38,6 +37,7 @@ include ApplicationHelper
     friends = graph.get_connections(userID, "friends")
     @user.fb_token = accessToken
     @user.id = userID
+    @user.fb_id = userID
     @user.name = user_data["name"]
     @user.email = user_data["email"]
     @user.first_name = user_data["first_name"]
@@ -45,16 +45,16 @@ include ApplicationHelper
     @user.link = user_data["link"]
     @user.gender = user_data["gender"]
 
-    Friendship.transaction do
-      friends.each { |friend| Friendship.create(:friend_id => friend["id"], :user_id => userID) }
-    end
+    #Friendship.transaction do
+    #  friends.each { |friend| Friendship.create(:friend_id => friend["id"], :user_id => userID) }
+    #end
     
     # Slightly faster redis insertion
-    #$redis.multi do
-    #  friends.each { |friend| $redis.sadd("#{@user.id}:friends", friend["id"]) }
-    #end
+    $redis.multi do
+      friends.each { |friend| $redis.sadd("user:#{@user.id}:friends", friend["id"]) }
+    end
     @user.save
-    return @user.id  
+    return @user  
   end
 
  
