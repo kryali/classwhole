@@ -62,12 +62,7 @@ $(function(){
       });
   }
 
-  function init() {
-
-
-    // Setup the slidejs plugin
-    $("#slides").slides(options.slides);
-
+  function init_modals() {
     $(".save-schedule").click( function() {
       save_schedule();
     });
@@ -96,8 +91,14 @@ $(function(){
       }
       $('#register-modal').modal('show');
     });
+  }
+
+  function init() {
+    // Setup the slidejs plugin
+    $("#slides").slides(options.slides);
 
     init_draggable();
+    init_modals();
     //init_mini_pagination();
 
     // Use the keyboard to select other schedules
@@ -321,6 +322,7 @@ $(function(){
 
     // Enable the new sections to be draggable
     init_draggable();
+    init_modals();
 
     //console.log("Schedule updated");
     is_updating = false;
