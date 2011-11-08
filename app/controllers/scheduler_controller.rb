@@ -6,7 +6,11 @@ class SchedulerController < ApplicationController
   end
     
   def show
+    @user = User.find( params["id"].to_i )
+    @sections = @user.schedule
+  end
 
+  def new
     course_ids = []
     current_user.courses.each do |course|
       course_ids << course.id
@@ -27,9 +31,6 @@ class SchedulerController < ApplicationController
     @course_ids = course_ids.to_json
     @possible_schedules = all_possible_schedules
     #@possible_schedules = all_possible_schedules[0..5]
-  end
-
-  def new
   end
 
   def paginate
