@@ -2,11 +2,6 @@
 
 %div.scheduler-content
   %div#slides
-    %div.slides_container
-      - @possible_schedules.each do |sections|
-        = render "schedule", :sections => sections
-    %a{:href=>"#", :class=>"prev"}
-    %a{:href=>"#", :class=>"next"}
     -if @possible_schedules.size > 1
       %div.mini-pagination-top
         -#%a{:href=>"#", :class=>"mini-prev"} <
@@ -24,6 +19,11 @@
                   %a{ :href => "##{i-1}" }
                   = render 'mini_schedule', :sections => sections
               - i += 1
+    %div.slides_container
+      - @possible_schedules.each do |sections|
+        = render "schedule", :sections => sections
+    %a{:href=>"#", :class=>"prev"}
+    %a{:href=>"#", :class=>"next"}
 
   %div{ :id => "save-modal", :class => "modal hide" }
     %div.modal-header
