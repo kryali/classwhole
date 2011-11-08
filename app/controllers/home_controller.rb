@@ -4,10 +4,9 @@
 #
 class HomeController < ApplicationController
   include ApplicationHelper
-  before_filter :set_cache_buster
 
   def index
-    render "scheduler/index"
+    redirect_to scheduler_index_path
   end
 
 end
