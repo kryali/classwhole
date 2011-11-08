@@ -7,8 +7,8 @@
           %li= link_to "Course List", show_semester_path(Semester.first.season, Semester.first.year)
           %li= link_to "Scheduler", scheduler_index_path
         %ul{ :class => "nav secondary-nav"}
-          - if !current_user.is_temp?
-            = render 'shared/user_nav', :current_user => current_user
-          - else 
+          - if current_user.is_temp?
             %li= render 'shared/fb_login_button'
+          - else 
+            = render 'shared/user_nav', :current_user => current_user
     %div.alert-box

@@ -64,7 +64,7 @@ $(function(){
   }
 
   function init_modals() {
-    $(".save-schedule").click( function() {
+    $(".save-schedule").unbind('click').click( function() {
       save_schedule();
     });
 
@@ -72,7 +72,7 @@ $(function(){
       $('#register-modal').modal('hide');
       $('#save-modal').modal('hide');
     });
-    $(".register-schedule").click( function() {
+    $(".register-schedule").unbind('click').click( function() {
       $('#crns').empty()
       var schedule = get_current_schedule();
       var crns = [];

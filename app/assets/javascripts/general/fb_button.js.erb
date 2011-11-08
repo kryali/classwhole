@@ -40,7 +40,7 @@ $(document).ready(function() {
    * also, the facebook "sdk" sucks.
    */
   FB.init({
-    appId  : '227782147288218',
+    appId  : <%= Facebook::APP_ID %>,
     status : true, // check login status
     cookie : true, // enable cookies to allow the server to access the session
     xfbml  : true, // parse XFBML
@@ -57,7 +57,7 @@ $(document).ready(function() {
   });
 
   /* When a user clicks a button, */
-  $('.fb-button').click( function(event) {
+  $('.fb-button').unbind('click').click( function(event) {
 
     //console.log("Button clicked!");
     /* FB.getLoginStatus allows you to determine if a user is 
