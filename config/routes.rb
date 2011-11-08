@@ -3,6 +3,7 @@ Whiteboard::Application.routes.draw do
   get "scheduler/index"
   get "scheduler/show"
   get "scheduler/new"
+  get "scheduler/renderTest"
 
   match  'courses/search/auto/subject' => 'catalog#subject_auto_search'
   match  'courses/search/auto/subject/:subject_code' => 'catalog#course_auto_search'
@@ -26,6 +27,8 @@ Whiteboard::Application.routes.draw do
 	match 'scheduler/new' => 'scheduler#new'
 	match 'scheduler/show/:id' => 'scheduler#show', :as => 'scheduler_show'
   match 'scheduler/save' => 'scheduler#save', :via => :post
+  match 'scheduler/share' => 'scheduler#share', :via => :get
+  match 'scheduler/register' => 'scheduler#register', :as => 'scheduler_register'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

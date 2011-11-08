@@ -1,5 +1,5 @@
 $(function(){
-
+  
   //var block_height = 74;
   var block_height = $(".schedule-block").height();
   var is_dragging = false;
@@ -7,6 +7,7 @@ $(function(){
   var is_updating = false;
   var handled_drop = false;
   var save_schedule_path = "/scheduler/save";
+  var share_schedule_path = "/scheduler/share";
   var paginate_path = "/scheduler/paginate";
   var current_selected = 1;
   var mini_grids_showing = 5;
@@ -40,27 +41,27 @@ $(function(){
   }
 
   function save_schedule() {
-      var schedule_ids = get_schedule_ids();
-      $.ajax({
-        type: 'POST',
-        data: { schedule:schedule_ids},
-        url:  save_schedule_path,
-        success: function(data, textStatus, jqXHR) {
-          if (data["status"] == "success") {
-            pop_alert("info", data["message"]);
-          }
-          else if (data["status"] == "error") {
-            pop_alert("error", data["message"]);
-            $('#save-modal').modal('show');            
-            $(document).bind('logged-in', function() {
-              $(document).unbind('logged-in');
-              $("#save-modal").modal("hide");
-              save_schedule();
-              return true;
-            });
-          }          
+    var schedule_ids = get_schedule_ids();
+    $.ajax({
+      type: 'POST',
+      data: { schedule:schedule_ids},
+      url:  save_schedule_path,
+      success: function(data, textStatus, jqXHR) {
+        if (data["status"] == "success") {
+          pop_alert("info", data["message"]);
         }
-      });
+        else if (data["status"] == "error") {
+          pop_alert("error", data["message"]);
+          $('#save-modal').modal('show');            
+          $(document).bind('logged-in', function() {
+            $(document).unbind('logged-in');
+            $("#save-modal").modal("hide");
+            save_schedule();
+            return true;
+          });
+        }          
+      }
+    });
   }
 
   function init_modals() {
@@ -86,11 +87,48 @@ $(function(){
           // Make sure we don't already have the section in our array
           if( crns.indexOf(current_section_crn) == -1 ) {
             crns.push(current_section_crn)
-            $('#crns').append("<li>" + current_section_crn + "</li>");
+            //$('#crns').append("<li>" + current_section_crn + "</li>");
           }
         }
       }
-      $('#register-modal').modal('show');
+      console.log(crns.toString());
+      window.location = "/scheduler/register?crns=" + crns.toString();
+      //$('#register-modal').modal('show');
+    });
+  }
+
+  function share_schedule() {
+    $.ajax({
+      type: 'GET',
+      url: share_schedule_path,
+      success: function(data, textStatus, jqXHR) {
+        if (data["status"] == "success") {
+          console.log(data);
+          //pop_alert("info", data["message"]);
+          FB.ui(data.options, function(response) {
+            if( response && response.post_id ) {
+              pop_alert("success", "Schedule shared!");
+            } else {
+              pop_alert("error", "Sharing failed :(");
+            }
+          });
+        }
+        else if (data["status"] == "error") {
+          pop_alert("error", data["message"]);
+          $(document).bind('logged-in', function() {
+            $(document).unbind('logged-in');
+            share_schedule();
+            return true;
+          });
+        }
+      }
+    });
+  }
+
+  function init_share_button() {
+    // Share facebook
+    $("#share").click( function() {
+      share_schedule();
     });
   }
 
@@ -100,6 +138,8 @@ $(function(){
 
     init_draggable();
     init_modals();
+    init_share_button();
+
     //init_mini_pagination();
 
     // Use the keyboard to select other schedules
@@ -133,7 +173,7 @@ $(function(){
     });
 
     var children = $(".mini-pagination").children();
-    $('.mini-pagination').css("width", children.width() * children.length +8);
+    $('.mini-pagination').css("width", children.width() * children.length + 30);
   }
 
   function init_mini_pagination() {
@@ -262,7 +302,9 @@ $(function(){
     Update schedule refreshes the schedule content with the new schedule
       from the server. It's an AJAX `success` callback function */
   function update_schedule(data, textStatus, jqXHR, day) {
-
+    if( data.status == "error" ) {
+      return;
+    }
     // Make sure we aren't updating the schedule when another update is in progress
     if( is_updating ) return;
 
@@ -324,6 +366,7 @@ $(function(){
     // Enable the new sections to be draggable
     init_draggable();
     init_modals();
+    init_share_button();
 
     //console.log("Schedule updated");
     is_updating = false;
@@ -428,7 +471,7 @@ $(function(){
 
     $.ajax({
       type: 'POST',
-      data: { schedule:schedule_ids },
+      data: { schedule:schedule_ids, render: true },
       url:  '/scheduler/move_section',
       success: function(data, textStatus, jqXHR) {
         //curr_section.draggable( "option", "revert", "false" );

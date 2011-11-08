@@ -61,7 +61,7 @@ class SchedulerController < ApplicationController
     params["schedule"].each do |section_id|
       schedule << Section.find_by_id(section_id.to_i)
     end
-
+    @section_hints = []
     if params["section"]
       section = Section.find(params["section"].to_i)
       course = Register_Course.new(section.course)
@@ -70,19 +70,66 @@ class SchedulerController < ApplicationController
     end
     @schedule = schedule
 
+    # Nothing needs to be rendered
+    # params["render"] forces the render (used for dragndrop render)
+    if @section_hints.empty? and not params["render"]
+      render :json => { :status => "error", :message => "no hints for section" }
+      return
+    end
+
     render :partial => 'section_ajax', :layout => false
   end
 
   def save
     if current_user.is_temp?
-      render :json => {:status => "error", :message => "Log in to save schedule."}
+      render :json => {
+                        :status => "error", 
+                        :message => "Log in to save schedule."
+                      }
     else
       redis_key  ="user:#{current_user.id}:schedule"
       $redis.del(redis_key)
       params["schedule"].each do |section_id|
         $redis.sadd(redis_key, section_id.to_i)
       end
-      render :json => {:status => "success", :message => "Schedule saved."}
+      render :json => {
+                        :status => "success", 
+                        :message => "Schedule saved."
+                      }
+    end
+  end
+
+  def share
+    if current_user.is_temp?
+      render :json => {
+                        :status => "error", 
+                        :message => "Log in to save schedule."
+                      }
+    else
+      course_string = ""
+      for course in current_user.courses
+        course_string += course.to_s + " - " + course.title + ", "
+      end
+      render :json => {
+        :status => "success",
+        :options => {
+          method: 'feed',
+          name: "#{current_user.name}'s Classwhole",
+          link: 'http://fuckfacebook.com/',
+          source: 'http://i.imgur.com/0Ei7C.jpg',
+          caption: 'Checkout my classwhole',
+          description: course_string
+        }
+      }
+    end
+  end
+
+  def register
+    if !params["crns"]
+      render :text => "code broke"
+      return
+    else
+      @crns = params["crns"].split(",")
     end
   end
 

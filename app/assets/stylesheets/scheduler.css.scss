@@ -133,6 +133,7 @@ $showcase-bg        : url('showcase-bg.png');
 
 #slides {
   overflow: hidden;
+  margin-top: 130px;
   .slides_container {
     //width: 660px;
     float: left;
@@ -150,7 +151,7 @@ $showcase-bg        : url('showcase-bg.png');
     font-size: 1.3em;
     display: block;
     text-align: center;
-    margin-top: .7em;
+    margin-bottom: 1em;
   }
 
   .label {
@@ -316,13 +317,13 @@ strong {
   background: #EAFFD9;
 }
 .color-2 {
-  background: #FFF2FF;
+  background: #FFDDFF;
 }
 .color-3 {
   background: #FFF4F2;
 }
 .color-4 {
-  background: #F3fba2;
+  background: #ffeec9;
 }
 
 ul.onl_sections {
@@ -374,8 +375,8 @@ $mini-schedule-height: 90px;
 $mini-schedule-border-color: #aaa;
 
 .mini-pagination-top {
-  //position: absolute;
-  bottom: 29px;
+  position: absolute;
+  top: 7px;
   left: 130px;
 
   .mini-prev {
@@ -487,5 +488,35 @@ $mini-schedule-border-color: #aaa;
     font-size: 1.2em;
   }
   .modal-footer {
+  }
+}
+
+.scheduler-content {
+  h1 {
+    text-align: left;
+    font-size: 1.5em;
+  }
+  ul.crns {
+    display: block;
+    margin: 0 auto;
+    li {
+      float: left;
+      margin-left: 1.5em;
+      .uneditable-input {
+        width: 65px;
+        font-size: 1.3em;
+        padding: .4em;
+        box-shadow: inset 1px 1px 3px #888;
+        background: #efefef;
+      }
+    }
+  }
+
+  iframe {
+    margin-top: 2em;
+    width: 100%;
+    height: 600px;
+    clear: both;
+    border: 1px dashed #888;
   }
 }
