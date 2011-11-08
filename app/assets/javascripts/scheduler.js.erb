@@ -1,5 +1,5 @@
 $(function(){
-
+  
   //var block_height = 74;
   var block_height = $(".schedule-block").height();
   var is_dragging = false;
@@ -7,6 +7,7 @@ $(function(){
   var is_updating = false;
   var handled_drop = false;
   var save_schedule_path = "/scheduler/save";
+  var share_schedule_path = "/scheduler/share";
   var paginate_path = "/scheduler/paginate";
   var current_selected = 1;
   var mini_grids_showing = 5;
@@ -40,27 +41,27 @@ $(function(){
   }
 
   function save_schedule() {
-      var schedule_ids = get_schedule_ids();
-      $.ajax({
-        type: 'POST',
-        data: { schedule:schedule_ids},
-        url:  save_schedule_path,
-        success: function(data, textStatus, jqXHR) {
-          if (data["status"] == "success") {
-            pop_alert("info", data["message"]);
-          }
-          else if (data["status"] == "error") {
-            pop_alert("error", data["message"]);
-            $('#save-modal').modal('show');            
-            $(document).bind('logged-in', function() {
-              $(document).unbind('logged-in');
-              $("#save-modal").modal("hide");
-              save_schedule();
-              return true;
-            });
-          }          
+    var schedule_ids = get_schedule_ids();
+    $.ajax({
+      type: 'POST',
+      data: { schedule:schedule_ids},
+      url:  save_schedule_path,
+      success: function(data, textStatus, jqXHR) {
+        if (data["status"] == "success") {
+          pop_alert("info", data["message"]);
         }
-      });
+        else if (data["status"] == "error") {
+          pop_alert("error", data["message"]);
+          $('#save-modal').modal('show');            
+          $(document).bind('logged-in', function() {
+            $(document).unbind('logged-in');
+            $("#save-modal").modal("hide");
+            save_schedule();
+            return true;
+          });
+        }          
+      }
+    });
   }
 
   function init_modals() {
@@ -94,12 +95,49 @@ $(function(){
     });
   }
 
+  function share_schedule() {
+    $.ajax({
+      type: 'GET',
+      url: share_schedule_path,
+      success: function(data, textStatus, jqXHR) {
+        if (data["status"] == "success") {
+          console.log(data);
+          //pop_alert("info", data["message"]);
+          FB.ui(data.options, function(response) {
+            if( response && response.post_id ) {
+              pop_alert("success", "Schedule shared!");
+            } else {
+              pop_alert("error", "Sharing failed :(");
+            }
+          });
+        }
+        else if (data["status"] == "error") {
+          pop_alert("error", data["message"]);
+          $(document).bind('logged-in', function() {
+            $(document).unbind('logged-in');
+            share_schedule();
+            return true;
+          });
+        }
+      }
+    });
+  }
+
+  function init_share_button() {
+    // Share facebook
+    $("#share").click( function() {
+      share_schedule();
+    });
+  }
+
   function init() {
     // Setup the slidejs plugin
     $("#slides").slides(options.slides);
 
     init_draggable();
     init_modals();
+    init_share_button();
+
     //init_mini_pagination();
 
     // Use the keyboard to select other schedules

@@ -1,6 +1,7 @@
 %div.sidebar
   %a{ "data-controls-modal" => "save-modal", "data-keyboard" => "true", :class => "btn default save-schedule"} Save
   %a{ "data-controls-modal" => "register-modal", "data-keyboard" => "true", :class => "btn primary register-schedule"} Register
+  %a{:id=> "share",:class => "btn success"} Share Schedule
   %ul.courses
     - courses, course_section_hash = courses_from_sections( sections )
     - courses.each do |course|

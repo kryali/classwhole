@@ -154,4 +154,13 @@ module SchedulerHelper
     return courses, course_section_hash
   end
 
+  def get_course_string
+    return "FUCK OFF"
+    #ret_string = ""
+    #for course in current_user.courses
+    #  ret_string = ret_string + course.to_s + " - " + course.title + "\n"
+    #end
+    #return ret_string 
+  end
+
 end

@@ -27,6 +27,7 @@ Whiteboard::Application.routes.draw do
 	match 'scheduler/new' => 'scheduler#new'
 	match 'scheduler/show/:id' => 'scheduler#show', :as => 'scheduler_show'
   match 'scheduler/save' => 'scheduler#save', :via => :post
+  match 'scheduler/share' => 'scheduler#share', :via => :get
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
