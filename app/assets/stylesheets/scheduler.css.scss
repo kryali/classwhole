@@ -133,7 +133,8 @@ $showcase-bg        : url('showcase-bg.png');
 
 #slides {
   overflow: hidden;
-  margin-top: 130px;
+  //margin-top: 130px;
+  padding-top: 1px;
   .slides_container {
     //width: 660px;
     float: left;
@@ -375,9 +376,9 @@ $mini-schedule-height: 90px;
 $mini-schedule-border-color: #aaa;
 
 .mini-pagination-top {
-  position: absolute;
-  top: 7px;
-  left: 130px;
+  //position: absolute;
+  //top: 7px;
+  margin: -11px 0 20px 130px;
 
   .mini-prev {
     position: absolute;
