@@ -77,12 +77,24 @@ include ApplicationHelper
     if cookies["classes"].nil? and current_user.is_temp?
 		  cookies["classes"] = { :value => "", :expires => 1.year.from_now }			
     end
-    current_user.courses << Course.find( params["id"].to_i )
-    if current_user.is_temp?
-      add_course_to_cookie( params["id"] )
+
+    begin 
+      course_id = params["id"].to_i
+      course = Course.find( course_id )
+      if current_user.courses.include?(course) 
+        render :json => { :status => "error", :message => "Class already added" }
+        return
+      else
+        current_user.courses << Course.find( course_id )
+        if current_user.is_temp?
+          add_course_to_cookie( params["id"] )
+        end
+        render :json => { :status => "success", :message => "Class added" }
+      end
+    rescue ActiveRecord::RecordNotFound
+        render :json => { :status => "error", :message => "Class not found" }
     end
-		render :json => { :status => "success", :message => "Class added" }
-	 end
+  end
 
 
   #
