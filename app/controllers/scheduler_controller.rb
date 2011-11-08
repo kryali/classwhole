@@ -61,7 +61,7 @@ class SchedulerController < ApplicationController
     params["schedule"].each do |section_id|
       schedule << Section.find_by_id(section_id.to_i)
     end
-
+    @section_hints = []
     if params["section"]
       section = Section.find(params["section"].to_i)
       course = Register_Course.new(section.course)
@@ -69,6 +69,13 @@ class SchedulerController < ApplicationController
       @section_hints.delete_if{|move| move.schedule_conflict?(schedule)}
     end
     @schedule = schedule
+
+    # Nothing needs to be rendered
+    # params["render"] forces the render (used for dragndrop render)
+    if @section_hints.empty? and not params["render"]
+      render :json => { :status => "error", :message => "no hints for section" }
+      return
+    end
 
     render :partial => 'section_ajax', :layout => false
   end
