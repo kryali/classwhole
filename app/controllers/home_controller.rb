@@ -4,7 +4,6 @@
 #
 class HomeController < ApplicationController
   include ApplicationHelper
-  caches_page :index
 
   def index
     render "scheduler/index"
