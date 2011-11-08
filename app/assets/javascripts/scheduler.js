@@ -262,7 +262,9 @@ $(function(){
     Update schedule refreshes the schedule content with the new schedule
       from the server. It's an AJAX `success` callback function */
   function update_schedule(data, textStatus, jqXHR, day) {
-
+    if( data.status == "error" ) {
+      return;
+    }
     // Make sure we aren't updating the schedule when another update is in progress
     if( is_updating ) return;
 
@@ -428,7 +430,7 @@ $(function(){
 
     $.ajax({
       type: 'POST',
-      data: { schedule:schedule_ids },
+      data: { schedule:schedule_ids, render: true },
       url:  '/scheduler/move_section',
       success: function(data, textStatus, jqXHR) {
         //curr_section.draggable( "option", "revert", "false" );
