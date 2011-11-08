@@ -76,9 +76,10 @@ class SchedulerController < ApplicationController
     if current_user.is_temp?
       render :json => {:status => "error", :message => "Log in to save schedule."}
     else
-      # TODO remove redis
+      redis_key  ="user:#{current_user.id}:schedule"
+      $redis.del(redis_key)
       params["schedule"].each do |section_id|
-        $redis.sadd("user:#{current_user.id}:schedule", section_id.to_i)
+        $redis.sadd(redis_key, section_id.to_i)
       end
       render :json => {:status => "success", :message => "Schedule saved."}
     end
