@@ -11,9 +11,6 @@ log/*.log
 tmp/
 *.swp
 *.swo
-db/schema.rb
-db/schema.rb
-db/*schema.rb*
 dump.rdb
 *.rbc
 *.sassc
@@ -29,7 +26,6 @@ capybara-*.html
 /coverage/
 /spec/tmp/*
 **.orig
-config/*.yml
 rerun.txt
 pickle-email-*.html
 .livereload
