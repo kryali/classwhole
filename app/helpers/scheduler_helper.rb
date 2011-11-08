@@ -83,7 +83,7 @@ module SchedulerHelper
       next if not section.days
       days = section.days.split("")
       days.each do |day|
-        sections_by_days[day].push(section)
+        sections_by_days[day].push(section) if sections_by_days.has_key?(day)
       end
     end
 
