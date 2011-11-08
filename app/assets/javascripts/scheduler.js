@@ -54,6 +54,7 @@ $(function(){
             $('#save-modal').modal('show');            
             $(document).bind('logged-in', function() {
               $(document).unbind('logged-in');
+              $("#save-modal").modal("hide");
               save_schedule();
               return true;
             });

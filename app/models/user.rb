@@ -28,4 +28,13 @@ class User < ActiveRecord::Base
     return false
   end
 
+  def schedule
+    sections = []
+    section_ids = $redis.smembers("user:#{id}:schedule")
+    section_ids.each do |section_id|
+      sections << Section.find( section_id )
+    end
+    return sections
+  end
+
 end

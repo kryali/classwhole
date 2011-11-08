@@ -22,7 +22,13 @@ include ApplicationHelper
           end   
         cookies.delete("classes")  
       end
-      render :json => { :status => "success", :user => @user, :message => "Logged in" }    
+      @status = "success"
+      @message = "Logged in"
+      #render('login', :layout => false).to_json
+      #user_nav = (render :partial => 'shared/user_nav', :layout => false)
+      render :partial => 'shared/user_nav', :layout => false
+      #return
+      #render :json => { :status => "success", :user => @user, :message => "Logged in", :data => user_nav }    
     end
   end
 
