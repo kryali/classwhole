@@ -87,11 +87,13 @@ $(function(){
           // Make sure we don't already have the section in our array
           if( crns.indexOf(current_section_crn) == -1 ) {
             crns.push(current_section_crn)
-            $('#crns').append("<li>" + current_section_crn + "</li>");
+            //$('#crns').append("<li>" + current_section_crn + "</li>");
           }
         }
       }
-      $('#register-modal').modal('show');
+      console.log(crns.toString());
+      window.location = "/scheduler/register?crns=" + crns.toString();
+      //$('#register-modal').modal('show');
     });
   }
 
@@ -171,7 +173,7 @@ $(function(){
     });
 
     var children = $(".mini-pagination").children();
-    $('.mini-pagination').css("width", children.width() * children.length +8);
+    $('.mini-pagination').css("width", children.width() * children.length + 30);
   }
 
   function init_mini_pagination() {

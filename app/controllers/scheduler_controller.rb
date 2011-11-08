@@ -116,11 +116,20 @@ class SchedulerController < ApplicationController
           method: 'feed',
           name: "#{current_user.name}'s Classwhole",
           link: 'http://fuckfacebook.com/',
-          picture: 'http://i.imgur.com/0Ei7C.jpg',
+          source: 'http://i.imgur.com/0Ei7C.jpg',
           caption: 'Checkout my classwhole',
           description: course_string
         }
       }
+    end
+  end
+
+  def register
+    if !params["crns"]
+      render :text => "code broke"
+      return
+    else
+      @crns = params["crns"].split(",")
     end
   end
 
