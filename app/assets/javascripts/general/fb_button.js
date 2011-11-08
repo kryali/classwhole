@@ -22,11 +22,14 @@ $(document).ready(function() {
         url: path,
         data: params,
         success: function( data, textStatus, xqHR){
-          //pop_alert( textStatus, data["message"] );
+          pop_alert( textStatus, "Logged in" );
           //console.log(data["user"]["name"]);
-          $("ul.secondary-nav li").empty().append( $("<a/>").text( data["user"]["name"] ) );
-          $("#save-modal").modal("hide");
+          $("ul.secondary-nav").empty().append( $(data) );
           $(document).trigger("logged-in");
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.log( jqXHR );
+          pop_alert( textStatus, errorThrown.toString() );
         }
       });
   }
