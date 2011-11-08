@@ -3,6 +3,7 @@ Whiteboard::Application.routes.draw do
   get "scheduler/index"
   get "scheduler/show"
   get "scheduler/new"
+  get "scheduler/renderTest"
 
   match  'courses/search/auto/subject' => 'catalog#subject_auto_search'
   match  'courses/search/auto/subject/:subject_code' => 'catalog#course_auto_search'
