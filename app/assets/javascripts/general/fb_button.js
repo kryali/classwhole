@@ -57,7 +57,7 @@ $(document).ready(function() {
   });
 
   /* When a user clicks a button, */
-  $('.fb-button').click( function(event) {
+  $('.fb-button').unbind('click').click( function(event) {
 
     //console.log("Button clicked!");
     /* FB.getLoginStatus allows you to determine if a user is 
