@@ -99,6 +99,13 @@ class SchedulerController < ApplicationController
     end
   end
 
+  
+  # @desc: This function returns an 
+  #        AJAX repsonse of what the user should post to facebook
+  #
+  # @todo: Save the schedule, if they decide to share it
+  #        (we're linking them to the page)
+  #
   def share
     if current_user.is_temp?
       render :json => {
