@@ -24,8 +24,10 @@
                 %div
                   %span{:class=>"section-type label"}= section.section_type
                   -if section.instructor
-                    %span.instructor= section.instructor
+                    %span.instructor= shorten(section.instructor, 12, "..")
                   -else 
                     %span.instructor TBD
                   %span.code= section.code
+                  -if nil
+                    %span.crn= section.reference_number
                   %span.time= section.duration_s

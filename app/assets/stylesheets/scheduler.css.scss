@@ -143,7 +143,7 @@ $showcase-bg        : url('showcase-bg.png');
 
 .sidebar {
   float: left;
-  width: 220px;
+  width: 250px;
   margin: 0em 0em 0em 1.5em;
   font-size: .9em;
   color: #555;
@@ -187,18 +187,30 @@ $showcase-bg        : url('showcase-bg.png');
             position: relative;
           }
           span.code {
-            float: right;
+            position: absolute;
+            top: 5px;
+            right: 4px;
+            font-size: .9em;
           }
           span.time {
             position: absolute;
-            top: 8px;
-            left: 108px;
+            top: 7px;
+            left: 134px;
             text-transform: uppercase;
-            font-size: .7em;
+            font-size: .8em;
           }
           span.instructor {
             position: absolute;
-            left: 40px;
+            left: 36px;
+            top: 4px;
+            font-size: 1em;
+          }
+
+          span.crn {
+            position: absolute;
+            left: 36px;
+            top: 4px;
+            font-size: .9em;
           }
         }
 
