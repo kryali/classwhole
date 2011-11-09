@@ -39,9 +39,10 @@ class ApplicationController < ActionController::Base
           @current_user.courses << Course.find(id)
         rescue ActiveRecord::RecordNotFound
           cookies.delete("classes")
+          return @current_user
         end
       end
-    return @current_user
+      return @current_user
     end  
   end
 
