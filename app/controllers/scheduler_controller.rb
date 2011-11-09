@@ -114,10 +114,10 @@ class SchedulerController < ApplicationController
         :status => "success",
         :options => {
           method: 'feed',
-          name: "#{current_user.name}'s Classwhole",
-          link: 'http://fuckfacebook.com/',
+          name: "#{current_user.name}'s Schedule",
+          link: "#{root_url + scheduler_show_path(current_user.id)}",
           source: 'http://i.imgur.com/0Ei7C.jpg',
-          caption: 'Checkout my classwhole',
+          caption: 'Checkout my schedule!',
           description: course_string
         }
       }
