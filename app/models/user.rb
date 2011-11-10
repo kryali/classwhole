@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
     sections.each do |section_id|
       $redis.sadd(redis_key, section_id.to_i)
       course = Section.find( section_id.to_i ).course
-      courses << course
+      courses << course unless courses.include?(course)
     end
   end
 
