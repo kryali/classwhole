@@ -48,11 +48,13 @@ $(function(){
       url:  save_schedule_path,
       success: function(data, textStatus, jqXHR) {
         if (data["status"] == "success") {
+          mpq.track("Save schedule");
           pop_alert("info", data["message"]);
         }
         else if (data["status"] == "error") {
-          pop_alert("error", data["message"]);
+          //pop_alert("error", data["message"]);
           $('#save-modal').modal('show');            
+          mpq.track("Prompt log in");
           $(document).bind('logged-in', function() {
             $(document).unbind('logged-in');
             $("#save-modal").modal("hide");
@@ -75,6 +77,7 @@ $(function(){
       $('#share-modal').modal('hide');
     });
     $(".register-schedule").unbind('click').click( function() {
+      mpq.track("Register schedule");
       $('#crns').empty()
       var schedule = get_current_schedule();
       var crns = [];
@@ -108,6 +111,7 @@ $(function(){
         if (data["status"] == "success") {
           //console.log(data);
           //pop_alert("info", data["message"]);
+          mpq.track("Share schedule");
           FB.ui(data.options, function(response) {
             if( response && response.post_id ) {
               pop_alert("success", "Schedule shared!");
@@ -117,8 +121,9 @@ $(function(){
           });
         }
         else if (data["status"] == "error") {
-          pop_alert("error", data["message"]);
+          //pop_alert("error", data["message"]);
           $('#share-modal').modal('show');    
+          mpq.track("Prompt log in");
           $(document).bind('logged-in', function() {
             $(document).unbind('logged-in');
             $('#save-modal').modal('hide');    
@@ -161,6 +166,7 @@ $(function(){
 
     // TODO: BUG IF YOU CLICK TOO FAST
     $(".prev").click( function() {
+      mpq.track("Clicked left arrow");
       if( current_selected > 1 )
         current_selected--;
       else {
@@ -170,6 +176,7 @@ $(function(){
     });
 
     $(".next").click( function() {
+      mpq.track("Clicked right arrow");
       current_selected++;
       if( current_selected > mini_grids_showing ){
         $(".mini-next").click();
@@ -462,6 +469,8 @@ $(function(){
         || $(this).find(".course-name").text() != curr_section.find(".course-name").text() ) {
       return;
     }
+
+    mpq.track("Moved Schedule");
 
     // Generate the list of the new schedule to render
     var idx = schedule_ids.indexOf(curr_section_id);

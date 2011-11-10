@@ -13,6 +13,7 @@ ClassList.prototype.init = function() {
 
         var class_li = $(this);
         $(this).find(".remove-link").click( function() {
+          mpq.track("Class removed");
 					$.ajax({
 								type: 'GET',
                 url: course_destroy_url + class_id,
@@ -36,6 +37,7 @@ ClassList.prototype.add_class_callback = function(event, ui) {
     this.value = ""; 
 
     if ( ui.item ) {
+        mpq.track("Class added");
         show_button();
         var class_id = ui.item.id;
         if( class_id in selected_classes ){
@@ -67,6 +69,7 @@ ClassList.prototype.add_class_callback = function(event, ui) {
         course_li.slideDown();
 
         remove_course.click( function() {
+            mpq.track("Class removed");
             var removed = 0;
             $.ajax({
 								type: 'GET',

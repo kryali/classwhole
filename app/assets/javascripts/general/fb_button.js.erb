@@ -2,13 +2,10 @@
  * fb_button_init.js
  * File Summary: initializes the facebook sdk and contains login logic via facebook 
  */
- 
-
 $(document).ready(function() { 
 
   /* Constants */
   var LOGIN_PATH = "/user/login";
-
 
   /*
    * This creates a hidden form and posts this data to rails
@@ -23,6 +20,9 @@ $(document).ready(function() {
         data: params,
         success: function( data, textStatus, xqHR){
           pop_alert( textStatus, "Logged in" );
+
+          // track the name
+          mpq.name_tag($(data).find(".name").text());
           //console.log(data["user"]["name"]);
           $("ul.secondary-nav").empty().append( $(data) );
           $(document).trigger("logged-in");
@@ -33,7 +33,6 @@ $(document).ready(function() {
         }
       });
   }
-
 
   /* 
    * FB.init starts the facebook sdk, enabling calls against the facebook api
@@ -58,13 +57,13 @@ $(document).ready(function() {
 
   /* When a user clicks a button, */
   $('.fb-button').unbind('click').click( function(event) {
-
     //console.log("Button clicked!");
     /* FB.getLoginStatus allows you to determine if a user is 
      * logged into facebook.*/
     FB.getLoginStatus(function(response) {
       if(response.authResponse){
         /* User is logged in to facebook, let him in */
+        mpq.identify( response.authResponse["userID"] );
         post_to_url(LOGIN_PATH, response["authResponse"]);
       }
     });
@@ -74,8 +73,6 @@ $(document).ready(function() {
     FB.Event.subscribe('auth.login', function(response) {
       post_to_url(LOGIN_PATH, response["authResponse"]);
     });
-
   });
-
 
 });
