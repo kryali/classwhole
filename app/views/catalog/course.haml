@@ -26,13 +26,9 @@
     %div{:id => "hours"}  
       = @course.hours.to_s + " credit hours"
     
-    <br/>
-    <br/>
-
     %p{:id => "course_description"}
       =@course.description
 
-  <br/>
   -first_flag = 1;
   %div.section_tabs
     %ul{:class => "tabs"}
@@ -42,8 +38,6 @@
           -first_flag=0
           %li  
             =link_to full_name(type), "#"+type
-
-
 
         -if first_flag==1
           -first_flag=0
@@ -116,9 +110,7 @@
                     -if !section.code.nil?  
                       = section.code
 
-
   :javascript
     $(function () {
       $('.tabs').tabs();
     });
-

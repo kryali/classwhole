@@ -8,13 +8,8 @@
         %li
           =link_to letter, "#"+letter  
           
-    
-
-
     %span{:class => "catalog_title"}
       =uppercase_string  + " Courses"
-
-
 
     %table{:class => "major_table"}  
       -first_letter = '-1'    
@@ -24,11 +19,8 @@
           %tr
             %td
               %a{:name => "#{first_letter}"}
-                <br/>
-              <br/>
         %tr      
           %td{:class => 'major_cells'}
             = subject.code
           %td{:class => 'major_cells'}                  
             = link_to subject.title, show_subject_path(:year => @semester.year, :season => @semester.season, :subject_code => subject.code)    
-

@@ -98,13 +98,13 @@ line-height:115%;
 /* the box on the course page with the title, description, etc. */
 .course_box
 {
-margin:0 auto;
-padding: 3px;
-background-color: #F9f9f9;
-width: 65%;
-border: 1px solid #cccccc;
--moz-border-radius: 5px;
-border-radius: 5px;
+  margin:0 auto 1em auto;
+  padding: 1em;
+  background-color: #F9f9f9;
+  width: 95%;
+  border: 1px solid #cccccc;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
 
 /* the add class button on the course page */
