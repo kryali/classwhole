@@ -1,4 +1,6 @@
 = javascript_include_tag "scheduler.js"
+= content_for :title, current_user.name + "'s Spring 2011 Class Schedule"
+
 %div.scheduler-content
   = render "schedule", :sections => @sections
   = render :partial=>"need_to_login", :locals => {:name => "save"}
