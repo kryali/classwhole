@@ -1,0 +1,9 @@
+%div{ :id => "#{name}-modal", :class => "modal hide" }
+  %div.modal-header
+    %a{ :class => "close-modal x-button"}
+    %h3 #{capitalize_first_letter(name)}
+  %div.modal-body
+    %h2 You must log in to #{name} your schedule.
+    %a= render 'shared/fb_login_button'
+  %div.modal-footer
+    %a{:class=>"btn primary close-modal"} Close
