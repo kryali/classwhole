@@ -40,10 +40,13 @@ class User < ActiveRecord::Base
   # add_schedule takes in a list of section ids 
   # and adds them to the redis database
   def add_schedule( sections )
+    courses.delete_all
     redis_key  ="user:#{id}:schedule"
     $redis.del(redis_key)
     sections.each do |section_id|
       $redis.sadd(redis_key, section_id.to_i)
+      course = Section.find( section_id.to_i ).course
+      courses << course unless courses.include?(course)
     end
   end
 

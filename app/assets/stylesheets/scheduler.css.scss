@@ -303,7 +303,7 @@ ul.hidden-data {
 
 .scheduler-content {
   font-family: 'Arial', 'Tahoma', sans-serif;
-  padding: $scheduler-content-padding;
+  padding: $scheduler-content-padding*2 $scheduler-content-padding;
   position: relative;
   background: white;
   border: 1px solid #aaaaaa;
@@ -390,7 +390,15 @@ $mini-schedule-border-color: #aaa;
 .mini-pagination-top {
   //position: absolute;
   //top: 7px;
-  margin: -11px 0 20px 130px;
+  //margin: -11px 0 20px 130px;
+  padding: 1.5em;
+  overflow:hidden;
+  //width: 100%;
+
+  h3 {
+    text-transform: uppercase;
+    padding: 1em;
+  }
 
   .mini-prev {
     position: absolute;
@@ -404,10 +412,9 @@ $mini-schedule-border-color: #aaa;
     top: 20px;
   }
   .mini-pagination-container {
-    //border: 1px solid $mini-schedule-border-color;
-    //height: 92px;
+    border: 1px solid $mini-schedule-border-color;
     height: 106px;
-    width: 654px;
+    //width: 654px;
     //overflow: hidden;
     overflow-x: auto;
     overflow-y: hidden;
