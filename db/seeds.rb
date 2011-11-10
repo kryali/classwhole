@@ -126,9 +126,7 @@ def add_sections_to_course(course, data)
   Section.transaction do
     course_sections.each do |section|
       section_start_time, section_end_time = parse_hours(section['startTime'], section['endTime'])
-
       current_section = course.sections.create(
-        :id => section['referenceNumber'].to_i,
         :room => section['roomNumber'].to_i,
         :days => section['days'],
         :reference_number => section['referenceNumber'].to_i,
