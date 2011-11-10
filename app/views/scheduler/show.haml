@@ -1,5 +1,5 @@
 = javascript_include_tag "scheduler.js"
-= content_for :title, current_user.name + "'s Spring 2011 Class Schedule"
+= content_for :title, @user.name + "'s Spring 2011 Class Schedule"
 
 %div.scheduler-content
   = render "schedule", :sections => @sections
