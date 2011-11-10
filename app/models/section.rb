@@ -12,11 +12,23 @@ class Section < ActiveRecord::Base
       key = self.course_subject_code
     elsif self.code.length == 1
       key = self.course_subject_code
+    elsif self.code.length == 2
+      at0 = self.code.at(0)
+      if (true if Integer(at0) rescue false)
+        key = self.code.at(1) << at0
+      else
+        key = at0
+        at1 = self.code.at(1)
+        if (true if Integer(at1) rescue false)
+          key << at1
+        end
+      end
     else
       key = self.code.at(0)
-      #append number to key if it exists at 1 (for mathematica sections B8, X8, etc)
       at1 = self.code.at(1)
-      key << at1 if (true if Integer(at1) rescue false)
+      if (true if Integer(at1) rescue false)
+        key << at1
+      end
     end
     return key
   end
@@ -30,7 +42,7 @@ class Section < ActiveRecord::Base
         if (self.start_time.to_i   >= start_time.to_i and self.start_time.to_i <= end_time.to_i) or 
            (start_time.to_i   >= self.start_time.to_i and start_time.to_i <= self.end_time.to_i)
           return true
-        end
+        end 
       end
     end
     return false
