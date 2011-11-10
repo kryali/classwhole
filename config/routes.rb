@@ -1,20 +1,19 @@
 Whiteboard::Application.routes.draw do
+  root :to => 'home#index'
 
-  get "scheduler/index"
-  get "scheduler/show"
-  get "scheduler/new"
-  get "scheduler/renderTest"
 
+  # Autocomplete routes
   match  'courses/search/auto/subject' => 'catalog#subject_auto_search'
   match  'courses/search/auto/subject/:subject_code' => 'catalog#course_auto_search'
   match  'courses/search' => 'catalog#simple_search', :via => :post
 
+  # Catalog routes
   match  'courses/' => 'catalog#semester', :as => 'show_university'
   match  'courses/:season/:year/' => 'catalog#semester', :as => 'show_semester'
   match  'courses/:season/:year/:subject_code' => 'catalog#subject', :as => 'show_subject'
   match  'courses/:season/:year/:subject_code/:course_number' => 'catalog#course', :as => 'show_course'
 
-  root :to => 'home#index'
+  # User auth routes
   match 'user/login' => 'user#login', :via => :post
   match 'user/register' => 'user#register', :via => :post
   match 'user/courses/new' => 'user#add_course', :via => :post, :as => :add_course
@@ -22,6 +21,11 @@ Whiteboard::Application.routes.draw do
 	match 'user/courses/remove' => 'user#remove_course', :via => :post  
 	match 'user/logout', :as => 'logout'
 	
+  # Scheduler routes
+  get "scheduler/index"
+  get "scheduler/show"
+  get "scheduler/new"
+  get "scheduler/renderTest"
   match 'scheduler/move_section' => 'scheduler#move_section', :via => :post
   match 'scheduler/paginate' => 'scheduler#paginate', :via => :post
 	match 'scheduler/new' => 'scheduler#new'

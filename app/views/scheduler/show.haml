@@ -11,14 +11,3 @@
       %a= render 'shared/fb_login_button'
     %div.modal-footer
       %a{:class=>"btn primary close-modal"} Close
-
-  %div{ :id => "register-modal", :class => "modal hide" }
-    %div.modal-header
-      %a{ :class => "close-modal x-button"}×
-      %h3 Register
-    %div.modal-body
-      %h2 Your CRNs:
-      %ul#crns 
-      -#%iframe{ :src => "https://webprod.admin.uillinois.edu/ssa/servlet/SelfServiceLogin?appName=edu.uillinois.aits.SelfServiceLogin&dad=BANPROD1", :width => "100%" }
-    %div.modal-footer
-      %a{:class=>"btn primary close-modal"} Close
