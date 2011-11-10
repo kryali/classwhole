@@ -1,4 +1,6 @@
 /* The Course Page */
+= content_for :title, "#{@course.to_s} - #{@course.title} at UIUC"
+
 %div.scheduler-content  
   = javascript_include_tag "course"
   -uppercase_string = @semester.season[0,1].upcase + @semester.season[1..-1] + " " + @semester.year
