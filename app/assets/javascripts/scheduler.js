@@ -129,7 +129,7 @@ $(function(){
 
   function init_share_button() {
     // Share facebook
-    $("#share").click( function() {
+    $(".share-schedule").click( function() {
       share_schedule();
     });
   }

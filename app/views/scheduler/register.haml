@@ -2,6 +2,8 @@
   %h1 Register CRNs
   %ul.crns
     -for crn in @crns
-      %li
-        %span.uneditable-input= crn
+      -# Some sections don't have crns (they are grouped together)
+      -if crn != "0"
+        %li
+          %span.uneditable-input= crn
   %iframe{:id=>"register-frame",:src => "https://eas.admin.uillinois.edu/eas/servlet/EasLogin?redirect=https://webprod.admin.uillinois.edu/ssa/servlet/SelfServiceLogin?appName=edu.uillinois.aits.SelfServiceLogin&dad=BANPROD1"}
