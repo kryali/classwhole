@@ -91,19 +91,21 @@ $(function(){
           }
         }
       }
-      console.log(crns.toString());
+      //console.log(crns.toString());
       window.location = "/scheduler/register?crns=" + crns.toString();
       //$('#register-modal').modal('show');
     });
   }
 
   function share_schedule() {
+    var schedule_ids = get_schedule_ids();
     $.ajax({
-      type: 'GET',
+      type: 'POST',
+      data: { schedule: schedule_ids },
       url: share_schedule_path,
       success: function(data, textStatus, jqXHR) {
         if (data["status"] == "success") {
-          console.log(data);
+          //console.log(data);
           //pop_alert("info", data["message"]);
           FB.ui(data.options, function(response) {
             if( response && response.post_id ) {
@@ -127,7 +129,7 @@ $(function(){
 
   function init_share_button() {
     // Share facebook
-    $("#share").click( function() {
+    $(".share-schedule").click( function() {
       share_schedule();
     });
   }
@@ -198,7 +200,7 @@ $(function(){
     $(".mini-next").click( function() {
       var current_pos = mini_pagination.position().left;
       if( end <= mini_grids_count) {
-        console.log("starting a request");
+        //console.log("starting a request");
         $.ajax({
           type: 'POST',
           url: paginate_path,
@@ -208,8 +210,8 @@ $(function(){
             end: end,
           },
           success: function(data, textStatus, jqXHR) {
-            console.log( textStatus );
-            console.log( $(data) );
+            //console.log( textStatus );
+            //console.log( $(data) );
             var full = $(data).first();
             var mini = $(data).last();
             $(".slides_control").append( full.children() );
@@ -451,6 +453,12 @@ $(function(){
     var curr_section_id = parseInt(curr_section.find(".id").text());
     var new_section_id = parseInt($(this).find(".id").text());
     var schedule_ids = get_schedule_ids();
+
+    // Make sure that both sections are compatible types 
+    if( $(this).find(".section-type").text() != curr_section.find(".section-type").text()   
+        || $(this).find(".course-name").text() != curr_section.find(".course-name").text() ) {
+      return;
+    }
 
     // Generate the list of the new schedule to render
     var idx = schedule_ids.indexOf(curr_section_id);

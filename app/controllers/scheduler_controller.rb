@@ -87,11 +87,7 @@ class SchedulerController < ApplicationController
                         :message => "Log in to save schedule."
                       }
     else
-      redis_key  ="user:#{current_user.id}:schedule"
-      $redis.del(redis_key)
-      params["schedule"].each do |section_id|
-        $redis.sadd(redis_key, section_id.to_i)
-      end
+      current_user.add_schedule( params["schedule"] )
       render :json => {
                         :status => "success", 
                         :message => "Schedule saved."
@@ -99,6 +95,13 @@ class SchedulerController < ApplicationController
     end
   end
 
+  
+  # @desc: This function returns an 
+  #        AJAX repsonse of what the user should post to facebook
+  #
+  # @todo: Save the schedule, if they decide to share it
+  #        (we're linking them to the page)
+  #
   def share
     if current_user.is_temp?
       render :json => {
@@ -106,16 +109,22 @@ class SchedulerController < ApplicationController
                         :message => "Log in to save schedule."
                       }
     else
+      # Save the schedule so they can link to it
+      current_user.add_schedule( params["schedule"] )
       course_string = ""
       for course in current_user.courses
         course_string += course.to_s + " - " + course.title + ", "
       end
+
+      show_path = scheduler_show_path(current_user.id)
+      show_path.slice!(0) # Get rid of the leading slash because root_url gives it to us
+      link_url = root_url + show_path
       render :json => {
         :status => "success",
         :options => {
           method: 'feed',
           name: "#{current_user.name}'s Schedule",
-          link: "#{root_url + scheduler_show_path(current_user.id)}",
+          link: link_url,
           source: 'http://i.imgur.com/0Ei7C.jpg',
           caption: 'Checkout my schedule!',
           description: course_string
