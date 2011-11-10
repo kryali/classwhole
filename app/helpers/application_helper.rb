@@ -13,4 +13,10 @@ module ApplicationHelper
     return class_ids
   end
 
+
+  def capitalize_first_letter(word)
+    ret_string = word[0,1].upcase + word[1..-1] 
+    return ret_string
+  end
+
 end

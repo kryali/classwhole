@@ -72,6 +72,7 @@ $(function(){
     $(".close-modal").click( function() {
       $('#register-modal').modal('hide');
       $('#save-modal').modal('hide');
+      $('#share-modal').modal('hide');
     });
     $(".register-schedule").unbind('click').click( function() {
       $('#crns').empty()
@@ -117,8 +118,10 @@ $(function(){
         }
         else if (data["status"] == "error") {
           pop_alert("error", data["message"]);
+          $('#share-modal').modal('show');    
           $(document).bind('logged-in', function() {
             $(document).unbind('logged-in');
+            $('#save-modal').modal('hide');    
             share_schedule();
             return true;
           });

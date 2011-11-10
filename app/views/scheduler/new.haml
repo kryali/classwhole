@@ -10,15 +10,8 @@
     -if @possible_schedules.size > 1
       = render 'mini_schedule_grids'
 
-  %div{ :id => "save-modal", :class => "modal hide" }
-    %div.modal-header
-      %a{ :class => "close-modal x-button"}
-      %h3 Save
-    %div.modal-body
-      %h2 You must log in to save your schedule.
-      %a= render 'shared/fb_login_button'
-    %div.modal-footer
-      %a{:class=>"btn primary close-modal"} Close
+  =render :partial=>"need_to_login", :locals => {:name => "save"}
+  =render :partial=>"need_to_login", :locals => {:name => "share"}
 
 :javascript
   var course_ids = #{@course_ids};
