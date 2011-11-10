@@ -13,6 +13,8 @@ module ApplicationHelper
     return class_ids
   end
 
-
+  def image_link(user)
+    "http://i.imgur.com/0D00v.gif"
+  end
 
 end
