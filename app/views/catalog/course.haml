@@ -1,130 +1,116 @@
 /* The Course Page */
-= javascript_include_tag "course"
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
--uppercase_string = @semester.season[0,1].upcase + @semester.season[1..-1] + " " + @semester.year
--name_and_number =  @subject.code + " " + @course.number.to_s
-%div.breadcrumb	
-	= link_to  "Subjects", get_previous_url(get_previous_url(request.url))
-	&#47 
-	= link_to @subject.code, get_previous_url(request.url)
-	&#47 
-	=name_and_number
+%div.scheduler-content  
+  = javascript_include_tag "course"
+  -uppercase_string = @semester.season[0,1].upcase + @semester.season[1..-1] + " " + @semester.year
+  -name_and_number =  @subject.code + " " + @course.number.to_s
+  %div.breadcrumb  
+    = link_to  "Subjects", get_previous_url(get_previous_url(request.url))
+    &#47 
+    = link_to @subject.code, get_previous_url(request.url)
+    &#47 
+    =name_and_number
 
 
-%div.course_box		
-	%button{:class => "btn large success", :id=> "add_class_button", :type => "submit"}
-		%span{:class => "hidden id"}
-			=@course.id
-		%span{:class => "font"}						
-			Add Class
+  %div.course_box    
+    %button{:class => "btn large success", :id=> "add_class_button", :type => "submit"}
+      %span{:class => "hidden id"}
+        =@course.id
+      %span{:class => "font"}            
+        Add Class
 
-	%span{:id => "course_num"}
-		=name_and_number		
-	 
+    %div{:id => "course_num"}
+      =name_and_number    
+     
+    %div{:id => "course_name"}
+      =@course.title
+    %div{:id => "hours"}  
+      = @course.hours.to_s + " credit hours"
+    
+    %p{:id => "course_description"}
+      =@course.description
 
-	<br/>
-	%h1{:id => "course_name"}
-		=@course.title
-	%div{:id => "hours"}	
-		= @course.hours.to_s + " credit hours"
-		
-	<br/>
-	<br/>
+  -first_flag = 1;
+  %div.section_tabs
+    %ul{:class => "tabs"}
+      -for type in @types_of_sections
 
-	%p{:id => "course_description"}
-		=@course.description
+        -if first_flag==0
+          -first_flag=0
+          %li  
+            =link_to full_name(type), "#"+type
 
-<br/>
--first_flag = 1;
-%div.section_tabs
-	%ul{:class => "tabs"}
-		-for type in @types_of_sections
+        -if first_flag==1
+          -first_flag=0
+          %li{:class => "active"}              
+            =link_to full_name(type), "#"+type
 
-			-if first_flag==0
-				-first_flag=0
-				%li	
-					=link_to full_name(type), "#"+type
+  -first_flag = 1;    
+  %div.sections_table
+    %div{:class => "pill-content"}
+      -for type in @types_of_sections      
+        -if first_flag == 0        
+          %table{:class => "zebra-striped", :id => "#{type}"}                            
+            %th
+              Time
+            %th
+              Days
+            %th
+              Professor
+            %th
+              Building
+            %th
+              Section      
+            -for section in @course.sections
+              -if type == section.section_type
+                %tr
+                  %td
+                    -if !section.start_time.nil?                
+                      = section.duration_s            
+                  %td
+                    -if !section.days.nil?  
+                      = section.days            
+                  %td
+                    -if !section.instructor.nil?  
+                      = section.instructor
+                  %td
+                    -if !section.building.nil?  
+                      = section.building[1..-1]
+                  %td
+                    -if !section.code.nil?  
+                      = section.code
+        -if first_flag == 1
+          -first_flag = 0        
+          %table{:class => "zebra-striped active", :id => "#{type}"}                            
+            %th
+              Time
+            %th
+              Days
+            %th
+              Professor
+            %th
+              Building
+            %th
+              Section      
+            -for section in @course.sections
+              -if type == section.section_type
+                %tr
+                  %td
+                    -if !section.start_time.nil?                
+                      = section.duration_s            
+                  %td
+                    -if !section.days.nil?  
+                      = section.days            
+                  %td
+                    -if !section.instructor.nil?  
+                      = section.instructor
+                  %td
+                    -if !section.building.nil?  
+                      = section.building[1..-1]
+                  %td
+                    -if !section.code.nil?  
+                      = section.code
 
-
-
-			-if first_flag==1
-				-first_flag=0
-				%li{:class => "active"}							
-					=link_to full_name(type), "#"+type
-
--first_flag = 1;		
-%div.sections_table
-	%div{:class => "pill-content"}
-		-for type in @types_of_sections			
-			-if first_flag == 0				
-				%table{:class => "zebra-striped", :id => "#{type}"}														
-					%th
-						Time
-					%th
-						Days
-					%th
-						Professor
-					%th
-						Building
-					%th
-						Section			
-					-for section in @course.sections
-						-if type == section.section_type
-							%tr
-								%td
-									-if !section.start_time.nil?								
-										= section.duration_s						
-								%td
-									-if !section.days.nil?	
-										= section.days						
-								%td
-									-if !section.instructor.nil?	
-										= section.instructor
-								%td
-									-if !section.building.nil?	
-										= section.building[1..-1]
-								%td
-									-if !section.code.nil?	
-										= section.code
-			-if first_flag == 1
-				-first_flag = 0				
-				%table{:class => "zebra-striped active", :id => "#{type}"}														
-					%th
-						Time
-					%th
-						Days
-					%th
-						Professor
-					%th
-						Building
-					%th
-						Section			
-					-for section in @course.sections
-						-if type == section.section_type
-							%tr
-								%td
-									-if !section.start_time.nil?								
-										= section.duration_s						
-								%td
-									-if !section.days.nil?	
-										= section.days						
-								%td
-									-if !section.instructor.nil?	
-										= section.instructor
-								%td
-									-if !section.building.nil?	
-										= section.building[1..-1]
-								%td
-									-if !section.code.nil?	
-										= section.code
-
-
-:javascript
-	$(function () {
-		$('.tabs').tabs();
-	});
-
+  :javascript
+    $(function () {
+      $('.tabs').tabs();
+    });

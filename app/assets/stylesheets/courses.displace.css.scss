@@ -2,10 +2,10 @@
    which semester's course list you want to see */
 .semester_list
 {
-color:blue;
-font-family: 'Arial', 'Tahoma', sans-serif;
-font-size:20pt;
-font-weight:bold;
+  color:blue;
+  font-family: 'Arial', 'Tahoma', sans-serif;
+  font-size:20pt;
+  font-weight:bold;
 }
 
 
@@ -14,16 +14,16 @@ font-weight:bold;
    the different majors */
 .major_table
 {
-font-family: 'Arial', 'Tahoma', sans-serif;
-font-size:13pt;
-border-collapse: collapse;
+  font-family: 'Arial', 'Tahoma', sans-serif;
+  font-size:13pt;
+  border-collapse: collapse;
 }
 
 /* This is for the cells inside of the table above */
 .major_cells
 {
-padding: 0px;
-border: 0px solid black;
+  padding: 0px;
+  border: 0px solid black;
 }
 
 /* This is the title of the page where you select
@@ -31,27 +31,27 @@ border: 0px solid black;
 	 which class within a major you choose */
 .catalog_title
 {
-font-family: 'Arial', 'Tahoma', sans-serif;
-font-size:20pt;
-font-weight:bold;
+  font-family: 'Arial', 'Tahoma', sans-serif;
+  font-size:20pt;
+  font-weight:bold;
 }
 
 /* This is for the table that lists
    the different courses in a major */
 #course_table
 {
-font-family: 'Arial', 'Tahoma', sans-serif;
-font-size:13pt;
-border-collapse: collapse;
+  font-family: 'Arial', 'Tahoma', sans-serif;
+  font-size:13pt;
+  border-collapse: collapse;
 }
 
 /* This is for the cells inside of the tables above */
 .course_cells_code
 {
-font-family: 'Arial', 'Tahoma', sans-serif;
-width: 110px;
-padding: 0px;
-border: 0px solid black;
+  font-family: 'Arial', 'Tahoma', sans-serif;
+  width: 110px;
+  padding: 0px;
+  border: 0px solid black;
 }
 
 /* the other cells inside the course list table */
@@ -98,13 +98,13 @@ line-height:115%;
 /* the box on the course page with the title, description, etc. */
 .course_box
 {
-margin:0 auto;
-padding: 3px;
-background-color: white;
-width: 65%;
-border: 1px solid #cccccc;
--moz-border-radius: 5px;
-border-radius: 5px;
+  margin:0 auto 1em auto;
+  padding: 1em;
+  background-color: #F9f9f9;
+  width: 95%;
+  border: 1px solid #cccccc;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
 
 /* the add class button on the course page */

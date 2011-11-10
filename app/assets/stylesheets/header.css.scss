@@ -27,6 +27,12 @@ $header-color       : #333;
       color: #888;
     }
 
+    a.fb_button {
+      margin-top: 12px;
+      padding: 0;
+      line-height: 15px;
+    }
+
     a:hover {
       color: #3A90E0;
       text-decoration: underline;

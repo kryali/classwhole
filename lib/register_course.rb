@@ -9,12 +9,26 @@ class Register_Course
 
   #creates a hash of all the sections for this course
   def generate_hash
-    @configurations_hash ||= {}
+    sections = {}
     @course.sections.each do |section|
-      key = section.configuration_key
-      @configurations_hash[key] ||= {}
-      @configurations_hash[key][section.section_type] ||= []
-      @configurations_hash[key][section.section_type] << section
+      code = section.code
+      sections[section.code] ||= []
+      sections[section.code] << section
+    end
+    @configurations_hash ||= {}
+    sections.each do |code, section|
+      if section.length == 1
+        sec = section[0]
+        key = sec.configuration_key
+        @configurations_hash[key] ||= {}
+        @configurations_hash[key][sec.section_type] ||= []
+        @configurations_hash[key][sec.section_type] << sec
+      else
+        @configurations_hash[code] ||= {}
+        for i in (0...section.length)
+          @configurations_hash[code][i] = [section[i]]
+        end
+      end
     end
   end
 
