@@ -13,21 +13,20 @@ class Section < ActiveRecord::Base
     elsif self.code.length == 1
       key = self.course_subject_code
     elsif self.code.length == 2
-      at0 = self.code.at(0)
-      if (true if Integer(at0) rescue false)
-        key = self.code.at(1) << at0
+      if (true if Integer(self.code[0]) rescue false)
+        key = self.code[1] << self.code[0]
       else
-        key = at0
-        at1 = self.code.at(1)
-        if (true if Integer(at1) rescue false)
-          key << at1
+        key = self.code[0]
+        if (true if Integer(self.code[1]) rescue false)
+          key << self.code[1]
         end
       end
     else
-      key = self.code.at(0)
-      at1 = self.code.at(1)
-      if (true if Integer(at1) rescue false)
-        key << at1
+      key = self.code[0]
+      if (true if Integer(self.code[1]) rescue false)
+        unless (true if Integer(self.code[2]) rescue false)
+          key << self.code[1]
+        end
       end
     end
     return key
