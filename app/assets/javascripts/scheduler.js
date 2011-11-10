@@ -454,6 +454,12 @@ $(function(){
     var new_section_id = parseInt($(this).find(".id").text());
     var schedule_ids = get_schedule_ids();
 
+    // Make sure that both sections are compatible types 
+    if( $(this).find(".section-type").text() != curr_section.find(".section-type").text()   
+        || $(this).find(".course-name").text() != curr_section.find(".course-name").text() ) {
+      return;
+    }
+
     // Generate the list of the new schedule to render
     var idx = schedule_ids.indexOf(curr_section_id);
     if (idx!=-1) schedule_ids.splice(idx,1);
