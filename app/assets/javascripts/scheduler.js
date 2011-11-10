@@ -105,7 +105,7 @@ $(function(){
       url: share_schedule_path,
       success: function(data, textStatus, jqXHR) {
         if (data["status"] == "success") {
-          console.log(data);
+          //console.log(data);
           //pop_alert("info", data["message"]);
           FB.ui(data.options, function(response) {
             if( response && response.post_id ) {
@@ -200,7 +200,7 @@ $(function(){
     $(".mini-next").click( function() {
       var current_pos = mini_pagination.position().left;
       if( end <= mini_grids_count) {
-        console.log("starting a request");
+        //console.log("starting a request");
         $.ajax({
           type: 'POST',
           url: paginate_path,
@@ -210,8 +210,8 @@ $(function(){
             end: end,
           },
           success: function(data, textStatus, jqXHR) {
-            console.log( textStatus );
-            console.log( $(data) );
+            //console.log( textStatus );
+            //console.log( $(data) );
             var full = $(data).first();
             var mini = $(data).last();
             $(".slides_control").append( full.children() );
