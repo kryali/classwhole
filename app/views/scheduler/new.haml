@@ -25,25 +25,7 @@
     %a{:href=>"#", :class=>"prev"}
     %a{:href=>"#", :class=>"next"}
 
-  %div{ :id => "save-modal", :class => "modal hide" }
-    %div.modal-header
-      %a{ :class => "close-modal x-button"}
-      %h3 Save
-    %div.modal-body
-      %h2 You must log in to save your schedule.
-      %a= render 'shared/fb_login_button'
-    %div.modal-footer
-      %a{:class=>"btn primary close-modal"} Close
-
-  %div{ :id => "register-modal", :class => "modal hide" }
-    %div.modal-header
-      %a{ :class => "close-modal x-button"}
-      %h3 CRNs
-    %div.modal-body
-      %ul#crns 
-      -#%iframe{ :src => "https://webprod.admin.uillinois.edu/ssa/servlet/SelfServiceLogin?appName=edu.uillinois.aits.SelfServiceLogin&dad=BANPROD1", :width => "100%" }
-    %div.modal-footer
-      %a{:class=>"btn primary close-modal"} Close
-
+  =render :partial=>"need_to_login", :locals => {:name => "save"}
+  =render :partial=>"need_to_login", :locals => {:name => "share"}
 :javascript
   var course_ids = #{@course_ids};
