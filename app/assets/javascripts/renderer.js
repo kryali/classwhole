@@ -1,8 +1,9 @@
 $(function(){
   var render = document.getElementById('schedule-render');
 
-  var course_colors = ["#E0F8FF", "#EAFFD9", "FFF2FF", "FFF4F2", "F3FBA2", "#F0C4F0"];
-  var background_colors = ["#DDDDDD", "#AAAAAC", "EEEEEE"];
+  var course_colors = ["#33CCFF", "#00CC66", "#FF3333", "#FF9900", "#CC33CC", "#99FF00", "#FFFF00"];
+  // blue, darker blue green, reddish pink, orange, purple, yellowish green
+  var background_colors = ["#EEEEEE", "#AAAAAC", "#EEEEEE"];
   
   var left_offset = 50;
   var top_offset = 30;
