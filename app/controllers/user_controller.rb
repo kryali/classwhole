@@ -75,7 +75,7 @@ include ApplicationHelper
   def add_course
 		# If the person isn't logged into facebook, create a cookie, but don't overwrite it
     if cookies["classes"].nil? and current_user.is_temp?
-		  cookies["classes"] = { :value => "", :expires => 1.year.from_now }			
+		  cookies["classes"] = { :value => "", :expires => 1.day.from_now }			
     end
 
     begin 
@@ -122,7 +122,7 @@ include ApplicationHelper
 	def remove_class_from_cookie(id)
 		if cookies["classes"]
 			id_to_be_removed = id.to_s+ "|"		
-			cookies["classes"] = {:value => cookies["classes"].sub(id_to_be_removed, ""), :expires=> 1.year.from_now}
+			cookies["classes"] = {:value => cookies["classes"].sub(id_to_be_removed, ""), :expires=> 1.day.from_now}
 		end	
 	end
  #
@@ -133,7 +133,7 @@ include ApplicationHelper
 		if cookies["classes"]
 			course_id_string = id.to_s			
 			cook = cookies["classes"] # this is used in the next line, so I didn't have to deal with quotes inside a string		
-			cookies["classes"] = { :value => "#{cook}#{course_id_string}|", :expires => 1.year.from_now } 				
+			cookies["classes"] = { :value => "#{cook}#{course_id_string}|", :expires => 1.day.from_now } 				
 		end
 	end
 
