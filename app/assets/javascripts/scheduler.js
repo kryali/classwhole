@@ -126,7 +126,7 @@ $(function(){
           mpq.track("Prompt log in");
           $(document).bind('logged-in', function() {
             $(document).unbind('logged-in');
-            $('#save-modal').modal('hide');    
+            $('#share-modal').modal('hide');    
             share_schedule();
             return true;
           });
