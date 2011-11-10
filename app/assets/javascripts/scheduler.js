@@ -91,15 +91,17 @@ $(function(){
           }
         }
       }
-      console.log(crns.toString());
+      //console.log(crns.toString());
       window.location = "/scheduler/register?crns=" + crns.toString();
       //$('#register-modal').modal('show');
     });
   }
 
   function share_schedule() {
+    var schedule_ids = get_schedule_ids();
     $.ajax({
-      type: 'GET',
+      type: 'POST',
+      data: { schedule: schedule_ids },
       url: share_schedule_path,
       success: function(data, textStatus, jqXHR) {
         if (data["status"] == "success") {
