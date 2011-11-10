@@ -19,6 +19,7 @@ $(document).ready(function() {
         url: path,
         data: params,
         success: function( data, textStatus, xqHR){
+          mpq.track("Logged in");
           pop_alert( textStatus, "Logged in" );
 
           // track the name
