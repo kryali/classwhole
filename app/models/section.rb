@@ -14,7 +14,7 @@ class Section < ActiveRecord::Base
       key = self.course_subject_code
     elsif self.code.length == 2
       if (true if Integer(self.code[0]) rescue false)
-        key = self.code[1] << self.code[0]
+        key = self.code[1]
       else
         key = self.code[0]
         if (true if Integer(self.code[1]) rescue false)

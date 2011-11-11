@@ -1,6 +1,6 @@
-class_counter = 0;
-has_classes = false;
-selected_classes = {};
+var class_counter = 0;
+var has_classes = false;
+var selected_classes = {};
 var course_destroy_url  = '/user/courses/destroy/';
 
 function ClassList(){ }
@@ -52,7 +52,7 @@ ClassList.prototype.add_class_callback = function(event, ui) {
         }
 
         /* Append the course to the currently populated list */
-        var remove_course = $("<a/>").text("X").attr("href", "#").addClass("remove-link");
+        var remove_course = $("<a/>").text("X").addClass("remove-link");
         var course_li = $("<li/>")
                             .append(remove_course)
                             .append($("<span/>")
@@ -92,6 +92,10 @@ ClassList.prototype.add_class_callback = function(event, ui) {
 				
     }
 
+}
+
+ClassList.prototype.has_classes = function() {
+  return has_classes;
 }
 
 function show_button() {

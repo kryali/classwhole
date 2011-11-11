@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	$('#add_class_button').click( function(event) {
     mpq.track("Added class from catalog");
-												var class_id = $(this).find(".id").text();			                     
+												var class_id = $(this).find(".id").text();	                     
 												 $.ajax({
 		                    		type: 'POST',
 		                    		data: { id: class_id },

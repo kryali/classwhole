@@ -14,6 +14,7 @@
 
   =render :partial=>"need_to_login", :locals => {:name => "save"}
   =render :partial=>"need_to_login", :locals => {:name => "share"}
+  =# render "render", :sections => current_user.schedule
 
 :javascript
   var course_ids = #{@course_ids};
