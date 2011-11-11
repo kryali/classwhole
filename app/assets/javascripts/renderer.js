@@ -1,15 +1,13 @@
 $(function(){
-  var render = document.getElementById('schedule-render');
-
-  var course_colors = ["#33CCFF", "#00CC66", "#FF3333", "#FF9900", "#CC33CC", "#99FF00", "#FFFF00"];
-  // blue, darker blue green, reddish pink, orange, purple, yellowish green
-  var background_colors = ["#EEEEEE", "#AAAAAC", "#EEEEEE"];
+  var canvas = document.getElementById('schedule-render');
+  var COURSE_COLORS = ["#33CCFF", "#00CC66", "#FF3333", "#FF9900", "#CC33CC", "#99FF00", "#FFFF00"];
+  var BACKGROUND_COLORS = ["#DDDDDD", "#AAAAAC", "#EEEEEE"];
   
-  var left_offset = 50;
-  var top_offset = 30;
-  var block_width = 122
-  var block_height = 75;
-  var text_offset = 5;
+  var LEFT_OFFSET = 50;
+  var TOP_OFFSET = 30;
+  var BLOCK_WIDTH = 122
+  var BLOCK_HEIGHT = 75;
+  var TEXT_OFFSET = 5;
 
   var start_time;
   var end_time;
@@ -26,11 +24,21 @@ $(function(){
   var start_hour = start_time.getUTCHours() - 1;
   var end_hour = end_time.getUTCHours() + 2;
 
-  render.width = left_offset + (5 * block_width);
-  render.height = top_offset + ((end_hour-start_hour) * block_height);
-  var context = render.getContext('2d');
+  canvas.width = LEFT_OFFSET + (5 * BLOCK_WIDTH) +1;
+  canvas.height = TOP_OFFSET + ((end_hour-start_hour) * BLOCK_HEIGHT) +1;
+  var context = canvas.getContext('2d');
 
   draw_background(start_hour, end_hour);
+
+  // draw section shadows
+  for (var i = 0; i < sections.length; i++) {
+    draw_section_shadow(time_float(start_time) - 1, sections[i]);
+  }
+
+  // draw sections
+  context.shadowOffsetX = 0;
+  context.shadowOffsetY = 0;
+  context.shadowBlur    = 0;
   var uniques = []
   for (var i = 0; i < sections.length; i++) {
     var section = sections[i];
@@ -38,11 +46,11 @@ $(function(){
     if( uniques.indexOf(code) == -1 ) {
       uniques.push(code);
     }
-    draw_section(time_float(start_time) - 1, section, course_colors[uniques.indexOf(code)]);
+    draw_section(time_float(start_time) - 1, section, COURSE_COLORS[uniques.indexOf(code)]);
   }
 
   $(".download-schedule").click( function() {
-    Canvas2Image.saveAsPNG(render);
+    save_canvas();
   });
 
   function draw_background(start_hour, end_hour) {
@@ -53,15 +61,17 @@ $(function(){
     // draw days of week
     context.textBaseline = "middle";
     context.textAlign = "center";
-    context.fillText("Monday", left_offset + block_width/2, top_offset/2);
-    context.fillText("Tuesday", left_offset + block_width + block_width/2, top_offset/2);
-    context.fillText("Wednesday", left_offset + 2*block_width + block_width/2, top_offset/2);
-    context.fillText("Thursday", left_offset + 3*block_width + block_width/2, top_offset/2);
-    context.fillText("Friday", left_offset + 4*block_width + block_width/2, top_offset/2);
+    context.fillText("Monday", LEFT_OFFSET + BLOCK_WIDTH/2, TOP_OFFSET/2);
+    context.fillText("Tuesday", LEFT_OFFSET + BLOCK_WIDTH + BLOCK_WIDTH/2, TOP_OFFSET/2);
+    context.fillText("Wednesday", LEFT_OFFSET + 2*BLOCK_WIDTH + BLOCK_WIDTH/2, TOP_OFFSET/2);
+    context.fillText("Thursday", LEFT_OFFSET + 3*BLOCK_WIDTH + BLOCK_WIDTH/2, TOP_OFFSET/2);
+    context.fillText("Friday", LEFT_OFFSET + 4*BLOCK_WIDTH + BLOCK_WIDTH/2, TOP_OFFSET/2);
 
     // draw rectangles around days of week
+    context.lineWidth = 1;
+    context.strokeStyle = "#999999";
     for (var i = 0; i < 5; i++) {
-      context.strokeRect(left_offset + i*block_width, 0, block_width, top_offset);
+      context.strokeRect(LEFT_OFFSET + i*BLOCK_WIDTH + 0.5, 0.5, BLOCK_WIDTH, TOP_OFFSET);
     }
 
     // draw times
@@ -79,18 +89,15 @@ $(function(){
       if(display_hour == 0) {
         display_hour = 12;
       }      
-      context.fillText(display_hour.toString() + suffix, left_offset - 5, top_offset + j*block_height, left_offset);
+      context.fillText(display_hour.toString() + suffix, LEFT_OFFSET - 5, TOP_OFFSET + j*BLOCK_HEIGHT, LEFT_OFFSET);
     }
   
     // draw background blocks
     for (var i = 0; i < 5; i++) {
       for (var j = 0; j < hours; j++) {
-        var x = left_offset + i * block_width;
-        var y = top_offset + j * block_height;
-        context.fillStyle = background_colors[0];
-        context.fillRect(x, y, block_width, block_height);
-        context.fillStyle = background_colors[1];
-        context.strokeRect(x, y, block_width, block_height);
+        var x = LEFT_OFFSET + i * BLOCK_WIDTH;
+        var y = TOP_OFFSET + j * BLOCK_HEIGHT;
+        draw_block(x, y)
       }
     }
   }
@@ -98,8 +105,8 @@ $(function(){
   function draw_section(start_hour, section, color) {
     var start_time = new Date(section["start_time"]);
     var end_time = new Date(section["end_time"]);
-    var start_position = block_height * (time_float(start_time) - start_hour);
-    var end_position = block_height * (time_float(end_time) - start_hour);
+    var start_position = BLOCK_HEIGHT * (time_float(start_time) - start_hour);
+    var end_position = BLOCK_HEIGHT * (time_float(end_time) - start_hour);
     var height = end_position - start_position;
 
     var days = section["days"];
@@ -114,23 +121,69 @@ $(function(){
       if(index == -1) { 
         continue; 
       }
-      var x = left_offset + index * block_width;
-      var y = top_offset + start_position;
+      var x = LEFT_OFFSET + index * BLOCK_WIDTH;
+      var y = TOP_OFFSET + start_position;
       // block
       context.fillStyle = color;
-      context.fillRect(x, y, block_width, height);
-      context.fillStyle = "black";
-      context.strokeRect(x, y, block_width, height);
+      context.fillRect(x, y, BLOCK_WIDTH, height);
+      context.strokeStyle = "#666666";
+      context.strokeRect(x, y, BLOCK_WIDTH, height);
       // text
+      context.fillStyle = "#000000";
       context.textBaseline = "top";
       context.textAlign = "left";
-      context.fillText(section_name, x + text_offset, y + text_offset);
+      context.font = "12pt Arial";
+      context.fillText(section_name, x + TEXT_OFFSET, y + TEXT_OFFSET);
+      context.font = "10pt Arial";
       context.textAlign = "right";
-      context.fillText(section_type, x + block_width - text_offset, y + text_offset);
-      context.fillText(section_room, x + block_width - text_offset, y + text_offset + 20);
+      context.fillText(section_type, x + BLOCK_WIDTH - TEXT_OFFSET, y + TEXT_OFFSET);
+      context.fillText(section_room, x + BLOCK_WIDTH - TEXT_OFFSET, y + TEXT_OFFSET + 20);
       context.textBaseline = "bottom";
-      context.fillText(section_time, x + block_width - text_offset, top_offset + end_position - text_offset);
+      context.fillText(section_time, x + BLOCK_WIDTH - TEXT_OFFSET, TOP_OFFSET + end_position - TEXT_OFFSET);
     }
+  }
+
+function draw_section_shadow(start_hour, section) {
+    var start_time = new Date(section["start_time"]);
+    var end_time = new Date(section["end_time"]);
+    var start_position = BLOCK_HEIGHT * (time_float(start_time) - start_hour);
+    var end_position = BLOCK_HEIGHT * (time_float(end_time) - start_hour);
+    var height = end_position - start_position;
+
+    var days = section["days"];
+
+    for(var i = 0; i < days.length; i++) {
+      var index = day_index(days.charAt(i));
+      if(index == -1) { 
+        continue; 
+      }
+      var x = LEFT_OFFSET + index * BLOCK_WIDTH;
+      var y = TOP_OFFSET + start_position;
+      // block
+      context.shadowOffsetX = 2;
+      context.shadowOffsetY = 2;
+      context.shadowBlur    = 4;
+      context.shadowColor   = 'rgba(0, 0, 0, 0.35)';
+      context.fillStyle = "#000000";
+      context.fillRect(x, y, BLOCK_WIDTH, height);
+    }
+  }
+
+  function draw_block(x, y) {
+    context.fillStyle = BACKGROUND_COLORS[0];
+    context.fillRect(x, y, BLOCK_WIDTH, BLOCK_HEIGHT);
+    context.strokeStyle = BACKGROUND_COLORS[2];
+    x += 0.5;
+    y += 0.5;
+    context.lineWidth = 1;
+    context.moveTo(x+1, y+1);
+    context.lineTo(x + BLOCK_WIDTH - 2, y + 1);
+    context.lineTo(x + BLOCK_WIDTH - 2, y + BLOCK_HEIGHT - 2);
+    context.lineTo(x + 1, y + BLOCK_HEIGHT - 2);
+    context.lineTo(x + 1, y + 1);
+    context.stroke();
+    context.strokeStyle = BACKGROUND_COLORS[1];
+    context.strokeRect(x, y, BLOCK_WIDTH, BLOCK_HEIGHT);
   }
   
   function time_string(time) {
@@ -164,6 +217,22 @@ $(function(){
         return -1;
       break;
     }    
-  };
+  }
+
+  function save_canvas() {
+    var image_data = canvas.toDataURL("image/png");
+    image_data = image_data.substr(image_data.indexOf(',') + 1).toString();
+    $.ajax({
+      type: 'POST',
+      data: { image_data:image_data },
+      url:  "/scheduler/download",
+      success: function(data, textStatus, jqXHR) {
+        console.log(data);
+        var img = $("<img/>").attr("src", "data:image/png;base64," + data );
+        $("#wrapper").append(img);
+        console.log(img);
+      }
+    });
+  }
 
 });
