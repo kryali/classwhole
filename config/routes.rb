@@ -20,12 +20,13 @@ Whiteboard::Application.routes.draw do
   match 'user/courses/destroy/:course_id' => 'user#remove_course', :as => :remove_course
 	match 'user/courses/remove' => 'user#remove_course', :via => :post  
 	match 'user/logout', :as => 'logout'
-	
+  match 'user/refresh' => 'user#refresh', :via => :post	
+  match 'user/header' => 'user#header', :via => :post
+
   # Scheduler routes
   get "scheduler/index"
   get "scheduler/show"
   get "scheduler/new"
-  get "scheduler/renderTest"
   match 'scheduler/move_section' => 'scheduler#move_section', :via => :post
   match 'scheduler/paginate' => 'scheduler#paginate', :via => :post
 	match 'scheduler/new' => 'scheduler#new'

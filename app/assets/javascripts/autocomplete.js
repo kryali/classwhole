@@ -123,7 +123,7 @@ Autocomplete.prototype.subject_select = function(event, ui) {
     event.preventDefault();
     if ( ui.item ) {
         subject_id = ui.item.value;
-        menu.input.val(subject_id);
+        menu.input.val(subject_id + " ");
 
         /* Make autocomplete query for classes now */
         menu.switch_to_course_mode(subject_id);

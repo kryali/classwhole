@@ -1,5 +1,4 @@
-$(document).ready(function(){
-  
+function initialize_autocomplete(){
   var class_list = new ClassList();
   var autocomplete = new Autocomplete();
   autocomplete.input_suggestion = ".autocomplete-suggestion";
@@ -8,5 +7,31 @@ $(document).ready(function(){
   autocomplete.course_select = class_list.add_class_callback;
   autocomplete.init();
   class_list.init();
+}
 
+
+$(document).ready(function(){
+  initialize_autocomplete()
+  $(".schedule").click( function(event) {
+    if(!class_list.has_classes()) {
+      pop_alert("error", "No classes selected.");
+      event.preventDefault();
+      return true;
+    }
+  });
+});
+
+
+/* This refreshes the course list once a user has logged into facebook */
+$(document).bind('logged-in', function(){
+  $(document).unbind('logged-in');
+  $.ajax({
+  	type: 'POST',
+ 		url:  '/user/refresh',					
+    success: function( data, textStatus, xqHR){    	
+        $("div.user-course-list").empty();
+        $("div.user-course-list").append( $(data) );
+        initialize_autocomplete();
+    }
+  });
 });

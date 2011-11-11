@@ -68,7 +68,8 @@ $course-list-bg     : white; //#E6E6E6;
       text-align: center
     }
 
-    a.remove-link { 
+    a.remove-link {
+      cursor: pointer; 
       position: absolute;
       font-size: .75em;
       color: #AAAAAA; 
