@@ -6,9 +6,6 @@ class Scheduler
     user_courses.each do |course|
       @courses << Register_Course.new(course)
     end
-    @configuration_permutations = []
-    @permutation = []
-    initialize_configuration_permutations(0)
   end
 
   def initialize_configuration_permutations(course_index)
@@ -26,6 +23,9 @@ class Scheduler
 
   # schedule courses
   def schedule_courses
+    @configuration_permutations = []
+    @permutation = []
+    initialize_configuration_permutations(0)
     @valid_schedules = []
     @schedule = []
     @configuration_permutations.each do |permutation|
