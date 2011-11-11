@@ -16,6 +16,7 @@ $(function(){
   var hint_cache = {};
   var section_cache = {};
   var schedule_cache = {};
+  var schedule_raw_cache = {};
 
   var options = {
     draggable: {
@@ -337,6 +338,8 @@ $(function(){
       if( typeof schedule_cache[ schedule_key ] == "undefined" )
         schedule_cache[ schedule_key ] = {};
       schedule_cache[ schedule_key ][ section_id ] = contents.clone();
+
+      schedule_raw_cache[ schedule_key ] = data;
     }
 
     //var contents = $(data).children();

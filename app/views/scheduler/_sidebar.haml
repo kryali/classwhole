@@ -1,9 +1,13 @@
 %div.sidebar
-  %a{ "data-controls-modal" => "save-modal", "data-keyboard" => "true", :class => "btn default save-schedule"} Save
-  - if false
-    %a{ :class => "btn success download-schedule"} Download
-  %a{ :class => "btn success share-schedule"} Share
-  %a{ "data-controls-modal" => "register-modal", "data-keyboard" => "true", :class => "btn primary register-schedule"} Register
+  - unless @hide_buttons
+    %a{ "data-controls-modal" => "save-modal", "data-keyboard" => "true", :class => "btn default save-schedule"} Save
+    - if false
+      %a{ :class => "btn success download-schedule"} Download
+    %a{ :class => "btn success share-schedule"} Share
+    %a{ "data-controls-modal" => "register-modal", "data-keyboard" => "true", :class => "btn primary register-schedule"} Register
+  - # Show user profile here
+  - if @user
+    - @user.name
   %ul.courses
     - courses, course_section_hash = courses_from_sections( sections )
     - courses.each do |course|
@@ -36,4 +40,4 @@
                   -if section.start_time
                     %span.time= section.duration_s
                   - else
-                    %span.time= section.section_type
+                    %span.time Online / Arr

@@ -8,6 +8,7 @@ class SchedulerController < ApplicationController
   def show
     @user = User.find( params["id"].to_i )
     @sections = @user.schedule
+    @hide_buttons = true
   end
 
   def new
