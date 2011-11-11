@@ -412,7 +412,7 @@ $mini-schedule-border-color: #aaa;
     top: 20px;
   }
   .mini-pagination-container {
-    border: 1px solid $mini-schedule-border-color;
+    //border: 1px solid $mini-schedule-border-color;
     height: 106px;
     //width: 654px;
     //overflow: hidden;
@@ -431,11 +431,11 @@ $mini-schedule-border-color: #aaa;
         display: block;
         width: $mini-schedule-width;
         float: left;
-        border-left: 1px solid $mini-schedule-border-color;
+        border-top: 1px solid $mini-schedule-border-color;
       }
 
-      li:first-child {
-        border: none;
+      .current  {
+        border-top: 5px solid #64abdb;
       }
 
       a {
@@ -451,8 +451,8 @@ $mini-schedule-border-color: #aaa;
       }
 
       .current a{
-        background: #fff;
-        opacity: .3;
+        //background: #fff;
+        //opacity: .3;
       }
     }
   }

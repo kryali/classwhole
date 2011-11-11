@@ -1,8 +1,13 @@
 %div.sidebar
-  %a{ "data-controls-modal" => "save-modal", "data-keyboard" => "true", :class => "btn default save-schedule"} Save
-  -#%a{ :class => "btn success download-schedule"} Download
-  %a{ :class => "btn success share-schedule"} Share
-  %a{ "data-controls-modal" => "register-modal", "data-keyboard" => "true", :class => "btn primary register-schedule"} Register
+  - if not @user or (@user and current_user.id == @user.id)
+    %a{ "data-controls-modal" => "save-modal", "data-keyboard" => "true", :class => "btn default save-schedule"} Save
+    - if false
+      %a{ :class => "btn download-schedule"} Download
+    %a{ :class => "btn primary share-schedule"} Share
+    %a{ "data-controls-modal" => "register-modal", "data-keyboard" => "true", :class => "btn  success register-schedule"} Register
+  - # Show user profile here
+  - if @user
+    - @user.name
   %ul.courses
     - courses, course_section_hash = courses_from_sections( sections )
     - courses.each do |course|
@@ -23,6 +28,7 @@
             - sections.each do |section|
               %li 
                 %div
+                  %span{:class=>"hidden id"}=section.id
                   %span{:class=>"section-type label"}= section.section_type
                   -if section.instructor
                     %span.instructor= shorten(section.instructor, 12, "..")
@@ -31,4 +37,8 @@
                   %span.code= section.code
                   -if nil
                     %span.crn= section.reference_number
-                  %span.time= section.duration_s
+                  -# For online sections
+                  -if section.start_time
+                    %span.time= section.duration_s
+                  - else
+                    %span.time Online / Arr

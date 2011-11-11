@@ -4,6 +4,10 @@ class Fake_user
     @@is_temp = 1 
   end  
 
+  def id
+    return "nil"
+  end
+
   def courses
     return @courses
   end

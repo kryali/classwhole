@@ -25,9 +25,24 @@ include ApplicationHelper
     end
   end
 
+  #
+  # Refreshes course list when user initially logs into facebook
+  #
   def refresh
     render :partial => 'scheduler/user_course_list', :layout => false
   end
+
+
+  #
+  # Takes care of displaying the header with page caching
+  #
+
+  def header
+    is_temp = current_user.is_temp?
+    render :json => {:is_temp => is_temp}
+   #render action => 'shared/header'  
+  end
+
 
   #
   # Description: register receives an accessToken and a userID, then
@@ -135,6 +150,7 @@ include ApplicationHelper
  #
 	def add_course_to_cookie(id)
 		if cookies["classes"]
+      logger.info(id)
 			course_id_string = id.to_s			
 			cook = cookies["classes"] # this is used in the next line, so I didn't have to deal with quotes inside a string		
 			cookies["classes"] = { :value => "#{cook}#{course_id_string}|", :expires => 1.day.from_now } 				

@@ -21,6 +21,7 @@ Whiteboard::Application.routes.draw do
 	match 'user/courses/remove' => 'user#remove_course', :via => :post  
 	match 'user/logout', :as => 'logout'
   match 'user/refresh' => 'user#refresh', :via => :post	
+  match 'user/header' => 'user#header', :via => :post
 
   # Scheduler routes
   get "scheduler/index"
