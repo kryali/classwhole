@@ -28,6 +28,7 @@
             - sections.each do |section|
               %li 
                 %div
+                  %span{:class=>"hidden id"}=section.id
                   %span{:class=>"section-type label"}= section.section_type
                   -if section.instructor
                     %span.instructor= shorten(section.instructor, 12, "..")

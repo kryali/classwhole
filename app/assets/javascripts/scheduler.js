@@ -431,6 +431,25 @@ $(function(){
     return sections.sort();
   }
 
+
+  function update_sidebar_contents( old_section_id, new_section_id ) {
+    console.log( new_section_id );
+    console.log( old_section_id );
+    console.log( section_cache[ new_section_id ] );
+    console.log( section_cache[ old_section_id ] );
+    var sidebar = new Sidebar();
+    var row = sidebar.render_section_row( section_cache[ new_section_id ] );
+
+    $("ul.sections li div").each( function() {
+      // Find the section row to replace
+      if( $(this).find(".id").text() == old_section_id ) {
+        console.log( $(this) );
+        $(this).empty().append( row.children() );
+      }
+    });
+  }
+
+
   function handle_drop( event, ui ) {
 
     // Find the section that the user is holding 
@@ -446,6 +465,8 @@ $(function(){
     }
 
     mpq.track("Moved Schedule");
+
+    update_sidebar_contents( curr_section_id, new_section_id );
 
     // Generate the list of the new schedule to render
     var idx = schedule_ids.indexOf(curr_section_id);
