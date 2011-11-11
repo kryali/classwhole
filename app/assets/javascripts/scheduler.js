@@ -439,7 +439,6 @@ $(function(){
     $("ul.sections li div").each( function() {
       // Find the section row to replace
       if( $(this).find(".id").text() == old_section_id ) {
-        console.log( $(this) );
         $(this).empty().append( row.children() );
       }
     });
