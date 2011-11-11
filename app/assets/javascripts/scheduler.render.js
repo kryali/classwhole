@@ -16,7 +16,7 @@ Schedule.prototype.init = function( sections, start_hour, end_hour ) {
   this.wrapper = $("<div/>").addClass("schedule-wrapper");
   this.pick_colors();
   this.render_day_grid();
-  this.render_time_labels( start_hour - 1 , end_hour + 2 );
+  this.render_time_labels( start_hour - 1 , end_hour + 1 );
   this.render_sections( this.sections );
 };
 
