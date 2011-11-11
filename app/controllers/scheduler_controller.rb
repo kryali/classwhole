@@ -56,28 +56,35 @@ class SchedulerController < ApplicationController
     render "paginate", :layout => false
   end
 
+
+  # Route that delivers section hints via AJAX
   def move_section
     schedule = []
     params["schedule"].each do |section_id|
       schedule << Section.find_by_id(section_id.to_i)
     end
-    @section_hints = []
+    section_hints = []
     if params["section"]
       section = Section.find(params["section"].to_i)
       course = Register_Course.new(section.course)
-      @section_hints = course.configurations_hash[section.configuration_key][section.section_type]
-      @section_hints.delete_if{|move| move.schedule_conflict?(schedule)}
+      section_hints = course.configurations_hash[section.configuration_key][section.section_type]
+      section_hints.delete_if{|move| move.schedule_conflict?(schedule)}
     end
-    @schedule = schedule
 
     # Nothing needs to be rendered
     # params["render"] forces the render (used for dragndrop render)
-    if @section_hints.empty? and not params["render"]
+    if section_hints.empty? and not params["render"]
       render :json => { :status => "error", :message => "no hints for section" }
       return
     end
 
-    render :partial => 'section_ajax', :layout => false
+    start_hour, end_hour = Section.hour_range( schedule )
+
+    render :json => { :section_hints => section_hints, 
+                      :schedule => schedule, 
+                      :start_hour => start_hour,
+                      :end_hour => end_hour }
+    # render :partial => 'section_ajax', :layout => false
   end
 
   def save
@@ -98,9 +105,6 @@ class SchedulerController < ApplicationController
   
   # @desc: This function returns an 
   #        AJAX repsonse of what the user should post to facebook
-  #
-  # @todo: Save the schedule, if they decide to share it
-  #        (we're linking them to the page)
   #
   def share
     if current_user.is_temp?
