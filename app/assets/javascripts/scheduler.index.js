@@ -9,4 +9,12 @@ $(document).ready(function(){
   autocomplete.init();
   class_list.init();
 
+  $(".schedule").click( function(event) {
+    if(!class_list.has_classes()) {
+      pop_alert("error", "No classes selected.");
+      event.preventDefault();
+      return true;
+    }
+  });
+
 });
