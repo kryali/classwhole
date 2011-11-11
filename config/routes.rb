@@ -20,7 +20,8 @@ Whiteboard::Application.routes.draw do
   match 'user/courses/destroy/:course_id' => 'user#remove_course', :as => :remove_course
 	match 'user/courses/remove' => 'user#remove_course', :via => :post  
 	match 'user/logout', :as => 'logout'
-	
+  match 'user/refresh' => 'user#refresh', :via => :post	
+
   # Scheduler routes
   get "scheduler/index"
   get "scheduler/show"

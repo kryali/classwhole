@@ -1,8 +1,9 @@
 - unless current_user_has_courses?
   %span.hint Registering for classes made easy.
 %ul
-  - if current_user
+  - if current_user  
     - if not current_user.courses.empty?
+      -logger.info("*********************************************************************************************")
       %h1 Spring 2012
     - for course in current_user.courses
       %li
@@ -13,4 +14,4 @@
 
 
 
-= render 'shared/class_search'
+=render 'shared/class_search'
