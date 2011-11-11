@@ -433,10 +433,6 @@ $(function(){
 
 
   function update_sidebar_contents( old_section_id, new_section_id ) {
-    console.log( new_section_id );
-    console.log( old_section_id );
-    console.log( section_cache[ new_section_id ] );
-    console.log( section_cache[ old_section_id ] );
     var sidebar = new Sidebar();
     var row = sidebar.render_section_row( section_cache[ new_section_id ] );
 
