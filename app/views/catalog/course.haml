@@ -15,10 +15,8 @@
 
   %div.course_box    
     %button{:class => "btn large success", :id=> "add_class_button", :type => "submit"}
-      %span{:class => "hidden id"}
-        =@course.id
-      %span{:class => "font"}            
-        Add Class
+      %span{:class => "hidden id"}= @course.id
+      %span{:class => "font"} Add Class
 
     %div{:id => "course_num"}
       =name_and_number    
