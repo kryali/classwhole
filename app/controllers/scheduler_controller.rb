@@ -147,7 +147,7 @@ class SchedulerController < ApplicationController
     end
   end
 
-  require 'base64'
+#  require 'base64'
   def download
     # we are a PNG image
     response.headers["Content-Type"] = "image/png"
@@ -159,7 +159,7 @@ class SchedulerController < ApplicationController
     decoded = Base64.decode64(encoded)
      
     #write decoded data
-    render :text => params["image_data"]
+    render :text => decoded
   end
 
 end

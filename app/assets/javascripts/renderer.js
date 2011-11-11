@@ -222,17 +222,26 @@ function draw_section_shadow(start_hour, section) {
   function save_canvas() {
     var image_data = canvas.toDataURL("image/png");
     image_data = image_data.substr(image_data.indexOf(',') + 1).toString();
-    $.ajax({
+    /*$.ajax({
       type: 'POST',
       data: { image_data:image_data },
       url:  "/scheduler/download",
       success: function(data, textStatus, jqXHR) {
-        console.log(data);
+        window.open(uriContent, 'neuesDokument');
         var img = $("<img/>").attr("src", "data:image/png;base64," + data );
         $("#wrapper").append(img);
-        console.log(img);
       }
-    });
+    });*/
+    var dataInput = document.createElement("input");
+        dataInput.setAttribute("name", 'image_data');
+        dataInput.setAttribute("value", image_data);
+    var myForm = document.createElement("form");
+        myForm.method = 'post';
+        myForm.action = "/scheduler/download";
+        myForm.appendChild(dataInput);
+        document.body.appendChild(myForm);
+        myForm.submit();
+        document.body.removeChild(myForm);
   }
 
 });
