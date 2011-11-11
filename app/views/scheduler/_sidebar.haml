@@ -1,6 +1,7 @@
 %div.sidebar
   %a{ "data-controls-modal" => "save-modal", "data-keyboard" => "true", :class => "btn default save-schedule"} Save
-  %a{ :class => "btn success download-schedule"} Download
+  - if false
+    %a{ :class => "btn success download-schedule"} Download
   %a{ :class => "btn success share-schedule"} Share
   %a{ "data-controls-modal" => "register-modal", "data-keyboard" => "true", :class => "btn primary register-schedule"} Register
   %ul.courses
@@ -31,4 +32,8 @@
                   %span.code= section.code
                   -if nil
                     %span.crn= section.reference_number
-                  %span.time= section.duration_s
+                  -# For online sections
+                  -if section.start_time
+                    %span.time= section.duration_s
+                  - else
+                    %span.time= section.section_type

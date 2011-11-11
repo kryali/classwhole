@@ -37,13 +37,4 @@
         - if section_hints_in_days[day_code]
           - section_hints_in_days[day_code].each do |section|
             %div.droppable= render 'section', :section => section, :start_hour => start_hour, :colors => colors
-  = render "sidebar" , :sections => sections, :colors => colors
-      
-  - if !onl_sections.empty?
-    %ul.onl_sections
-      %li.header Online/Arranged
-      %li
-        - onl_sections.each do |onl_section|
-          %span.course=onl_section.course.to_s
-          %span.code=onl_section.code
-          %span.type=onl_section.section_type
+  = render "sidebar" , :sections => sections + onl_sections, :colors => colors

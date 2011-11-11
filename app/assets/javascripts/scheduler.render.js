@@ -49,7 +49,7 @@ Schedule.prototype.render_section = function( section, is_hint ) {
   var duration_scale = duration( start_time, end_time );
   var height = block_height * duration_scale;
 
-  var offset = (this.day_start_time - start_time.getUTCHours() + ( start_time.getUTCMinutes()/60 )) * block_height;
+  var offset = ( (start_time.getUTCHours() - this.day_start_time) + ( start_time.getUTCMinutes()/60 )) * block_height;
 
   fill_section_info( section, section_block );
   
