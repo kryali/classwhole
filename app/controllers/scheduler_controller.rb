@@ -24,13 +24,13 @@ class SchedulerController < ApplicationController
         scheduler.schedule_courses
       } 
       rescue Timeout::Error
+        logger.error current_user.courses
         redirect_to "/500.html"
       end
       scheduler.valid_schedules
     }
     @course_ids = course_ids.to_json
     @possible_schedules = all_possible_schedules
-    #@possible_schedules = all_possible_schedules[0..5]
   end
 
   def paginate
