@@ -25,6 +25,10 @@ include ApplicationHelper
     end
   end
 
+  def refresh
+    render :partial => 'scheduler/user_course_list', :layout => false
+  end
+
   #
   # Description: register receives an accessToken and a userID, then
   #   uses koala to retrieve the user's data and facebook friends

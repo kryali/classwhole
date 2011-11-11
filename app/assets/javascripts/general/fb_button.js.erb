@@ -66,8 +66,20 @@ $(document).ready(function() {
         /* User is logged in to facebook, let him in */
         mpq.identify( response.authResponse["userID"] );
         post_to_url(LOGIN_PATH, response["authResponse"]);
+        												 $.ajax({
+		                    		type: 'POST',
+		                    		url:  '/user/refresh',
+						
+		                  		});
+
+
       }
-    });
+
+
+   
+
+
+   });
 
     /* FB.Event.subscribe('auth.login') gets fired when the user logs in
      * Register the user by silently posting a form to rails */
