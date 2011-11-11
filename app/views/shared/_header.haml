@@ -1,3 +1,5 @@
+=javascript_include_tag "header.js"
+
 %div.topbar-wrapper
   %div.topbar{ "data-dropdown" => "dropdown" }
     %div.topbar-inner
@@ -11,4 +13,6 @@
             %li= render 'shared/fb_login_button'
           - else 
             = render 'shared/user_nav', :current_user => current_user
+        %div.test
+          HEEEEEEEEEEEEY
     %div.alert-box
