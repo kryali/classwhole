@@ -7,6 +7,8 @@ $(document).ready(function() {
   /* Constants */
   var LOGIN_PATH = "/user/login";
 
+
+
   /*
    * This creates a hidden form and posts this data to rails
    *  A BETTER way would be to actually have a hidden form on the login page,
@@ -27,6 +29,7 @@ $(document).ready(function() {
           //console.log(data["user"]["name"]);
           $("ul.secondary-nav").empty().append( $(data) );
           $(document).trigger("logged-in");
+
         },
         error: function(jqXHR, textStatus, errorThrown) {
           console.log( jqXHR );
@@ -66,13 +69,6 @@ $(document).ready(function() {
         /* User is logged in to facebook, let him in */
         mpq.identify( response.authResponse["userID"] );
         post_to_url(LOGIN_PATH, response["authResponse"]);
-        												 $.ajax({
-		                    		type: 'POST',
-		                    		url:  '/user/refresh',
-						
-		                  		});
-
-
       }
 
 
