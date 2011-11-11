@@ -25,7 +25,6 @@ Whiteboard::Application.routes.draw do
   get "scheduler/index"
   get "scheduler/show"
   get "scheduler/new"
-  get "scheduler/renderTest"
   match 'scheduler/move_section' => 'scheduler#move_section', :via => :post
   match 'scheduler/paginate' => 'scheduler#paginate', :via => :post
 	match 'scheduler/new' => 'scheduler#new'
