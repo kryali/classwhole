@@ -6,7 +6,7 @@
       %h1 Spring 2012
     - for course in current_user.courses
       %li
-        = link_to("X", "#", :class=>"remove-link")
+        %a.remove-link X
         %span.code= course.to_s
         %span.title= course.title
         %span{ :class=> "hidden id"}= course.id

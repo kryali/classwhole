@@ -15,26 +15,26 @@ $(function(){
   var end_time;
 
   for (var i = 0; i < sections.length; i++) {
-    start = new Date(sections[i]["start_time"]);
-    end = new Date(sections[i]["end_time"]);
+    var start = new Date(sections[i]["start_time"]);
+    var end = new Date(sections[i]["end_time"]);
     if(start_time == null || start < start_time)
       start_time = start;
     if(end_time == null || end > end_time)
       end_time = end;
   }
 
-  start_hour = start_time.getUTCHours() - 1;
-  end_hour = end_time.getUTCHours() + 2;
+  var start_hour = start_time.getUTCHours() - 1;
+  var end_hour = end_time.getUTCHours() + 2;
 
   render.width = left_offset + (5 * block_width);
   render.height = top_offset + ((end_hour-start_hour) * block_height);
   var context = render.getContext('2d');
 
   draw_background(start_hour, end_hour);
-  uniques = []
+  var uniques = []
   for (var i = 0; i < sections.length; i++) {
-    section = sections[i];
-    code = section["course_subject_code"] + section["course_number"];
+    var section = sections[i];
+    var code = section["course_subject_code"] + section["course_number"];
     if( uniques.indexOf(code) == -1 ) {
       uniques.push(code);
     }
@@ -134,7 +134,7 @@ $(function(){
   }
   
   function time_string(time) {
-    hour = time.getUTCHours() % 12;
+    var hour = time.getUTCHours() % 12;
     if(hour == 0) hour = 12;
     return hour + ":" + ("0" + time.getUTCMinutes()).slice(-2);
   }
