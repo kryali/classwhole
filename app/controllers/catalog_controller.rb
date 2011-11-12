@@ -198,4 +198,17 @@ class CatalogController < ApplicationController
 		@all_courses ||= Course.all
 	end
 
+  def sections 
+    sections = []
+    params["schedule"].each do |section_id|
+      begin
+        sections << Section.find( section_id.to_i )
+      rescue ActiveRecord::RecordNotFound
+        render :json => { :status => :error }
+        return
+      end
+    end
+    render :json => { :status => :success, :sections => sections }
+  end
+
 end

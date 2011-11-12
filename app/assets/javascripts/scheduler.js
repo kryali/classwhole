@@ -71,6 +71,52 @@ $(function(){
     });
   }
 
+  /* This is kind of a hack
+      
+      We need to get a json array of sections to hand to Jon's canvas
+      but that's not given to us in the page, so I request it via AJAX 
+      to the server instead.
+   */
+  function init_download_schedule() {
+    var canvas = document.getElementById('schedule-render');
+    $(".download-schedule").click( function() {
+      var schedule_ids = get_schedule_ids();
+
+      // temp hack, get sections json with given section ids via ajax
+      $.ajax( {
+        type: 'POST',
+        url: '/sections/',
+        data: { schedule: schedule_ids },
+        success: function( data, textStatus, xhQR) {
+          if( data.status == "success" ) {
+            var schedule_canvas = new ScheduleCanvas( canvas, data.sections );
+            start_download( schedule_canvas.image_data() );
+          }
+        }
+      });
+    });
+  }
+
+  function start_download( image_data ) {
+    var myForm = document.createElement("form");
+        myForm.setAttribute("method", "post" );
+        myForm.setAttribute("action", "/scheduler/download" );
+        myForm.setAttribute("authenticity_token", AUTH_TOKEN);
+    var auth_token = document.createElement("input");
+        auth_token.setAttribute("name", "authenticity_token");
+        auth_token.setAttribute("type", "hidden");
+        auth_token.setAttribute("value", AUTH_TOKEN);
+        myForm.appendChild(auth_token);
+    var dataInput = document.createElement("input");
+        dataInput.setAttribute("type", "hidden");
+        dataInput.setAttribute("name", "image_data");
+        dataInput.setAttribute("value", image_data);
+        dataInput.setAttribute("authenticity_token", AUTH_TOKEN);
+        myForm.appendChild(dataInput);
+        document.body.appendChild(myForm);
+        myForm.submit();
+  }
+
   function init_modals() {
     $(".save-schedule").unbind('click').click( function() {
       save_schedule();
@@ -154,6 +200,7 @@ $(function(){
     init_draggable();
     init_modals();
     init_share_button();
+    init_download_schedule();
 
     //init_mini_pagination();
 
@@ -433,10 +480,11 @@ $(function(){
 
 
   function update_sidebar_contents( old_section_id, new_section_id ) {
+    var current_schedule = get_current_schedule();
     var sidebar = new Sidebar();
     var row = sidebar.render_section_row( section_cache[ new_section_id ] );
 
-    $("ul.sections li div").each( function() {
+    current_schedule.find("ul.sections li div").each( function() {
       // Find the section row to replace
       if( $(this).find(".id").text() == old_section_id ) {
         $(this).empty().append( row.children() );
