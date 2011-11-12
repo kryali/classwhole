@@ -184,17 +184,17 @@ $showcase-bg        : url('showcase-bg.png');
       width: 100px;
       #save-img {
         opacity: .5;
-        height: 22px;
-        width: 23px;
-        background: url("http://images-2.findicons.com/files/icons/2166/oxygen/22/document_save.png");//image_url("save.png");
+        height: 16px;
+        width: 24px;
+        background: url("http://i.imgur.com/MKGhM.png");
         display: block;
         position: absolute;
-        top: 7px;
-        left: 8px;
+        top: 10px;
+        left: 11px;
       }
 
       a {
-        padding-right: 19px;
+        padding-right: 15px;
       }
     }
     .download {
@@ -207,7 +207,7 @@ $showcase-bg        : url('showcase-bg.png');
         opacity: .5;
         height: 24px;
         width: 19px;
-        background: url("http://images-1.findicons.com/files/icons/974/glyphish/19/57_download.png");//image_url("arrow_down.png");
+        background: url("http://i.imgur.com/Zlfvs.png");
         display: block;
         position: absolute;
       }
