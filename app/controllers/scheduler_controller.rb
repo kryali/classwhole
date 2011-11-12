@@ -147,4 +147,19 @@ class SchedulerController < ApplicationController
     end
   end
 
+#  require 'base64'
+  def download
+    # we are a PNG image
+    response.headers["Content-Type"] = "image/png"
+    response.headers["Content-Disposition"] = "attachment; filename=\"schedule.png\""
+     
+    #capture, replace any spaces w/ plusses, and decode
+    encoded = params["image_data"]
+    encoded.gsub!(/[ ]/, ' ' => '+')
+    decoded = Base64.decode64(encoded)
+     
+    #write decoded data
+    render :text => decoded
+  end
+
 end
