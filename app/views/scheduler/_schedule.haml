@@ -37,4 +37,6 @@
         - if section_hints_in_days[day_code]
           - section_hints_in_days[day_code].each do |section|
             %div.droppable= render 'section', :section => section, :start_hour => start_hour, :colors => colors
+  - if @user
+    <div class="fb-comments" data-href="#{root_url.chop + scheduler_show_path(@user.id)}" data-num-posts="1" data-width="507"></div>
   = render "sidebar" , :sections => sections + onl_sections, :colors => colors
