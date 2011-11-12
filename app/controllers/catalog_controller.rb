@@ -6,7 +6,7 @@
 #
 class CatalogController < ApplicationController
   include ApplicationHelper  
-  caches_page :semester, :subject, :course
+  #caches_page :semester, :subject, :course
 
   # <helpers> 
   # Description:
