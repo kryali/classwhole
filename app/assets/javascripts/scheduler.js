@@ -55,6 +55,10 @@ $(function(){
         if (data["status"] == "success") {
           mpq.track("Save schedule");
           pop_alert("info", data["message"]);
+          /* Redirect them
+          if( data.redirect_url && window.loaction != data.redirect_url)
+            window.location = data.redirect_url;
+            */
         }
         else if (data["status"] == "error") {
           //pop_alert("error", data["message"]);
@@ -440,7 +444,7 @@ $(function(){
 
     // Make the schedule blocks fade in
     current_schedule.find(".droppable").addClass("hidden");
-    current_schedule.find(".droppable").fadeIn(150);
+    current_schedule.find(".droppable").fadeIn(350);
 
     // Enable the new sections to be draggable
     init_draggable();

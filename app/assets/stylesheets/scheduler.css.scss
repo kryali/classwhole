@@ -169,6 +169,56 @@ $showcase-bg        : url('showcase-bg.png');
     overflow: hidden;
   }
 
+  .primary-row {
+    overflow: hidden;
+    //background: red;
+    font-size: 1em;
+
+    .btn {
+      text-align: right;
+    }
+
+    .save {
+      float: left;
+      position: relative;
+      width: 100px;
+      #save-img {
+        opacity: .5;
+        height: 22px;
+        width: 23px;
+        background: url("http://images-2.findicons.com/files/icons/2166/oxygen/22/document_save.png");//image_url("save.png");
+        display: block;
+        position: absolute;
+        top: 7px;
+        left: 8px;
+      }
+
+      a {
+        padding-right: 19px;
+      }
+    }
+    .download {
+      float: right;
+      width: 130px;
+      position: relative;
+      #down-img {
+        top: 6px;
+        left: 9px;
+        opacity: .5;
+        height: 24px;
+        width: 19px;
+        background: url("http://images-1.findicons.com/files/icons/974/glyphish/19/57_download.png");//image_url("arrow_down.png");
+        display: block;
+        position: absolute;
+      }
+
+      a {
+        padding-right: 11px;
+      }
+    }
+  }
+
+  /* Way to make a confusing clusterfuck kiran. */
   ul.courses {
     background: #fefefe;
     //border: 1px solid #ccc;
@@ -540,4 +590,33 @@ $mini-schedule-border-color: #aaa;
     clear: both;
     border: 1px dashed #888;
   }
+
+  .fb-comments {
+    margin-top: -2.2em;
+    margin-left: 53px;
+  }
 }
+
+/* Sidebar profile CSS */
+#profile {
+  margin: 0 auto;
+  padding: 1em;
+  background: #eee;
+  border: 1px solid #ddd;
+  margin-bottom: 1.3em;
+  height: 200px;
+  img {
+    border: 1px solid #ddd;
+    box-shadow: inset 3px 3px 3px #333;
+    display: block;
+    margin: 0 auto;
+    height: 190px;
+  }
+  h2 {
+    font-size: 1.2em;
+    margin-top: .4em;
+    text-transform: none;
+    text-align: center;
+  }
+}
+
