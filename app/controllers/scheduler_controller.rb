@@ -98,7 +98,8 @@ class SchedulerController < ApplicationController
       current_user.add_schedule( params["schedule"] )
       render :json => {
                         :status => "success", 
-                        :message => "Schedule saved."
+                        :message => "Schedule saved.",
+                        :redirect_url => scheduler_show_path(current_user.id)
                       }
     end
   end

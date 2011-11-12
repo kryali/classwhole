@@ -4,6 +4,7 @@
     %title= yield(:title)
     -# stylesheet_link_tag    "bootstrap.min.css"
     = stylesheet_link_tag    "application" 
+    = stylesheet_link_tag    "tipsy" 
     = csrf_meta_tags
     = javascript_tag          "var AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? 
     :javascript
@@ -30,6 +31,7 @@
 
     = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" 
     = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" 
+    = javascript_include_tag "jquery.tipsy"
     = javascript_include_tag "init"
     = javascript_include_tag "bootstrap-modal.js"
     = javascript_include_tag "bootstrap-alerts.js"

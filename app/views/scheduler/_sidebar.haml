@@ -1,12 +1,16 @@
 %div.sidebar
-  - if not @user or (@user and current_user.id == @user.id)
-    %a{ "data-controls-modal" => "save-modal", "data-keyboard" => "true", :class => "btn default save-schedule"} Save
-    %a{ :class => "btn download-schedule"} Download
-    %a{ :class => "btn primary share-schedule"} Share
-    %a{ "data-controls-modal" => "register-modal", "data-keyboard" => "true", :class => "btn  success register-schedule"} Register
-  - # Show user profile here
   - if @user
-    - @user.name
+    = render :partial => "profile"
+  - if not @user or (@user and current_user.id == @user.id)
+    %div.primary-row
+      %div.save
+        %span#save-img
+        %a{ "data-controls-modal" => "save-modal", "data-keyboard" => "true", :class => "btn default save-schedule"} Save
+      %div.download
+        %span#down-img
+        %a{ :class => "btn download-schedule"} Download
+    %a{ :class => "btn primary share-schedule"} Share
+    %a{ "data-controls-modal" => "register-modal", "data-keyboard" => "true", :class => "btn  success register-schedule tooltip", :title => "Get your CRNS and register on Enterprise"} Register
   %ul.courses
     - courses, course_section_hash = courses_from_sections( sections )
     - courses.each do |course|
