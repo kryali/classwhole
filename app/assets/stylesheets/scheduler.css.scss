@@ -298,8 +298,13 @@ $showcase-bg        : url('showcase-bg.png');
   margin-bottom: 10px;
   position: relative;
 
-  .schedule-display {
+  .schedule-content {
     float: left;
+  }
+
+  .fb-comments,
+  .fb_iframe_widget {
+
   }
 
   ul.time-label {
@@ -488,6 +493,7 @@ $mini-schedule-border-color: #aaa;
         width: $mini-schedule-width;
         float: left;
         border-top: 1px solid $mini-schedule-border-color;
+        position: relative;
       }
 
       .current  {
@@ -499,6 +505,8 @@ $mini-schedule-border-color: #aaa;
         z-index: 10;
         height: $mini-schedule-height;
         position: absolute;
+        top: 0px;
+        left: 0px;
       }
 
       a:hover {
