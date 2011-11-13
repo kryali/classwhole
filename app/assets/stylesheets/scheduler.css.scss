@@ -191,6 +191,7 @@ $showcase-bg        : url('showcase-bg.png');
         position: absolute;
         top: 10px;
         left: 11px;
+        cursor: pointer;
       }
 
       a {
@@ -210,6 +211,7 @@ $showcase-bg        : url('showcase-bg.png');
         background: url("http://i.imgur.com/Zlfvs.png");
         display: block;
         position: absolute;
+        cursor: pointer;
       }
 
       a {
@@ -295,6 +297,10 @@ $showcase-bg        : url('showcase-bg.png');
   //overflow: hidden;
   margin-bottom: 10px;
   position: relative;
+
+  .schedule-display {
+    float: left;
+  }
 
   ul.time-label {
     margin-top: 1.8em;
@@ -592,8 +598,8 @@ $mini-schedule-border-color: #aaa;
   }
 
   .fb-comments {
-    margin-top: -2.2em;
-    margin-left: 53px;
+    margin-top: -32px;
+    margin-left: 52px;
   }
 }
 
@@ -620,4 +626,3 @@ $mini-schedule-border-color: #aaa;
     text-align: center;
   }
 }
-

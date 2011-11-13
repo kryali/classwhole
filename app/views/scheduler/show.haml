@@ -8,3 +8,24 @@
   = render "schedule", :sections => @sections
   = render :partial=>"need_to_login", :locals => {:name => "save"}
   = render "render"
+
+:javascript
+  $(document).ready( function() {
+      $(".schedule-block").each( function() {
+        //$(this).css("cursor", "auto");
+        if( $(this).height() < 50 ) {
+          $(this).find(".course-title").hide();
+        }
+      });
+  });
+
+- if current_user.id == @user.id
+  :javascript
+    $(document).ready( function() {
+      init();
+    });
+- else
+  :javascript
+    $(document).ready( function() {
+      $(".schedule-block").css("cursor", "auto");
+    });

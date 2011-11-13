@@ -49,9 +49,8 @@ $(document).ready(function () {
     var hide_timeout = setTimeout( function() {
                                   alert_box.animate({
                                     opacity: 0,
-                                    display: 'none',
                                   }, 400, undefined );
-                               }, 1000);
+                               }, 2400);
     var rem_timeout = setTimeout( function() { alert_box.remove(); }, timeout + 400);
   };
 
