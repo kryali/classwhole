@@ -17,26 +17,27 @@
   - section_hints_in_days = {}
 
 %div{:class => "schedule-wrapper" }
-  %ul.time-label
-    - for hour in (start_hour..end_hour)
-      %li= print_hour(hour)
-  - sections_in_days.each do |day_code, sections|
-    -if all_sections.empty? and onl_sections.size > 0
-      %h1 This schedule has only online and arranged sections.
-      - break
-    -elsif all_sections.empty?
-      %h1 Sorry, we couldn't find a possible schedule.
-      - break
-    -else
-      %ul{:class => "schedule-day #{day_code}", :day => day_code }
-        %li.header= print_day(day_code)
-        - for hour in (start_hour..end_hour)
-          %li
-        - sections.each do |section|
-          = render 'section', :section => section, :start_hour => start_hour, :colors => colors
-        - if section_hints_in_days[day_code]
-          - section_hints_in_days[day_code].each do |section|
-            %div.droppable= render 'section', :section => section, :start_hour => start_hour, :colors => colors
-  - if false
-    <div class="fb-comments" data-href="#{root_url.chop + scheduler_show_path(@user.id)}" data-num-posts="1" data-width="507"></div>
+  %div{:class => "schedule-display" }
+    %ul.time-label
+      - for hour in (start_hour..end_hour)
+        %li= print_hour(hour)
+    - sections_in_days.each do |day_code, sections|
+      -if all_sections.empty? and onl_sections.size > 0
+        %h1 This schedule has only online and arranged sections.
+        - break
+      -elsif all_sections.empty?
+        %h1 Sorry, we couldn't find a possible schedule.
+        - break
+      -else
+        %ul{:class => "schedule-day #{day_code}", :day => day_code }
+          %li.header= print_day(day_code)
+          - for hour in (start_hour..end_hour)
+            %li
+          - sections.each do |section|
+            = render 'section', :section => section, :start_hour => start_hour, :colors => colors
+          - if section_hints_in_days[day_code]
+            - section_hints_in_days[day_code].each do |section|
+              %div.droppable= render 'section', :section => section, :start_hour => start_hour, :colors => colors
+    - if @user
+      <div class="fb-comments" data-href="#{root_url.chop + scheduler_show_path(@user.id)}" data-num-posts="1" data-width="607"></div>
   = render "sidebar" , :sections => sections + onl_sections, :colors => colors

@@ -83,7 +83,7 @@ $(function(){
    */
   function init_download_schedule() {
     var canvas = document.getElementById('schedule-render');
-    $(".download-schedule").click( function() {
+    $(".download").click( function() {
       var schedule_ids = get_schedule_ids();
 
       // temp hack, get sections json with given section ids via ajax
@@ -122,7 +122,7 @@ $(function(){
   }
 
   function init_modals() {
-    $(".save-schedule").unbind('click').click( function() {
+    $(".save").unbind('click').click( function() {
       save_schedule();
     });
 
@@ -197,7 +197,7 @@ $(function(){
     });
   }
 
-  function init() {
+  init = function() {
     // Setup the slidejs plugin
     $("#slides").slides(options.slides);
 
@@ -276,8 +276,6 @@ $(function(){
             end: end,
           },
           success: function(data, textStatus, jqXHR) {
-            //console.log( textStatus );
-            //console.log( $(data) );
             var full = $(data).first();
             var mini = $(data).last();
             $(".slides_control").append( full.children() );
@@ -604,9 +602,12 @@ $(function(){
 
   function update_schedule_contents( current_schedule, contents ) {
     // Add the content to the page
+    $(".fb-comments").hide();
     current_schedule.find(".schedule-day").remove();
     current_schedule.find(".time-label").remove();
-    current_schedule.prepend( contents );
+    current_schedule.find(".schedule-display").prepend( contents );
+    //$(".fb-comments").show();
+
 
     re_init( current_schedule );
     is_updating = false;
@@ -624,6 +625,6 @@ $(function(){
 
   }
 
-  init();
+  //init();
 
 });
