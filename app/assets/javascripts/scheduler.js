@@ -602,12 +602,9 @@ $(function(){
 
   function update_schedule_contents( current_schedule, contents ) {
     // Add the content to the page
-    $(".fb-comments").hide();
     current_schedule.find(".schedule-day").remove();
     current_schedule.find(".time-label").remove();
     current_schedule.find(".schedule-display").prepend( contents );
-    //$(".fb-comments").show();
-
 
     re_init( current_schedule );
     is_updating = false;
