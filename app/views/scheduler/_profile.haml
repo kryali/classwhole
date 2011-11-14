@@ -1,2 +1,2 @@
 %div#profile
-  %img{ :src => "https://graph.facebook.com/#{@user.id}/picture?type=large", :title => "#{@user.name}", :class => "tooltip"  }
+  %img{ :src => fb_img_link(@user, :large), :title => "#{@user.name}", :class => "tooltip"  }

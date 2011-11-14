@@ -24,6 +24,9 @@
 # This is the mimicked data structure
 # http://en.wikipedia.org/wiki/Trie
 #
+def init
+  $redis = Redis.new( :host => 'localhost', :port => 6379 ) 
+end
 
 def clear_redis
   $redis.flushdb
@@ -75,16 +78,46 @@ def build_course_trie
   puts "Built course trie."
 end
 
+def refresh_users
+  $redis.del("user")
+  $redis.multi do
+    User.all.each do |user|
+      $redis.sadd("user","#{user.id}")
+      refresh_friends( user )
+    end
+  end
+end
+
+def refresh_friends( user )
+  key = "user:#{user.id}:friends"
+  puts "Using key #{key}"
+  friends = $redis.smembers(key)
+  if friends
+    friends.each do |friend|
+      puts "Adding friend #{user.id}-#{friend}"
+      user.add_friend( friend )
+    end
+  else
+    puts "#{user.id} has no friends. (didn't save from fb?)"
+    puts "#{friends}"
+  end
+end
+
 namespace :redis do 
   task :flushdb => [:environment] do
     clear_redis
   end
 
-  task :setup => [:environment, :flushdb] do
+  task :setup => [:environment] do
     build_catalog_tries
   end
   
   task :seed => [:environment] do
     build_catalog_tries
+  end
+
+  task :users => [:environment] do
+    init
+    refresh_users
   end
 end
