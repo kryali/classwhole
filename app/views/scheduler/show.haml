@@ -23,9 +23,15 @@
   :javascript
     $(document).ready( function() {
       init();
+      $("ul.friends a").click( function() {
+        mpq.track("User click friend profile");
+      });
     });
 - else
   :javascript
     $(document).ready( function() {
       $(".schedule-block").css("cursor", "auto");
+      $("ul.friends a").click( function() {
+        mpq.track("Guest click friend profile");
+      });
     });

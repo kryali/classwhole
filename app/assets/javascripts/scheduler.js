@@ -418,7 +418,7 @@ $(function(){
     var new_schedule = new Schedule( data.schedule, data.start_hour, data.end_hour );
     new_schedule.add_hints( data.section_hints );
     var contents = new_schedule.render().children();
-    console.log( new_schedule );
+    //console.log( new_schedule );
 
     if( typeof schedule_ids != "undefined" ) {
       // Cache 
@@ -459,7 +459,7 @@ $(function(){
         selected_box.draggable("destroy");
         selected_box.remove();
       }
-      console.log( contents );
+      //console.log( contents );
       update_schedule_contents( current_schedule, contents );
     }
 
