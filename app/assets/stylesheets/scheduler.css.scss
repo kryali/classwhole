@@ -220,26 +220,6 @@ $showcase-bg        : url('showcase-bg.png');
     }
   }
 
-  ul.friends {
-    border: 1px solid #ddd;
-    background: #eee;
-    padding: 1em;
-    overflow: hidden;
-    h2 {
-      font-size: 1.3em;
-    }
-    li {
-      float: left;
-      a {
-        display: block;
-        width: 50px;
-        height: 50px;
-        border: 1px solid #ddd;
-        margin: 1em 1em 0 0;
-      }
-    }
-  }
-
   /* Way to make a confusing clusterfuck kiran. */
   ul.courses {
     background: #fefefe;
@@ -419,6 +399,9 @@ strong {
 }
 .color-4 {
   background: #ffeec9;
+}
+.color-5 {
+  background: #ffddc9;
 }
 
 ul.onl_sections {
@@ -655,3 +638,24 @@ $mini-schedule-border-color: #aaa;
     text-align: center;
   }
 }
+
+  ul.friends {
+    border: 1px solid #ddd;
+    background: #eee;
+    padding: 1em;
+    overflow: hidden;
+    h2 {
+      font-size: 1.3em;
+    }
+    li {
+      float: left;
+      a {
+        display: block;
+        width: 50px;
+        height: 50px;
+        border: 1px solid #ddd;
+        margin: 1em 1em 0 0;
+      }
+    }
+  }
+

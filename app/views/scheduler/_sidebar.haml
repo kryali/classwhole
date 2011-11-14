@@ -11,43 +11,6 @@
         %a{ :class => "btn download-schedule"} Download
     %a{ :class => "btn primary share-schedule"} Share
     %a{ "data-controls-modal" => "register-modal", "data-keyboard" => "true", :class => "btn  success register-schedule tooltip", :title => "Get your CRNS and register on Enterprise"} Register
-  %ul.courses
-    - courses, course_section_hash = courses_from_sections( sections )
-    - courses.each do |course|
-      - sections = course_section_hash[course.id]
-      %li.course-item
-        %ul.course
-          %li{:class=> "course-header #{colors[course.id]}"}
-            %span.course-name= course.to_s
-            %span.course-title= course.title
-            %span.course-hours= "(#{course.hours} hr)"
-          -if nil
-            %li 
-              %span.title Description
-              %span.data= shorten(course.description, 130)
-          %ul.sections
-            -if nil
-              %li.header Sections
-            - sections.each do |section|
-              %li 
-                %div
-                  %span{:class=>"hidden id"}=section.id
-                  %span{:class=>"section-type label"}= section.section_type
-                  -if section.instructor
-                    %span.instructor= shorten(section.instructor, 12, "..")
-                  -else 
-                    %span.instructor TBD
-                  %span.code= section.code
-                  -if nil
-                    %span.crn= section.reference_number
-                  -# For online sections
-                  -if section.start_time
-                    %span.time= section.duration_s
-                  - else
-                    %span.time Online / Arr
-  -if @user and @user.friends
-    %ul.friends
-      %h2 Friends
-      - @user.friends.each do |friend|
-        %li
-          = link_to "", scheduler_show_path(friend.id), :style => "background:url(\"#{fb_img_link( friend, :small)}\") no-repeat;", :title => friend.name
+  = render :partial =>  "course_sidebar", :locals => { :sections => sections }
+  -if @user and not @user.friends.empty?
+    = render :partial => "friends", :locals => {:user => @user}

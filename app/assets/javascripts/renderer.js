@@ -1,5 +1,5 @@
 //var COURSE_COLORS = ["#33CCFF", "#00CC66", "#FF3333", "#FF9900", "#CC33CC", "#99FF00", "#FFFF00"];
-var COURSE_COLORS = ["#E0F8FF", "#EAFFD9", "#FFDDFF", "#FFF4F2", "#ffeec9"];
+var COURSE_COLORS = ["#E0F8FF", "#EAFFD9", "#FFDDFF", "#FFF4F2", "#ffeec9", "#ffddc9"];
 var BACKGROUND_COLORS = ["#DDDDDD", "#AAAAAC", "#EEEEEE"];
 var LEFT_OFFSET = 50;
 var TOP_OFFSET = 30;
@@ -162,7 +162,9 @@ function draw_section(context, start_hour, section, color) {
     context.font = "10pt Arial";
     context.textAlign = "right";
     context.fillText(section_type, x + BLOCK_WIDTH - TEXT_OFFSET, y + TEXT_OFFSET);
-    context.fillText(section_room, x + BLOCK_WIDTH - TEXT_OFFSET, y + TEXT_OFFSET + 20);
+    if( section["building"] != null ) {
+      context.fillText(section_room, x + BLOCK_WIDTH - TEXT_OFFSET, y + TEXT_OFFSET + 20);
+    }
     context.textBaseline = "bottom";
     context.fillText(section_time, x + BLOCK_WIDTH - TEXT_OFFSET, TOP_OFFSET + end_position - TEXT_OFFSET);
   }

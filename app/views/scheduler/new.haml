@@ -6,12 +6,12 @@
 %div.scheduler-content
   %div#slides
     %div.slides_container
-      - @possible_schedules.each do |sections|
-        = render "schedule", :sections => sections
+      -# @possible_schedules.each do |sections|
+      = render "schedule", :sections => @possible_schedules.first
     %a{:href=>"#", :class=>"prev"}
     %a{:href=>"#", :class=>"next"}
     -if @possible_schedules.size > 1
-      = render 'mini_schedule_grids'
+      = render :partial => 'mini_schedule_grids', :locals => { :possible_schedules => @possible_schedules }
 
   = render :partial=>"need_to_login", :locals => {:name => "save"}
   = render :partial=>"need_to_login", :locals => {:name => "share"}
@@ -20,5 +20,6 @@
 :javascript
   $(document).ready(function() {
     var course_ids = #{@course_ids};
+    possible_schedules = #{section_ids_from_schedules( @possible_schedules ).to_json }; 
     init();
   });
