@@ -1,7 +1,7 @@
 %div.sidebar
   - if @user
     = render :partial => "profile"
-  - unless @user or (@user and current_user.id == @user.id)
+  - if not @user or (@user and current_user.id == @user.id)
     %div.primary-row
       %div.save
         %span#save-img
