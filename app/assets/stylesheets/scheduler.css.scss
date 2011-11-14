@@ -224,10 +224,12 @@ $showcase-bg        : url('showcase-bg.png');
     border: 1px solid #ddd;
     background: #eee;
     padding: 1em;
+    overflow: hidden;
     h2 {
       font-size: 1.3em;
     }
     li {
+      float: left;
       a {
         display: block;
         width: 50px;
