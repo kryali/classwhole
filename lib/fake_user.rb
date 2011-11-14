@@ -20,7 +20,6 @@ class Fake_user
     return hours
   end
 
-
   def is_temp?
     return true
   end

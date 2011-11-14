@@ -32,7 +32,8 @@ class SchedulerController < ApplicationController
     }
     @course_ids = course_ids.to_json
     # Restricting to smaller number of schedules, until new method implemented
-    @possible_schedules = all_possible_schedules[0..12]
+    # Show twenty max. The less schedules the algo gives them, then the better we're doing
+    @possible_schedules = all_possible_schedules[0...20]
   end
 
   def paginate
@@ -69,7 +70,10 @@ class SchedulerController < ApplicationController
     if params["section"]
       section = Section.find(params["section"].to_i)
       course = Register_Course.new(section.course)
-      section_hints = course.configurations_hash[section.configuration_key][section.section_type]
+      # HACK, this kept dying when trying to move DANC 100
+      if course.configurations_hash[section.configuration_key]
+        section_hints = course.configurations_hash[section.configuration_key][section.section_type]
+      end
       section_hints.delete_if{|move| move.schedule_conflict?(schedule)}
     end
 

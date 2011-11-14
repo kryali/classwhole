@@ -15,3 +15,6 @@
       - else
         -#%span= 0
       -#hrs.
+    - unless current_user.is_temp?
+      -if current_user and current_user.friends
+        =# render :partial => "friends", :locals => {:user => current_user}
