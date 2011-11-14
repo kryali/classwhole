@@ -1,7 +1,7 @@
 %div.sidebar
   - if @user
     = render :partial => "profile"
-  - if not @user or (@user and current_user.id == @user.id)
+  - unless @user or (@user and current_user.id == @user.id)
     %div.primary-row
       %div.save
         %span#save-img
@@ -45,3 +45,9 @@
                     %span.time= section.duration_s
                   - else
                     %span.time Online / Arr
+  -if @user and @user.friends
+    %ul.friends
+      %h2 Friends
+      - @user.friends.each do |friend|
+        %li
+          = link_to "", scheduler_show_path(friend.id), :style => "background:url('#{fb_img_link( friend, :small)}');", :title => friend.name

@@ -220,6 +220,24 @@ $showcase-bg        : url('showcase-bg.png');
     }
   }
 
+  ul.friends {
+    border: 1px solid #ddd;
+    background: #eee;
+    padding: 1em;
+    h2 {
+      font-size: 1.3em;
+    }
+    li {
+      a {
+        display: block;
+        width: 50px;
+        height: 50px;
+        border: 1px solid #ddd;
+        margin: 1em 1em 0 0;
+      }
+    }
+  }
+
   /* Way to make a confusing clusterfuck kiran. */
   ul.courses {
     background: #fefefe;

@@ -154,4 +154,8 @@ module SchedulerHelper
     return courses, course_section_hash
   end
 
+  def fb_img_link( user, type = "large" ) 
+    "https://graph.facebook.com/#{user.id}/picture?type=#{type}"
+  end
+
 end

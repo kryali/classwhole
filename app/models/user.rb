@@ -3,6 +3,10 @@ class User < ActiveRecord::Base
   has_many :courses
   has_many :friendships
 
+  def after_initialize
+    $redis.sadd("user", self.id)
+  end
+
   def friends
     friends = []
     friendships.each do |friendship|
@@ -48,6 +52,38 @@ class User < ActiveRecord::Base
       course = Section.find( section_id.to_i ).course
       courses << course unless courses.include?(course)
     end
+  end
+
+  def friend_ids
+    # find the intersection of the user list and this users friends list
+    friend_ids = $redis.sinter( self.redis_key(:friends), "user" )
+  end
+
+  # Return the friends of this user
+  def friends
+    # find the intersection of the user list and this users friends list
+    friend_ids = $redis.sinter( self.redis_key(:friends), "user" )
+    User.where( :id => friend_ids )
+  end
+
+  def add_friends_fb( friends )
+    $redis.multi do
+      friends.each do |friend| 
+        # Build the two way relationship, even if the new friend isn't in our db
+        # because maybe they will come later.
+        $redis.sadd(self.redis_key(:friends), friend["id"])
+        $redis.sadd("user:#{friend["id"]}:friends", self.id)
+      end
+    end
+  end
+
+  def add_friend( friend_id )
+    $redis.sadd(self.redis_key(:friends), friend_id)
+    $redis.sadd( "user:#{friend_id}:friends" , self.id)
+  end
+
+  def redis_key( str )
+    return "user:#{self.id}:#{str}"
   end
 
 end
