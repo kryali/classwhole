@@ -31,7 +31,8 @@ class SchedulerController < ApplicationController
       scheduler.valid_schedules
     }
     @course_ids = course_ids.to_json
-    @possible_schedules = all_possible_schedules
+    # Restricting to smaller number of schedules, until new method implemented
+    @possible_schedules = all_possible_schedules[0..12]
   end
 
   def paginate
