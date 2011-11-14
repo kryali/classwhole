@@ -93,6 +93,7 @@ $(function(){
         data: { schedule: schedule_ids },
         success: function( data, textStatus, xhQR) {
           if( data.status == "success" ) {
+            mpq.track("Schedule Downloaded");
             var schedule_canvas = new ScheduleCanvas( canvas, data.sections );
             start_download( schedule_canvas.image_data() );
           }
