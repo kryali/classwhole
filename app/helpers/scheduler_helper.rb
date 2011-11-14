@@ -158,4 +158,18 @@ module SchedulerHelper
     "https://graph.facebook.com/#{user.id}/picture?type=#{type}"
   end
 
+  # This function takes an array of section array of ActiveRecord 
+  # objects spits out the sections in ids in an array
+  def section_ids_from_schedules( all_schedules )
+    schedules = []
+    all_schedules.each do |sections|
+      section_ids = []
+      sections.each do |section|
+        section_ids << section.id
+      end
+      schedules.push( section_ids )
+    end
+    return schedules
+  end
+
 end

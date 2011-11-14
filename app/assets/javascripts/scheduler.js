@@ -9,6 +9,7 @@ $(function(){
   var save_schedule_path = "/scheduler/save";
   var share_schedule_path = "/scheduler/share";
   var paginate_path = "/scheduler/paginate";
+  var sidebar_path = "/scheduler/sidebar";
   var current_selected = 1;
   var mini_grids_showing = 5;
   var mini_grids_count = 5;
@@ -197,15 +198,51 @@ $(function(){
       share_schedule();
     });
   }
+  function init_pagination() {
+    $(".mini-pagination a").click( function() {
+
+      // Set as the current item
+      $(".mini-pagination .current").removeClass("current");
+      $(this).parent().addClass("current");
+
+      // Decode the index from the href i.e "#1" -> 1
+      var index = parseInt($(this).attr("href").replace(/#/g,""));
+      var schedule_ids = possible_schedules[index]; // Global given to us in the view
+
+      // Update main page
+      $.ajax({
+        type: 'POST',
+        data: { schedule:schedule_ids, render: true },
+        url:  '/scheduler/move_section',
+        success: function(data, textStatus, jqXHR) {
+          //curr_section.draggable( "option", "revert", "false" );
+          fetch_schedule(data, textStatus, jqXHR, undefined);
+          is_showing_hints = false;
+        }
+      });
+
+      // Update sidebar
+      $.ajax({
+        type: 'POST',
+        data: { schedule:schedule_ids },
+        url:  sidebar_path,
+        success: function(data, textStatus, jqXHR) {
+          var contents = $(data).children();
+          $("ul.courses").empty().append(contents);
+        }
+      });
+    });
+  }
 
   init = function() {
     // Setup the slidejs plugin
-    $("#slides").slides(options.slides);
+    //$("#slides").slides(options.slides);
 
     init_draggable();
     init_modals();
     init_share_button();
     init_download_schedule();
+    init_pagination();
 
     //init_mini_pagination();
 
@@ -375,12 +412,13 @@ $(function(){
     if( is_updating ) return;
 
     // This happens when the user stops hovering before the schedule is updated
-    if( !is_showing_hints ) return; 
+    //if( !is_showing_hints ) return; 
     is_updating = true;
 
     var new_schedule = new Schedule( data.schedule, data.start_hour, data.end_hour );
     new_schedule.add_hints( data.section_hints );
     var contents = new_schedule.render().children();
+    console.log( new_schedule );
 
     if( typeof schedule_ids != "undefined" ) {
       // Cache 
@@ -421,7 +459,7 @@ $(function(){
         selected_box.draggable("destroy");
         selected_box.remove();
       }
-
+      console.log( contents );
       update_schedule_contents( current_schedule, contents );
     }
 
@@ -622,7 +660,5 @@ $(function(){
     });
 
   }
-
-  //init();
 
 });

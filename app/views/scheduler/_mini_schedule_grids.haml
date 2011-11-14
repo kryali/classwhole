@@ -5,7 +5,7 @@
   %div.mini-pagination-container
     %ul.mini-pagination
       - i = 1
-      - @possible_schedules.each do |sections|
+      - possible_schedules.each do |sections|
         - if i == 1
           %li.current
             %a{ :href => "##{i-1}" }

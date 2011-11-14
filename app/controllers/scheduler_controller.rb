@@ -33,7 +33,7 @@ class SchedulerController < ApplicationController
     @course_ids = course_ids.to_json
     # Restricting to smaller number of schedules, until new method implemented
     # Show twenty max. The less schedules the algo gives them, then the better we're doing
-    @possible_schedules = all_possible_schedules[0...20]
+    @possible_schedules = all_possible_schedules[0..60]
   end
 
   def paginate
@@ -59,6 +59,13 @@ class SchedulerController < ApplicationController
     render "paginate", :layout => false
   end
 
+  def sidebar
+    sections = []
+    params["schedule"].each do |section_id|
+      sections << Section.find_by_id(section_id.to_i)
+    end
+    render :partial => "course_sidebar", :locals => { :sections => sections}
+  end
 
   # Route that delivers section hints via AJAX
   def move_section
