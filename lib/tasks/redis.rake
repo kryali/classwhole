@@ -24,10 +24,6 @@
 # This is the mimicked data structure
 # http://en.wikipedia.org/wiki/Trie
 #
-def init
-  $redis = Redis.new( :host => 'localhost', :port => 6379 ) 
-end
-
 def clear_redis
   $redis.flushdb
 end
@@ -79,11 +75,13 @@ def build_course_trie
 end
 
 def refresh_users
+  puts "Clearing user redis set"
   $redis.del("user")
   $redis.multi do
     User.all.each do |user|
       $redis.sadd("user","#{user.id}")
-      refresh_friends( user )
+      puts "User added #{user.id}"
+      #refresh_friends( user )
     end
   end
 end
@@ -117,7 +115,6 @@ namespace :redis do
   end
 
   task :users => [:environment] do
-    init
     refresh_users
   end
 end
