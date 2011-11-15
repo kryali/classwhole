@@ -82,8 +82,8 @@ def refresh_users
       $redis.sadd("user","#{user.id}")
       puts "User added #{user.id}"
       user.courses.each do |course|
-        puts "SADD course:#{course.id}:users, user.id"
-        $redis.sadd("course:#{course.id}:users", user.id)
+        puts "SREM course:#{course.id}:users, user.id"
+        $redis.srem("course:#{course.id}:users", user.id)
       end
       #refresh_friends( user )
     end
