@@ -16,7 +16,7 @@
   - section_hints_in_days = {}
 
 %div{:class => "schedule-wrapper" }
-  %div{:class => "schedule-content"}
+  %div{:class => "schedule-content", "data-tooltip" => "Try hovering over sections :)" }
     %div{:class => "schedule-display" }
       %ul.time-label
         - for hour in (start_hour..end_hour)

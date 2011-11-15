@@ -81,6 +81,22 @@ $(function(){
     $(".download").tipsy({ gravity: 's' });
     $(".share-schedule").tipsy({ gravity: 's' });
     $(".save").tipsy({ gravity: 's' });
+    var options = { 
+      trigger: 'manual',
+      gravity: 'e',
+      fade: true,
+      title: 'data-tooltip',
+    };
+    // Display a welcome message to a temporary user
+    if( $("#current_user").text() == "" ) {
+      $(".schedule-content").tipsy(options);
+      setTimeout( function() {
+        $(".schedule-content").tipsy("show");
+        setTimeout( function() {
+          $(".schedule-content").tipsy("hide");
+        }, 2500 );
+      }, 2500 );
+    }
   }
 
   /* This is kind of a hack
