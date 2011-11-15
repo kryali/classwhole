@@ -8,6 +8,9 @@ var block_height = 48;
 var header_height = 34;
 
 function Schedule( sections, start_hour, end_hour  ) { 
+  sections.sort( function(a, b) {
+    return parseInt(a.id) > parseInt(b.id);
+  });
   this.init( sections, start_hour, end_hour  );
 }
 
