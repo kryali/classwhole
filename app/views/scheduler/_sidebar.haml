@@ -10,7 +10,7 @@
         %span#down-img
         %a{ :class => "btn download-schedule"} Download
     %a{ :class => "btn primary share-schedule", :title => "Show your friends what you're taking"} Share
-    %a{ "data-controls-modal" => "register-modal", "data-keyboard" => "true", :class => "btn  success register-schedule tooltip", :title => "Get your CRNS and register on Enterprise"} Register
+    %a{ "data-controls-modal" => "register-modal", "data-keyboard" => "true", :class => "btn register-schedule tooltip", :title => "Get your CRNS and register on Enterprise"} Register
   = render :partial =>  "course_sidebar", :locals => { :sections => sections }
   -if @user and not @user.friends.empty?
     = render :partial => "friends", :locals => {:user => @user}
