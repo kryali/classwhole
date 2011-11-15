@@ -24,6 +24,8 @@ class Section < ActiveRecord::Base
         unless (true if Integer(self.code[2]) rescue false)
           key << self.code[1]
         end
+      else
+        key << self.code[0]
       end
     end
     return key
