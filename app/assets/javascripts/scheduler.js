@@ -263,9 +263,9 @@ $(function(){
     //$("#slides").slides(options.slides);
 
     // Hide tooltips if they are a user
-    //if( $("#current_user").text() == "" ) {
+    if( $("#current_user").text() == "" ) {
       init_tooltips();
-    //}
+    }
     init_draggable();
     init_modals();
     init_share_button();
