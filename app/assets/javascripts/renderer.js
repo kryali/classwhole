@@ -1,5 +1,5 @@
 //var COURSE_COLORS = ["#33CCFF", "#00CC66", "#FF3333", "#FF9900", "#CC33CC", "#99FF00", "#FFFF00"];
-var COURSE_COLORS = ["#E0F8FF", "#EAFFD9", "#FFDDFF", "#FFF4F2", "#ffeec9", "#ffddc9"];
+var COURSE_COLORS = ["#E0F8FF", "#EAFFD9", "#FFDDFF", "#FFF4F2", "#ffeec9", "#ffddc9", "#A2DBCA"];
 var BACKGROUND_COLORS = ["#DDDDDD", "#AAAAAC", "#EEEEEE"];
 var LEFT_OFFSET = 50;
 var TOP_OFFSET = 30;
@@ -135,6 +135,8 @@ function draw_section(context, start_hour, section, color) {
   var height = end_position - start_position;
 
   var days = section["days"];
+  if( days == null )
+    return;
 
   var section_name = section["course_subject_code"] + " " + section["course_number"];
   var section_type = section["section_type"];
@@ -149,6 +151,11 @@ function draw_section(context, start_hour, section, color) {
     var x = LEFT_OFFSET + index * BLOCK_WIDTH;
     var y = TOP_OFFSET + start_position;
     // block
+    
+    // fall back to white if we can't find a color
+    if( typeof color == "undefined" ) {
+      color = "#FFFFFF";
+    }
     context.fillStyle = color;
     context.fillRect(x, y, BLOCK_WIDTH, height);
     context.strokeStyle = "#666666";
@@ -178,6 +185,9 @@ function draw_section_shadow(context, start_hour, section) {
   var height = end_position - start_position;
 
   var days = section["days"];
+  if( days == null ) {
+    return;
+  }
 
   for(var i = 0; i < days.length; i++) {
     var index = day_index(days.charAt(i));
