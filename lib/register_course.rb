@@ -40,7 +40,7 @@ class Register_Course
   #creates an array of all the sections for this course
   #sorts based on array sizes
   def generate_array
-    @configurations_array = @configurations_hash.sort_by{|k,config| config.length}
+    @configurations_array = @configurations_hash.sort_by{|k,config| k}
     for i in 0...@configurations_array.length
       @configurations_array[i] = @configurations_array[i][1].sort_by{|k,sections| sections.length}
       for j in 0...@configurations_array[i].length
