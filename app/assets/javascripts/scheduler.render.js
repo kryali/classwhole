@@ -62,6 +62,9 @@ Schedule.prototype.render_section = function( section, is_hint ) {
     section_block = $("<div/>").addClass("droppable").append( section_block );
   }
 
+  if ( section.days == null ) {
+    return undefined;
+  }
   // Add the section block to all the days
   var section_days = section.days.split("");
   for( j in section_days ) {
