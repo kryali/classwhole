@@ -3,6 +3,13 @@
 = javascript_include_tag "scheduler.js"
 = content_for :title, "Classwhole - Pick a Schedule"
 
+:javascript
+  $(document).ready(function() {
+    var course_ids = #{@course_ids};
+    possible_schedules = #{section_ids_from_schedules( @possible_schedules ).to_json }; 
+    init();
+  });
+
 %div.scheduler-content
   %div#slides
     %div.slides_container
@@ -16,10 +23,3 @@
   = render :partial=>"need_to_login", :locals => {:name => "save"}
   = render :partial=>"need_to_login", :locals => {:name => "share"}
   = render "render"
-
-:javascript
-  $(document).ready(function() {
-    var course_ids = #{@course_ids};
-    possible_schedules = #{section_ids_from_schedules( @possible_schedules ).to_json }; 
-    init();
-  });
