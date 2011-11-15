@@ -44,6 +44,15 @@ class User < ActiveRecord::Base
   # add_schedule takes in a list of section ids 
   # and adds them to the redis database
   def add_schedule( sections )
+
+    # Clear your old schedule out of the users list
+    schedule_ids = $redis.smembers( redis_key(:schedule) )
+    old_sections = Section.where( :id => schedule_ids )
+    old_sections.each do |section|
+      $redis.srem("course:#{section.course_id}:users", section.course_id)
+    end
+
+    # Remove all your current courses and sync them with the new schedule
     courses.delete_all
     redis_key  ="user:#{id}:schedule"
     $redis.del(redis_key)

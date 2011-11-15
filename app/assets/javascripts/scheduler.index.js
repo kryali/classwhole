@@ -20,6 +20,7 @@ $(document).ready(function(){
         type: 'POST',
         url:  '/user/refresh',					
         success: function( data, textStatus, xqHR){    	
+          $("#autocomplete-list").tipsy('hide');
           $("div.user-course-list").empty();
           $("div.user-course-list").append( $(data) );
           initialize_autocomplete();
@@ -35,6 +36,18 @@ $(document).ready(function(){
     autocomplete.course_select = class_list.add_class_callback;
     autocomplete.init();
     class_list.init();
+
+    if ($("#current_user").text() == "" ) {
+      var options = { 
+        trigger: 'manual',
+        gravity: 'e', 
+        fade: true 
+      };
+      $("#autocomplete-list").tipsy(options).tipsy('show');
+      $("#autocomplete-list").click( function() {
+        $("#autocomplete-list").tipsy('hide');
+      });
+    }
   }
 
 });
