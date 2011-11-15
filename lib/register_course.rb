@@ -12,21 +12,26 @@ class Register_Course
     sections = {}
     @course.sections.each do |section|
       code = section.code
-      sections[section.code] ||= []
-      sections[section.code] << section
+      sections[code] ||= []
+      sections[code] << section
     end
     @configurations_hash ||= {}
     sections.each do |code, section|
+      sec = section[0]
       if section.length == 1
-        sec = section[0]
         key = sec.configuration_key
         @configurations_hash[key] ||= {}
         @configurations_hash[key][sec.section_type] ||= []
         @configurations_hash[key][sec.section_type] << sec
       else
-        @configurations_hash[code] ||= {}
+        if code.length == 1
+          key = sec.code
+        else 
+          key = sec.configuration_key
+        end
+        @configurations_hash[key] ||= {}
         for i in (0...section.length)
-          @configurations_hash[code][i] = [section[i]]
+          @configurations_hash[key][i] = [section[i]]
         end
       end
     end
