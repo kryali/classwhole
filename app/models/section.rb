@@ -17,9 +17,6 @@ class Section < ActiveRecord::Base
         key = self.code[1]
       else
         key = self.code[0]
-        if (true if Integer(self.code[1]) rescue false)
-          key << self.code[1]
-        end
       end
     else
       key = self.code[0]
@@ -27,6 +24,8 @@ class Section < ActiveRecord::Base
         unless (true if Integer(self.code[2]) rescue false)
           key << self.code[1]
         end
+      else
+        key << self.code[0]
       end
     end
     return key
