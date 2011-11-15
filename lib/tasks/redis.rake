@@ -75,6 +75,10 @@ def build_course_trie
 end
 
 def refresh_users
+  Course.all.each do |course|
+    $redis.del("course:#{course.id}:users")
+  end
+  puts "Cleared all pre-existing course users"
   #puts "Clearing user redis set"
   #$redis.del("user")
   User.all.each do |user|
