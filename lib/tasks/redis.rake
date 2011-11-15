@@ -77,20 +77,18 @@ end
 def refresh_users
   #puts "Clearing user redis set"
   #$redis.del("user")
-  $redis.multi do
-    User.all.each do |user|
-      $redis.sadd("user","#{user.id}")
-      puts "User added #{user.id}"
-      section_ids = $redis.smembers("user:#{user.id}:schedule")
-      sections = Section.where( :id => section_ids )
-      sections.each do |section|
-        puts "SADD course:#{section.course_id}:users, user.id"
-        $redis.sadd("course:#{section.course_id}:users", user.id)
-        #puts "SREM course:#{course.id}:users, user.id"
-        #$redis.srem("course:#{course.id}:users", user.id)
-      end
-      #refresh_friends( user )
+  User.all.each do |user|
+    $redis.sadd("user","#{user.id}")
+    puts "User added #{user.id}"
+    section_ids = $redis.smembers("user:#{user.id}:schedule")
+    sections = Section.where( :id => section_ids )
+    sections.each do |section|
+      puts "SADD course:#{section.course_id}:users, user.id"
+      $redis.sadd("course:#{section.course_id}:users", user.id)
+      #puts "SREM course:#{course.id}:users, user.id"
+      #$redis.srem("course:#{course.id}:users", user.id)
     end
+    #refresh_friends( user )
   end
 end
 
