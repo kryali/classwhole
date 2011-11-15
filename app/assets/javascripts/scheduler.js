@@ -229,6 +229,7 @@ $(function(){
         success: function(data, textStatus, jqXHR) {
           var contents = $(data).children();
           $("ul.courses").empty().append(contents);
+          init_fb();
         }
       });
     });
@@ -503,7 +504,7 @@ $(function(){
   function get_schedule_ids() {
     var schedule = get_current_schedule();
     var sections = [];
-    var all_section_ids = schedule.find(".schedule-block .id");
+    var all_section_ids = $("ul.sections .id");
     for( var i = 0; i < all_section_ids.size(); i++ ){
       
       // Ignore droppable sections
