@@ -62,7 +62,7 @@ ClassList.prototype.add_class_callback = function(event, ui) {
                                 .text(ui.item.title)
                                 .addClass("title"))
                             .append($("<span/>")
-                                .text(ui.item.title)
+                                .text(ui.item.id)
                                 .addClass("hidden id"))
                             .css("display", "none");
         course_li.appendTo(".user-course-list ul");
@@ -87,11 +87,43 @@ ClassList.prototype.add_class_callback = function(event, ui) {
 			$.ajax({
 		      type: 'POST',
 		      data: { id: class_id },
+          dataType: 'json',
 		      url:  '/user/courses/new',
+          success: function( data, textStatus, xh ) {
+            if( data.status == "success" ) {
+              var course = get_course_li( class_id );
+              add_users_to_course( course, eval( data.users ));
+            } else {
+              pop_alert( data.status, data.message );
+            }
+          }
 		    });
-				
     }
+}
 
+/* Adds a json set of users to a certain course list element */
+function add_users_to_course( course, users ) {
+  var current_user_id = parseInt( $("#current_user").text() );
+  for( var i = 0; i < users.length; i++ ) {
+    if( users[i].id == current_user_id ) {
+      console.log( "user is the same wtf!" );
+    }
+  }
+  // Get current user
+}
+
+function get_course_li( course_id ) {
+  var course_list = $(".user-course-list ul li");
+  //console.log( course_list );
+  var current_course;
+  for( var i =0; i < course_list.length; i++ ) {
+    current_course = $(course_list[i]);
+    //console.log( current_course );
+    if( current_course.find(".id").text() == course_id.toString() ) {
+      return current_course;
+    }
+    //console.log( current_course.find(".id").text() + "-" + course_id );
+  }
 }
 
 ClassList.prototype.has_classes = function() {

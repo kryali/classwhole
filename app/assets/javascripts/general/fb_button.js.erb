@@ -38,17 +38,7 @@ $(document).ready(function() {
       });
   }
 
-  /* 
-   * FB.init starts the facebook sdk, enabling calls against the facebook api
-   * also, the facebook "sdk" sucks.
-   */
-  FB.init({
-    appId  : <%= Facebook::APP_ID %>,
-    status : true, // check login status
-    cookie : true, // enable cookies to allow the server to access the session
-    xfbml  : true, // parse XFBML
-    oauth  : true // enable OAuth 2.0
-  });
+  init_fb();
 
   FB.getLoginStatus(function(response) {
     if(response.authResponse){
@@ -80,3 +70,19 @@ $(document).ready(function() {
   });
 
 });
+
+
+// Make global so you can update new fb elements inserted via js
+init_fb = function () {
+  /* 
+   * FB.init starts the facebook sdk, enabling calls against the facebook api
+   * also, the facebook "sdk" sucks.
+   */
+  FB.init({
+    appId  : <%= Facebook::APP_ID %>,
+    status : true, // check login status
+    cookie : true, // enable cookies to allow the server to access the session
+    xfbml  : true, // parse XFBML
+    oauth  : true // enable OAuth 2.0
+  });
+};

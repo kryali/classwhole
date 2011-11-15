@@ -266,6 +266,28 @@ $showcase-bg        : url('showcase-bg.png');
           }
         }
 
+        ul.classmates {
+          li {
+            float: left;
+            position: relative;
+            opacity: .6;
+          }
+          li:hover {
+            opacity: 1;
+          }
+          a {
+            width: 26px;
+            height: 26px;
+            display: block;
+            z-index: 50;
+            position: absolute;
+
+            /* FB image positions weird */
+            top: 4px;
+            left: 4px;
+          }
+        }
+
         li.course-header { 
           padding: .5em; 
           border-bottom: 1px solid #ccc;
@@ -402,6 +424,10 @@ strong {
 }
 .color-5 {
   background: #ffddc9;
+}
+
+.color-6 {
+  background: #a8edd8;
 }
 
 ul.onl_sections {

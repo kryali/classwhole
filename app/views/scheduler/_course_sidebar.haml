@@ -33,3 +33,12 @@
                   %span.time= section.duration_s
                 - else
                   %span.time Online / Arr
+        = render :partial => 'classmates', :locals => {:course => course }
+
+        -# Mixpanel tracking
+        :javascript 
+          $(document).ready( function() {
+            $("ul.classmates a").click( function() {
+              mpq.track( "click sidebar profile" );
+            });
+          });

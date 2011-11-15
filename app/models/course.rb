@@ -29,7 +29,37 @@ class Course < ActiveRecord::Base
     return courses 
   end
 
+  def user_ids
+    user_ids = $redis.smembers( key( :users ) )
+  end
+
+  def users
+    users = []
+    User.transaction do
+      self.user_ids.each do |user_id|
+        begin
+          users << User.find( user_id )
+        rescue ActiveRecord::RecordNotFound
+          return users
+        end
+      end
+    end
+    users.sort_by { rand }
+  end
+
   def to_s
-    return subject_code + " " + number.to_s
+    subject_code + " " + number.to_s
+  end
+
+  def remove_user( user )
+    $redis.srem( key(:users), user.id )
+  end
+
+  def add_user( user )
+    $redis.sadd( key(:users), user.id )
+  end
+
+  def key( str )
+    "course:#{self.id}:#{str}"
   end
 end

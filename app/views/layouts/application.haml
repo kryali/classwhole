@@ -4,7 +4,6 @@
     %title= yield(:title)
     -# stylesheet_link_tag    "bootstrap.min.css"
     = stylesheet_link_tag    "application" 
-    = stylesheet_link_tag    "tipsy" 
     = csrf_meta_tags
     = javascript_tag          "var AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? 
     :javascript
@@ -32,6 +31,7 @@
     = javascript_include_tag "slides.min.jquery.js"
     = javascript_include_tag "general/alert"
     = javascript_include_tag "http://connect.facebook.net/en_US/all.js"
+    = javascript_include_tag "general/fb_button"
   %body
     %div#fb-root
     %div#wrapper

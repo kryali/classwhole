@@ -104,11 +104,14 @@ include ApplicationHelper
         render :json => { :status => "error", :message => "Class already added" }
         return
       else
-        current_user.courses << Course.find( course_id )
+        course_users = current_user.courses.to_json
+        current_user.courses << course
         if current_user.is_temp?
           add_course_to_cookie( params["id"] )
+        else
+        course.add_user( current_user )
         end
-        render :json => { :status => "success", :message => "Class added" }
+        render :json => { :status => "success", :message => "Class added", :users => course_users }
       end
     rescue ActiveRecord::RecordNotFound
         render :json => { :status => "error", :message => "Class not found" }
@@ -123,11 +126,10 @@ include ApplicationHelper
   def remove_course
     begin
       target_course = Course.find(params["course_id"].to_i)
-      if current_user      
-        current_user.courses.delete(target_course)
-      end
       if current_user.is_temp?		
         remove_class_from_cookie(params["course_id"].to_i)     
+      else
+        current_user.rem_course( target_course )
       end			
       redirect_to(root_path)
     end
