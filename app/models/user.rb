@@ -82,6 +82,11 @@ class User < ActiveRecord::Base
     $redis.sadd( "user:#{friend_id}:friends" , self.id)
   end
 
+  def rem_course( course )
+    course.remove_user( self )
+    self.courses.delete( course )
+  end
+
   def redis_key( str )
     return "user:#{self.id}:#{str}"
   end

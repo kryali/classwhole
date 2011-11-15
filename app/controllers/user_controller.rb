@@ -129,8 +129,7 @@ include ApplicationHelper
       if current_user.is_temp?		
         remove_class_from_cookie(params["course_id"].to_i)     
       else
-        current_user.courses.delete(target_course)
-        target_course.remove_user( current_user )
+        current_user.rem_course( target_course )
       end			
       redirect_to(root_path)
     end
