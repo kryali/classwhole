@@ -75,12 +75,16 @@ def build_course_trie
 end
 
 def refresh_users
-  puts "Clearing user redis set"
-  $redis.del("user")
+  #puts "Clearing user redis set"
+  #$redis.del("user")
   $redis.multi do
     User.all.each do |user|
       $redis.sadd("user","#{user.id}")
       puts "User added #{user.id}"
+      user.courses.each do |course|
+        puts "SADD course:#{course.id}:users, user.id"
+        $redis.sadd("course:#{course.id}:users", user.id)
+      end
       #refresh_friends( user )
     end
   end
