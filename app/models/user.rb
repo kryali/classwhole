@@ -99,8 +99,10 @@ class User < ActiveRecord::Base
   def owns
     if gender == "male"
       "his"
-    else
+    elsif gender == "female"
       "her"
+    else
+      "his" # with no gender defined do we say "his" or "his/her" or "its"?  I'm picking "his" for now.
     end
   end
 
