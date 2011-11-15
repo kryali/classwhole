@@ -24,17 +24,6 @@ ScheduleCanvas.prototype.image_data = function() {
   return image_data;
 }
 
-/*
-  init( canvas );
-
-  function init( canvas ) {
-    $(".download-schedule").click( function() {
-      generate_schedule_canvas( canvas, sections );
-      save_canvas( canvas );
-    });
-  }
-*/
-
 function generate_schedule_canvas( canvas, sections ) {
   var start_time;
   var end_time;
