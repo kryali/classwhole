@@ -1,0 +1,16 @@
+%ul.classmates
+  -# Don't let the user see himself
+  -# 1. On his own profile page
+  -# 2. When he's registering for classes
+  -#
+  -# Let the user see himself
+  -# 1. When he's seeing someone elses page
+  - count = 0
+  - course.users.each do |user|
+    -# TODO: Doesn't let the user see himself on other peoples schedules
+    -if ((not @user or (@user.id != user.id)) and (current_user.id != user.id)) or (@user and @user.id != current_user.id and current_user.id == user.id)
+      %li
+        = link_to "", scheduler_show_path(user.id), :title => user.name
+        <fb:profile-pic uid="#{user.id}" width="26" height="26" linked="false" size="square"/>
+        - count += 1
+        - break if count > 7

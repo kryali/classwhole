@@ -175,4 +175,17 @@ class SchedulerController < ApplicationController
     render :text => decoded
   end
 
+# Don't need this since this is being rendered client side
+=begin
+  def classmates
+    course_id = params["course_id"].to_i
+    begin
+      course = Course.find( course_id )
+      render :json => { :status => :success, :users => course.users.to_json }
+    rescue ActiveRecord::RecordNotFound
+      render :json => { :status => :error, :message => "Class not found" }
+    end
+  end
+=end
+
 end

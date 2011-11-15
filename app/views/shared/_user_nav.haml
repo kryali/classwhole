@@ -1,5 +1,6 @@
 %li= link_to 'My Schedule', scheduler_show_path( current_user.id )
 %li.dropdown
   = link_to current_user.name, '', {:class => "dropdown-toggle name"}
+  %span{ :id=>"current_user", :class=>"hidden" }= current_user.id
   %ul.dropdown-menu
     %li= link_to 'Logout', logout_path

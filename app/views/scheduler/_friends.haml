@@ -2,4 +2,4 @@
   %h2 Friends
   - user.friends.each do |friend|
     %li
-      = link_to "", scheduler_show_path(friend.id), :style => "background:url(\"#{fb_img_link( friend, :small)}\") no-repeat;", :title => friend.name
+      = link_to "", scheduler_show_path(friend.id), :style => "background:url(\"#{fb_img_link( friend, :square)}\") no-repeat;", :title => friend.name
