@@ -76,6 +76,13 @@ $(function(){
     });
   }
 
+  function init_tooltips() {
+    $(".register-schedule").tipsy({ gravity: 'n' });
+    $(".download").tipsy({ gravity: 's' });
+    $(".share-schedule").tipsy({ gravity: 's' });
+    $(".save").tipsy({ gravity: 's' });
+  }
+
   /* This is kind of a hack
       
       We need to get a json array of sections to hand to Jon's canvas
@@ -239,6 +246,7 @@ $(function(){
     // Setup the slidejs plugin
     //$("#slides").slides(options.slides);
 
+    init_tooltips();
     init_draggable();
     init_modals();
     init_share_button();
