@@ -99,8 +99,10 @@ class User < ActiveRecord::Base
   def owns
     if gender == "male"
       "his"
-    else
+    elsif gender == "female"
       "her"
+    else
+      "a"
     end
   end
 
