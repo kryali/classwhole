@@ -41,11 +41,13 @@ $(document).ready(function(){
       var options = { 
         trigger: 'manual',
         gravity: 'e', 
-        fade: true 
+        fade: true,
+        offset: 20,
       };
       $("#autocomplete-list").tipsy(options).tipsy('show');
-      $("#autocomplete-list").click( function() {
+      $(".user-course-list").click( function() {
         $("#autocomplete-list").tipsy('hide');
+        $(this).unbind('click');
       });
     }
   }

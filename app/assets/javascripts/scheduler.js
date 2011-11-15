@@ -77,10 +77,10 @@ $(function(){
   }
 
   function init_tooltips() {
-    $(".register-schedule").tipsy({ gravity: 'n' });
-    $(".download").tipsy({ gravity: 's' });
-    $(".share-schedule").tipsy({ gravity: 's' });
-    $(".save").tipsy({ gravity: 's' });
+    $(".register-schedule").tipsy({ gravity: 'n', opacity: .9});
+    //$(".download").tipsy({ gravity: 's' });
+    $(".share-schedule").tipsy({ gravity: 's', opacity: .9});
+    //$(".save").tipsy({ gravity: 's' });
     var options = { 
       trigger: 'manual',
       gravity: 'e',
@@ -262,7 +262,10 @@ $(function(){
     // Setup the slidejs plugin
     //$("#slides").slides(options.slides);
 
-    init_tooltips();
+    // Hide tooltips if they are a user
+    //if( $("#current_user").text() == "" ) {
+      init_tooltips();
+    //}
     init_draggable();
     init_modals();
     init_share_button();

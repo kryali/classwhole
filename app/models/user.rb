@@ -54,11 +54,11 @@ class User < ActiveRecord::Base
 
     # Remove all your current courses and sync them with the new schedule
     courses.delete_all
-    redis_key  ="user:#{id}:schedule"
-    $redis.del(redis_key)
+    $redis.del( self.redis_key(:schedule) )
     sections.each do |section_id|
-      $redis.sadd(redis_key, section_id.to_i)
+      $redis.sadd( self.redis_key(:schedule), section_id.to_i)
       course = Section.find( section_id.to_i ).course
+      course.add_user( self )
       courses << course unless courses.include?(course)
     end
   end
@@ -94,6 +94,14 @@ class User < ActiveRecord::Base
   def rem_course( course )
     course.remove_user( self )
     self.courses.delete( course )
+  end
+
+  def owns
+    if gender == "male"
+      "his"
+    else
+      "her"
+    end
   end
 
   def redis_key( str )

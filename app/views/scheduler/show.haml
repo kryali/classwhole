@@ -5,6 +5,13 @@
 = content_for :title, title
 
 %div.scheduler-content
+  - if current_user.is_temp?
+    %div.message
+      %span
+        = "#{@user.name} is using"
+        =link_to "Classwhole", scheduler_index_path, :id => "temp-message-link2"
+        = "to share #{ @user.owns } schedule with you."
+      =link_to "Click here to make your own", scheduler_index_path, :id => "temp-message-link"
   = render "schedule", :sections => @sections
   = render :partial=>"need_to_login", :locals => {:name => "save"}
   = render "render"
@@ -16,6 +23,13 @@
         if( $(this).height() < 50 ) {
           $(this).find(".course-title").hide();
         }
+      });
+
+      $("#temp-message-link").click( function() {
+        mpq.track("Temp message clicked");
+      });
+      $("#temp-message-link2").click( function() {
+        mpq.track("Temp message 2 clicked");
       });
   });
 

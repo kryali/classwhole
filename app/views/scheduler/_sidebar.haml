@@ -3,10 +3,10 @@
     = render :partial => "profile"
   - if not @user or (@user and current_user.id == @user.id)
     %div.primary-row
-      %div.save{:title => "Save to the cloud" }
+      %div.save{:title => "Save to Cloud"}
         %span#save-img
         %a{ "data-controls-modal" => "save-modal", "data-keyboard" => "true", :class => "btn default save-schedule" } Save
-      %div.download{:title => "Download picture"}
+      %div.download{:title => "Schedule picture"}
         %span#down-img
         %a{ :class => "btn download-schedule"} Download
     %a{ :class => "btn primary share-schedule", :title => "Show your friends what you're taking"} Share
