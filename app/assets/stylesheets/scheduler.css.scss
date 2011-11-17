@@ -56,6 +56,10 @@ $showcase-bg        : url('showcase-bg.png');
   }
 }
 
+.ui-draggable {
+  z-index: 100;
+}
+
 .small-width {
   width: $schedule-day-width/10;
 }
