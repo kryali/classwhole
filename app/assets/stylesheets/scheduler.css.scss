@@ -696,3 +696,7 @@ ul.friends {
   background: #EFEFEF;
   font-size: .8em;
 }
+
+.ui-draggable-dragging {
+	z-index: 5000;
+}

@@ -30,7 +30,7 @@ $(function(){
       revertDuration: 200,
       scope:        'section_hint',
       refreshPositions: true,
-      zIndex:       1,
+      zIndex:       1100,
     },
     droppable: {
       accept:      '.ui-draggable',
