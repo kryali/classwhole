@@ -21,10 +21,10 @@ class Course < ActiveRecord::Base
       label = $redis.hget("id:course:#{course_id}", "label")
       title = $redis.hget("id:course:#{course_id}", "title")
       value = $redis.hget("id:course:#{course_id}", "value")
-      courses << { label: label,
-                   title: title,
-                   value: value,
-                   id:    course_id }
+      courses << { :label => label,
+                   :title => title,
+                   :value => value,
+                   :id =>    course_id }
     end
     return courses 
   end

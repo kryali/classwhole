@@ -92,7 +92,7 @@ ClassList.prototype.add_class_callback = function(event, ui) {
           success: function( data, textStatus, xh ) {
             if( data.status == "success" ) {
               var course = get_course_li( class_id );
-              add_users_to_course( course, eval( data.users ));
+              //add_users_to_course( course, eval( data.users ));
             } else {
               pop_alert( data.status, data.message );
             }
@@ -132,13 +132,6 @@ ClassList.prototype.has_classes = function() {
 
 function show_button() {
     if( has_classes ) return;
-    /*
-    $(".hidden-course-form .btn.primary.hidden")
-        .animate({
-            display: 'inline',
-          }, 200, undefined)
-        .removeClass("hidden");
-    */
 
     $(".user-course-list span.hint")
         .animate({

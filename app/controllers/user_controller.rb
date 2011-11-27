@@ -92,9 +92,9 @@ include ApplicationHelper
   # We should probably be looking up the id instead of doing a slow search here
   #
   def add_course
-		# If the person isn't logged into facebook, create a cookie, but don't overwrite it
+    # If the person isn't logged into facebook, create a cookie, but don't overwrite it
     if cookies["classes"].nil? and current_user.is_temp?
-		  cookies["classes"] = { :value => "", :expires => 1.day.from_now }			
+      cookies["classes"] = { :value => "", :expires => 1.day.from_now }			
     end
 
     begin 
@@ -104,14 +104,14 @@ include ApplicationHelper
         render :json => { :status => "error", :message => "Class already added" }
         return
       else
-        course_users = current_user.courses.to_json
+        #course_users = current_user.courses.to_json
         current_user.courses << course
         if current_user.is_temp?
           add_course_to_cookie( params["id"] )
         else
-        course.add_user( current_user )
+          course.add_user( current_user )
         end
-        render :json => { :status => "success", :message => "Class added", :users => course_users }
+        render :json => { :status => "success", :message => "Class added"}# , :users => course_users }
       end
     rescue ActiveRecord::RecordNotFound
         render :json => { :status => "error", :message => "Class not found" }
