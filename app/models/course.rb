@@ -5,7 +5,7 @@ class Course < ActiveRecord::Base
 #   has_and_belongs_to_many :users
 
   def self.trie(term)
-    results_needed = 10
+    results_needed = 100
 
     begin
       possible_courses = $redis.smembers("course:#{term.upcase.gsub(/\s+/,"")}")
@@ -21,15 +21,45 @@ class Course < ActiveRecord::Base
       label = $redis.hget("id:course:#{course_id}", "label")
       title = $redis.hget("id:course:#{course_id}", "title")
       value = $redis.hget("id:course:#{course_id}", "value")
-      courses << { label: label,
-                   title: title,
-                   value: value,
-                   id:    course_id }
+      courses << { :label => label,
+                   :title => title,
+                   :value => value,
+                   :id =>    course_id }
     end
     return courses 
   end
 
+  def user_ids
+    user_ids = $redis.smembers( key( :users ) )
+  end
+
+  def users
+    users = []
+    User.transaction do
+      self.user_ids.each do |user_id|
+        begin
+          users << User.find( user_id )
+        rescue ActiveRecord::RecordNotFound
+          return users
+        end
+      end
+    end
+    users.sort_by { rand }
+  end
+
   def to_s
-    return subject_code + " " + number.to_s
+    subject_code + " " + number.to_s
+  end
+
+  def remove_user( user )
+    $redis.srem( key(:users), user.id )
+  end
+
+  def add_user( user )
+    $redis.sadd( key(:users), user.id )
+  end
+
+  def key( str )
+    "course:#{self.id}:#{str}"
   end
 end

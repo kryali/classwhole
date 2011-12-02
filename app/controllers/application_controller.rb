@@ -35,9 +35,14 @@ class ApplicationController < ActionController::Base
     else
       @current_user = Fake_user.new
       for id in cookie_class_list
-        @current_user.courses << Course.find(id)
+        begin
+          @current_user.courses << Course.find(id)
+        rescue ActiveRecord::RecordNotFound
+          cookies.delete("classes")
+          return @current_user
+        end
       end
-    return @current_user
+      return @current_user
     end  
   end
 

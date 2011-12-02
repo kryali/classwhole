@@ -1,37 +1,28 @@
-%div.catalog_page
-	%div.subject_list 
-		<br/>
-		<br/>
-		<br/>
-		-uppercase_string = @semester.season[0,1].upcase + @semester.season[1..-1] + " " + @semester.year
-		-alphabet = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","P","R","S","T","U","V","W","Y","Z"]	
-		%div{:class => "pagination pag"}
-			%ul
-			-for letter in alphabet 			
-				%li
-					=link_to letter, "#"+letter	
-					
-		
+%div.scheduler-content 
+  %div.subject_list 
+    -uppercase_string = @semester.season[0,1].upcase + @semester.season[1..-1] + " " + @semester.year
+    = content_for :title, "#{uppercase_string} Courses at University of Illinois Urbana Champaign"
+    -alphabet = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","P","R","S","T","U","V","W","Y","Z"]  
+    %div{:class => "pagination pag"}
+      %ul
+      -for letter in alphabet       
+        %li
+          =link_to letter, "#"+letter  
+          
+    %p{:class => "catalog_title"}
+    %span{:class => "catalog_title"}
+      =uppercase_string  + " Courses"
 
-
-		%p{:class => "catalog_title"}
-			=uppercase_string	+ " Courses"
-
-
-
-		%table{:class => "major_table"}	
-			-first_letter = '-1'		
-			-for subject in @semester.subjects																		
-				-if first_letter != subject.code[0]
-					-first_letter = subject.code[0]
-					%tr
-						%td
-							%a{:name => "#{first_letter}"}
-								<br/>
-							<br/>
-				%tr			
-					%td{:class => 'major_cells'}
-						= subject.code
-					%td{:class => 'major_cells'}									
-						= link_to subject.title, show_subject_path(:year => @semester.year, :season => @semester.season, :subject_code => subject.code)		
-
+    %table{:class => "major_table"}  
+      -first_letter = '-1'    
+      -for subject in @semester.subjects                                    
+        -if first_letter != subject.code[0]
+          -first_letter = subject.code[0]
+          %tr
+            %td
+              %a{:name => "#{first_letter}"}
+        %tr      
+          %td{:class => 'major_cells'}
+            = subject.code
+          %td{:class => 'major_cells'}                  
+            = link_to subject.title, show_subject_path(:year => @semester.year, :season => @semester.season, :subject_code => subject.code)    

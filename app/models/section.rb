@@ -12,11 +12,21 @@ class Section < ActiveRecord::Base
       key = self.course_subject_code
     elsif self.code.length == 1
       key = self.course_subject_code
+    elsif self.code.length == 2
+      if (true if Integer(self.code[0]) rescue false)
+        key = self.code[1]
+      else
+        key = self.code[0]
+      end
     else
-      key = self.code.at(0)
-      #append number to key if it exists at 1 (for mathematica sections B8, X8, etc)
-      at1 = self.code.at(1)
-      key << at1 if (true if Integer(at1) rescue false)
+      key = self.code[0]
+      if (true if Integer(self.code[1]) rescue false)
+        unless (true if Integer(self.code[2]) rescue false)
+          key << self.code[1]
+        end
+      else
+        key << self.code[0]
+      end
     end
     return key
   end
@@ -30,7 +40,7 @@ class Section < ActiveRecord::Base
         if (self.start_time.to_i   >= start_time.to_i and self.start_time.to_i <= end_time.to_i) or 
            (start_time.to_i   >= self.start_time.to_i and start_time.to_i <= self.end_time.to_i)
           return true
-        end
+        end 
       end
     end
     return false
@@ -91,6 +101,46 @@ class Section < ActiveRecord::Base
       return "#{time.hour}:%02dpm" % time.min
     end
     return "nil"
+  end
+
+  def self.hour_range(sections)
+    finished_courses = []
+    all_possible_sections = []
+    sections.each do |section|
+      course = section.course
+      next if finished_courses.include?(course.id)
+
+      # Build up a list of all possible sections for the course
+      course.sections.each do |course_section|
+        # Add it if we don't already have the section
+        if !all_possible_sections.include?(course_section)
+          all_possible_sections << course_section
+        end
+      end
+
+      # Mark the course as already processed so we dont do it again
+      finished_courses << course.id
+    end
+
+    earliest_start_hour = 24 * 60
+    latest_end_time = 0
+    
+    all_possible_sections.each do |section|
+      next if !section.start_time
+      current_start_time = section.start_time.hour * 60 + section.start_time.min
+      current_end_time = section.end_time.hour * 60 + section.end_time.min
+
+      if current_start_time < earliest_start_hour
+        earliest_start_hour = current_start_time
+      end
+      if current_end_time > latest_end_time
+        latest_end_time = current_end_time
+      end
+    end
+
+    earliest_start_hour = (earliest_start_hour.to_f/60).ceil
+    latest_end_hour = (latest_end_time.to_f/60).ceil
+    return earliest_start_hour, latest_end_hour
   end
 
 end

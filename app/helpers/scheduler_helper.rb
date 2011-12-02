@@ -83,7 +83,7 @@ module SchedulerHelper
       next if not section.days
       days = section.days.split("")
       days.each do |day|
-        sections_by_days[day].push(section)
+        sections_by_days[day].push(section) if sections_by_days.has_key?(day)
       end
     end
 
@@ -152,6 +152,24 @@ module SchedulerHelper
       course_section_hash[course.id] << section
     end
     return courses, course_section_hash
+  end
+
+  def fb_img_link( user, type = "large" ) 
+    "https://graph.facebook.com/#{user.id}/picture?type=#{type}"
+  end
+
+  # This function takes an array of section array of ActiveRecord 
+  # objects spits out the sections in ids in an array
+  def section_ids_from_schedules( all_schedules )
+    schedules = []
+    all_schedules.each do |sections|
+      section_ids = []
+      sections.each do |section|
+        section_ids << section.id
+      end
+      schedules.push( section_ids )
+    end
+    return schedules
   end
 
 end

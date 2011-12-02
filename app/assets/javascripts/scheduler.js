@@ -1,5 +1,5 @@
 $(function(){
-
+  
   //var block_height = 74;
   var block_height = $(".schedule-block").height();
   var is_dragging = false;
@@ -7,10 +7,17 @@ $(function(){
   var is_updating = false;
   var handled_drop = false;
   var save_schedule_path = "/scheduler/save";
+  var share_schedule_path = "/scheduler/share";
   var paginate_path = "/scheduler/paginate";
+  var sidebar_path = "/scheduler/sidebar";
   var current_selected = 1;
   var mini_grids_showing = 5;
   var mini_grids_count = 5;
+
+  var hint_cache = {};
+  var section_cache = {};
+  var schedule_cache = {};
+  var schedule_raw_cache = {};
 
   var options = {
     draggable: {
@@ -23,7 +30,7 @@ $(function(){
       revertDuration: 200,
       scope:        'section_hint',
       refreshPositions: true,
-      zIndex:       1,
+      zIndex:       1100,
     },
     droppable: {
       accept:      '.ui-draggable',
@@ -39,36 +46,121 @@ $(function(){
     }
   }
 
-  function init() {
+  function save_schedule() {
+    var schedule_ids = get_schedule_ids();
+    $.ajax({
+      type: 'POST',
+      data: { schedule:schedule_ids},
+      url:  save_schedule_path,
+      success: function(data, textStatus, jqXHR) {
+        if (data["status"] == "success") {
+          mpq.track("Save schedule");
+          pop_alert("info", data["message"]);
+          /* Redirect them
+          if( data.redirect_url && window.loaction != data.redirect_url)
+            window.location = data.redirect_url;
+            */
+        }
+        else if (data["status"] == "error") {
+          //pop_alert("error", data["message"]);
+          $('#save-modal').modal('show');            
+          mpq.track("Prompt log in");
+          $(document).bind('logged-in', function() {
+            $(document).unbind('logged-in');
+            $("#save-modal").modal("hide");
+            save_schedule();
+            return true;
+          });
+        }          
+      }
+    });
+  }
 
-    // Setup the slidejs plugin
-    $("#slides").slides(options.slides);
+  function init_tooltips() {
+    $(".register-schedule").tipsy({ gravity: 'n', opacity: .9});
+    //$(".download").tipsy({ gravity: 's' });
+    $(".share-schedule").tipsy({ gravity: 's', opacity: .9});
+    //$(".save").tipsy({ gravity: 's' });
+    var options = { 
+      trigger: 'manual',
+      gravity: 'e',
+      fade: true,
+      title: 'data-tooltip',
+    };
+    // Display a welcome message to a temporary user
+    if( $("#current_user").text() == "" ) {
+      $(".schedule-content").tipsy(options);
+      setTimeout( function() {
+        $(".schedule-content").tipsy("show");
+        setTimeout( function() {
+          $(".schedule-content").tipsy("hide");
+        }, 2500 );
+      }, 2500 );
+    }
+  }
 
-    $(".save-schedule").click( function() {
-
+  /* This is kind of a hack
+      
+      We need to get a json array of sections to hand to Jon's canvas
+      but that's not given to us in the page, so I request it via AJAX 
+      to the server instead.
+   */
+  function init_download_schedule() {
+    var canvas = document.getElementById('schedule-render');
+    $(".download").click( function() {
       var schedule_ids = get_schedule_ids();
-      $.ajax({
+
+      // temp hack, get sections json with given section ids via ajax
+      $.ajax( {
         type: 'POST',
-        data: { schedule:schedule_ids},
-        url:  save_schedule_path,
-        success: function(data, textStatus, jqXHR) {
-          if (data["status"] == "success") {
-            pop_alert("info", data["message"]);
+        url: '/sections/',
+        data: { schedule: schedule_ids },
+        success: function( data, textStatus, xhQR) {
+          if( data.status == "success" ) {
+            mpq.track("Schedule Downloaded");
+            var schedule_canvas = new ScheduleCanvas( canvas, data.sections );
+            start_download( schedule_canvas.image_data() );
           }
-          else if (data["status"] == "error") {
-            pop_alert("error", data["message"]);
-          }          
         }
       });
+    });
+  }
+
+  function start_download( image_data ) {
+    var myForm = document.createElement("form");
+        myForm.setAttribute("method", "post" );
+        myForm.setAttribute("action", "/scheduler/download" );
+        myForm.setAttribute("authenticity_token", AUTH_TOKEN);
+    var auth_token = document.createElement("input");
+        auth_token.setAttribute("name", "authenticity_token");
+        auth_token.setAttribute("type", "hidden");
+        auth_token.setAttribute("value", AUTH_TOKEN);
+        myForm.appendChild(auth_token);
+    var dataInput = document.createElement("input");
+        dataInput.setAttribute("type", "hidden");
+        dataInput.setAttribute("name", "image_data");
+        dataInput.setAttribute("value", image_data);
+        dataInput.setAttribute("authenticity_token", AUTH_TOKEN);
+        myForm.appendChild(dataInput);
+        document.body.appendChild(myForm);
+        myForm.submit();
+  }
+
+  function init_modals() {
+    $(".save").unbind('click').click( function() {
+      save_schedule();
     });
 
     $(".close-modal").click( function() {
       $('#register-modal').modal('hide');
+      $('#save-modal').modal('hide');
+      $('#share-modal').modal('hide');
     });
-    $(".register-schedule").click( function() {
+    $(".register-schedule").unbind('click').click( function() {
+      mpq.track("Register schedule");
+      $('#crns').empty()
       var schedule = get_current_schedule();
       var crns = [];
-      var crnstring = "Your CRNs: ";
       var all_section_crns = schedule.find(".schedule-block .crn");
       for( var i = 0; i < all_section_crns.size(); i++ ){
         
@@ -79,15 +171,107 @@ $(function(){
           // Make sure we don't already have the section in our array
           if( crns.indexOf(current_section_crn) == -1 ) {
             crns.push(current_section_crn)
-            crnstring = crnstring + current_section_crn + " "
+            //$('#crns').append("<li>" + current_section_crn + "</li>");
           }
         }
       }
-      $('#crns').text(crnstring);
-      $('#register-modal').modal('show');
+      //console.log(crns.toString());
+      window.location = "/scheduler/register?crns=" + crns.toString();
+      //$('#register-modal').modal('show');
     });
+  }
 
+  function share_schedule() {
+    var schedule_ids = get_schedule_ids();
+    $.ajax({
+      type: 'POST',
+      data: { schedule: schedule_ids },
+      url: share_schedule_path,
+      success: function(data, textStatus, jqXHR) {
+        if (data["status"] == "success") {
+          //console.log(data);
+          //pop_alert("info", data["message"]);
+          mpq.track("Share schedule");
+          FB.ui(data.options, function(response) {
+            if( response && response.post_id ) {
+              pop_alert("success", "Schedule shared!");
+            } else {
+              pop_alert("error", "Sharing failed :(");
+            }
+          });
+        }
+        else if (data["status"] == "error") {
+          //pop_alert("error", data["message"]);
+          $('#share-modal').modal('show');    
+          mpq.track("Prompt log in");
+          $(document).bind('logged-in', function() {
+            $(document).unbind('logged-in');
+            $('#share-modal').modal('hide');    
+            share_schedule();
+            return true;
+          });
+        }
+      }
+    });
+  }
+
+  function init_share_button() {
+    // Share facebook
+    $(".share-schedule").click( function() {
+      share_schedule();
+    });
+  }
+  function init_pagination() {
+    $(".mini-pagination a").click( function() {
+
+      // Set as the current item
+      $(".mini-pagination .current").removeClass("current");
+      $(this).parent().addClass("current");
+
+      // Decode the index from the href i.e "#1" -> 1
+      var index = parseInt($(this).attr("href").replace(/#/g,""));
+      var schedule_ids = possible_schedules[index]; // Global given to us in the view
+
+      // Update main page
+      $.ajax({
+        type: 'POST',
+        data: { schedule:schedule_ids, render: true },
+        url:  '/scheduler/move_section',
+        success: function(data, textStatus, jqXHR) {
+          //curr_section.draggable( "option", "revert", "false" );
+          fetch_schedule(data, textStatus, jqXHR, undefined);
+          is_showing_hints = false;
+        }
+      });
+
+      // Update sidebar
+      $.ajax({
+        type: 'POST',
+        data: { schedule:schedule_ids },
+        url:  sidebar_path,
+        success: function(data, textStatus, jqXHR) {
+          var contents = $(data).children();
+          $("ul.courses").empty().append(contents);
+          init_fb();
+        }
+      });
+    });
+  }
+
+  init = function() {
+    // Setup the slidejs plugin
+    //$("#slides").slides(options.slides);
+
+    // Hide tooltips if they are a user
+    if( $("#current_user").text() == "" ) {
+      init_tooltips();
+    }
     init_draggable();
+    init_modals();
+    init_share_button();
+    init_download_schedule();
+    init_pagination();
+
     //init_mini_pagination();
 
     // Use the keyboard to select other schedules
@@ -104,6 +288,7 @@ $(function(){
 
     // TODO: BUG IF YOU CLICK TOO FAST
     $(".prev").click( function() {
+      mpq.track("Clicked left arrow");
       if( current_selected > 1 )
         current_selected--;
       else {
@@ -113,6 +298,7 @@ $(function(){
     });
 
     $(".next").click( function() {
+      mpq.track("Clicked right arrow");
       current_selected++;
       if( current_selected > mini_grids_showing ){
         $(".mini-next").click();
@@ -121,7 +307,7 @@ $(function(){
     });
 
     var children = $(".mini-pagination").children();
-    $('.mini-pagination').css("width", children.width() * children.length +8);
+    $('.mini-pagination').css("width", children.width() * children.length + 30);
   }
 
   function init_mini_pagination() {
@@ -146,7 +332,7 @@ $(function(){
     $(".mini-next").click( function() {
       var current_pos = mini_pagination.position().left;
       if( end <= mini_grids_count) {
-        console.log("starting a request");
+        //console.log("starting a request");
         $.ajax({
           type: 'POST',
           url: paginate_path,
@@ -156,8 +342,6 @@ $(function(){
             end: end,
           },
           success: function(data, textStatus, jqXHR) {
-            console.log( textStatus );
-            console.log( $(data) );
             var full = $(data).first();
             var mini = $(data).last();
             $(".slides_control").append( full.children() );
@@ -186,19 +370,11 @@ $(function(){
 
       var current_section = $(this);
       current_section.draggable( 'option', 'revert', true );
-      var section = current_section.find(".id").text();
+      var section_id = current_section.find(".id").text();
       var schedule_ids = get_schedule_ids();
       //console.log( "Selected" + section );
       //console.log( schedule_ids );
-
-      $.ajax({
-        type: 'POST',
-        data: { section: section, schedule:schedule_ids },
-        url:  '/scheduler/move_section',
-        success: function(data, textStatus, jqXHR) {
-          update_schedule(data, textStatus, jqXHR, undefined);
-        }
-      });
+      update_schedule( section_id, schedule_ids );
     });
     
     $(".schedule-block:not(.ui-droppable)").mouseleave( function(){
@@ -217,20 +393,6 @@ $(function(){
     });
   }
 
-  function add_hours( num_hours ){
-    var schedule = get_current_schedule();
-    schedule.each( function() {
-      var schedule_day = $(this).find(".schedule-day");
-      var add_list = "";
-      for( var i = 0; i < num_hours; i++) {
-        add_list += "<li></li>";
-      }
-      schedule_day.append(add_list);
-      //console.log(schedule_day);
-      var current_height = $(".slides_control").height();
-      $(".slides_control").height(current_height + block_height * num_hours);
-    });
-  }
 
   /* 
   This function removes a section from a day selector
@@ -248,17 +410,55 @@ $(function(){
 
   /* 
     Update schedule refreshes the schedule content with the new schedule
-      from the server. It's an AJAX `success` callback function */
-  function update_schedule(data, textStatus, jqXHR, day) {
+      from the server. It's an AJAX `success` callback function 
+
+    This function also caches the sections and schedules w/hints
+  */
+  function fetch_schedule(data, textStatus, jqXHR, day, section_id, schedule_ids) {
+    // Cache sections for fun
+    for( i in data.schedule ) {
+      var section = data.schedule[i];
+      section_cache[ section.id ] = section;
+    }
+    for( i in data.section_hints ) {
+      var section = data.section_hints[i];
+      section_cache[ section.id ] = section;
+    }
+
+    if( data.status == "error" ) {
+      if( typeof schedule_ids != "undefined" ) {
+        // Cache 
+        var schedule_key = schedule_ids.toString();
+        if( typeof schedule_cache[ schedule_key ] == "undefined" )
+          schedule_cache[ schedule_key ] = {};
+        schedule_cache[ schedule_key ][ section_id ] = "none";
+      }
+      return;
+    }
 
     // Make sure we aren't updating the schedule when another update is in progress
     if( is_updating ) return;
 
     // This happens when the user stops hovering before the schedule is updated
-    if( !is_showing_hints ) return; 
+    //if( !is_showing_hints ) return; 
     is_updating = true;
 
-    var contents = $(data).children();
+    var new_schedule = new Schedule( data.schedule, data.start_hour, data.end_hour );
+    new_schedule.add_hints( data.section_hints );
+    var contents = new_schedule.render().children();
+    //console.log( new_schedule );
+
+    if( typeof schedule_ids != "undefined" ) {
+      // Cache 
+      var schedule_key = schedule_ids.toString();
+      if( typeof schedule_cache[ schedule_key ] == "undefined" )
+        schedule_cache[ schedule_key ] = {};
+      schedule_cache[ schedule_key ][ section_id ] = contents.clone();
+
+      schedule_raw_cache[ schedule_key ] = data;
+    }
+
+    //var contents = $(data).children();
     var current_schedule = get_current_schedule();
 
     var selected_box = $(".ui-draggable-dragging");
@@ -270,7 +470,7 @@ $(function(){
       $("#slides").append(selected_box);
 
       // Add the content to the page
-      current_schedule.empty().append( contents );
+      update_schedule_contents( current_schedule, contents );
 
       // Find the day of the section we're trying to add
       var current_day = current_schedule.find("." + day );
@@ -287,12 +487,14 @@ $(function(){
         selected_box.draggable("destroy");
         selected_box.remove();
       }
-
-      // Add the content to the page
-      current_schedule.empty().append( contents );
+      //console.log( contents );
+      update_schedule_contents( current_schedule, contents );
     }
 
 
+  }
+
+  function re_init( current_schedule ) {
     // Make the hints droppable
     var section_hints = current_schedule.find(".droppable").find(".schedule-block");
     section_hints.droppable(options.droppable);
@@ -307,31 +509,12 @@ $(function(){
 
     // Make the schedule blocks fade in
     current_schedule.find(".droppable").addClass("hidden");
-    current_schedule.find(".droppable").fadeIn(150);
+    current_schedule.find(".droppable").fadeIn(350);
 
     // Enable the new sections to be draggable
     init_draggable();
-
-    //console.log("Schedule updated");
-    is_updating = false;
-    is_dragging = false;
-  }
-
-  function insert_suggestions(data, textStatus, jqXHR) {
-    var schedule = get_current_schedule();
-    $(data).each( function() {
-      var days_s = $(this).attr("days");
-      if( typeof(days_s) != "undefined" ) {
-        var days_a = days_s.split("");
-        for( var i = 0; i < days_a.length; i++) {
-          var schedule_day = schedule.find("." + days_a[i]);
-          $(this).addClass("droppable");
-          var section_hint = $(this).clone().addClass("droppable");
-          section_hint.droppable( options.droppable );
-          schedule_day.append(section_hint);
-        }
-      }
-    });
+    //init_modals();
+    //init_share_button();
   }
 
   function get_current_schedule() {
@@ -348,7 +531,7 @@ $(function(){
   function get_schedule_ids() {
     var schedule = get_current_schedule();
     var sections = [];
-    var all_section_ids = schedule.find(".schedule-block .id");
+    var all_section_ids = $("ul.sections .id");
     for( var i = 0; i < all_section_ids.size(); i++ ){
       
       // Ignore droppable sections
@@ -364,29 +547,20 @@ $(function(){
     return sections.sort();
   }
 
-  function remove_droppable( section_id ) { 
-    $(".schedule-block").each( function() {
-      var current_id = $(this).find(".id").text(); 
-      if( current_id == section_id ) {
-        $(this).removeClass("droppable");
+
+  function update_sidebar_contents( old_section_id, new_section_id ) {
+    var current_schedule = get_current_schedule();
+    var sidebar = new Sidebar();
+    var row = sidebar.render_section_row( section_cache[ new_section_id ] );
+
+    current_schedule.find("ul.sections li div").each( function() {
+      // Find the section row to replace
+      if( $(this).find(".id").text() == old_section_id ) {
+        $(this).empty().append( row.children() );
       }
     });
   }
 
-  /* Unhide the new sections */
-  function setup_new_sections( section_id ) {
-    get_current_schedule().find(".droppable").each( function() {
-      if( $(this).find(".id").text() == section_id ){
-
-        // Enable draggable for new sections
-        $(this).find(".schedule-block").draggable( 'enable' );
-        $(this).find(".schedule-block").removeClass("ui-droppable");
-
-        // Disable droppable for new sections
-        $(this).removeClass("droppable");
-      };
-    });
-  }
 
   function handle_drop( event, ui ) {
 
@@ -395,6 +569,16 @@ $(function(){
     var curr_section_id = parseInt(curr_section.find(".id").text());
     var new_section_id = parseInt($(this).find(".id").text());
     var schedule_ids = get_schedule_ids();
+
+    // Make sure that both sections are compatible types 
+    if( $(this).find(".section-type").text() != curr_section.find(".section-type").text()   
+        || $(this).find(".course-name").text() != curr_section.find(".course-name").text() ) {
+      return;
+    }
+
+    mpq.track("Moved Schedule");
+
+    update_sidebar_contents( curr_section_id, new_section_id );
 
     // Generate the list of the new schedule to render
     var idx = schedule_ids.indexOf(curr_section_id);
@@ -415,11 +599,11 @@ $(function(){
 
     $.ajax({
       type: 'POST',
-      data: { schedule:schedule_ids },
+      data: { schedule:schedule_ids, render: true },
       url:  '/scheduler/move_section',
       success: function(data, textStatus, jqXHR) {
         //curr_section.draggable( "option", "revert", "false" );
-        update_schedule(data, textStatus, jqXHR, undefined);
+        fetch_schedule(data, textStatus, jqXHR, undefined);
         is_showing_hints = false;
       }
     });
@@ -447,9 +631,51 @@ $(function(){
       url:  '/scheduler/move_section',
       success: function(data, textStatus, jqXHR) {
         var day = $(ui.helper[0]).parent().attr("day");
-        update_schedule(data, textStatus, jqXHR, day);
+        fetch_schedule(data, textStatus, jqXHR, day);
       }
     });
+  }
+
+  /*
+     This function checks to see if the hint is in the cache
+     If so, then it re-renders the schedule with the cache
+      
+     or it queries the server
+  */
+  function update_schedule( section_id, schedule_ids ) {
+    var key = schedule_ids.toString();
+    if( typeof schedule_cache[key] != "undefined"
+        && schedule_cache[key][section_id] ) {
+
+      if( schedule_cache[key][section_id] == "none" ) {
+        /* cache hit: there are no possibilities */
+        return;
+      }
+      var current_schedule = get_current_schedule();
+      var contents = schedule_cache[key][section_id].clone();
+      update_schedule_contents( current_schedule, contents );
+      return;
+    }
+
+    $.ajax({
+      type: 'POST',
+      data: { section: section_id, schedule:schedule_ids },
+      url:  '/scheduler/move_section',
+      success: function(data, textStatus, jqXHR) {
+        fetch_schedule(data, textStatus, jqXHR, undefined, section_id, schedule_ids);
+      }
+    });
+  }
+
+  function update_schedule_contents( current_schedule, contents ) {
+    // Add the content to the page
+    current_schedule.find(".schedule-day").remove();
+    current_schedule.find(".time-label").remove();
+    current_schedule.find(".schedule-display").prepend( contents );
+
+    re_init( current_schedule );
+    is_updating = false;
+    is_dragging = false;
   }
 
   function stop_drag_event( event, ui ) {
@@ -462,11 +688,5 @@ $(function(){
     });
 
   }
-
-  function append_pagination( data, textStatus, jqXHR ) {
-  }
-
-  init();
-
 
 });

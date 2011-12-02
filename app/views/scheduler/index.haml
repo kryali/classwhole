@@ -1,17 +1,20 @@
 = javascript_include_tag "autocomplete"
-= javascript_include_tag "user.course.list"
+= javascript_include_tag "user.course.list.js"
 = javascript_include_tag "scheduler.index.js"
 
+= content_for :title, "Classwhole - New Schedule"
 %div#content
   %div.user-course-list-wrapper
     %div.user-course-list
       = render "scheduler/user_course_list"
-    =link_to "Schedule", scheduler_show_path,:class => 'btn primary schedule'
+    =link_to "Schedule", scheduler_new_path, :class => 'btn primary schedule'
+    <div class="fb-like" data-href="classwhole.com" data-send="true" data-width="450" data-show-faces="true"></div>
     %div.hours
       - if current_user
-        %span= current_user.total_course_hours
+        -#%span= current_user.total_course_hours
       - else
-        %span= 0
-      hrs.
-
-
+        -#%span= 0
+      -#hrs.
+    - unless current_user.is_temp?
+      -if current_user and current_user.friends
+        =# render :partial => "friends", :locals => {:user => current_user}

@@ -10,7 +10,7 @@ class RenameSubjectCode < ActiveRecord::Migration
     change_table :courses do |t|
       t.rename :courseNumber, :number
       t.rename :subjectCode, :subject_code
-      t.rename :subjectId, :subject_id
+      #t.rename :subjectId, :subject_id
     end
     change_table :sections do |t|
       t.rename :referenceNumber, :reference_number

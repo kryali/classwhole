@@ -1,24 +1,22 @@
 /* dsfsf */
-%div.catalog_page
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	-uppercase_string = @semester.season[0,1].upcase + @semester.season[1..-1] + " " + @semester.year
-	%div.breadcrumb	
-		= link_to "Subjects", get_previous_url(request.url)
-		&#47 
-		= @subject.code
-	%p{:class => "catalog_title"}
-		=@subject.title
-	<br/>
-	<br/>
-	%table{:id => "course_table"}	
-		-for course in @courses														
-			%tr			
-				%td{:class => 'course_cells_code'}
-					= @subject.code + " " + course.number.to_s()
-				%td{:class => 'course_cells_title'}									
-					= link_to( course.title, show_course_path(:year => @semester.year, :season => @semester.season, :subject_code => @subject.code, :course_number => course.number ) )		
+
+%div.scheduler-content 
+  -uppercase_string = @semester.season[0,1].upcase + @semester.season[1..-1] + " " + @semester.year
+  = content_for :title, @subject.title + " Courses at University of Illinois Urbana Champaign"
+  %div.breadcrumb  
+    = link_to "Subjects", get_previous_url(request.url)
+    &#47 
+    = @subject.code
+  %p{:class => "catalog_title"}
+    =@subject.title
+  <br/>
+  <br/>
+  %table{:id => "course_table"}  
+    -for course in @courses                            
+      %tr      
+        %td{:class => 'course_cells_code'}
+          = @subject.code + " " + course.number.to_s()
+        %td{:class => 'course_cells_title'}                  
+          = link_to( course.title, show_course_path(:year => @semester.year, :season => @semester.season, :subject_code => @subject.code, :course_number => course.number ) )    
 
 

@@ -1,30 +1,45 @@
 Whiteboard::Application.routes.draw do
+  root :to => 'home#index'
 
-  get "scheduler/index"
-  get "scheduler/show"
-  get "scheduler/new"
 
+  # Autocomplete routes
   match  'courses/search/auto/subject' => 'catalog#subject_auto_search'
   match  'courses/search/auto/subject/:subject_code' => 'catalog#course_auto_search'
   match  'courses/search' => 'catalog#simple_search', :via => :post
 
+  # Catalog routes
   match  'courses/' => 'catalog#semester', :as => 'show_university'
   match  'courses/:season/:year/' => 'catalog#semester', :as => 'show_semester'
   match  'courses/:season/:year/:subject_code' => 'catalog#subject', :as => 'show_subject'
   match  'courses/:season/:year/:subject_code/:course_number' => 'catalog#course', :as => 'show_course'
 
-  root :to => 'home#index'
+
+  # Temp hack to return json array of section ids
+  match  'sections/' => 'catalog#sections', :via => :post
+
+  # User auth routes
   match 'user/login' => 'user#login', :via => :post
   match 'user/register' => 'user#register', :via => :post
   match 'user/courses/new' => 'user#add_course', :via => :post, :as => :add_course
   match 'user/courses/destroy/:course_id' => 'user#remove_course', :as => :remove_course
 	match 'user/courses/remove' => 'user#remove_course', :via => :post  
 	match 'user/logout', :as => 'logout'
-	
+  match 'user/refresh' => 'user#refresh', :via => :post	
+  match 'user/header' => 'user#header', :via => :post
+
+  # Scheduler routes
+  get "scheduler/index"
+  get "scheduler/show"
+  get "scheduler/new"
+  match 'scheduler/sidebar' => 'scheduler#sidebar', :via => :post
   match 'scheduler/move_section' => 'scheduler#move_section', :via => :post
   match 'scheduler/paginate' => 'scheduler#paginate', :via => :post
 	match 'scheduler/new' => 'scheduler#new'
+	match 'scheduler/show/:id' => 'scheduler#show', :as => 'scheduler_show'
   match 'scheduler/save' => 'scheduler#save', :via => :post
+  match 'scheduler/share' => 'scheduler#share', :via => :post
+  match 'scheduler/register' => 'scheduler#register', :as => 'scheduler_register'
+  match 'scheduler/download' => 'scheduler#download', :via => :post
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

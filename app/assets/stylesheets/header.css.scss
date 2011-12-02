@@ -27,6 +27,12 @@ $header-color       : #333;
       color: #888;
     }
 
+    a.fb_button {
+      margin-top: 12px;
+      padding: 0;
+      line-height: 15px;
+    }
+
     a:hover {
       color: #3A90E0;
       text-decoration: underline;
@@ -57,7 +63,7 @@ $header-color       : #333;
 .topbar-inner, .topbar .fill {
   background: white;
   border:1px solid #aaa;
-  box-shadow: none;
+  box-shadow: 0px 0px 4px #999;
 }
 
 #header {

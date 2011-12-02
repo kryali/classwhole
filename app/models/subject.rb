@@ -15,9 +15,9 @@ class Subject < ActiveRecord::Base
       label = $redis.hget("id:subject:#{subject_id}", "label")
       title = $redis.hget("id:subject:#{subject_id}", "title")
       value = $redis.hget("id:subject:#{subject_id}", "value")
-      subjects << {       label: label,
-                          title: title,
-                          value: value }
+      subjects << {       :label => label,
+                          :title => title,
+                          :value => value }
       max_results -= 1
       break if max_results <= 0
     end

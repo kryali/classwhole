@@ -22,9 +22,9 @@ module CatalogHelper
     subject_list = "["
     all_subjects do |subject|
       subject_list+="{label:\"#{subject.to_s}\",title:\"#{subject.title}\",value:\"#{subject.code}\"},\n"
-        subject_list << { label: "#{subject.to_s}",
-                          title: "#{subject.title}",
-                          value: "#{subject.code}" }
+        subject_list << { :label => "#{subject.to_s}",
+                          :title => "#{subject.title}",
+                          :value => "#{subject.code}" }
     end
     subject_list += "]"
   end

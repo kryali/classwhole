@@ -11,18 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111106040806) do
+ActiveRecord::Schema.define(:version => 20111108044901) do
 
   create_table "courses", :force => true do |t|
     t.integer  "number"
-    t.integer  "hours",        :limit => 255
+    t.integer  "hours"
     t.text     "description"
     t.string   "title"
     t.string   "subject_code"
+    t.integer  "subjectId"
     t.integer  "subject_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id"
+    t.integer  "user_id",      :limit => 8
   end
 
   create_table "friendships", :force => true do |t|

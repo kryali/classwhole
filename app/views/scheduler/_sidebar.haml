@@ -1,30 +1,16 @@
 %div.sidebar
-  %ul.courses
-    - courses, course_section_hash = courses_from_sections( sections )
-    - courses.each do |course|
-      - sections = course_section_hash[course.id]
-      %li.course-item
-        %ul.course
-          %li{:class=> "course-header #{colors[course.id]}"}
-            %span.course-name= course.to_s
-            %span.course-title= shorten(course.title, 19)
-            %span.course-hours= "(#{course.hours} hr)"
-          -if nil
-            %li 
-              %span.title Description
-              %span.data= shorten(course.description, 130)
-          %ul.sections
-            -if nil
-              %li.header Sections
-            - sections.each do |section|
-              %li 
-                %div
-                  %span{:class=>"section-type label"}= section.section_type
-                  -if section.instructor
-                    %span.instructor= section.instructor
-                  -else 
-                    %span.instructor TBD
-                  %span.code= section.code
-                  -#%span.time= section.duration_s
-  %a{ :class => "btn default save-schedule"} Save
-  %a{ "data-controls-modal" => "register-modal", "data-backdrop" => "static", "data-keyboard" => "true", :class => "btn primary register-schedule"} Register
+  - if @user
+    = render :partial => "profile"
+  - if not @user or (@user and current_user.id == @user.id)
+    %div.primary-row
+      %div.save{:title => "Save to Cloud"}
+        %span#save-img
+        %a{ "data-controls-modal" => "save-modal", "data-keyboard" => "true", :class => "btn default save-schedule" } Save
+      %div.download{:title => "Schedule picture"}
+        %span#down-img
+        %a{ :class => "btn download-schedule"} Download
+    %a{ :class => "btn primary share-schedule", :title => "Show your friends what you're taking"} Share
+    %a{ "data-controls-modal" => "register-modal", "data-keyboard" => "true", :class => "btn register-schedule tooltip", :title => "Get your CRNS and register on Enterprise"} Register
+  = render :partial =>  "course_sidebar", :locals => { :sections => sections }
+  -if @user and not @user.friends.empty?
+    = render :partial => "friends", :locals => {:user => @user}

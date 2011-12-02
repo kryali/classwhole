@@ -19,7 +19,7 @@ $(document).ready(function () {
       global right now, see if this is correct later
   */
 
-  timeout = 2500;
+  timeout = 1300;
 
  pop_alert = function(level, bold_message, message) {
 
@@ -49,9 +49,8 @@ $(document).ready(function () {
     var hide_timeout = setTimeout( function() {
                                   alert_box.animate({
                                     opacity: 0,
-                                    display: 'none',
                                   }, 400, undefined );
-                               }, timeout);
+                               }, 2400);
     var rem_timeout = setTimeout( function() { alert_box.remove(); }, timeout + 400);
   };
 

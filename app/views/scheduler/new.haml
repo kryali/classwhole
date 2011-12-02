@@ -1,0 +1,25 @@
+= javascript_include_tag "scheduler.render.js"
+= javascript_include_tag "scheduler.sidebar.js"
+= javascript_include_tag "scheduler.js"
+= content_for :title, "Classwhole - Pick a Schedule"
+
+:javascript
+  $(document).ready(function() {
+    var course_ids = #{@course_ids};
+    possible_schedules = #{section_ids_from_schedules( @possible_schedules ).to_json }; 
+    init();
+  });
+
+%div.scheduler-content
+  %div#slides
+    %div.slides_container
+      -# @possible_schedules.each do |sections|
+      = render "schedule", :sections => @possible_schedules.first
+    %a{:href=>"#", :class=>"prev"}
+    %a{:href=>"#", :class=>"next"}
+    -if @possible_schedules.size > 1
+      = render :partial => 'mini_schedule_grids', :locals => { :possible_schedules => @possible_schedules }
+
+  = render :partial=>"need_to_login", :locals => {:name => "save"}
+  = render :partial=>"need_to_login", :locals => {:name => "share"}
+  = render "render"

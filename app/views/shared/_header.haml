@@ -5,13 +5,10 @@
         %h3= link_to "Classwhole", root_path, {:id => "logo"}
         %ul.nav
           %li= link_to "Course List", show_semester_path(Semester.first.season, Semester.first.year)
-          %li= link_to "Schedule", scheduler_index_path
+          %li= link_to "Scheduler", scheduler_index_path
         %ul{ :class => "nav secondary-nav"}
-          - if !current_user.is_temp?
-            %li.dropdown
-              = link_to current_user.name, current_user.name, {:class => "dropdown-toggle"}
-              %ul.dropdown-menu
-                %li= link_to "Logout", logout_path
-          - else 
+          - if current_user.is_temp?
             %li= render 'shared/fb_login_button'
+          - else 
+            = render 'shared/user_nav', :current_user => current_user
     %div.alert-box

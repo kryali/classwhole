@@ -1,6 +1,6 @@
-class_counter = 0;
-has_classes = false;
-selected_classes = {};
+var class_counter = 0;
+var has_classes = false;
+var selected_classes = {};
 var course_destroy_url  = '/user/courses/destroy/';
 
 function ClassList(){ }
@@ -13,6 +13,7 @@ ClassList.prototype.init = function() {
 
         var class_li = $(this);
         $(this).find(".remove-link").click( function() {
+          mpq.track("Class removed");
 					$.ajax({
 								type: 'GET',
                 url: course_destroy_url + class_id,
@@ -36,6 +37,7 @@ ClassList.prototype.add_class_callback = function(event, ui) {
     this.value = ""; 
 
     if ( ui.item ) {
+        mpq.track("Class added");
         show_button();
         var class_id = ui.item.id;
         if( class_id in selected_classes ){
@@ -50,7 +52,7 @@ ClassList.prototype.add_class_callback = function(event, ui) {
         }
 
         /* Append the course to the currently populated list */
-        var remove_course = $("<a/>").text("X").attr("href", "#").addClass("remove-link");
+        var remove_course = $("<a/>").text("X").addClass("remove-link");
         var course_li = $("<li/>")
                             .append(remove_course)
                             .append($("<span/>")
@@ -60,13 +62,14 @@ ClassList.prototype.add_class_callback = function(event, ui) {
                                 .text(ui.item.title)
                                 .addClass("title"))
                             .append($("<span/>")
-                                .text(ui.item.title)
+                                .text(ui.item.id)
                                 .addClass("hidden id"))
                             .css("display", "none");
         course_li.appendTo(".user-course-list ul");
         course_li.slideDown();
 
         remove_course.click( function() {
+            mpq.track("Class removed");
             var removed = 0;
             $.ajax({
 								type: 'GET',
@@ -84,22 +87,51 @@ ClassList.prototype.add_class_callback = function(event, ui) {
 			$.ajax({
 		      type: 'POST',
 		      data: { id: class_id },
+          dataType: 'json',
 		      url:  '/user/courses/new',
+          success: function( data, textStatus, xh ) {
+            if( data.status == "success" ) {
+              var course = get_course_li( class_id );
+              //add_users_to_course( course, eval( data.users ));
+            } else {
+              pop_alert( data.status, data.message );
+            }
+          }
 		    });
-				
     }
+}
 
+/* Adds a json set of users to a certain course list element */
+function add_users_to_course( course, users ) {
+  var current_user_id = parseInt( $("#current_user").text() );
+  for( var i = 0; i < users.length; i++ ) {
+    if( users[i].id == current_user_id ) {
+      console.log( "user is the same wtf!" );
+    }
+  }
+  // Get current user
+}
+
+function get_course_li( course_id ) {
+  var course_list = $(".user-course-list ul li");
+  //console.log( course_list );
+  var current_course;
+  for( var i =0; i < course_list.length; i++ ) {
+    current_course = $(course_list[i]);
+    //console.log( current_course );
+    if( current_course.find(".id").text() == course_id.toString() ) {
+      return current_course;
+    }
+    //console.log( current_course.find(".id").text() + "-" + course_id );
+  }
+}
+
+ClassList.prototype.has_classes = function() {
+  return has_classes;
 }
 
 function show_button() {
     if( has_classes ) return;
-    /*
-    $(".hidden-course-form .btn.primary.hidden")
-        .animate({
-            display: 'inline',
-          }, 200, undefined)
-        .removeClass("hidden");
-    */
 
     $(".user-course-list span.hint")
         .animate({

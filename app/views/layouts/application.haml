@@ -1,21 +1,12 @@
 <!DOCTYPE html>
 %html
   %head
-    %title Classwhole
+    %title= yield(:title)
     -# stylesheet_link_tag    "bootstrap.min.css"
     = stylesheet_link_tag    "application" 
     = csrf_meta_tags
     = javascript_tag          "var AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? 
     :javascript
-      /*
-      $(document).ajaxSend( function(e, xhr, options) {
-        if ( settings.type == 'post' ) {
-          settings.data = (settings.data ? settings.data + "&" : "") + "authenticity_token=" + encodeURIComponent( AUTH_TOKEN );
-        }
-        xhr.setRequestHeader("X-CSRF-Token", AUTH_TOKEN);
-      } );
-      */
-
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-20351006-4']);
       _gaq.push(['_trackPageview']);
@@ -30,6 +21,7 @@
 
     = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" 
     = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" 
+    = javascript_include_tag "jquery.tipsy"
     = javascript_include_tag "init"
     = javascript_include_tag "bootstrap-modal.js"
     = javascript_include_tag "bootstrap-alerts.js"
@@ -38,7 +30,12 @@
     = javascript_include_tag "bootstrap-tabs.js" 
     = javascript_include_tag "slides.min.jquery.js"
     = javascript_include_tag "general/alert"
+    = javascript_include_tag "http://connect.facebook.net/en_US/all.js"
+    = javascript_include_tag "general/fb_button"
   %body
+    %div#fb-root
     %div#wrapper
-      = render "shared/header"
+      = render "shared/header"             
       = yield
+    %div#footer
+      = render "shared/footer"

@@ -68,7 +68,8 @@ $course-list-bg     : white; //#E6E6E6;
       text-align: center
     }
 
-    a.remove-link { 
+    a.remove-link {
+      cursor: pointer; 
       position: absolute;
       font-size: .75em;
       color: #AAAAAA; 
@@ -122,6 +123,10 @@ $course-list-bg     : white; //#E6E6E6;
 
 }
 
+.fb-like,
+.fb_edge_widget_with_comment {
+  margin-top: 20px;
+}
 
 .hidden-course-form {
   height: 0px;

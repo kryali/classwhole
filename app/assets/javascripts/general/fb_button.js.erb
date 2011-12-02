@@ -2,12 +2,11 @@
  * fb_button_init.js
  * File Summary: initializes the facebook sdk and contains login logic via facebook 
  */
- 
-
 $(document).ready(function() { 
 
   /* Constants */
   var LOGIN_PATH = "/user/login";
+
 
 
   /*
@@ -17,38 +16,29 @@ $(document).ready(function() {
    */
   function post_to_url(path, params, method) {
       method = method || "post"; // Set method to post by default, if not specified.
+      $.ajax({
+        type: 'POST',
+        url: path,
+        data: params,
+        success: function( data, textStatus, xqHR){
+          mpq.track("Logged in");
+          pop_alert( textStatus, "Logged in" );
 
-      // The rest of this code assumes you are not using a library.
-      // It can be made less wordy if you use one.
-      var form = document.createElement("form");
-      form.setAttribute("method", method);
-      form.setAttribute("action", path);
-      form.setAttribute("authenticity_token", AUTH_TOKEN);
+          // track the name
+          mpq.name_tag($(data).find(".name").text());
+          //console.log(data["user"]["name"]);
+          $("ul.secondary-nav").empty().append( $(data) );
+          $(document).trigger("logged-in");
 
-      for(var key in params) {
-          var hiddenField = document.createElement("input");
-          hiddenField.setAttribute("type", "hidden");
-          hiddenField.setAttribute("name", key);
-          hiddenField.setAttribute("value", params[key]);
-          hiddenField.setAttribute("authenticity_token", AUTH_TOKEN);
-          form.appendChild(hiddenField);
-      }
-      document.body.appendChild(form);    // Not entirely sure if this is necessary
-      form.submit();
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.log( jqXHR );
+          pop_alert( textStatus, errorThrown.toString() );
+        }
+      });
   }
 
-
-  /* 
-   * FB.init starts the facebook sdk, enabling calls against the facebook api
-   * also, the facebook "sdk" sucks.
-   */
-  FB.init({
-    appId  : '227782147288218',
-    status : true, // check login status
-    cookie : true, // enable cookies to allow the server to access the session
-    xfbml  : true, // parse XFBML
-    oauth  : true // enable OAuth 2.0
-  });
+  init_fb();
 
   FB.getLoginStatus(function(response) {
     if(response.authResponse){
@@ -60,25 +50,39 @@ $(document).ready(function() {
   });
 
   /* When a user clicks a button, */
-  $('#fb-button').click( function(event) {
-
+  $('.fb-button').unbind('click').click( function(event) {
+    //console.log("Button clicked!");
     /* FB.getLoginStatus allows you to determine if a user is 
      * logged into facebook.*/
     FB.getLoginStatus(function(response) {
       if(response.authResponse){
         /* User is logged in to facebook, let him in */
-        console.log( response.authResponse );
+        mpq.identify( response.authResponse["userID"] );
         post_to_url(LOGIN_PATH, response["authResponse"]);
       }
-    });
+   });
 
     /* FB.Event.subscribe('auth.login') gets fired when the user logs in
      * Register the user by silently posting a form to rails */
     FB.Event.subscribe('auth.login', function(response) {
       post_to_url(LOGIN_PATH, response["authResponse"]);
     });
-
   });
 
-
 });
+
+
+// Make global so you can update new fb elements inserted via js
+init_fb = function () {
+  /* 
+   * FB.init starts the facebook sdk, enabling calls against the facebook api
+   * also, the facebook "sdk" sucks.
+   */
+  FB.init({
+    appId  : <%= Facebook::APP_ID %>,
+    status : true, // check login status
+    cookie : true, // enable cookies to allow the server to access the session
+    xfbml  : true, // parse XFBML
+    oauth  : true // enable OAuth 2.0
+  });
+};
