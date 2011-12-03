@@ -8,6 +8,29 @@ require 'pp'
 FALL_URL = 'http://www.fms.uiuc.edu/FinalExams/index.asp?report=Non%20Combined%20Guidelines/Fall%202011%20Non-Combined%20Guidelines.xml'
 
 def init
+  finals_data = scrape_finals_data
+  finals_data.each do |day_row|
+    day = day_row[0]
+    times= day_row[1]
+    puts day.inspect
+    puts "-----------"
+    times.each do |class_time, final_time |
+      unless final_time.nil?
+        start_time = final_time[:start_time]
+        end_time = final_time[:start_time]
+        #puts "Class Time: #{class_time}\tStart Time: #{start_time}\tEnd Time:#{end_time}"
+        start_time_key = "finals:uiuc:#{class_time.hour}#{class_time.min}:start_time"
+        end_time_key = "finals:uiuc:#{class_time.hour}#{class_time.min}:end_time"
+        puts start_time_key
+        puts end_time_key
+        puts "=========="
+      end
+    end
+  end
+  #PP.pp finals_data
+end
+
+def scrape_finals_data
   doc = Nokogiri::HTML( open(FALL_URL) )
   rows = doc.css("tr.tr1, tr.tr2")
   finals_data = {}
@@ -20,16 +43,16 @@ def init
     times =  parse( :start_times, start_times )
     day = parse( :day, day_str )
     final_time = parse( :final_time, final_time )
-    puts "=============================="
-    puts "Class Times:  #{times.inspect}"
-    puts "Day: #{day}"
-    puts "Final Time:  #{final_time.inspect}"
+    #puts "=============================="
+    #puts "Class Times:  #{times.inspect}"
+    #puts "Day: #{day}"
+    #puts "Final Time:  #{final_time.inspect}"
     finals_data[day] ||= {}
     times.each do |time|
       finals_data[day][time] = final_time unless time.nil?
     end
   end
-  PP.pp finals_data
+  finals_data
 end
 
 # Parse class time start cell
@@ -74,13 +97,9 @@ def parse_final_string(data)
     date = parts[2]
     date = Time.parse(date)
 
-    #day = parse_day(parts[1])
-    #puts "time_range: #{time_range}"
-    #puts "day: #{day}"
-    #puts "date: #{date.inspect}"
-
     start_time = Time.utc(1990, date.month, date.day, time_range[0].hour, time_range[0].min)
     end_time = Time.utc(1990, date.month, date.day, time_range[1].hour, time_range[1].min)
+    #puts "#{start_time}-#{end_time}"
     return {
       :start_time => start_time,
       :end_time => end_time
