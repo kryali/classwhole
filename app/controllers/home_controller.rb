@@ -9,4 +9,10 @@ class HomeController < ApplicationController
     redirect_to scheduler_index_path
   end
 
+  def careers
+  end
+
+  def about
+  end
+
 end

@@ -37,6 +37,29 @@ $content-bg-color   : url('grey-bg.png');
   font-family: 'Arial', 'Tahoma', sans-serif;
   padding: 40px;
   position: relative;
-  background: $content-bg-color;
   margin-top: 3em;
+}
+
+.content {
+  font-family: 'Arial', 'Tahoma', sans-serif;
+  padding: 40px;
+  position: relative;
+  background: #fff;
+  margin-top: 3em;
+  border: 1px solid #ccc;
+
+  h1 {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  p {
+    margin-top: 1em;
+    line-height: 24px;
+  }
+
+  .email {
+    background: #eee;
+    border-radius: 1em;
+  }
 }

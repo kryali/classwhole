@@ -1,6 +1,10 @@
 Whiteboard::Application.routes.draw do
   root :to => 'home#index'
 
+  # General pages
+  match 'about' => 'home#about'
+  match 'careers' => 'home#careers'
+  match 'jobs' => 'home#careers'
 
   # Autocomplete routes
   match  'courses/search/auto/subject' => 'catalog#subject_auto_search'
