@@ -16,6 +16,7 @@ html, body {
   max-width: 940px;
   margin: 0 auto;
   color: $default-font-color;
+  min-height: 100%;
 }
 
 .left { float: left; }
@@ -61,5 +62,9 @@ $content-bg-color   : url('grey-bg.png');
   .email {
     background: #eee;
     border-radius: 1em;
+  }
+
+  img {
+    margin-top: 1em;
   }
 }
