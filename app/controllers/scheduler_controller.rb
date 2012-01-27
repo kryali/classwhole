@@ -143,7 +143,7 @@ class SchedulerController < ApplicationController
           :method => 'feed',
           :name => "#{current_user.name}'s Schedule",
           :link => link_url,
-          :source => 'http://i.imgur.com/0Ei7C.jpg',
+          :source => 'http://i.imgur.com/oMRcn.png',
           :caption => 'Checkout my schedule!',
           :description => course_string
         }
