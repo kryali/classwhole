@@ -11,19 +11,32 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111108044901) do
+ActiveRecord::Schema.define(:version => 20120202035926) do
+
+  create_table "attributes", :force => true do |t|
+    t.string "code"
+    t.string "description"
+  end
+
+  create_table "buildings", :force => true do |t|
+    t.string "name"
+    t.string "short_name"
+    t.float  "latitude"
+    t.float  "longitude"
+    t.string "address"
+  end
 
   create_table "courses", :force => true do |t|
     t.integer  "number"
-    t.integer  "hours"
+    t.integer  "credit_hours"
     t.text     "description"
     t.string   "title"
     t.string   "subject_code"
-    t.integer  "subjectId"
     t.integer  "subject_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id",      :limit => 8
+    t.text     "section_information"
+    t.text     "schedule_information"
   end
 
   create_table "friendships", :force => true do |t|
@@ -31,16 +44,56 @@ ActiveRecord::Schema.define(:version => 20111108044901) do
     t.integer "user_id"
   end
 
+  create_table "geneds", :force => true do |t|
+    t.string "category_id"
+    t.string "description"
+  end
+
+  create_table "geneds_attributes", :id => false, :force => true do |t|
+    t.integer "geneds_id"
+    t.integer "attributes_id"
+  end
+
+  create_table "geneds_courses", :id => false, :force => true do |t|
+    t.integer "geneds_id"
+    t.integer "courses_id"
+  end
+
+  create_table "instructors", :force => true do |t|
+    t.string "full_name"
+    t.string "first_name"
+    t.string "last_name"
+    t.float  "quality_rating"
+    t.float  "easiness_rating"
+    t.float  "clarity_rating"
+    t.float  "helpfulness_rating"
+    t.string "rmp_url"
+    t.string "url"
+  end
+
+  create_table "meetings", :force => true do |t|
+    t.string  "type"
+    t.time    "start_time"
+    t.time    "end_time"
+    t.string  "days"
+    t.string  "room"
+    t.integer "building_id"
+  end
+
+  create_table "meetings_instructors", :id => false, :force => true do |t|
+    t.integer "meetings_id"
+    t.integer "instructors_id"
+  end
+
+  create_table "schools", :force => true do |t|
+    t.string "name"
+    t.string "short_name"
+  end
+
   create_table "sections", :force => true do |t|
-    t.integer  "room"
     t.integer  "reference_number"
     t.text     "notes"
     t.string   "section_type"
-    t.string   "instructor"
-    t.string   "days"
-    t.time     "start_time"
-    t.time     "end_time"
-    t.string   "building"
     t.integer  "course_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -48,7 +101,17 @@ ActiveRecord::Schema.define(:version => 20111108044901) do
     t.string   "course_subject_code"
     t.string   "course_title"
     t.integer  "course_number"
-    t.integer  "semester_slot",       :default => 0
+    t.integer  "part_of_term",        :default => 0
+    t.integer  "enrollment_status"
+    t.integer  "subject_id"
+    t.integer  "semester_id"
+    t.string   "text"
+    t.string   "special_approval"
+  end
+
+  create_table "sections_meetings", :id => false, :force => true do |t|
+    t.integer "sections_id"
+    t.integer "meetings_id"
   end
 
   create_table "semesters", :force => true do |t|
@@ -66,11 +129,11 @@ ActiveRecord::Schema.define(:version => 20111108044901) do
     t.string   "contact_title"
     t.text     "title"
     t.string   "code"
-    t.string   "unit_name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "phone"
     t.integer  "semester_id"
+    t.string   "address1"
   end
 
   create_table "users", :force => true do |t|
