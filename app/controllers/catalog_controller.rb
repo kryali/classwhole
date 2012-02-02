@@ -148,9 +148,9 @@ class CatalogController < ApplicationController
 
       courses.each do |course|
         if params["term"] and course.to_s.include?(params["term"].upcase) or not params["term"]
-          course_list << { label: "#{course.to_s}",
-                           title: "#{course.title}",
-                           value: "#{course.to_s}" }
+          course_list << { :label => "#{course.to_s}",
+                           :title =>  "#{course.title}",
+                           :value => "#{course.to_s}" }
         end
       end
       render :json => course_list
@@ -176,9 +176,9 @@ class CatalogController < ApplicationController
       subject_list = []
       all_subjects.each do |subject|
         if params["term"] and subject.starts_with?(params["term"].upcase) or not params["term"]
-          subject_list << { label: "#{subject.to_s}",
-                            title: "#{subject.title}",
-                            value: "#{subject.code}" }
+          subject_list << { :label => "#{subject.to_s}",
+                            :title => "#{subject.title}",
+                            :value => "#{subject.code}" }
         end
       end
 

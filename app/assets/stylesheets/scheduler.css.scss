@@ -56,6 +56,10 @@ $showcase-bg        : url('showcase-bg.png');
   }
 }
 
+.ui-draggable {
+  z-index: 100;
+}
+
 .small-width {
   width: $schedule-day-width/10;
 }
@@ -690,4 +694,8 @@ ul.friends {
   margin: 0em 1em 1.4em 1em;
   background: #EFEFEF;
   font-size: .8em;
+}
+
+.ui-draggable-dragging {
+	z-index: 5000;
 }

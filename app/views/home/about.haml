@@ -1,0 +1,19 @@
+= content_for :title, "About Classwhole"
+%div.content
+  = image_tag "team_image.jpg", :class => "right"
+  %div#about
+    %h1 About
+
+    %p
+      Classwhole was developed by 
+      %a{:href=>"http://kryali.com"} Kiran Ryali,
+      %a{:href=>"http://jhuze.com"} Jon Hughes,
+      and
+      %a{:href=>"http://swilso.com"} Scott Wilson
+      for <a href="http://illinois.edu">UIUC</a>.
+
+    %p 
+      We built Classwhole because we wanted a better way to discover classes and the people in them. 
+    %p 
+      Currently, we're compiling feedback and making improvements for our second launch in April 2012. So if you have any suggestions, please send them to <span class="to-reverse email">moc.elohwssalc@kcabdeef</span>
+    = javascript_include_tag "email.js"

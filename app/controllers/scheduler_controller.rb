@@ -140,12 +140,12 @@ class SchedulerController < ApplicationController
       render :json => {
         :status => "success",
         :options => {
-          method: 'feed',
-          name: "#{current_user.name}'s Schedule",
-          link: link_url,
-          source: 'http://i.imgur.com/0Ei7C.jpg',
-          caption: 'Checkout my schedule!',
-          description: course_string
+          :method => 'feed',
+          :name => "#{current_user.name}'s Schedule",
+          :link => link_url,
+          :source => 'http://i.imgur.com/oMRcn.png',
+          :caption => 'Checkout my schedule!',
+          :description => course_string
         }
       }
     end
@@ -174,18 +174,5 @@ class SchedulerController < ApplicationController
     #write decoded data
     render :text => decoded
   end
-
-# Don't need this since this is being rendered client side
-=begin
-  def classmates
-    course_id = params["course_id"].to_i
-    begin
-      course = Course.find( course_id )
-      render :json => { :status => :success, :users => course.users.to_json }
-    rescue ActiveRecord::RecordNotFound
-      render :json => { :status => :error, :message => "Class not found" }
-    end
-  end
-=end
 
 end
