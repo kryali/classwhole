@@ -1,3 +1,3 @@
 class Gened < ActiveRecord::Base
-  has_many_and_belongs_to :attributes
+  has_and_belongs_to_many :attribs
 end

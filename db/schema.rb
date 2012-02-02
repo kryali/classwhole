@@ -11,11 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120202035926) do
+ActiveRecord::Schema.define(:version => 20120202045827) do
 
-  create_table "attributes", :force => true do |t|
+  create_table "attribs", :force => true do |t|
     t.string "code"
     t.string "description"
+  end
+
+  create_table "attribs_geneds", :id => false, :force => true do |t|
+    t.integer "gened_id"
+    t.integer "attrib_id"
   end
 
   create_table "buildings", :force => true do |t|
@@ -32,6 +37,7 @@ ActiveRecord::Schema.define(:version => 20120202035926) do
     t.text     "description"
     t.string   "title"
     t.string   "subject_code"
+    t.integer  "subjectId"
     t.integer  "subject_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -47,11 +53,6 @@ ActiveRecord::Schema.define(:version => 20120202035926) do
   create_table "geneds", :force => true do |t|
     t.string "category_id"
     t.string "description"
-  end
-
-  create_table "geneds_attributes", :id => false, :force => true do |t|
-    t.integer "geneds_id"
-    t.integer "attributes_id"
   end
 
   create_table "geneds_courses", :id => false, :force => true do |t|
@@ -120,6 +121,7 @@ ActiveRecord::Schema.define(:version => 20120202035926) do
     t.integer  "subjects_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "school_id"
   end
 
   create_table "subjects", :force => true do |t|
