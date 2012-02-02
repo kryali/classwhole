@@ -1,5 +1,6 @@
 class Section < ActiveRecord::Base
   belongs_to :course
+  has_many :meetings
 
   # Configuration Key to access the configurations_hash of a register_course
   # this may need to become more advanced depending on if we discover unusual courses
