@@ -33,11 +33,10 @@ ActiveRecord::Schema.define(:version => 20120202050335) do
 
   create_table "courses", :force => true do |t|
     t.integer  "number"
-    t.integer  "credit_hours"
+    t.integer  "credit_hours",         :limit => 255
     t.text     "description"
     t.string   "title"
     t.string   "subject_code"
-    t.integer  "subjectId"
     t.integer  "subject_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -139,16 +138,17 @@ ActiveRecord::Schema.define(:version => 20120202050335) do
     t.string   "address1"
   end
 
-  create_table "users", :force => true do |t|
-    t.string "fb_id"
-    t.string "fb_token"
-    t.string "g_token"
-    t.string "email"
-    t.string "name"
-    t.string "first_name"
-    t.string "last_name"
-    t.string "link"
-    t.string "gender"
+  create_table "users", :id => false, :force => true do |t|
+    t.integer "id",         :limit => 8
+    t.string  "fb_id"
+    t.string  "fb_token"
+    t.string  "g_token"
+    t.string  "email"
+    t.string  "name"
+    t.string  "first_name"
+    t.string  "last_name"
+    t.string  "link"
+    t.string  "gender"
   end
 
 end
