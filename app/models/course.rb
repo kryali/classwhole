@@ -64,24 +64,24 @@ class Course < ActiveRecord::Base
   end
 
   def configurations
-    configs = {}
+    configs_hash = {}
     sections.each do |section|
       key = section.configuration.key
       type = section.section_type
-      configs[key] ||= {}
-      configs[key][type] ||= []
-      configs[key][type] << section
+      configs_hash[key] ||= {}
+      configs_hash[key][type] ||= []
+      configs_hash[key][type] << section
     end
-=begin
-    @configurations_array = @configurations_hash.sort_by{|k,config| k}
-    for i in 0...@configurations_array.length
-      @configurations_array[i] = @configurations_array[i][1].sort_by{|k,sections| sections.length}
-      for j in 0...@configurations_array[i].length
-        @configurations_array[i][j] = @configurations_array[i][j][1]
-        @configurations_array[i][j].sort!{|x,y| x.start_time.to_i <=> y.start_time.to_i}
+
+    configs_array = configs_hash.sort_by{|k,config| k}
+    for i in 0...configs_array.length
+      configs_array[i] = configs_array[i][1].sort_by{|k,sections| sections.length}
+      for j in 0...configs_array[i].length
+        configs_array[i][j] = configs_array[i][j][1]
+        configs_array[i][j].sort!{|x,y| x.start_time.to_i <=> y.start_time.to_i}
       end
     end
-=end
-    return configs
+
+    return configs_array
   end
 end

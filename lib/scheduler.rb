@@ -1,11 +1,8 @@
 class Scheduler
-  attr_accessor :valid_schedules
+  attr_accessor :courses, :valid_schedules
 
-  def initialize(user_courses)
-    @courses = []
-    user_courses.each do |course|
-      @courses << Register_Course.new(course)
-    end
+  def initialize(courses)
+    @courses = courses
   end
 
   def schedule_all
@@ -21,7 +18,7 @@ class Scheduler
       return
     end
     course = @courses[course_index]
-    course.configurations_array.each do |configuration| #TODO: redo course configuration fetching
+    course.configurations.each do |configuration|
       permutation.push(configuration)
       initialize_configuration_permutations(course_index+1)
       permutation.pop
@@ -39,11 +36,14 @@ class Scheduler
     ac3(domains) #run ac3 once to remove all conflicts from domains
     domains.sort!(|x,y| x.size <=> y.size) #smaller domains are easier to schedule
     success = ac3_DFS(0, domains) #run the ac3 DFS to guess and check our way to a valid schedule
-    @valid_schedules << domains if success
+    return success
   end
 
   def ac3_DFS(index, domains)
-    return true if index >= domains.size
+    if index >= domains.size
+      @valid_schedules << domains
+      return true
+    end
     return ac3_DFS(index+1, domains) if domains[index].size == 1 #this may be a problem, not sure
     domains[index].each do |package|
       domains_copy = domains.clone
@@ -67,9 +67,9 @@ class Scheduler
 					return false
 				end
         #loop through all neighbors, should be all other nodes
-        for z in 0...domains.size do
-					if z != constraint.a1 and z != constraint.a2
-            neighbor_constraint = Arc.new(constraint.a1, z)
+        for i in 0...domains.size do
+					if i != constraint.a1 and i != constraint.a2
+            neighbor_constraint = Arc.new(constraint.a1, i)
             constraints[neighbor_constraint.key] = neighbor_constraint
 					end
 				end
@@ -81,8 +81,8 @@ class Scheduler
   def reduce(constraint, domains)
 		revised = false
 		if domains[constraint.a1].size == 1
-			package = domains[constraint.a1][0]
-		  revised = true if domains[constraint.a2].delete_if{|x| x.conflict package} #TODO: make a package conflict
+			section1 = domains[constraint.a1][0]
+		  revised = true if domains[constraint.a2].delete_if{|section2| section1.section_conflict?(section2)}
 		end
 		return revised
   end
