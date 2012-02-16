@@ -60,10 +60,10 @@ class UIUCParser
 end
 
 
-UIUCParser.parse_year 2012
 
 namespace :data do 
   task :update => [:environment] do
     puts "Parsing?"
+    UIUCParser.parse_year 2012
   end
 end

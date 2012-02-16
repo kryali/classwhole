@@ -118,7 +118,7 @@ GEM
       rake (>= 0.8.7)
       rdoc (~> 3.4)
       thor (~> 0.14.6)
-    rake (0.9.2.2)
+    rake (0.8.7)
     rdoc (3.12)
       json (~> 1.4)
     redis (2.2.2)
@@ -168,7 +168,7 @@ DEPENDENCIES
   rack-ssl
   rails (= 3.1.1)
   rails3-jquery-autocomplete (~> 0.9.1)
-  rake (= 0.9.2.2)
+  rake (= 0.8.7)
   redis
   sass-rails (~> 3.1.0)
   sqlite3
