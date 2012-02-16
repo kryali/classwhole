@@ -1,7 +1,7 @@
 $suggestion_y_offest : 11px;
 $suggestion_x_offset : 14px;
 $autocomplete_bg_h   : 100%;
-$autocomplete_input_font_size: .8em;
+$autocomplete_input_font_size: .7em;
 $autocomplete_input_font_color: #222;
 $autocomplete_input_left_padding: 13px;
 $autocomplete_height: 40px;
@@ -15,7 +15,7 @@ $menu_border_color: #aaaaaa;
 
   font-size: $autocomplete_input_font_size;
   z-index: 5;
-  padding: 3px 0 0 $autocomplete_input_left_padding;
+  padding: 1px 0 0 $autocomplete_input_left_padding;
 
   width: 100%;
   height: 100%;

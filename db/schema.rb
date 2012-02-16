@@ -13,9 +13,14 @@
 
 ActiveRecord::Schema.define(:version => 20120216012015) do
 
-  create_table "attributes", :force => true do |t|
+  create_table "attribs", :force => true do |t|
     t.string "code"
     t.string "description"
+  end
+
+  create_table "attribs_geneds", :id => false, :force => true do |t|
+    t.integer "gened_id"
+    t.integer "attrib_id"
   end
 
   create_table "buildings", :force => true do |t|
@@ -32,7 +37,7 @@ ActiveRecord::Schema.define(:version => 20120216012015) do
 
   create_table "courses", :force => true do |t|
     t.integer  "number"
-    t.integer  "credit_hours"
+    t.integer  "credit_hours",         :limit => 255
     t.text     "description"
     t.string   "title"
     t.string   "subject_code"
@@ -53,14 +58,9 @@ ActiveRecord::Schema.define(:version => 20120216012015) do
     t.string "description"
   end
 
-  create_table "geneds_attributes", :id => false, :force => true do |t|
-    t.integer "geneds_id"
-    t.integer "attributes_id"
-  end
-
   create_table "geneds_courses", :id => false, :force => true do |t|
-    t.integer "geneds_id"
-    t.integer "courses_id"
+    t.integer "gened_id"
+    t.integer "course_id"
   end
 
   create_table "instructors", :force => true do |t|
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(:version => 20120216012015) do
     t.string  "days"
     t.string  "room"
     t.integer "building_id"
+    t.integer "section_id"
   end
 
   create_table "meetings_instructors", :id => false, :force => true do |t|
@@ -125,6 +126,7 @@ ActiveRecord::Schema.define(:version => 20120216012015) do
     t.integer  "subjects_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "school_id"
   end
 
   create_table "subjects", :force => true do |t|
@@ -141,16 +143,17 @@ ActiveRecord::Schema.define(:version => 20120216012015) do
     t.string   "address1"
   end
 
-  create_table "users", :force => true do |t|
-    t.string "fb_id"
-    t.string "fb_token"
-    t.string "g_token"
-    t.string "email"
-    t.string "name"
-    t.string "first_name"
-    t.string "last_name"
-    t.string "link"
-    t.string "gender"
+  create_table "users", :id => false, :force => true do |t|
+    t.integer "id",         :limit => 8
+    t.string  "fb_id"
+    t.string  "fb_token"
+    t.string  "g_token"
+    t.string  "email"
+    t.string  "name"
+    t.string  "first_name"
+    t.string  "last_name"
+    t.string  "link"
+    t.string  "gender"
   end
 
 end
