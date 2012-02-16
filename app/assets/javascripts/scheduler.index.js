@@ -20,7 +20,7 @@ $(document).ready(function(){
         type: 'POST',
         url:  '/user/refresh',					
         success: function( data, textStatus, xqHR){    	
-          $("#autocomplete-list").tipsy('hide');
+          //$("#autocomplete-list").tipsy('hide');
           $("div.user-course-list").empty();
           $("div.user-course-list").append( $(data) );
           initialize_autocomplete();
@@ -44,11 +44,13 @@ $(document).ready(function(){
         fade: true,
         offset: 20,
       };
+      /*
       $("#autocomplete-list").tipsy(options).tipsy('show');
       $(".user-course-list").click( function() {
         $("#autocomplete-list").tipsy('hide');
         $(this).unbind('click');
       });
+      */
     }
   }
 

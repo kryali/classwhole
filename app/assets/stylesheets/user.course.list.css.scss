@@ -12,6 +12,44 @@ $course-list-bg     : white; //#E6E6E6;
     padding: 1em;
     background: $course-list-bg;
     border: 1px solid #bbbbbb;
+    overflow: hidden;
+
+    a.plus {
+      float: left;
+      width: 25px;
+      font-size: 35px;
+      text-transform: uppercase;
+      margin-top: 0px;
+      padding: 2px 5px 3px 8px;
+      /* Thanks Gaygle ^^ */
+      background-color: #4D90FE;
+      background-image: -webkit-linear-gradient(top,#4D90FE,#4787ED);
+      background-image: -moz-linear-gradient(top,#4D90FE,#4787ED);
+      background-image: -ms-linear-gradient(top,#4D90FE,#4787ED);
+      background-image: -o-linear-gradient(top,#4D90FE,#4787ED);
+      background-image: linear-gradient(top,#4D90FE,#4787ED);
+      border: 1px solid #3079ED;
+      color: white;
+    }
+
+    a.plus:hover {
+      text-decoration: none;
+    }
+
+  }
+
+  a.schedule {
+    padding: 5px;
+    border: 1px solid #ccc;
+    font-size: 18px;
+    margin: 0 auto;
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: #0069D6;
+    height: 37px;
+    padding: 12px 0px;
+    color: white;
   }
 
   h1 {
@@ -79,15 +117,6 @@ $course-list-bg     : white; //#E6E6E6;
     }
   }
 
-  a.btn {
-    width: 94.75%;
-    font-size: .8em;
-    border-radius: 2px;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    text-align: center;
-  }
-
   span.hint {
     font-family: 'Georgia', 'Times New Roman', 'Georgia', serif;
     display: block;
@@ -96,7 +125,7 @@ $course-list-bg     : white; //#E6E6E6;
     text-align: center;
     padding-bottom: 1em;
     //padding-top: 1em;
-    border-bottom: 1px solid #CDCDCD;
+    //border-bottom: 1px solid #CDCDCD;
   }
 
   .alert-box {
