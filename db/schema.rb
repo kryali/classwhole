@@ -31,13 +31,16 @@ ActiveRecord::Schema.define(:version => 20120217023817) do
     t.string "address"
   end
 
+  create_table "configurations", :force => true do |t|
+    t.string "key"
+  end
+
   create_table "courses", :force => true do |t|
     t.integer  "number"
     t.integer  "credit_hours",         :limit => 255
     t.text     "description"
     t.string   "title"
     t.string   "subject_code"
-    t.integer  "subjectId"
     t.integer  "subject_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -110,6 +113,7 @@ ActiveRecord::Schema.define(:version => 20120217023817) do
     t.integer  "semester_id"
     t.string   "text"
     t.string   "special_approval"
+    t.integer  "configuration_id"
   end
 
   create_table "sections_meetings", :id => false, :force => true do |t|

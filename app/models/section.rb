@@ -1,6 +1,8 @@
 class Section < ActiveRecord::Base
   belongs_to :course
+  belongs_to :configuration
   has_many :meetings
+
 
   # Configuration Key to access the configurations_hash of a register_course
   # this may need to become more advanced depending on if we discover unusual courses
@@ -32,14 +34,14 @@ class Section < ActiveRecord::Base
     return key
   end
 
-  # Description: Checks to see if there is a time conflict
-  def time_conflict?(days, start_time, end_time)
-    return false if self.start_time.nil? or start_time.nil?
-    day_array = days.split("")
-    day_array.each do |day|
-      if( self.days.include?(day) )
-        if (self.start_time.to_i   >= start_time.to_i and self.start_time.to_i <= end_time.to_i) or 
-           (start_time.to_i   >= self.start_time.to_i and start_time.to_i <= self.end_time.to_i)
+  # Description: Checks to see if there is a conflict between 2 meetings
+  def meeting_conflict?(meeting1, meeting2)
+    return false if meeting1.start_time.nil? or meeting2.start_time.nil?
+    section_days = meeting2.days.split("")
+    section_days.each do |day|
+      if( meeting1.days.include?(day) )
+        if (meeting1.start_time.to_i >= meeting2.start_time.to_i and meeting1.start_time.to_i <= meeting2.end_time.to_i) or 
+           (meeting2.start_time.to_i >= meeting1.start_time.to_i and meeting2.start_time.to_i <= meeting1.end_time.to_i)
           return true
         end 
       end
@@ -47,29 +49,21 @@ class Section < ActiveRecord::Base
     return false
   end
 
-  def has_time_conflict?(section, time_constraints)
-    if time_constraints.nil?
-      return false
-    end
-    time_constaints.each do |time_constraint|
-      if section.time_conflict?(time_constraint.days, time_constraint.start_time, time_constraint.end_time)
-        return true
+  # Description: This function ensures that no two sections are conflicting
+  #   Method: check that these sections fall within the same semester slot then
+  #     check each meeting time to see if any conflict
+  def section_conflict?(section)
+    if self.part_of_term == "A" and section.part_of_term == "B" or self.part_of_term == "B" and section.part_of_term == "A"
+      self.meetings.each do |self_meeting|
+        section.meetings.each do |section_meeting|
+          return meeting_conflict?(self_meeting, section_meeting)
+        end
       end
     end
     return false
   end
 
-  # Description: This function ensures that no two sections are conflicting
-  #   Method: check that these sections fall within the same semester slot then
-  #     Make sure that sectionb's start and end time is not between sectiona's start and end time
-  def section_conflict?(section)
-    if self.semester_slot & section.semester_slot > 0
-      return time_conflict?(section.days, section.start_time, section.end_time)
-    else 
-      return false
-    end
-  end
-
+  # Is there a conflict between this section and this schedule?
   def schedule_conflict?(schedule)
     schedule.each do |section|
       return true if self.section_conflict?(section)
