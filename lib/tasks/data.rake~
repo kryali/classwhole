@@ -80,9 +80,9 @@ class UIUCParser
       current_course = current_subject.courses.new
     end       
     current_course.number = course_number    
-    current_course.credit_hours = course_xml["creditHours"][0].split(" ")[0].to_i
-    current_course.description = course_xml["description"][0]
-    current_course.title = course_xml["label"][0] 
+    current_course.credit_hours = course_xml["creditHours"][0].split(" ")[0].to_i if course_xml.key?("creditHours")
+    current_course.description = course_xml["description"][0] if course_xml.key?("description")
+    current_course.title = course_xml["label"][0]  if course_xml.key?("label")
     current_course.subject_code = course_xml["id"].split(" ")[0]
     current_course.save    
     sections = course_xml["sections"][0]["section"]
@@ -117,7 +117,7 @@ class UIUCParser
       current_subject.phone = term_xml["phoneNumber"][0] if term_xml.key?("phoneNumber")
       current_subject.web_site_address = term_xml["webSiteURL"][0] if term_xml.key?("webSiteURL")  
       current_subject.save
-      courses = term_xml["courses"][0]["course"]
+      courses = term_xml["courses"][0]["course"] if term_xml.key?("courses")
       #for each course in the subject      
       courses.each do |id, course|
         self.parse_course course, current_subject
