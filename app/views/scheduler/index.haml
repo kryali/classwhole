@@ -7,6 +7,8 @@
   %div.user-course-list-wrapper
     %div.user-course-list
       = render "scheduler/user_course_list"
+      =link_to "+", "#", :class => 'btn plus'
+      %div.clear
     =link_to "Schedule", scheduler_new_path, :class => 'btn primary schedule'
     <div class="fb-like" data-href="classwhole.com" data-send="true" data-width="450" data-show-faces="true"></div>
     %div.hours

@@ -85,7 +85,7 @@ class UIUCParser
     current_course.title = course_xml["label"][0]  if course_xml.key?("label")
     current_course.subject_code = course_xml["id"].split(" ")[0]
     current_course.save    
-    sections = course_xml["sections"][0]["section"] if course_xml.key?("sections")
+    sections = course_xml["sections"][0]["section"]
     sections.each do |id, section|
       self.parse_section section, current_course
     end      

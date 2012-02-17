@@ -1,0 +1,9 @@
+class RenameTypeInMeeting < ActiveRecord::Migration
+  def up
+    name_column :meetings, :type, :class_type
+  end
+
+  def down
+
+  end
+end
