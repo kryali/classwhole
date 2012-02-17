@@ -1,88 +1,59 @@
-$header-bg          : url('grey-bg.png');
-$header-color       : #333;
+$header-spacing: 15px;
+$a-link-color: #0069D6;
 
-.topbar-wrapper {
-  font-family: sans-serif;
+header {
+  margin-top: 1px;
+  font-family: 'Arial','Helvetica', sans-serif;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25),inset 0 -1px 0 rgba(0,0,0,0.1);
+  border-bottom: 1px solid #AAA;
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  z-index: 1;
 
-}
-
-.topbar {
-  a {
-    text-shadow: none;
+  div.center {
+    width: 940px;
+    margin: 0 auto;
   }
 
-  p {
-    line-height: 10px;
+  h3 a {
+    font-family: 'Helvetica', sans-serif;
+    display: block;
+    float: left;
+    color: #333;
+    font-size: 20px;
+    font-weight: lighter;
+    line-height: 1;
+    margin-right: 30px;
+    padding: 14px 0em;
   }
 
-  h3 {
-    a {
-      color: $header-color;
-    }
-  }
+  h3 a:hover { text-decoration: none; }
+  h3 a:visited { color: #333; }
 
-  .nav {
+  nav {
+    float: left;
+    padding-top: 3px;
     a { 
-      padding: 16px 10px 11px;
+      color: #888; 
+      padding: 14px 0;
+      display: block;
+      float: left;
+      margin-right: $header-spacing;
+    }
+    a:visited {
       color: #888;
     }
+    // overide default
+    a:hover { color: $a-link-color; }
 
-    a.fb_button {
-      margin-top: 12px;
-      padding: 0;
-      line-height: 15px;
-    }
-
-    a:hover {
-      color: #3A90E0;
-      text-decoration: underline;
-    }
   }
 
-  /* LOGO HOVER */
-  h3 a:hover,
-  .brand a:hover,
-  ul .active > a {
-    background-color: #333;
-    background-color: rgba(255,255,255,.05);
-    color: black;
-    text-decoration: none;
+  nav.secondary-nav { 
+    float: right; 
+    padding: 14px 0;
   }
 
-  h3 {
-    a { padding: 13px 20px 12px; }
-  }
 
-}
-.alert-message {
-  width: 200px;
-  height: 13px;
-  margin: 0 auto;
-}
-
-.topbar-inner, .topbar .fill {
-  background: white;
-  border:1px solid #aaa;
-  box-shadow: 0px 0px 4px #999;
-}
-
-#header {
-  background: $header-bg;
-  height: 40px;
-  padding: 2em 1em 1em 1em;
-
-  a#logo {
-    float: left; 
-    display: block;
-    font-size: 1.2em;
-    text-decoration: none;
-  }
-
-  a#logo:visited {
-    color: #4D4D4D;
-  }
-
-  #fb-button {
-    float: right;
-  }
 }
