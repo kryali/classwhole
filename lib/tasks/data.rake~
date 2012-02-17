@@ -117,7 +117,7 @@ class UIUCParser
       current_subject.phone = term_xml["phoneNumber"][0] if term_xml.key?("phoneNumber")
       current_subject.web_site_address = term_xml["webSiteURL"][0] if term_xml.key?("webSiteURL")  
       current_subject.save
-      courses = term_xml["courses"][0]["course"] if term_xml.key?("courses")
+      courses = term_xml["courses"][0]["course"]
       #for each course in the subject      
       courses.each do |id, course|
         self.parse_course course, current_subject
