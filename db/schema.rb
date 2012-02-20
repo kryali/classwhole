@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(:version => 20120217023817) do
     t.text     "description"
     t.string   "title"
     t.string   "subject_code"
+    t.integer  "subjectId"
     t.integer  "subject_id"
     t.datetime "created_at"
     t.datetime "updated_at"

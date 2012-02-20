@@ -34,7 +34,7 @@ class Scheduler
     end
     @constraints = make_constraints(domains)
     ac3(domains) #run ac3 once to remove all conflicts from domains
-    domains.sort!(|x,y| x.size <=> y.size) #smaller domains are easier to schedule
+    domains.sort!{|x,y| x.size <=> y.size} #smaller domains are easier to schedule
     success = ac3_DFS(0, domains) #run the ac3 DFS to guess and check our way to a valid schedule
     return success
   end
@@ -87,7 +87,7 @@ class Scheduler
 		return revised
   end
 
-  make_constraints(domains)
+  def make_constraints(domains)
     constraints = {}
     for i in 0...domains.size do
       for j in (i+1)...domains.size do
