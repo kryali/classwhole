@@ -1,6 +1,9 @@
 Whiteboard::Application.routes.draw do
   root :to => 'scheduler#index'
 
+
+  match 'sandbox' => 'sandbox#index', :as => 'sandbox_index'
+
   # General pages
   match 'about' => 'home#about'
   match 'careers' => 'home#careers'

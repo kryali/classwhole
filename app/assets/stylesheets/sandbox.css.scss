@@ -1,0 +1,30 @@
+// Place all the styles related to the sandbox controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.box {
+  width: 300px;
+  height: 50px;
+  margin: 50px;
+  padding: 50px;
+
+}
+
+.red {
+  background: red;
+}
+
+.orange {
+  background: orange;
+}
+
+.penis {
+  cursor: move;
+  background: url('notapenis.jpg');
+  padding: 0px;
+  width: 74px;
+  height: 69px;
+}
+
+.green {
+  background: green;
+}
