@@ -19,10 +19,46 @@
 
 .penis {
   cursor: move;
-  background: url('notapenis.jpg');
   padding: 0px;
   width: 74px;
   height: 69px;
+  float: left;
+}
+
+.white {
+  background: url('notapenis.jpg');
+}
+
+.black {
+  background: url('notapenis-black.jpg');
+}
+
+.black-baby {
+  width: 599px;
+  height: 510px;
+  padding: 0px;
+  background: url('black-baby.jpg');
+}
+
+.white-baby {
+  width: 345px;
+  height: 221px;
+  padding: 0px;
+  background: url('white-baby.jpg');
+}
+
+.vagina {
+  width: 200px;
+  height: 242px;
+  padding: 0px;
+  background: url('notavagina.jpg');
+}
+
+.megusta {
+  width: 200px;
+  height: 242px;
+  padding: 0px;
+  background: url('notavagina-gusta.jpg');
 }
 
 .green {
