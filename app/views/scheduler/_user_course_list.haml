@@ -3,7 +3,7 @@
 %ul
   - if current_user  
     - if not current_user.courses.empty?
-      %h1 Spring 2012
+      %h1= $CURRENT_SEMESTER.name
     - for course in current_user.courses
       %li
         %a.remove-link X
