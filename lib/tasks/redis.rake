@@ -36,7 +36,7 @@ end
 
 def build_subject_trie
   $redis.multi do
-    Subject.all.each do |subject|
+    $CURRENT_SEMESTER.subjects.each do |subject|
       $redis.sadd("subjects", subject.id)
       $redis.hset("id:subject:#{subject.id}", "label", subject.to_s)
       $redis.hset("id:subject:#{subject.id}", "title", subject.title)
