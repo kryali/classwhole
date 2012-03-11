@@ -53,6 +53,9 @@ header {
   nav.secondary-nav { 
     float: right; 
     //padding: 14px 0;
+    li {
+      float: left;
+    }
     .fb-button {
       padding: 9px 0;
       display: block;

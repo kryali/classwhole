@@ -2,7 +2,7 @@
   %div.center
     %h3= link_to "Classwhole", root_path, {:id => "logo"}
     %nav
-      -#%li= link_to "Course List", show_semester_path(Semester.first.season, Semester.first.year)
+      = link_to "Course List", show_semester_path($CURRENT_SEMESTER.season,$CURRENT_SEMESTER.year)
       = link_to "Scheduler", scheduler_index_path
       = link_to "About", about_path
       - if Rails.env == "development"
