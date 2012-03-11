@@ -1,7 +1,8 @@
 class User < ActiveRecord::Base
   has_many :sections
-  has_many :courses
   has_many :friendships
+  has_and_belongs_to_many :courses
+  set_primary_key :id
 
   def after_initialize
     $redis.sadd("user", self.id)

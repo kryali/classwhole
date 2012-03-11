@@ -2,13 +2,13 @@
 # Handles user login/registration interaction
 #
 class UserController < ApplicationController
-include ApplicationHelper
+  include ApplicationHelper
 
   def login
     user_id = params["userID"]
     begin 
       @user = User.find(user_id)
-    rescue ActiveRecord::RecordNotFound
+    rescue #ActiveRecord::RecordNotFound # Sometimes we get a SQLException?
       @user = register(params["accessToken"], params["userID"])
     ensure
       self.current_user=@user

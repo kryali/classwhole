@@ -2,7 +2,8 @@ class Course < ActiveRecord::Base
   belongs_to :subject
   has_many :sections
   has_and_belongs_to_many :geneds
-
+  has_and_belongs_to_many :users
+  set_primary_key :id
 
   def self.trie(term)
     results_needed = 100
