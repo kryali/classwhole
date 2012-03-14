@@ -23,8 +23,6 @@ class UIUCParser
   
   end
 
-
-
   def self.parse_section(section_xml, current_course, name)
     course_number = section_xml["parents"][0]["course"].first[0] #probably a better way to do this
       
@@ -66,7 +64,6 @@ class UIUCParser
       end
     end   
   end
-
 
   def self.parse_course(course_xml, current_subject, name) 
     puts name    
@@ -187,8 +184,6 @@ class UIUCParser
   end
 
 end
-
-
 
 namespace :data do 
   task :update => [:environment] do

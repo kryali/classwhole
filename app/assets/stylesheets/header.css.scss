@@ -26,7 +26,11 @@ header {
     font-weight: lighter;
     line-height: 1;
     margin-right: 30px;
-    padding: 14px 0em;
+    background: red;
+    width: 165px;
+    height: 40px;
+    background: url('small-logo.png') no-repeat center;
+    padding: 13px 0 0 0;
   }
 
   h3 a:hover { text-decoration: none; }
@@ -36,11 +40,12 @@ header {
     float: left;
     padding-top: 3px;
     a { 
-      color: #888; 
-      padding: 14px 0;
+      color: #555; 
+      padding: 18px 0;
       display: block;
       float: left;
       margin-right: $header-spacing;
+      font-family: 'RobotoLight', 'Arial', sans-serif;
     }
     a:visited {
       color: #888;
