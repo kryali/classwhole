@@ -5,6 +5,7 @@
 = content_for :title, "Classwhole"
 %div#content
   %div.user-course-list-wrapper
+    = link_to "", scheduler_new_path, :class => 'big-logo'
     %div.user-course-list
       = render "scheduler/user_course_list"
       %div.clear

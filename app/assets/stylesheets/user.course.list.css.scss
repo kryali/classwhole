@@ -15,8 +15,9 @@ $course-list-bg     : white; //#E6E6E6;
     background: $course-list-bg;
     border: 1px solid #bbbbbb;
     overflow: hidden;
-    width: 440px;
+    width: 400px;
     margin: 0 auto;
+    position: relative;
 
     a.plus {
       float: left;

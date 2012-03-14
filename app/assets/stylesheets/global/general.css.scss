@@ -94,3 +94,12 @@ $content-bg-color   : url('grey-bg.png');
 .clear {
   clear: both;
 }
+
+.big-logo {
+  width: 320px;
+  height: 72px;
+  background: url("big-logo.png");
+  margin: 0 auto 15px auto;
+  display: block;
+  position: relative;
+}
