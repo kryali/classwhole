@@ -123,12 +123,14 @@ class UIUCParser
     end
   end
 
-  def self.parse_term( term )
-    title = term["content"]
-    puts "=====Parsing #{title}=====" 
-    term_url = term["href"]
-    season = title.split(" ")[0]      
-    year = title.split(" ")[1]        
+  def self.parse_term_sy(season, year)
+    base_term_url = "http://courses.illinois.edu/cisapp/explorer/schedule/"
+    term_url = base_term_url + "#{year}/#{season}.xml"
+    title = "#{season} #{year}"
+    self.fetch_term_data( season, year, title, term_url)
+  end
+
+  def self.fetch_term_data(season, year, title, term_url)
     uri = URI.parse( term_url )
     xml_str = Net::HTTP.get_response( uri ).body
     begin 
@@ -150,6 +152,15 @@ class UIUCParser
     subjects.each do |id, subject|
         self.parse_subject id, subject, current_semester
     end
+  end
+
+  def self.parse_term( term )
+    title = term["content"]
+    puts "=====Parsing #{title}====="
+    term_url = term["href"]
+    season = title.split(" ")[0]
+    year = title.split(" ")[1]
+    self.fetch_term_data( season, year, title, term_url )
   end
 
   # Takes a term, and parses the data into the table
@@ -183,5 +194,11 @@ namespace :data do
   task :update => [:environment] do
     puts "Parsing?"
     UIUCParser.parse_year 2012
+  end
+
+  task :seed, :season, :year, :needs => [:environment] do |t, args|
+    year = args[:year]
+    season = args[:season]
+    UIUCParser.parse_term_sy(season,year)
   end
 end
