@@ -2,17 +2,21 @@ $course-list-bg     : white; //#E6E6E6;
 
 .user-course-list-wrapper {
   font-family: 'Arial', 'Tahoma', serif;
-  width: 550px;
-  margin: 5% auto 0 auto;
+  width: 917px;
+  height: 513px;
+  //margin: 5% auto 0 auto;
   position: relative;
-  padding: 1em;
+  //padding: 1em;
   font-size: 1.6em;
+  background: url("schedule-blur.png");
 
   .user-course-list {
     padding: 1em;
     background: $course-list-bg;
     border: 1px solid #bbbbbb;
     overflow: hidden;
+    width: 440px;
+    margin: 0 auto;
 
     a.plus {
       float: left;
@@ -118,12 +122,12 @@ $course-list-bg     : white; //#E6E6E6;
   }
 
   span.hint {
-    font-family: 'Georgia', 'Times New Roman', 'Georgia', serif;
+    font-family: 'RobotoRegular','Georgia', 'Times New Roman', 'Georgia', serif;
     display: block;
-    font-size: .75em;
-    font-style: italic;
+    font-size: 24px;
     text-align: center;
     padding-bottom: 1em;
+    //font-style: italic;
     //padding-top: 1em;
     //border-bottom: 1px solid #CDCDCD;
   }

@@ -54,9 +54,9 @@ a:visited {
 $content-bg-color   : url('grey-bg.png');
 #content {
   font-family: 'Arial', 'Tahoma', sans-serif;
-  padding: 40px;
+  padding: 6em 40px 0 40px;
   position: relative;
-  margin-top: 3em;
+  //margin-top: 3em;
 }
 
 .content {

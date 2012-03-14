@@ -8,8 +8,8 @@
     %div.user-course-list
       = render "scheduler/user_course_list"
       %div.clear
-    =link_to "Schedule", scheduler_new_path, :class => 'btn primary schedule'
-    <div class="fb-like" data-href="classwhole.com" data-send="true" data-width="450" data-show-faces="true"></div>
+      =link_to "Schedule", scheduler_new_path, :class => 'btn primary schedule'
+      <div class="fb-like" data-href="classwhole.com" data-send="true" data-width="450" data-show-faces="true"></div>
     %div.hours
       - if current_user
         -#%span= current_user.total_course_hours
