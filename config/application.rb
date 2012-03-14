@@ -49,7 +49,7 @@ module Whiteboard
 
     # config.time_zone = "Central Time (US & Canada)"
     config.after_initialize do 
-      $CURRENT_SEMESTER = Semester.find_by_season_and_year("Spring", "2012")
+      $CURRENT_SEMESTER = Semester.find_by_season_and_year("Fall", "2012")
     end
   end
 end
