@@ -1,8 +1,0 @@
--#%li= link_to 'My Schedule', scheduler_show_path( current_user.id )
-%a{:href=>scheduler_show_path( current_user.id)}
-  %span= current_user.name
-%div.divider
-%a{:class=>"dropdown", :href=>"#"}
-  %ul.dropdown-menu
-    %li= link_to 'Logout', logout_path
-%span{ :id=>"current_user", :class=>"hidden" }= current_user.id

@@ -1,0 +1,13 @@
+
+<a href="<%=scheduler_show_path( current_user.id)%>">
+  <span><%= current_user.name %></span>
+</a>
+<div class="divider"></div>
+<div class="c-dropdown" id="dropdown-image">
+  <div class="c-dropdown-menu">
+    <%=link_to 'Logout', logout_path %>
+  </div>
+</div>
+<span id="current_user" class="hidden">
+  <%= current_user.id%>
+</span>
