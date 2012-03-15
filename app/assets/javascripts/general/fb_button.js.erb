@@ -27,7 +27,7 @@ $(document).ready(function() {
           // track the name
           mpq.name_tag($(data).find(".name").text());
           //console.log(data["user"]["name"]);
-          $("ul.secondary-nav").empty().append( $(data) );
+          $(".secondary-nav").empty().append( $(data) );
           $(document).trigger("logged-in");
 
         },
