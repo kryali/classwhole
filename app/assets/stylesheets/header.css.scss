@@ -41,10 +41,10 @@ header {
     padding-top: 3px;
     a { 
       color: #555; 
-      padding: 18px 0;
+      padding: 18px $header-spacing 18px 0;
       display: block;
       float: left;
-      margin-right: $header-spacing;
+      //margin-right: $header-spacing;
       font-family: 'RobotoLight', 'Arial', sans-serif;
     }
     a:visited {
@@ -66,7 +66,28 @@ header {
       display: block;
       float: right;
     }
+
+    a {
+      display: inline-block;
+      float: left;
+    }
   }
 
 
+}
+
+.divider {
+  width: 1px;
+  height: 15px;
+  background: #ccc;
+  float: left;
+  margin-top: 17px;
+}
+
+.dropdown {
+  padding-left: 10px;
+  width: 12px;
+  height: 12px;
+  background: url("dropdown.png") no-repeat center;
+  display: block;
 }
