@@ -4,19 +4,32 @@
 
 = content_for :title, "Classwhole"
 %div#content
-  %div.user-course-list-wrapper
-    = link_to "", scheduler_new_path, :class => 'big-logo'
-    %div.user-course-list
-      = render "scheduler/user_course_list"
-      %div.clear
-      =link_to "Schedule", scheduler_new_path, :class => 'btn primary schedule'
-      <div class="fb-like" data-href="classwhole.com" data-send="true" data-width="450" data-show-faces="true"></div>
-    %div.hours
-      - if current_user
-        -#%span= current_user.total_course_hours
-      - else
-        -#%span= 0
-      -#hrs.
-    - unless current_user.is_temp?
-      -if current_user and current_user.friends
-        =# render :partial => "friends", :locals => {:user => current_user}
+  %div{:class => "blur vertical-center"}
+    %div.user-course-list-wrapper
+      = link_to "", scheduler_new_path, :class => 'big-logo'
+      %div.user-course-list
+        = render "scheduler/user_course_list"
+        %div.clear
+        =link_to "Schedule", scheduler_new_path, :class => 'btn primary schedule large'
+        %div.feature-box
+          %div.feature-row
+            %div{:class=>"feature drag"}
+              %div.icon
+              %div.text Drag-and-drop class sections
+            %div{:class=>"feature fb"}
+              %div.icon
+              %div.text Optional Facebook integration
+      %div.video-link
+        Want to learn more?
+        =link_to "Watch a Video", "youtube.com"
+          
+      <div class="fb-like" data-href="classwhole.com" data-send="true" data-width="400" data-show-faces="true"></div>
+      %div.hours
+        - if current_user
+          -#%span= current_user.total_course_hours
+        - else
+          -#%span= 0
+        -#hrs.
+      - unless current_user.is_temp?
+        -if current_user and current_user.friends
+          =# render :partial => "friends", :locals => {:user => current_user}

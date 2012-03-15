@@ -1,23 +1,36 @@
 $course-list-bg     : white; //#E6E6E6;
 
-.user-course-list-wrapper {
+.blur {
   font-family: 'Arial', 'Tahoma', serif;
   width: 917px;
   height: 513px;
-  //margin: 5% auto 0 auto;
+  margin-top: 75px;
   position: relative;
   //padding: 1em;
   font-size: 1.6em;
   background: url("schedule-blur.png");
 
+  .user-course-list-wrapper {
+    margin: 0 auto;
+    width: 500px;
+  }
+
   .user-course-list {
-    padding: 1em;
+    padding: 45px;
     background: $course-list-bg;
     border: 1px solid #bbbbbb;
     overflow: hidden;
     width: 400px;
     margin: 0 auto;
     position: relative;
+
+    a.schedule {
+      margin: 2em auto 2em auto;
+      width: 140px;
+      display: block;
+      text-align: center;
+      //font-size: 20px;
+    }
 
     a.plus {
       float: left;
@@ -41,20 +54,6 @@ $course-list-bg     : white; //#E6E6E6;
       text-decoration: none;
     }
 
-  }
-
-  a.schedule {
-    padding: 5px;
-    border: 1px solid #ccc;
-    font-size: 18px;
-    margin: 0 auto;
-    display: block;
-    width: 100%;
-    text-align: center;
-    background: #0069D6;
-    height: 37px;
-    padding: 12px 0px;
-    color: white;
   }
 
   h1 {
@@ -157,9 +156,66 @@ $course-list-bg     : white; //#E6E6E6;
 
 }
 
+.video-link {
+  color: #aaa;
+  padding: 1em;
+  background: #313131;
+  width: 468px;
+  font-size: 12px;
+  margin: 0 auto;
+  text-align: center;
+
+  a {
+    color: white;
+  }
+}
+
+.feature-box {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
+  .feature-row {
+    margin: 0 auto;
+    padding-left: 8px;
+    overflow: hidden;
+    background: #FAFAFA;
+  }
+
+  .fb .icon {
+    background: url("facebook-icon.png");
+  }
+
+  .drag .icon {
+    background: url("drag-hand.png");
+  }
+
+  .icon {
+    width: 32px;
+    height: 32px;
+    background: red;
+    float: left;
+  }
+  .text {
+    float: left;
+    font-size: 12px;
+    width: 103px;
+    margin-left: 19px;
+  }
+
+  .feature {
+    padding: 19px;
+    //background: blue;
+    position: relative;
+    float: left;
+  }
+}
+
 .fb-like,
 .fb_edge_widget_with_comment {
-  margin-top: 20px;
+  margin: 20px auto 0 auto;
 }
 
 .hidden-course-form {
