@@ -19,4 +19,7 @@ module ApplicationHelper
     return ret_string
   end
 
+  def fb_img_link( user, type = "large" ) 
+    "https://graph.facebook.com/#{user.id}/picture?type=#{type}"
+  end
 end

@@ -139,8 +139,25 @@ header {
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   border: 1px solid #999;
+  box-shadow: 0px -1px 2px #ccc;
 }
 
 .c-dropdown:hover .c-dropdown-menu {
   display: block;
+}
+
+#user-link {
+  padding: 0px;
+  vertical-align: top;
+  img {
+    width: 23px;
+    height: 23px;
+    margin: 0 4px 12px 10px;
+  }
+
+  span {
+    padding: 26px 12px 22px 0px;
+    display: inline-block;
+    line-height: 0px;
+  }
 }

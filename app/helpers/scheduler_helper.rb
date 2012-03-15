@@ -154,10 +154,6 @@ module SchedulerHelper
     return courses, course_section_hash
   end
 
-  def fb_img_link( user, type = "large" ) 
-    "https://graph.facebook.com/#{user.id}/picture?type=#{type}"
-  end
-
   # This function takes an array of section array of ActiveRecord 
   # objects spits out the sections in ids in an array
   def section_ids_from_schedules( all_schedules )
