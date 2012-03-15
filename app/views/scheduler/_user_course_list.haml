@@ -1,6 +1,7 @@
 - unless current_user_has_courses?
   %span.hint The best way to schedule classes
 %ul
+  -#%div. Type in some classes to get started
   - if current_user  
     - if not current_user.courses.empty?
       %h1= $CURRENT_SEMESTER.name
