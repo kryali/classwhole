@@ -1,4 +1,4 @@
-$header-spacing: 15px;
+$header-spacing: 7px;
 $a-link-color: #0069D6;
 
 header {
@@ -41,7 +41,7 @@ header {
     padding-top: 3px;
     a { 
       color: #555; 
-      padding: 18px $header-spacing 18px 0;
+      padding: 18px $header-spacing 18px $header-spacing;
       display: block;
       float: left;
       //margin-right: $header-spacing;
@@ -51,7 +51,11 @@ header {
       color: #888;
     }
     // overide default
-    a:hover { color: $a-link-color; }
+    a:hover { 
+      color: $a-link-color; 
+      background: #eee;
+      text-decoration: none;
+    }
 
   }
 
@@ -81,13 +85,17 @@ header {
   height: 15px;
   background: #ccc;
   float: left;
-  margin-top: 17px;
+  margin: 17px 0px 0 0px;
 }
 
 .dropdown {
   padding-left: 10px;
   width: 12px;
-  height: 12px;
+  height: 16px;
   background: url("dropdown.png") no-repeat center;
   display: block;
+}
+
+.dropdown:hover {
+  background: url("dropdown.png") #eee no-repeat center;
 }
