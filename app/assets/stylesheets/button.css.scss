@@ -4,6 +4,14 @@
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr="#{$start}", endColorstr='#{$end}');
 }
 
+@mixin transition($time, $mode) {
+  -webkit-transition: $time $mode all;
+  -moz-transition: $time $mode all;
+  -ms-transition: $time $mode all;
+  -o-transition: $time $mode all;
+  transition: $time $mode all;
+}
+
 .button {
   display: inline-block;
   padding: .5em 2em .55em;
@@ -16,6 +24,7 @@
   text-decoration: none;
   text-align: center;
   color: white;
+  font-size: 18px;
 }
 
 .button:hover {
@@ -27,15 +36,30 @@
   top: 1px;
 }
 
+.button:visited {
+  color: white;
+}
+
 .blue {
   border: 1px solid #005ab8;
   @include gradient(#049ada, #0069ce);
-
   &:hover {
     @include gradient(#048fcd, #0069ce);
   }
-
   &:active {
     @include gradient(#0069ce, #017aae);
+  }
+}
+
+.grey {
+  border: 1px solid #AAAAAA;
+  color: #333;
+  text-shadow: none;
+  @include gradient(#FFFFFF, #e7e7e7);
+  &:hover {
+    @include gradient(#F0F0F0, #e7e7e7);
+  }
+  &:active {
+    @include gradient(#EEE, #DDD);
   }
 }
