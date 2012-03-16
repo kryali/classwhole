@@ -2,13 +2,12 @@ $course-list-bg     : white; //#E6E6E6;
 
 .blur {
   font-family: 'Arial', 'Tahoma', serif;
-  width: 917px;
   height: 513px;
   margin-top: 75px;
   position: relative;
   //padding: 1em;
   font-size: 1.6em;
-  background: url("schedule-blur.png");
+  background: url("schedule-blur.png") no-repeat center;
 
   .user-course-list-wrapper {
     margin: 0 auto;

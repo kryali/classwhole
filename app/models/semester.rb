@@ -2,6 +2,6 @@ class Semester < ActiveRecord::Base
   has_many :subjects
 
   def name
-    self.season + " " + self.year
+    self.season.capitalize + " " + self.year
   end
 end
