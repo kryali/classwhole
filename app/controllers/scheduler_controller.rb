@@ -22,7 +22,7 @@ class SchedulerController < ApplicationController
       begin      
       scheduler = Scheduler.new(current_user.courses)
       status = Timeout::timeout(5) {     
-        scheduler.schedule_courses
+        scheduler.schedule_all
       } 
       rescue Timeout::Error
         logger.error current_user.courses

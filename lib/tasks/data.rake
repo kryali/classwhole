@@ -8,6 +8,36 @@ require 'pp'
 class UIUCParser
   @base_url = "http://courses.illinois.edu/cisapp/explorer/schedule/"
 
+  # Configuration Key to create a configurations_hash of _course
+  # this may need to become more advanced depending on if we discover unusual courses
+  def self.configuration_key(section)
+    if section.course_subject_code == "PHYS" #PHYSICS DEPARTMENT Y U NO CONSISTENT?
+      key = section.course_subject_code
+    elsif section.code.nil? #If there is no code, assume all courses are in the same configuration
+      key = section.course_subject_code
+    elsif (true if Integer(section.code) rescue false) #If the code is an integer, assume the courses should be in the same configuration
+      key = section.course_subject_code
+    elsif section.code.length == 1
+      key = section.course_subject_code
+    elsif section.code.length == 2
+      if (true if Integer(section.code[0]) rescue false)
+        key = section.code[1]
+      else
+        key = section.code[0]
+      end
+    else
+      key = section.code[0]
+      if (true if Integer(section.code[1]) rescue false)
+        unless (true if Integer(section.code[2]) rescue false)
+          key << section.code[1]
+        end
+      else
+        key << section.code[0]
+      end
+    end
+    return key
+  end
+
   def self.parse_meeting(meeting, meeting_number, current_section)
     current_meeting = current_section.meetings.find_by_meeting_number(meeting_number)
     if current_meeting.nil?
@@ -55,7 +85,19 @@ class UIUCParser
       current_section.course_title = section_xml["parents"][0]["course"].first[1]["content"]
       current_section.course_number = section_xml["parents"][0]["course"].first[0]
       current_section.code = section_xml["sectionNumber"][0]    if section_xml.has_key?("sectionNumber")
-      current_section.save    
+
+      # setup course configuration
+      if current_section.configuration.nil?
+        key = configuration_key(current_section)
+        configuration = Configuration.find_by_subject_and_course_number_and_key(current_section.course_subject_code, current_section.course_number, key)
+        if configuration.nil?
+          configuration = Configuration.new(:key=>key, :subject=>current_section.course_subject_code, :course_number=>current_section.course_number)
+          configuration.save
+        end
+        current_section.configuration = configuration
+      end  
+      
+      current_section.save
       # iterate through the meetings
       meetings = section_xml["meetings"][0]["meeting"]
       #for each course in the subject    
