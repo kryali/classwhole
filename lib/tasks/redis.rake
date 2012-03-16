@@ -37,17 +37,21 @@ end
 def build_subject_trie
   $redis.multi do
     $CURRENT_SEMESTER.subjects.each do |subject|
-      $redis.sadd("subjects", subject.id)
-      $redis.hset("id:subject:#{subject.id}", "label", subject.to_s)
-      $redis.hset("id:subject:#{subject.id}", "title", subject.title)
-      $redis.hset("id:subject:#{subject.id}", "value", subject.code)
-      str = subject.code
-      size = str.size
 
-      current_str = ""
-      size.times do |i|
-        current_str += str[i] if str[i] != " "
-        $redis.sadd("subject:#{current_str}", subject.id)
+      # Only add subjects with courses
+      if $CURRENT_SEMESTER.subjects.first.courses.size > 0
+        $redis.sadd("subjects", subject.id)
+        $redis.hset("id:subject:#{subject.id}", "label", subject.to_s)
+        $redis.hset("id:subject:#{subject.id}", "title", subject.title)
+        $redis.hset("id:subject:#{subject.id}", "value", subject.code)
+        str = subject.code
+        size = str.size
+
+        current_str = ""
+        size.times do |i|
+          current_str += str[i] if str[i] != " "
+          $redis.sadd("subject:#{current_str}", subject.id)
+        end
       end
     end
   end
@@ -56,18 +60,20 @@ end
 
 def build_course_trie
   $redis.multi do
-    Course.all.each do |course|
-      $redis.sadd("courses", course.id)
-      $redis.hset("id:course:#{course.id}", "label", course.to_s)
-      $redis.hset("id:course:#{course.id}", "title", course.title)
-      $redis.hset("id:course:#{course.id}", "value", course.to_s)
-      str = course.to_s
-      size = str.size
+    $CURRENT_SEMESTER.subjects.each do |subject|
+      subject.courses.all.each do |course|
+        $redis.sadd("courses", course.id)
+        $redis.hset("id:course:#{course.id}", "label", course.to_s)
+        $redis.hset("id:course:#{course.id}", "title", course.title)
+        $redis.hset("id:course:#{course.id}", "value", course.to_s)
+        str = course.to_s
+        size = str.size
 
-      current_str = ""
-      size.times do |i|
-        current_str += str[i] if str[i] != " "
-        $redis.sadd("course:#{current_str}", course.id)
+        current_str = ""
+        size.times do |i|
+          current_str += str[i] if str[i] != " "
+          $redis.sadd("course:#{current_str}", course.id)
+        end
       end
     end
   end

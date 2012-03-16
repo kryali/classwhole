@@ -52,9 +52,7 @@ $(document).ready(function () {
        }, 400, function() { alert_box.remove(); } )
     };
 
-    var hide_timeout = setTimeout( function() { remove_box(); }, 2400);
-
-
+    //var hide_timeout = setTimeout( function() { remove_box(); }, 2400);
     alert_close_box.click( function() { remove_box(); });
   };
 
