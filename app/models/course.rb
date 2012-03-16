@@ -79,7 +79,7 @@ class Course < ActiveRecord::Base
       configs_array[i] = configs_array[i][1].sort_by{|k,sections| sections.length}
       for j in 0...configs_array[i].length
         configs_array[i][j] = configs_array[i][j][1]
-        configs_array[i][j].sort!{|x,y| x.start_time.to_i <=> y.start_time.to_i}
+        #configs_array[i][j].sort!{|x,y| x.start_time.to_i <=> y.start_time.to_i}
       end
     end
 

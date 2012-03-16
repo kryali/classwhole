@@ -12,7 +12,7 @@ class Scheduler
 
   # Brute force recurses through all course configurations
   # Generates a schedule for each course configuration
-  def schedule_all_recursive(course_index, permuation)
+  def schedule_all_recursive(course_index, permutation)
     if course_index == @courses.size
       schedule_permutation(permutation)
       return
@@ -20,7 +20,7 @@ class Scheduler
     course = @courses[course_index]
     course.configurations.each do |configuration|
       permutation.push(configuration)
-      initialize_configuration_permutations(course_index+1)
+      schedule_all_recursive(course_index+1, permutation)
       permutation.pop
     end
   end
@@ -41,7 +41,7 @@ class Scheduler
 
   def ac3_DFS(index, domains)
     if index >= domains.size
-      @valid_schedules << domains
+      @valid_schedules << domains[0]
       return true
     end
     return ac3_DFS(index+1, domains) if domains[index].size == 1 #this may be a problem, not sure
@@ -49,7 +49,7 @@ class Scheduler
       domains_copy = domains.clone
       domains_copy[index] = [package]
       if ac3(domains_copy)
-        return true if ac3_DFS(cell+1, domains_copy)
+        return true if ac3_DFS(index+1, domains_copy)
       end
     end
     return false
@@ -62,7 +62,7 @@ class Scheduler
 			constraint = constraints.values.first
       constraints.delete(constraint.key)
       
-			if (revise(constraint, domains))
+			if (reduce(constraint, domains))
 				if domains[constraint.a1].empty?
 					return false
 				end
