@@ -1,0 +1,41 @@
+@mixin gradient( $start, $end) {
+  background: -webkit-gradient(linear, left top, left bottom, from($start), to($end));
+  background: -moz-gradient(top, $start, $end);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr="#{$start}", endColorstr='#{$end}');
+}
+
+.button {
+  display: inline-block;
+  padding: .5em 2em .55em;
+  border: 1px solid #ccc;
+  border-radius: .2em;
+  text-shadow: 0 1px 1px rgba(0,0,0,.3);
+  box-shadow: 0 1px 2px rgba(0,0,0,.2);
+  cursor: pointer;
+  outline: none;
+  text-decoration: none;
+  text-align: center;
+  color: white;
+}
+
+.button:hover {
+  text-decoration: none;
+}
+
+.button:active {
+  position: relative;
+  top: 1px;
+}
+
+.blue {
+  border: 1px solid #005ab8;
+  @include gradient(#049ada, #0069ce);
+
+  &:hover {
+    @include gradient(#048fcd, #0069ce);
+  }
+
+  &:active {
+    @include gradient(#0069ce, #017aae);
+  }
+}
