@@ -20,9 +20,9 @@ class SchedulerController < ApplicationController
                                                 :data => 'valid_schedules' ) {
 
       begin      
-      scheduler = Scheduler.new
+      scheduler = Scheduler.new(current_user.courses)
       status = Timeout::timeout(5) {     
-        scheduler.schedule_courses(current_user.courses)
+        scheduler.schedule_courses
       } 
       rescue Timeout::Error
         logger.error current_user.courses
