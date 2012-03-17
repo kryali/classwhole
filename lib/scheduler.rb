@@ -1,18 +1,22 @@
 class Scheduler
   attr_accessor :courses, :valid_schedules
 
-  def initialize(courses)
-    @courses = courses
+  def initialize
+    @valid_schedules = []
   end
 
-  def schedule_all
-    @valid_schedules = []
-    schedule_all_recursive(0, [])
+  def schedule_courses(courses)
+    @courses = courses
+    schedule_courses_recursive(0, [])
   end
+
+  #def schedule_configurations(configurations)
+    #schedule_permutation(configurations)
+  #end
 
   # Brute force recurses through all course configurations
   # Generates a schedule for each course configuration
-  def schedule_all_recursive(course_index, permutation)
+  def schedule_courses_recursive(course_index, permutation)
     if course_index == @courses.size
       schedule_permutation(permutation)
       return
@@ -20,7 +24,7 @@ class Scheduler
     course = @courses[course_index]
     course.configurations.each do |configuration|
       permutation.push(configuration)
-      schedule_all_recursive(course_index+1, permutation)
+      schedule_courses_recursive(course_index+1, permutation)
       permutation.pop
     end
   end
@@ -28,8 +32,8 @@ class Scheduler
   def schedule_permutation(permutation)
     domains = []
     permutation.each do |configuration|
-      configuration.each do |packages|
-        domains << packages
+      configuration.section_array.each do |package|
+        domains << package
       end
     end
     @constraints = make_constraints(domains)

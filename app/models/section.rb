@@ -3,6 +3,36 @@ class Section < ActiveRecord::Base
   belongs_to :configuration
   has_many :meetings
 
+  # Configuration Key generation
+  # this may need to become more advanced depending on if we discover unusual courses
+  def generate_configuration_key
+    if self.course_subject_code == "PHYS" #PHYSICS DEPARTMENT Y U NO CONSISTENT?
+      key = self.course_subject_code
+    elsif self.code.nil? #If there is no code, assume all courses are in the same configuration
+      key = self.course_subject_code
+    elsif (true if Integer(self.code) rescue false) #If the code is an integer, assume the courses should be in the same configuration
+      key = self.course_subject_code
+    elsif self.code.length == 1
+      key = self.course_subject_code
+    elsif self.code.length == 2
+      if (true if Integer(self.code[0]) rescue false)
+        key = self.code[1]
+      else
+        key = self.code[0]
+      end
+    else
+      key = self.code[0]
+      if (true if Integer(self.code[1]) rescue false)
+        unless (true if Integer(self.code[2]) rescue false)
+          key << self.code[1]
+        end
+      else
+        key << self.code[0]
+      end
+    end
+    return key
+  end
+
   # Description: Checks to see if there is a conflict between 2 meetings
   def meeting_conflict?(meeting1, meeting2)
     return false if meeting1.start_time.nil? or meeting2.start_time.nil?
