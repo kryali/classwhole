@@ -23,6 +23,7 @@ $(document).ready(function () {
 
  pop_alert = function(level, bold_message, message) {
 
+    var container = $(".alert-box").css("display","block");
     /* Build the html and insert it into the document */
     var alert_close_box = $('<a />', {
       href: "#",
@@ -47,12 +48,16 @@ $(document).ready(function () {
     }, 500, undefined );
 
     var remove_box = function() {
-       alert_box.animate({
-         opacity: 0,
-       }, 400, function() { alert_box.remove(); } )
+      alert_box.animate({
+        opacity: 0,
+      }, 400, 
+      function() { 
+        alert_box.remove();
+        container.css("display","none");
+      });
     };
 
-    //var hide_timeout = setTimeout( function() { remove_box(); }, 2400);
+    var hide_timeout = setTimeout( function() { remove_box(); }, 2400);
     alert_close_box.click( function() { remove_box(); });
   };
 
