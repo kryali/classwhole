@@ -19,10 +19,11 @@
         -if first_letter != subject.code[0]
           -first_letter = subject.code[0]
           %tr
-            %td
+            %td              
               %a{:name => "#{first_letter}"}
         %tr      
           %td{:class => 'major_cells'}
             = subject.code
           %td{:class => 'major_cells'}                  
             = link_to subject.title, show_subject_path(:year => @semester.year, :season => @semester.season, :subject_code => subject.code)    
+        

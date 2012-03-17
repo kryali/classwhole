@@ -74,7 +74,13 @@ class CatalogController < ApplicationController
   #   courses/:season/:year/:subject_code/:courseNumber
   def course
     @course = get_course(params)
-    @sections = @course.sections     
+    @sections = @course.sections
+    @meetings  = []
+    for section in @sections
+      for meeting in section.meetings      
+        @meetings << meeting
+      end
+    end     
 		@types_of_sections = get_different_sections()
 		render 'course'
   end

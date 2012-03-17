@@ -24,7 +24,7 @@
     %div{:id => "course_name"}
       =@course.title
     %div{:id => "hours"}  
-      = @course.hours.to_s + " credit hours"
+      = @course.credit_hours.to_s + " credit hours"
     
     %p{:id => "course_description"}
       =@course.description
@@ -60,24 +60,24 @@
               Building
             %th
               Section      
-            -for section in @course.sections
-              -if type == section.section_type
+            -for meeting in @meetings             
+              -if type = meeting.section.section_type
                 %tr
                   %td
-                    -if !section.start_time.nil?                
-                      = section.duration_s            
+                    -if !meeting.start_time.nil?                
+                      = meeting.duration_s            
                   %td
-                    -if !section.days.nil?  
-                      = section.days            
+                    -if !meeting.days.nil?  
+                      = meeting.days            
                   %td
-                    -if !section.instructor.nil?  
-                      = section.instructor
+                    -if !meeting.instructors.nil?  
+                      = meeting.instructors.first.full_name
                   %td
-                    -if !section.building.nil?  
-                      = section.building[1..-1]
+                    -if !meeting.building.nil?  
+                      = meeting.building[1..-1]
                   %td
-                    -if !section.code.nil?  
-                      = section.code
+                    -if !meeting.section.code.nil?  
+                      = meeting.section.code
         -if first_flag == 1
           -first_flag = 0        
           %table{:class => "zebra-striped active", :id => "#{type}"}                            
@@ -91,24 +91,24 @@
               Building
             %th
               Section      
-            -for section in @course.sections
-              -if type == section.section_type
+            -for meeting in @meetings             
+              -if type = meeting.section.section_type
                 %tr
                   %td
-                    -if !section.start_time.nil?                
-                      = section.duration_s            
+                    -if !meeting.start_time.nil?                
+                      = meeting.duration_s            
                   %td
-                    -if !section.days.nil?  
-                      = section.days            
+                    -if !meeting.days.nil?  
+                      = meeting.days            
                   %td
-                    -if !section.instructor.nil?  
-                      = section.instructor
+                    -if !meeting.instructors.nil?  
+                      = meeting.instructors.first.full_name
                   %td
-                    -if !section.building.nil?  
-                      = section.building[1..-1]
+                    -if !meeting.building.nil?  
+                      = meeting.building[1..-1]
                   %td
-                    -if !section.code.nil?  
-                      = section.code
+                    -if !meeting.section.code.nil?  
+                      = meeting.section.code
 
   :javascript
     $(function () {

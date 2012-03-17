@@ -20,6 +20,29 @@ class UIUCParser
     current_meeting.days = meeting["daysOfTheWeek"][0].strip if meeting.key?("daysOfTheWeek")
     current_meeting.class_type = meeting["type"][0]["content"]       if meeting.key?("type")
     current_meeting.save
+    #add instructor to database
+    if not meeting["instructors"][0].empty?
+      #loop over all the professors for the meeting (some have multiple instructors)      
+      for instructor in  meeting["instructors"][0]["instructor"]
+        full_name = instructor["content"]
+        #instructor table
+        instructor_alone = Instructor.find_by_full_name(full_name)        
+        instructor_alone = Instructor.new  if instructor_alone.nil?
+        instructor_alone.full_name = full_name
+        instructor_alone.save
+        #instructors.meetings
+        instructor_meeting = instructor_alone.meetings.find_by_id(current_meeting.id)
+        instructor_alone.meetings << current_meeting if instructor_meeting.nil?
+        #meetings.instructors 
+        meeting_instructor = current_meeting.instructors.find_by_full_name(full_name) 
+        meeting_instructor = current_meeting.instructors.new if meeting_instructor.nil?
+        meeting_instructor.full_name = full_name
+        #### checkkkkkkkkkkkkkkkkkkk
+        meeting_instructor.save   
+      end
+    end   
+    # current_instructor = Instructor.find_by_full_name
+    #current_meeting.save
   
   end
 
