@@ -47,8 +47,10 @@ class UIUCParser
   end
 
   def self.parse_section(section_xml, current_course, name)
-    course_number = section_xml["parents"][0]["course"].first[0] #probably a better way to do this
-      
+    course_number = section_xml["parents"][0]["course"].first[0] #probably a better way to do this     
+    href = section_xml["href"]
+    match_crn = /\/(?<crn>[0-9]+)\.xml/.match(href)
+    crn =  match_crn[:crn]     
     # this (class)whole if-else business is just so if there is a 
     # fucked up entry where a section has no code (like "AL1"),
     # this won't crash     
@@ -58,11 +60,12 @@ class UIUCParser
       code = "NO CODE"
     end   
     Section.transaction do    
-      current_section = current_course.sections.find_by_code(code)
+      current_section = current_course.sections.find_by_code(crn)
       if current_section.nil?
         current_section = current_course.sections.new
-        current_section.code = code  
-      end      
+      end
+      current_section.reference_number = crn        
+      current_section.code = code        
       current_section.part_of_term = section_xml["partOfTerm"][0] if section_xml.key?("partOfTerm")
       #1 means course is open, 0 means it's not    
       if section_xml["enrollmentStatus"][0].include?("Open")
