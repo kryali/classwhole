@@ -123,3 +123,4 @@ class Section < ActiveRecord::Base
     latest_end_hour = (latest_end_time.to_f/60).ceil
     return earliest_start_hour, latest_end_hour
   end
+end
