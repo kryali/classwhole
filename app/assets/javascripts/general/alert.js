@@ -44,14 +44,16 @@ $(document).ready(function () {
 
     alert_box.animate({
       opacity: 1,
-    }, 100, undefined );
+    }, 500, undefined );
 
-    var hide_timeout = setTimeout( function() {
-                                  alert_box.animate({
-                                    opacity: 0,
-                                  }, 400, undefined );
-                               }, 2400);
-    var rem_timeout = setTimeout( function() { alert_box.remove(); }, timeout + 400);
+    var remove_box = function() {
+       alert_box.animate({
+         opacity: 0,
+       }, 400, function() { alert_box.remove(); } )
+    };
+
+    //var hide_timeout = setTimeout( function() { remove_box(); }, 2400);
+    alert_close_box.click( function() { remove_box(); });
   };
 
 });

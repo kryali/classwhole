@@ -3,10 +3,19 @@ class Section < ActiveRecord::Base
   belongs_to :configuration
   has_many :meetings
 
+  def short_code 
+    case section_type
+    when 'lecture'
+      return 'LEC'
+    when 'lecture-discussion'
+      return 'LCD'
+    when 'laboratory-discussion'
+      return 'LBD'
+    end
 
-  # Configuration Key to access the configurations_hash of a register_course
+  # Configuration Key generation
   # this may need to become more advanced depending on if we discover unusual courses
-  def configuration_key
+  def generate_configuration_key
     if self.course_subject_code == "PHYS" #PHYSICS DEPARTMENT Y U NO CONSISTENT?
       key = self.course_subject_code
     elsif self.code.nil? #If there is no code, assume all courses are in the same configuration
@@ -74,9 +83,6 @@ class Section < ActiveRecord::Base
   def course_to_s
     return "#{course_subject_code} #{course_number}"
   end
-
-
-
 
   def self.hour_range(sections)
     finished_courses = []

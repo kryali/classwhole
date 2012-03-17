@@ -1,18 +1,22 @@
 class Scheduler
   attr_accessor :courses, :valid_schedules
 
-  def initialize(courses)
-    @courses = courses
+  def initialize
+    @valid_schedules = []
   end
 
-  def schedule_all
-    @valid_schedules = []
-    schedule_all_recursive(0, [])
+  def schedule_courses(courses)
+    @courses = courses
+    schedule_courses_recursive(0, [])
   end
+
+  #def schedule_configurations(configurations)
+    #schedule_permutation(configurations)
+  #end
 
   # Brute force recurses through all course configurations
   # Generates a schedule for each course configuration
-  def schedule_all_recursive(course_index, permuation)
+  def schedule_courses_recursive(course_index, permutation)
     if course_index == @courses.size
       schedule_permutation(permutation)
       return
@@ -20,7 +24,7 @@ class Scheduler
     course = @courses[course_index]
     course.configurations.each do |configuration|
       permutation.push(configuration)
-      initialize_configuration_permutations(course_index+1)
+      schedule_courses_recursive(course_index+1, permutation)
       permutation.pop
     end
   end
@@ -28,8 +32,8 @@ class Scheduler
   def schedule_permutation(permutation)
     domains = []
     permutation.each do |configuration|
-      configuration.each do |packages|
-        domains << packages
+      configuration.section_array.each do |package|
+        domains << package
       end
     end
     @constraints = make_constraints(domains)
@@ -41,7 +45,7 @@ class Scheduler
 
   def ac3_DFS(index, domains)
     if index >= domains.size
-      @valid_schedules << domains
+      @valid_schedules << domains[0]
       return true
     end
     return ac3_DFS(index+1, domains) if domains[index].size == 1 #this may be a problem, not sure
@@ -49,7 +53,7 @@ class Scheduler
       domains_copy = domains.clone
       domains_copy[index] = [package]
       if ac3(domains_copy)
-        return true if ac3_DFS(cell+1, domains_copy)
+        return true if ac3_DFS(index+1, domains_copy)
       end
     end
     return false
@@ -62,7 +66,7 @@ class Scheduler
 			constraint = constraints.values.first
       constraints.delete(constraint.key)
       
-			if (revise(constraint, domains))
+			if (reduce(constraint, domains))
 				if domains[constraint.a1].empty?
 					return false
 				end

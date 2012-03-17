@@ -78,7 +78,20 @@ class UIUCParser
       current_section.course_title = section_xml["parents"][0]["course"].first[1]["content"]
       current_section.course_number = section_xml["parents"][0]["course"].first[0]
       current_section.code = section_xml["sectionNumber"][0]    if section_xml.has_key?("sectionNumber")
-      current_section.save    
+
+      # setup course configuration
+      if current_section.configuration.nil?
+        key = current_section.generate_configuration_key
+        configuration = Configuration.find_by_course_id_and_key(current_course.id, key)
+        if configuration.nil?
+          configuration = Configuration.new(:key=>key)
+          configuration.course = current_course
+          configuration.save
+        end
+        current_section.configuration = configuration
+      end  
+      
+      current_section.save
       # iterate through the meetings
       meetings = section_xml["meetings"][0]["meeting"]
       #for each course in the subject    

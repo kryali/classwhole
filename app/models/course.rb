@@ -1,6 +1,7 @@
 class Course < ActiveRecord::Base
   belongs_to :subject
   has_many :sections
+  has_many :configurations
   has_and_belongs_to_many :geneds
   has_and_belongs_to_many :users
   set_primary_key :id
@@ -64,25 +65,4 @@ class Course < ActiveRecord::Base
     "course:#{self.id}:#{str}"
   end
 
-  def configurations
-    configs_hash = {}
-    sections.each do |section|
-      key = section.configuration.key
-      type = section.section_type
-      configs_hash[key] ||= {}
-      configs_hash[key][type] ||= []
-      configs_hash[key][type] << section
-    end
-
-    configs_array = configs_hash.sort_by{|k,config| k}
-    for i in 0...configs_array.length
-      configs_array[i] = configs_array[i][1].sort_by{|k,sections| sections.length}
-      for j in 0...configs_array[i].length
-        configs_array[i][j] = configs_array[i][j][1]
-        configs_array[i][j].sort!{|x,y| x.start_time.to_i <=> y.start_time.to_i}
-      end
-    end
-
-    return configs_array
-  end
 end

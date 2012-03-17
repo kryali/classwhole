@@ -2,13 +2,12 @@ $course-list-bg     : white; //#E6E6E6;
 
 .blur {
   font-family: 'Arial', 'Tahoma', serif;
-  width: 917px;
   height: 513px;
-  margin-top: 75px;
+  margin-top: 25px;
   position: relative;
   //padding: 1em;
   font-size: 1.6em;
-  background: url("schedule-blur.png");
+  background: url("schedule-blur.png") no-repeat center;
 
   .user-course-list-wrapper {
     margin: 0 auto;
@@ -29,7 +28,7 @@ $course-list-bg     : white; //#E6E6E6;
       width: 140px;
       display: block;
       text-align: center;
-      //font-size: 20px;
+      font-size: 20px;
     }
 
     a.plus {
@@ -181,7 +180,7 @@ $course-list-bg     : white; //#E6E6E6;
     margin: 0 auto;
     padding-left: 8px;
     overflow: hidden;
-    background: #FAFAFA;
+    background: #F0F0F0;
   }
 
   .fb .icon {
@@ -203,6 +202,7 @@ $course-list-bg     : white; //#E6E6E6;
     font-size: 12px;
     width: 103px;
     margin-left: 19px;
+    margin: 5px 0 0 19px;
   }
 
   .feature {

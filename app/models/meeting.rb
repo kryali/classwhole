@@ -8,7 +8,6 @@ class Meeting < ActiveRecord::Base
     return (end_time.hour - start_time.hour) + (end_time.min - start_time.min)/60.0
   end
 
-
   def duration_s
     return "#{print_time(start_time)}-#{print_time(end_time)}"
   end
@@ -27,10 +26,4 @@ class Meeting < ActiveRecord::Base
     end
     return "nil"
   end
-
-
-
 end
-
-
-
