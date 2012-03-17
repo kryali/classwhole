@@ -12,6 +12,7 @@ class Section < ActiveRecord::Base
     when 'laboratory-discussion'
       return 'LBD'
     end
+  end
 
   # Configuration Key generation
   # this may need to become more advanced depending on if we discover unusual courses
