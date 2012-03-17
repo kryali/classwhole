@@ -3,6 +3,17 @@ class Section < ActiveRecord::Base
   belongs_to :configuration
   has_many :meetings
 
+  def short_code 
+    case section_type
+    when 'lecture'
+      return 'LEC'
+    when 'lecture-discussion'
+      return 'LCD'
+    when 'laboratory-discussion'
+      return 'LBD'
+    end
+  end
+
   # Description: Checks to see if there is a conflict between 2 meetings
   def meeting_conflict?(meeting1, meeting2)
     return false if meeting1.start_time.nil? or meeting2.start_time.nil?
@@ -42,29 +53,6 @@ class Section < ActiveRecord::Base
 
   def course_to_s
     return "#{course_subject_code} #{course_number}"
-  end
-
-  def duration
-    return (end_time.hour - start_time.hour) + (end_time.min - start_time.min)/60.0
-  end
-
-  def duration_s
-    return "#{print_time(start_time)}-#{print_time(end_time)}"
-  end
-
-  # NOTE: move this somewhere where every method can use it
-  def print_time(time)
-    hour = time.hour
-    if( time.hour > 12 and time.hour < 24)
-      return "#{time.hour-12}:%02dpm" % time.min
-    elsif ( hour < 12 and hour != 0)
-      return "#{time.hour}:%02dam" % time.min
-    elsif ( hour == 24 )
-      return "#{time.hour-12}:%02dam" % time.min
-    elsif ( hour == 12 )
-      return "#{time.hour}:%02dpm" % time.min
-    end
-    return "nil"
   end
 
   def self.hour_range(sections)

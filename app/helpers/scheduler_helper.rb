@@ -75,28 +75,28 @@ module SchedulerHelper
     return earliest_start_hour, latest_end_hour
   end
 
-  def sections_by_days(sections)
-    sections_by_days = Hash.new
-    ["M","T","W","R","F"].each {|day| sections_by_days[day] = Array.new }
+  def meetings_by_days(sections)
+    meetings_by_days = Hash.new
+    ["M","T","W","R","F"].each {|day| meetings_by_days[day] = Array.new }
 
     sections.each do |section|
       section.meetings.each do |meeting|
         next if not meeting.days
         days = meeting.days.split("")
-        days.each { |day| sections_by_days[day].push(section) if sections_by_days.has_key?(day) }
+        days.each { |day| meetings_by_days[day].push(meeting) if meetings_by_days.has_key?(day) }
       end
     end
 
-    return  sections_by_days
+    return  meetings_by_days
   end
 
-  def section_top_px( section, start_hour )
-    top_px = (section.start_time.hour - start_hour + (section.start_time.min/60.0)) * 48 # scheduler_block_height
+  def meeting_top_px( meeting, start_hour )
+    top_px = (meeting.start_time.hour - start_hour + (meeting.start_time.min/60.0)) * 48 # scheduler_block_height
     return top_px
   end
 
-  def section_height_px( section )
-    return section.duration * 48#@scheduler_block_height
+  def meeting_height_px( meeting )
+    return meeting.duration * 48#@scheduler_block_height
   end
 
   def section_colors( sections )

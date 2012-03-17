@@ -6,12 +6,12 @@
 - range = hour_range(sections)
 - start_hour = range[0] - 1
 - end_hour = range[1]
-- sections_in_days = sections_by_days(sections)
+- meetings_in_days = meetings_by_days(sections)
 - colors = section_colors( sections )
 - all_sections = sections
 
 - if @section_hints
-  - section_hints_in_days = sections_by_days(@section_hints)
+  - section_hints_in_days = meetings_by_days(@section_hints)
 - else 
   - section_hints_in_days = {}
 
@@ -21,7 +21,7 @@
       %ul.time-label
         - for hour in (start_hour..end_hour)
           %li= print_hour(hour)
-      - sections_in_days.each do |day_code, sections|
+      - meetings_in_days.each do |day_code, sections|
         -if all_sections.empty?
           -if @user
             %h1= "#{@user.name} hasn't shared a schedule yet."
@@ -33,11 +33,11 @@
             %li.header= print_day(day_code)
             - for hour in (start_hour..end_hour)
               %li
-            - sections.each do |section|
-              = render 'section', :section => section, :start_hour => start_hour, :colors => colors
+            - sections.each do |meeting|
+              = render 'meeting', :meeting => meeting, :start_hour => start_hour, :colors => colors
             - if section_hints_in_days[day_code]
               - section_hints_in_days[day_code].each do |section|
                 %div.droppable= render 'section', :section => section, :start_hour => start_hour, :colors => colors
     - if @user and not all_sections.empty?
       <div class="fb-comments" data-href="#{root_url.chop + scheduler_show_path(@user.id)}" data-num-posts="1" data-width="607"></div>
-  = render "sidebar" , :sections => sections
+  =# render "sidebar" , :sections => sections
