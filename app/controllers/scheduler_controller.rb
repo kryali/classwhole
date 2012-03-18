@@ -76,11 +76,7 @@ class SchedulerController < ApplicationController
     section_hints = []
     if params["section"]
       section = Section.find(params["section"].to_i)
-      course = Register_Course.new(section.course)
-      # HACK, this kept dying when trying to move DANC 100
-      if course.configurations_hash[section.configuration_key]
-        section_hints = course.configurations_hash[section.configuration_key][section.section_type]
-      end
+      section_hints = section.configuration.sections_hash[section.section_type]
       section_hints.delete_if{|move| move.schedule_conflict?(schedule)}
     end
 
