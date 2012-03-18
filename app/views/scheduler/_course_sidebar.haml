@@ -21,15 +21,15 @@
               %div
                 %span{:class=>"hidden id"}=section.id
                 %span{:class=>"section-type label"}= section.short_code
-                -#if section.instructor
-                  %span.instructor= shorten(section.instructor, 12, "..")
-                -#else 
-                  %span.instructor TBD
                 %span.code= section.code
                 -if nil
                   %span.crn= section.reference_number
-                -# For online section
                 - section.meetings.each do |meeting|
+                  -if not meeting.instructors.empty?
+                    - meeting.instructors.each do |instructor|
+                      %span.instructor= shorten(instructor.full_name, 12, "..")
+                  -else 
+                    %span.instructor TBD
                   -if meeting.start_time
                     %span.time= meeting.duration_s
                   - else
