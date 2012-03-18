@@ -117,7 +117,9 @@ module SchedulerHelper
 
     onl_sections = []
     sections.each do |section|
-      onl_sections << section if section.start_time.nil?
+      section.meetings.each do |meeting|
+        onl_sections << section if meeting.start_time.nil? # MIGHT ADD DUPLICATES
+      end
     end
 
     onl_sections.each do |onl_section|
@@ -133,13 +135,13 @@ module SchedulerHelper
     return letters[0..(length-1)].join + end_string
   end
 
-  def mini_section_top_px( section )
-    top_px = (section.start_time.hour - 7 + (section.start_time.min/60.0)) * 6
+  def mini_meeting_top_px( meeting )
+    top_px = (meeting.start_time.hour - 7 + (meeting.start_time.min/60.0)) * 6
     return top_px
   end
 
-  def mini_section_height_px( section )
-    return section.duration * 6
+  def mini_meeting_height_px( meeting )
+    return meeting.duration * 6
   end
 
   def courses_from_sections( sections )
