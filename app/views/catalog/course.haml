@@ -64,13 +64,13 @@
               -if type = meeting.section.section_type
                 %tr
                   %td
-                    -if !meeting.start_time.nil?                
+                    -if !meeting.start_time.nil? and !meeting.end_time.nil?                               
                       = meeting.duration_s            
                   %td
                     -if !meeting.days.nil?  
                       = meeting.days            
                   %td
-                    -if !meeting.instructors.nil?  
+                    -if !meeting.instructors.first.nil?  
                       = meeting.instructors.first.full_name
                   %td
                     -if !meeting.building.nil?  
@@ -95,13 +95,13 @@
               -if type = meeting.section.section_type
                 %tr
                   %td
-                    -if !meeting.start_time.nil?                
+                    -if !meeting.start_time.nil? and !meeting.end_time.nil?               
                       = meeting.duration_s            
                   %td
                     -if !meeting.days.nil?  
                       = meeting.days            
                   %td
-                    -if !meeting.instructors.nil?  
+                    -if !meeting.instructors.first.nil?  
                       = meeting.instructors.first.full_name
                   %td
                     -if !meeting.building.nil?  
