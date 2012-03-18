@@ -51,7 +51,7 @@ header {
       color: #888;
     }
     // overide default
-    a:hover { 
+    a:hover:not(.fb_button){ 
       color: $a-link-color; 
       background: #eee;
       text-decoration: none;

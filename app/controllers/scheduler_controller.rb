@@ -96,7 +96,8 @@ class SchedulerController < ApplicationController
     render :json => { :section_hints => section_hints, 
                       :schedule => schedule, 
                       :start_hour => start_hour,
-                      :end_hour => end_hour }
+                      :end_hour => end_hour 
+                    }
     # render :partial => 'section_ajax', :layout => false
   end
 
