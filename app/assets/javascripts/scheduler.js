@@ -63,11 +63,11 @@ $(function(){
         }
         else if (data["status"] == "error") {
           //pop_alert("error", data["message"]);
-          $('#save-modal').modal('show');            
+          showModal('/scheduler/_need_to_login',{"name": "save"});
           mpq.track("Prompt log in");
           $(document).bind('logged-in', function() {
             $(document).unbind('logged-in');
-            $("#save-modal").modal("hide");
+            hideModal();
             save_schedule();
             return true;
           });
@@ -151,11 +151,6 @@ $(function(){
       save_schedule();
     });
 
-    $(".close-modal").click( function() {
-      $('#register-modal').modal('hide');
-      $('#save-modal').modal('hide');
-      $('#share-modal').modal('hide');
-    });
     $(".register-schedule").unbind('click').click( function() {
       mpq.track("Register schedule");
       $('#crns').empty()
@@ -177,7 +172,6 @@ $(function(){
       }
       //console.log(crns.toString());
       window.location = "/scheduler/register?crns=" + crns.toString();
-      //$('#register-modal').modal('show');
     });
   }
 
@@ -202,11 +196,11 @@ $(function(){
         }
         else if (data["status"] == "error") {
           //pop_alert("error", data["message"]);
-          $('#share-modal').modal('show');    
+          showModal('/scheduler/_need_to_login',{"name": "share"});
           mpq.track("Prompt log in");
           $(document).bind('logged-in', function() {
             $(document).unbind('logged-in');
-            $('#share-modal').modal('hide');    
+            hideModal(); 
             share_schedule();
             return true;
           });

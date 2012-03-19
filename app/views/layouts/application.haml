@@ -13,7 +13,9 @@
     = javascript_include_tag "dropdown","utils","jquery.tipsy", "init", "bootstrap-modal.js", "bootstrap-alerts.js", "bootstrap-modal.js", "bootstrap-tabs.js" , "slides.min.jquery.js", "general/alert", "general/fb_button"
     =# javascript_include_tag "main.js"
     = javascript_include_tag "http://connect.facebook.net/en_US/all.js"
+    = javascript_include_tag "modal.js"
   %body
+    = render "shared/modal"
     %div.alert-box
     %div#fb-root
     = render "shared/header"

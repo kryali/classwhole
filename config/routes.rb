@@ -1,6 +1,7 @@
 Whiteboard::Application.routes.draw do
   root :to => 'scheduler#index'
 
+  match 'modal' => 'modal#modal', :via => :post
 
   match 'sandbox' => 'sandbox#index', :as => 'sandbox_index'
 
