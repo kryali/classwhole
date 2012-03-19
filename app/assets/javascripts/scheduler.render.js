@@ -42,40 +42,45 @@ Schedule.prototype.render_sections = function( sections ) {
 }
 
 Schedule.prototype.render_section = function( section, is_hint ) {
-  var section_block = $("<div/>")
-                      .addClass("schedule-block")
-                      .attr("days", section.days);
-  var start_time = new Date(section.start_time);
-  var end_time = new Date(section.end_time);
 
-  // Find duration and offset
-  var duration_scale = duration( start_time, end_time );
-  var height = block_height * duration_scale;
+  for( i in section.meetings ) {
+    var meeting = section.meetings[i];
+    var section_block = $("<div/>")
+                        .addClass("schedule-block")
+                        .attr("days", meeting.days);
+    var start_time = new Date(meeting.start_time);
+    var end_time = new Date(meeting.end_time);
 
-  var offset = ( (start_time.getUTCHours() - this.day_start_time) + ( start_time.getUTCMinutes()/60 )) * block_height;
+    // Find duration and offset
+    var duration_scale = duration( start_time, end_time );
+    var height = block_height * duration_scale;
 
-  fill_section_info( section, section_block );
-  
-  section_block.height( height );
-  section_block.css("top", Math.abs(offset) + header_height + "px");
-  section_block.addClass( this.colors[ section.course_id ] );
+    var offset = ( (start_time.getUTCHours() - this.day_start_time) + ( start_time.getUTCMinutes()/60 )) * block_height;
 
-  // If it's a hint, wrap the section block in a droppable div
-  if( is_hint ) {
-    section_block = $("<div/>").addClass("droppable").append( section_block );
+    fill_section_info( section, meeting, section_block );
+    
+    section_block.height( height );
+    section_block.css("top", Math.abs(offset) + header_height + "px");
+    section_block.addClass( this.colors[ section.course_id ] );
+
+    // If it's a hint, wrap the section block in a droppable div
+    if( is_hint ) {
+      section_block = $("<div/>").addClass("droppable").append( section_block );
+    }
+
+    if ( meeting.days == null ) {
+      return undefined;
+    }
+    // Add the section block to all the days
+    var section_days = meeting.days.split("");
+    for( j in section_days ) {
+      this.days[ section_days[j] ].append( section_block.clone() );
+    }
   }
 
-  if ( section.days == null ) {
-    return undefined;
-  }
-  // Add the section block to all the days
-  var section_days = section.days.split("");
-  for( j in section_days ) {
-    this.days[ section_days[j] ].append( section_block.clone() );
-  }
 }
 
-function fill_section_info( section, section_block ) {
+function fill_section_info( section, meeting, section_block ) {
   section_block.append( $("<span/>")
                         .addClass("hidden id")
                         .text(section.id) );
@@ -93,10 +98,10 @@ function fill_section_info( section, section_block ) {
                         .text( section.course_title ) );
   section_block.append( $("<span/>")
                         .addClass("section-type label")
-                        .text( section.section_type ) );
+                        .text( section.short_type ) );
   section_block.append( $("<span/>")
                         .addClass("duration")
-                        .text( print_time( section.start_time) + "-" + print_time( section.end_time) ) );
+                        .text( print_time( meeting.start_time) + "-" + print_time( meeting.end_time) ) );
 }
 
 Schedule.prototype.pick_colors = function() {

@@ -15,7 +15,6 @@
     %div.slides_container
       -# @possible_schedules.each do |sections|
       = render "schedule", :sections => @possible_schedules.first
-      - logger.info @possible_schedules.first.inspect
     %a{:href=>"#", :class=>"prev"}
     %a{:href=>"#", :class=>"next"}
     -if @possible_schedules.size > 1

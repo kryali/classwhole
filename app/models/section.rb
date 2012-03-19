@@ -11,6 +11,8 @@ class Section < ActiveRecord::Base
       return 'LCD'
     when 'laboratory-discussion'
       return 'LBD'
+    when 'discussion-recitation'
+      return 'DIS'
     end
   end
 
@@ -108,15 +110,12 @@ class Section < ActiveRecord::Base
     latest_end_time = 0
     
     all_possible_sections.each do |section|
-      next if !section.start_time
-      current_start_time = section.start_time.hour * 60 + section.start_time.min
-      current_end_time = section.end_time.hour * 60 + section.end_time.min
-
-      if current_start_time < earliest_start_hour
-        earliest_start_hour = current_start_time
-      end
-      if current_end_time > latest_end_time
-        latest_end_time = current_end_time
+      section.meetings.each do |meeting|
+        next if meeting.start_time.nil?
+        current_start_time = meeting.start_time.hour * 60 + meeting.start_time.min
+        current_end_time = meeting.end_time.hour * 60 + meeting.end_time.min
+        earliest_start_hour = current_start_time if current_start_time < earliest_start_hour
+        latest_end_time = current_end_time if current_end_time > latest_end_time
       end
     end
 

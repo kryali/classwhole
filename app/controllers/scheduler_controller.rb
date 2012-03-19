@@ -71,13 +71,20 @@ class SchedulerController < ApplicationController
   def move_section
     schedule = []
     params["schedule"].each do |section_id|
-      schedule << Section.find_by_id(section_id.to_i)
+      section = Section.find_by_id(section_id.to_i)
+      section['meetings'] = section.meetings
+      section['short_type'] = section.short_code
+      schedule << section
     end
     section_hints = []
     if params["section"]
       section = Section.find(params["section"].to_i)
       section_hints = section.configuration.sections_hash[section.section_type]
       section_hints.delete_if{|move| move.schedule_conflict?(schedule)}
+      section_hints.map do |section_hint| 
+        section_hint["meetings"] = section_hint.meetings
+        section_hint["short_type"] = section_hint.short_code
+      end
     end
 
     # Nothing needs to be rendered
@@ -89,7 +96,8 @@ class SchedulerController < ApplicationController
 
     start_hour, end_hour = Section.hour_range( schedule )
 
-    render :json => { :section_hints => section_hints, 
+    render :json => { 
+                      :section_hints => section_hints,  #TODO: add section hints support
                       :schedule => schedule, 
                       :start_hour => start_hour,
                       :end_hour => end_hour 
