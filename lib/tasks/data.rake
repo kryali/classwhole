@@ -68,7 +68,9 @@ class UIUCParser
       current_section.code = code        
       current_section.part_of_term = section_xml["partOfTerm"][0] if section_xml.key?("partOfTerm")
       #1 means course is open, 0 means it's not    
-      if section_xml["enrollmentStatus"][0].include?("Open")
+      if section_xml["enrollmentStatus"][0].include?("Restricted")
+        enrollment_status = 2
+      elsif section_xml["enrollmentStatus"][0].include?("Open")
         enrollment_status = 1
       else
         enrollment_status = 0
