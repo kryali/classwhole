@@ -3,19 +3,6 @@ class Section < ActiveRecord::Base
   belongs_to :configuration
   has_many :meetings
 
-  def short_code 
-    case section_type
-    when 'lecture'
-      return 'LEC'
-    when 'lecture-discussion'
-      return 'LCD'
-    when 'laboratory-discussion'
-      return 'LBD'
-    when 'discussion-recitation'
-      return 'DIS'
-    end
-  end
-
   # Configuration Key generation
   # this may need to become more advanced depending on if we discover unusual courses
   def generate_configuration_key

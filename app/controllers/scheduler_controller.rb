@@ -79,7 +79,7 @@ class SchedulerController < ApplicationController
     section_hints = []
     if params["section"]
       section = Section.find(params["section"].to_i)
-      section_hints = section.configuration.sections_hash[section.section_type]
+      section_hints = section.configuration.sections_hash[section.short_code]
       section_hints.delete_if{|move| move.schedule_conflict?(schedule)}
       section_hints.map do |section_hint| 
         section_hint["meetings"] = section_hint.meetings
