@@ -1,3 +1,76 @@
-.modal {
-  font-family: 'Arial', sans-serif;
+#modalPage
+{
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px; left: 0px;
+}
+.modalBackground
+{
+    filter: Alpha(Opacity=40); -moz-opacity:0.4; opacity: 0.4;
+    width: 100%; height: 100%; background-color: #999999;
+    position: absolute;
+    z-index: 500;
+    top: 0px; left: 0px;
+}
+.modalContainer
+{
+  position: absolute;
+  width: 300px;
+  margin-left: -150px;
+  left: 50%;
+  top: 50%;
+  z-index: 750;
+}
+.modal
+{
+  z-index: 1000;
+  width: 300px;
+  padding: 0px;
+  background: white;
+  border: 1px solid #999;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  -webkit-box-shadow: 0 3px 7px rgba(0,0,0,0.3);
+  -moz-box-shadow: 0 3px 7px rgba(0,0,0,0.3);
+  box-shadow: 0 3px 7px rgba(0,0,0,0.3);
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding-box;
+  background-clip: padding-box;
+}
+.modal-header
+{
+  border-bottom: 1px solid #EEE;
+  padding: 5px 15px;
+  .x-button
+  {
+    text-align: right;
+    cursor: pointer;
+    font-size: 1.5em;
+    position: absolute;
+    top: 0px;
+    right: 5px;
+    color: black;
+  }
+}
+.modal-body
+{
+    padding: 10px;
+}
+.modal-footer
+{
+  background-color: whiteSmoke;
+  padding: 14px 15px 15px;
+  border-top: 1px solid #DDD;
+  -webkit-border-radius: 0 0 6px 6px;
+  -moz-border-radius: 0 0 6px 6px;
+  border-radius: 0 0 6px 6px;
+  -webkit-box-shadow: inset 0 1px 0 #ffffff;
+  -moz-box-shadow: inset 0 1px 0 #ffffff;
+  box-shadow: inset 0 1px 0 #ffffff;
+  zoom: 1;
+  margin-bottom: 0;
 }

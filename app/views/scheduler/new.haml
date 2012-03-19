@@ -21,6 +21,4 @@
     -if @possible_schedules.size > 1
       = render :partial => 'mini_schedule_grids', :locals => { :possible_schedules => @possible_schedules }
 
-  = render :partial=>"need_to_login", :locals => {:name => "save"}
-  = render :partial=>"need_to_login", :locals => {:name => "share"}
   = render "render" # wtf kind of naming is this classwhole
