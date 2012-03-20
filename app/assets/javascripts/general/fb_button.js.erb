@@ -53,7 +53,6 @@ init_fb = function () {
       });
   }
 
-  console.log( "init fb" );
   /* 
    * FB.init starts the facebook sdk, enabling calls against the facebook api
    * also, the facebook "sdk" sucks.
@@ -68,7 +67,6 @@ init_fb = function () {
 
   /* When a user clicks a button, */
   $('.fb-button').unbind('click').click( function(event) {
-    console.log("Button clicked!");
     /* FB.getLoginStatus allows you to determine if a user is 
      * logged into facebook.*/
     FB.getLoginStatus(function(response) {
