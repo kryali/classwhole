@@ -56,13 +56,12 @@ $course-list-bg     : white; //#E6E6E6;
   }
 
   h1 {
-    //font-family: 'Georgia', 'Times New Roman', 'Georgia', serif;
     font-size: 1em;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid #CDCDCD;
     padding-bottom: .7em;
     color: #999;
-    padding-left: 5.9em;
+    margin: 0 auto;
   }
 
   li {
