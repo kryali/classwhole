@@ -1,9 +1,9 @@
 %div.modal
   %div.modal-header
-    %a{ :class => "x-button", :onclick => "hideModal()"} X
-    %h3 #{capitalize_first_letter(name)}
+    %a{ :class => "x-button", :onclick => "hideModal()"} 
+    %h3 #{name.capitalize}
   %div.modal-body
-    %h2 You must log in to #{name} your schedule.
-    %a= render 'shared/fb_login_button'
+    %h2 Please log in to #{name} your schedule
   %div.modal-footer
-    %a{:class=>"btn primary close-modal", :onclick => "hideModal()"} Close
+    %a{:class=>"button grey close-modal small", :onclick => "hideModal()"} Close
+    %a= render 'shared/fb_login_button'

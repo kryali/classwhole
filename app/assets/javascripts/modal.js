@@ -13,6 +13,7 @@ function showModal(modal, locals) {
       var modal_page = document.getElementById('modalPage')
       modal_page.style.display = "block";
       modal_page.style.top = document.body.scrollTop;
+      $(".modalBackground").click( hideModal );
     }
   });
 }

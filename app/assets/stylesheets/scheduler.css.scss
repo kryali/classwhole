@@ -407,34 +407,6 @@ $mini-schedule-border-color: #aaa;
     // If we aren't given a position to insert the selected box, don't add 
       // If we aren't given a position to insert the selected box, don't add 
 }
-
-.modal {
-  .modal-header {
-    h3 {
-      font-size: 1.5em;
-      font-weight: bold;
-    }
-
-    .x-button {
-      cursor: pointer;
-      font-size: 1.5em;
-      position: absolute;
-      top: 0px;
-      right: 5px;
-      color: black;
-    }
-  }
-  .modal-body {
-    li {
-      margin-top: 5px;
-      margin-left: 15px;
-    }
-    font-size: 1.2em;
-  }
-  .modal-footer {
-  }
-}
-
 .scheduler-content {
   h1 {
     text-align: left;

@@ -15,16 +15,16 @@ $(document).ready(function(){
   /* This refreshes the course list once a user has logged into facebook */
   $(document).bind('logged-in', function(){
     $(document).unbind('logged-in');
-      $.ajax({
-        type: 'POST',
-        url:  '/user/refresh',					
-        success: function( data, textStatus, xqHR){    	
-          //$("#autocomplete-list").tipsy('hide');
-          $("div.user-course-list").empty();
-          $("div.user-course-list").append( $(data) );
-          initialize_autocomplete();
-        }
-      });
+    $.ajax({
+      type: 'POST',
+      url:  '/user/refresh',					
+      success: function( data, textStatus, xqHR){    	
+        //$("#autocomplete-list").tipsy('hide');
+        $("div.user-course-list").empty();
+        $("div.user-course-list").append( $(data) );
+        initialize_autocomplete();
+      }
+    });
   });
 
   function initialize_autocomplete(){
