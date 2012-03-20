@@ -67,13 +67,23 @@ class SchedulerController < ApplicationController
     render :partial => "course_sidebar", :locals => { :sections => sections}
   end
 
+  # prepares a section object for json
+  def build_section( section )
+    meetings = []
+    section.meetings.each do |meeting|
+        meeting["instructors"] = meeting.instructors
+        meetings << meeting
+    end
+    section['short_type'] = section.short_code
+    section['meetings'] = meetings
+  end
+
   # Route that delivers section hints via AJAX
   def move_section
     schedule = []
     params["schedule"].each do |section_id|
       section = Section.find_by_id(section_id.to_i)
-      section['meetings'] = section.meetings
-      section['short_type'] = section.short_code
+      build_section( section )
       schedule << section
     end
     section_hints = []
@@ -81,9 +91,10 @@ class SchedulerController < ApplicationController
       section = Section.find(params["section"].to_i)
       section_hints = section.configuration.sections_hash[section.section_type]
       section_hints.delete_if{|move| move.schedule_conflict?(schedule)}
+
+      # Have to give the client all the data about the section, which spans multiple tables
       section_hints.map do |section_hint| 
-        section_hint["meetings"] = section_hint.meetings
-        section_hint["short_type"] = section_hint.short_code
+        build_section( section_hint )
       end
     end
 
@@ -97,10 +108,10 @@ class SchedulerController < ApplicationController
     start_hour, end_hour = Section.hour_range( schedule )
 
     render :json => { 
-                      :section_hints => section_hints,  #TODO: add section hints support
-                      :schedule => schedule, 
+                      :section_hints => section_hints,
+                      :schedule => schedule,
                       :start_hour => start_hour,
-                      :end_hour => end_hour 
+                      :end_hour => end_hour
                     }
     # render :partial => 'section_ajax', :layout => false
   end

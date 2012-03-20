@@ -409,6 +409,7 @@ $(function(){
     This function also caches the sections and schedules w/hints
   */
   function fetch_schedule(data, textStatus, jqXHR, day, section_id, schedule_ids) {
+    //console.log( data);
     // Cache sections for fun
     for( i in data.schedule ) {
       var section = data.schedule[i];
@@ -545,7 +546,9 @@ $(function(){
   function update_sidebar_contents( old_section_id, new_section_id ) {
     var current_schedule = get_current_schedule();
     var sidebar = new Sidebar();
-    var row = sidebar.render_section_row( section_cache[ new_section_id ] );
+    var section = section_cache[ new_section_id ];
+    //console.log( section );
+    var row = sidebar.render_section_row( section );
 
     current_schedule.find("ul.sections li div").each( function() {
       // Find the section row to replace
