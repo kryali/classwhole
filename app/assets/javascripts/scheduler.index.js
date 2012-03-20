@@ -10,7 +10,6 @@ $(document).ready(function(){
       event.preventDefault();
       return true;
     }
-    mpq.track("Schedule created");
   });
 
   /* This refreshes the course list once a user has logged into facebook */

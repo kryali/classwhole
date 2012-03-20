@@ -25,7 +25,6 @@ function Sidebar( sections  ) {
 
 Sidebar.prototype.render_section_row = function( section ) {
   var row = $("<div/>");
-  console.log( section );
 
   for( i in section.meetings ) {
     var meeting = section.meetings[i];

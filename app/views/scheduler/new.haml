@@ -5,6 +5,7 @@
 
 :javascript
   $(document).ready(function() {
+    mpq.track("Schedule created");
     var course_ids = #{@course_ids};
     possible_schedules = #{section_ids_from_schedules( @possible_schedules ).to_json }; 
     init();
