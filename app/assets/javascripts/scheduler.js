@@ -380,6 +380,7 @@ $(function(){
       });
     });
 
+    // Hide the course titles if the block is too small
     $(".schedule-block").each( function() {
       //if( $(this).height() < 50 ) {
         $(this).find(".course-title").hide();

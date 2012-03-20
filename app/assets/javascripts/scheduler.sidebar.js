@@ -34,11 +34,17 @@ Sidebar.prototype.render_section_row = function( section ) {
     row.append( $("<span/>")
                 .addClass("section-type label")
                 .text( section.short_type ) ); 
-    for( j in meeting.instructors ) {
-      row.append( $("<span/>")
-                  .addClass("instructor")
-                  .text( meeting.instructors[j].full_name ) ); 
+
+    var instructor_name;
+    if (meeting.instructors.length >= 1)  {
+      instructor_name = meeting.instructors[0].full_name;
+    } else {
+      instructor_name = "TBD";
     }
+
+    row.append( $("<span/>")
+                .addClass("instructor")
+                .text( instructor_name ) ); 
     row.append( $("<span/>")
                 .addClass("code")
                 .text( section.code ) ); 
