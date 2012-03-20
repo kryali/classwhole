@@ -381,9 +381,9 @@ $(function(){
     });
 
     $(".schedule-block").each( function() {
-      if( $(this).height() < 50 ) {
+      //if( $(this).height() < 50 ) {
         $(this).find(".course-title").hide();
-      }
+      //}
     });
   }
 
