@@ -68,7 +68,9 @@ class UIUCParser
       current_section.code = code        
       current_section.part_of_term = section_xml["partOfTerm"][0] if section_xml.key?("partOfTerm")
       #1 means course is open, 0 means it's not    
-      if section_xml["enrollmentStatus"][0].include?("Open")
+      if section_xml["enrollmentStatus"][0].include?("Restricted")
+        enrollment_status = 2
+      elsif section_xml["enrollmentStatus"][0].include?("Open")
         enrollment_status = 1
       else
         enrollment_status = 0
@@ -76,7 +78,8 @@ class UIUCParser
       current_section.course_number = course_number  
       current_section.enrollment_status = enrollment_status
       current_section.special_approval = section_xml["specialApproval"][0]     if section_xml.has_key?("specialApproval")
-      current_section.section_type = section_xml["meetings"][0]["meeting"].first[1]["type"][0]["content"] #gotta be a better way   
+      current_section.section_type = section_xml["meetings"][0]["meeting"].first[1]["type"][0]["content"] #gotta be a better way
+      current_section.short_code = section_xml["meetings"][0]["meeting"].first[1]["type"][0]["code"]
       current_section.course_subject_code = section_xml["parents"][0]["subject"].first[0]
       current_section.course_title = section_xml["parents"][0]["course"].first[1]["content"]
       current_section.course_number = section_xml["parents"][0]["course"].first[0]

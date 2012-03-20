@@ -89,7 +89,7 @@ class SchedulerController < ApplicationController
     section_hints = []
     if params["section"]
       section = Section.find(params["section"].to_i)
-      section_hints = section.configuration.sections_hash[section.section_type]
+      section_hints = section.configuration.sections_hash[section.short_code]
       section_hints.delete_if{|move| move.schedule_conflict?(schedule)}
 
       # Have to give the client all the data about the section, which spans multiple tables
