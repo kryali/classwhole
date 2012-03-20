@@ -3,6 +3,10 @@ class Section < ActiveRecord::Base
   belongs_to :configuration
   has_many :meetings
 
+  def short_type_s
+    return short_type || "N/A"
+  end
+
   # Configuration Key generation
   # this may need to become more advanced depending on if we discover unusual courses
   def generate_configuration_key

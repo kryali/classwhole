@@ -21,7 +21,7 @@ class Configuration < ActiveRecord::Base
   def init_sections_hash
     @sec_hash = {}
     self.sections.each do |section|
-      type = section.short_code
+      type = section.short_type
       @sec_hash[type] ||= []
       @sec_hash[type] << section
     end

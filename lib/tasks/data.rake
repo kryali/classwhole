@@ -79,7 +79,7 @@ class UIUCParser
       current_section.enrollment_status = enrollment_status
       current_section.special_approval = section_xml["specialApproval"][0]     if section_xml.has_key?("specialApproval")
       current_section.section_type = section_xml["meetings"][0]["meeting"].first[1]["type"][0]["content"] #gotta be a better way
-      current_section.short_code = section_xml["meetings"][0]["meeting"].first[1]["type"][0]["code"]
+      current_section.short_type = section_xml["meetings"][0]["meeting"].first[1]["type"][0]["code"]
       current_section.course_subject_code = section_xml["parents"][0]["subject"].first[0]
       current_section.course_title = section_xml["parents"][0]["course"].first[1]["content"]
       current_section.course_number = section_xml["parents"][0]["course"].first[0]
@@ -156,6 +156,7 @@ class UIUCParser
       current_subject.save
       courses = term_xml["cascadingCourses"][0]["cascadingCourse"] if term_xml.key?("cascadingCourses")
       #for each course in the subject      
+      puts "#{current_subject.title}"
       courses.each do |id, cascadingCourse|
         self.parse_course cascadingCourse, current_subject, id
       end
