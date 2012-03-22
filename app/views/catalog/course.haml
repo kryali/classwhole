@@ -1,14 +1,17 @@
 /* The Course Page */
 = content_for :title, "#{@course.to_s} - #{@course.title} at UIUC"
-:javascript
-  document.write('<style type="text/css">');    
-  document.write('div.domtab div{display:none;}<');
-  document.write('/s'+'tyle>');    
+= javascript_include_tag "tabs"
+= stylesheet_link_tag "tabs"
+ 
 
+:javascript
+  window.onload = function()
+      {
+          init();
+      };
 %div.scheduler-content  
   = javascript_include_tag "course"
-  = javascript_include_tag "domtabs"
-  = stylesheet_link_tag "domtabs"
+
   -uppercase_string = @semester.season[0,1].upcase + @semester.season[1..-1] + " " + @semester.year
   -name_and_number =  @subject.code + " " + @course.number.to_s
   %div.breadcrumb  
@@ -115,33 +118,28 @@
                   %td
                     -if !meeting.section.code.nil?  
                       = meeting.section.code
+  
+  %ul#tabs
+    %li
+      %a{:href=>"#about"} ABOUT
+    %li
+      %a{:href=>"#poop"} POOP
+
+  %div.tabContent#about
+    %h2 ABOUT TABS
+    %div
+      %p
+        oh yeaaaah about tabs yeah
+      %p
+        muffins
 
 
-    %div.domtab
-      %ul.domtabs
-        %li
-          %a{:href => "#mavis"}
-            MAVIS!          
-        %li
-          %a{:href => "#grey"}          
-            GRAY!
-          
-      %div
-        %h2      
-          %a{:name=>"mavis", :id=>"mavis"}
-        %p
-          I am a DOG
-        %p
-          %a{:href=>"#top"}
-            back to menu
-      %div
-        %h2      
-          %a{:name=>"grey", :id=>"grey"}
-        %p            
-          I am a CAT
-        %p
-          %a{:href=>"#top"}
-            back to menu
+  %div.tabContent#poop
+    %h2 POOP TABS
+    %div
+      %p
+        oh yeaaaah POOP tabs yeah
+      %p
+        nannersaks
 
-
-
+    
