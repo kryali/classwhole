@@ -18,9 +18,15 @@
   font-size:13pt;
   border-collapse: collapse;
 }
-
 /* This is for the cells inside of the table above */
 .major_cells
+{
+  width: 20%;  
+  padding: 0px;
+  border: 0px solid black;
+}
+
+.major_cells2
 {
   padding: 0px;
   border: 0px solid black;
@@ -34,6 +40,7 @@
   font-family: 'Arial', 'Tahoma', sans-serif;
   font-size:20pt;
   font-weight:bold;
+  margin-bottom: 0.75em;
 }
 
 /* This is for the table that lists
@@ -49,7 +56,7 @@
 .course_cells_code
 {
   font-family: 'Arial', 'Tahoma', sans-serif;
-  width: 110px;
+  width: 30%;
   padding: 0px;
   border: 0px solid black;
 }
@@ -162,7 +169,56 @@ margin-bottom: 11px;
 font-weight:bold;
 }
 /* pagination on subjects page, make it wider so the Z doesn't overlaop on mozilla */
-.pag
-{
-width: 110%;
+
+
+.pagination{
+padding: 2px;
 }
+
+.pagination ul{
+margin-bottom: 1em;
+padding: 0;
+text-align: center; /*Set to “right” to right align pagination interface*/
+font-size: 16px;
+}
+
+.pagination li{
+list-style-type: none;
+display: inline;
+padding-bottom: 1px;
+}
+
+.pagination a, .pagination a:visited{
+padding: 0 5px;
+border: 1px solid #9aafe5;
+text-decoration: none;
+color: #2e6ab1;
+}
+
+.pagination a:hover, .pagination a:active{
+border: 1px solid #2b66a5;
+color: #000;
+background-color: #FFFF80;
+}
+
+.pagination a.currentpage{
+background-color: #2e6ab1;
+color: #FFF !important;
+border-color: #2b66a5;
+font-weight: bold;
+cursor: default;
+}
+
+.pagination a.disablelink, .pagination a.disablelink:hover{
+background-color: white;
+cursor: default;
+color: #929292;
+border-color: #929292;
+font-weight: normal !important;
+}
+
+.pagination a.prevnext{
+font-weight: bold;
+}
+
+
