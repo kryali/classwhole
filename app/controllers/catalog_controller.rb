@@ -29,6 +29,28 @@ class CatalogController < ApplicationController
     @course_number = params[:course_number] 
     @course = @subject.courses.find_by_number(@course_number)
   end
+
+
+  # gets the indeces to jump to for the pagination
+  # neccesary because the header covers ~2em
+
+  def get_pagination_indeces(semester)
+    counter = 0
+    ret_list = []
+    first_letter = -1
+    for sub in semester.subjects
+      if first_letter != sub.code[0]
+        inside_array = []
+        first_letter = sub.code[0]
+        inside_array << counter
+        inside_array << sub.code[0]        
+        ret_list << inside_array
+      end      
+      counter+=1
+    end
+    ret_list << -1
+    return ret_list
+  end
   # </helpers>
 
   # Description:
@@ -51,6 +73,7 @@ class CatalogController < ApplicationController
   def semester
     @semester = get_semester(params)
     @subjects = @semester.subjects
+    @pagination_indeces = get_pagination_indeces(@semester)
 		render 'semester'
   end
 
@@ -82,8 +105,6 @@ class CatalogController < ApplicationController
       end
     end     
 		@types_of_sections = get_different_sections()
-    logger.info("***************************************************")    
-    logger.info(@types_of_sections)
 		render 'course'
   end
 
@@ -218,5 +239,8 @@ class CatalogController < ApplicationController
     end
     render :json => { :status => :success, :sections => sections }
   end
+
+
+
 
 end

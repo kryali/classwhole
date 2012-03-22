@@ -10,19 +10,30 @@
     %div.catalog_title
       =uppercase_string  + " Courses"
 
-    %table{:class => "major_table"}  
-      -first_letter = '-1'    
-      -for subject in @semester.subjects                                    
+    %table{:class => "major_table"}   
+      -counter=0 
+      -index_counter=0      
+      -first_letter = -1
+      -for subject in @semester.subjects  
         -if first_letter != subject.code[0]
           -first_letter = subject.code[0]
           %tr
+            %td
+              <br>                                  
+        -if counter==@pagination_indeces[index_counter+1][0]-2
+          -index_counter+=1
+          %tr
             %td 
-              <br>
-              %a{:name => "#{first_letter}"}
-   
+              %a{:name => "#{@pagination_indeces[index_counter][1]}"}
+        -else
+          -logger.info("*****************************************************")
+          -logger.info(counter)
+          -logger.info(@pagination_indeces[index_counter])
+          -logger.info(pp @pagination_indeces)
+              
         %tr      
           %td{:class => 'major_cells'}
             = subject.code
           %td{:class => 'major_cells2'}                  
             = link_to subject.title, show_subject_path(:year => @semester.year, :season => @semester.season, :subject_code => subject.code)    
-        
+        -counter+=1
