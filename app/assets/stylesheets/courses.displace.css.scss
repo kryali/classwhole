@@ -221,4 +221,25 @@ font-weight: normal !important;
 font-weight: bold;
 }
 
+.zebra{
+  tr:nth-child(odd) {
+  background-color: white; 
+  }
 
+}
+
+.tab_columns{
+  width: 20%;
+
+  font-weight: bold;
+}
+
+.table_data{
+  padding-top: .5em;
+  padding-bottom: .5em;
+  text-align:center;
+}
+
+.tab_headers{
+  font-size: 1em;
+}

@@ -41,41 +41,41 @@
   
   %ul#tabs
     -for type in @types_of_sections
-      %li              
+      %li.tab_headers              
         =link_to type, "#"+type
 
  
   %div.sections_table
     -for type in @types_of_sections      
       %div{:class => "tabContent", :id => "#{type}"}       
-        %table{:class => "zebra-striped", :id => "#{type}"}                            
-          %th
+        %table.zebra                            
+          %th.tab_columns
             Time
-          %th
+          %th.tab_columns
             Days
-          %th
+          %th.tab_columns
             Professor
-          %th
+          %th.tab_columns
             Building
-          %th
+          %th.tab_columns
             Section      
           -for meeting in @meetings            
             -if type == meeting.class_type
               %tr
-                %td
+                %td.table_data
                   -if !meeting.start_time.nil? and !meeting.end_time.nil?                               
                     = meeting.duration_s            
-                %td
+                %td.table_data
                   -if !meeting.days.nil?  
                     = meeting.days            
-                %td
+                %td.table_data
                   -if !meeting.instructors.first.nil?  
                     = meeting.instructors.first.full_name
-                %td
+                %td.table_data
                   -if !meeting.building.nil?  
                     = meeting.building[1..-1]
-                %td
-                  -if !meeting.section.code.nil?  
+                %td.table_data
+                  -if !meeting.section.code.nil?  and meeting.section.code != "NO CODE" 
                     = meeting.section.code
 
   
