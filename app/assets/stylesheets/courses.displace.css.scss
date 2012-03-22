@@ -21,7 +21,7 @@
 /* This is for the cells inside of the table above */
 .major_cells
 {
-  width: 20%;  
+  width: 24%;  
   padding: 0px;
   border: 0px solid black;
 }
@@ -74,6 +74,26 @@ border: 0px solid black;
 {
 font-size:14pt;
 font-family: 'Arial', 'Tahoma', sans-serif;
+
+margin: 0 0 18px;
+padding: 7px 14px;
+background-color: whiteSmoke;
+background-repeat: repeat-x;
+background-image: -khtml-gradient(linear, left top, left bottom, from(white), to(whiteSmoke));
+background-image: -moz-linear-gradient(top, white, whiteSmoke);
+background-image: -ms-linear-gradient(top, white, whiteSmoke);
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, whiteSmoke));
+background-image: -webkit-linear-gradient(top, white, whiteSmoke);
+background-image: -o-linear-gradient(top, white, whiteSmoke);
+background-image: linear-gradient(top, white, whiteSmoke);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
+border: 1px solid #DDD;
+-webkit-border-radius: 3px;
+-moz-border-radius: 3px;
+border-radius: 3px;
+-webkit-box-shadow: inset 0 1px 0 #ffffff;
+-moz-box-shadow: inset 0 1px 0 #ffffff;
+box-shadow: inset 0 1px 0 #ffffff;
 }
 
 /* The number of the course on the course page */
@@ -82,7 +102,7 @@ font-family: 'Arial', 'Tahoma', sans-serif;
 color: #1A1A1A;
 font-size:26pt;
 font-family: 'Arial', 'Tahoma', sans-serif;
-font-weight:bolder;
+font-weight:bolder; 
 padding-bottom:1%;
 }
 
@@ -160,7 +180,7 @@ margin-top: 20px;
 }
 
 
-
+/*
 
 #pagination_list{
   margin: auto;
@@ -173,6 +193,50 @@ margin-top: 20px;
 #pagination_list li{
   float: left;
 }
+
+*/
+
+.pagination {
+height: 36px;
+margin: 18px 0;
+}
+
+.pag {
+width: 110%;
+}
+
+.pagination li {
+display: inline;
+  a:hover {
+    background-color: #afeeee; 
+  } 
+}
+
+.pagination a {
+  float: left;
+  padding: 0 14px;
+  line-height: 34px;
+  border-right: 1px solid;
+  border-right-color: #DDD;
+  border-right-color: rgba(0, 0, 0, 0.15);
+  text-decoration: none;
+
+}
+
+.pagination ul {
+  float: left;
+  margin: 0;
+  
+  border: 1px solid #DDD;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
 /* the text displaying the number of hours a class is */
 #hours
 {
