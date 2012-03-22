@@ -82,6 +82,8 @@ class CatalogController < ApplicationController
       end
     end     
 		@types_of_sections = get_different_sections()
+    logger.info("***************************************************")    
+    logger.info(@types_of_sections)
 		render 'course'
   end
 
@@ -99,10 +101,10 @@ class CatalogController < ApplicationController
 		for section in @sections do
 			if !list.include? section.section_type
 				list << section.section_type			
-				if section.section_type == 'LEC'
+				if section.section_type == 'lecture'
 					lecture_index = index			
 				end
-				if section.section_type == 'LCD'
+				if section.section_type == 'lecture-discussion'
 					lecture_discussion_index = index				
 				end
 				index = index + 1				
