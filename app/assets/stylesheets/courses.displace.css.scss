@@ -157,7 +157,21 @@ font-size:14pt;
 .catalog_page
 {
 margin-top: 20px;
+}
 
+
+
+
+#pagination_list{
+  margin: auto;
+  float: left;
+  width: 100%;
+	list-style: none; 
+  margin-bottom: 1em;
+} 
+
+#pagination_list li{
+  float: left;
 }
 /* the text displaying the number of hours a class is */
 #hours
@@ -168,59 +182,10 @@ margin-top: 7px;
 margin-bottom: 11px;
 font-weight:bold;
 }
-/* pagination on subjects page, make it wider so the Z doesn't overlaop on mozilla */
 
 
-.pagination{
-padding: 2px;
-}
 
-.pagination ul{
-margin-bottom: 1em;
-padding: 0;
-text-align: center; /*Set to “right” to right align pagination interface*/
-font-size: 16px;
-}
-
-.pagination li{
-list-style-type: none;
-display: inline;
-padding-bottom: 1px;
-}
-
-.pagination a, .pagination a:visited{
-padding: 0 5px;
-border: 1px solid #9aafe5;
-text-decoration: none;
-color: #2e6ab1;
-}
-
-.pagination a:hover, .pagination a:active{
-border: 1px solid #2b66a5;
-color: #000;
-background-color: #FFFF80;
-}
-
-.pagination a.currentpage{
-background-color: #2e6ab1;
-color: #FFF !important;
-border-color: #2b66a5;
-font-weight: bold;
-cursor: default;
-}
-
-.pagination a.disablelink, .pagination a.disablelink:hover{
-background-color: white;
-cursor: default;
-color: #929292;
-border-color: #929292;
-font-weight: normal !important;
-}
-
-.pagination a.prevnext{
-font-weight: bold;
-}
-
+// zebra striped table for course page
 .zebra{
   tr:nth-child(odd) {
   background-color: white; 
@@ -228,9 +193,11 @@ font-weight: bold;
 
 }
 
+// columns, Time Days Building etc...
 .tab_columns{
   width: 20%;
-
+  padding-top: .5em;
+  padding-bottom: .5em;
   font-weight: bold;
 }
 
@@ -243,3 +210,4 @@ font-weight: bold;
 .tab_headers{
   font-size: 1em;
 }
+

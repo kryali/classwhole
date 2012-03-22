@@ -3,12 +3,15 @@
     -uppercase_string = @semester.season[0,1].upcase + @semester.season[1..-1] + " " + @semester.year
     = content_for :title, "#{uppercase_string} Courses at University of Illinois Urbana Champaign"
     -alphabet = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","P","R","S","T","U","V","W","Y","Z"]  
-    %div{:class => "pagination"}
-      %ul
-        - for letter in alphabet       
-          %li 
+    %div#pagination
+      %ul#pagination_list
+        -for letter in alphabet   
+          %li
+            | &#160    
             =link_to letter, "#"+letter 
-
+            &#160 
+        |
+            
     %div.catalog_title
       =uppercase_string  + " Courses"
 
