@@ -19,6 +19,14 @@ class UIUCParser
     current_meeting.room = meeting["roomNumber"][0]    if meeting.key?("roomNumber")      
     current_meeting.days = meeting["daysOfTheWeek"][0].strip if meeting.key?("daysOfTheWeek")
     current_meeting.class_type = meeting["type"][0]["content"]       if meeting.key?("type")
+    building = meeting["buildingName"][0] if meeting.key?("buildingName")
+    current_building = Building.find_by_name(building)
+    if current_building.nil?
+      current_building = Building.new
+      current_building.name = building
+      current_building.save
+    end
+    current_meeting.building = current_building
     current_meeting.save
     #add instructor to database
     if not meeting["instructors"][0].empty?

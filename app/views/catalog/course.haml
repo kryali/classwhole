@@ -72,11 +72,10 @@
                   -if !meeting.instructors.first.nil?  
                     = meeting.instructors.first.full_name
                 %td.table_data
-                  -if !meeting.building.nil?  
-                    = meeting.building[1..-1]
+                  -if !meeting.building.nil? 
+                    = meeting.building.name
                 %td.table_data
                   -if !meeting.section.code.nil?  and meeting.section.code != "NO CODE" 
                     = meeting.section.code
 
-  
-
+                  
