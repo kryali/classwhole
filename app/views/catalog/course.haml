@@ -74,8 +74,8 @@
                 %td.table_data
                   -if !meeting.building.nil? 
                     = meeting.building.name
-                %td.table_data
+                %td#hack.table_data
                   -if !meeting.section.code.nil?  and meeting.section.code != "NO CODE" 
                     = meeting.section.code
 
-                  
+

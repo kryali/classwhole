@@ -165,6 +165,7 @@ font-family: 'Arial', 'Tahoma', sans-serif;
 font-size:14pt;
 float: left;
 padding-left: 0.5em;
+padding-right: 0.5em;
 
 }
 
@@ -253,12 +254,20 @@ font-weight:bold;
 
 // zebra striped table for course page
 .zebra{
+  width: 100%;
   tr:nth-child(odd) {
   background-color: white; 
   }
 
 }
 
+#hack{
+  width: 1000px;
+}
+
+.zebra tr{
+  width: 100%;
+}
 // columns, Time Days Building etc...
 .tab_columns{
   width: 20%;
