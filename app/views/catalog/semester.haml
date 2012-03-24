@@ -13,7 +13,7 @@
     %table{:class => "major_table"}   
       -counter=0 
       -index_counter=0      
-      -first_letter = -1
+      -first_letter = "A"
       -for subject in @semester.subjects  
         -if first_letter != subject.code[0]
           -first_letter = subject.code[0]

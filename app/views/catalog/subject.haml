@@ -9,12 +9,20 @@
     = @subject.code
   %p{:class => "catalog_title"}
     =@subject.title
-  %table{:id => "course_table"}  
-    -for course in @courses                            
+  %table{:id => "course_table"} 
+    -first_number = @courses[0].number.to_s[0].to_i 
+    -for course in @courses
+      -if first_number != course.number.to_s[0].to_i
+        -first_number =  course.number.to_s[0].to_i
+        %tr
+          %td
+            <br>                           
       %tr      
         %td{:class => 'course_cells_code'}
           = @subject.code + " " + course.number.to_s()
         %td{:class => 'course_cells_title'}                  
           = link_to( course.title, show_course_path(:year => @semester.year, :season => @semester.season, :subject_code => @subject.code, :course_number => course.number ) )    
+
+
 
 
