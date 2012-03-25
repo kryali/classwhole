@@ -123,6 +123,7 @@ namespace :redis do
   end
 
   task :setup => [:environment] do
+    clear_redis
     build_catalog_tries
   end
   

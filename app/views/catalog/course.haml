@@ -16,9 +16,13 @@
   -uppercase_string = @semester.season[0,1].upcase + @semester.season[1..-1] + " " + @semester.year
   -name_and_number =  @subject.code + " " + @course.number.to_s
   %div.breadcrumb  
-    = link_to  "Subjects", get_previous_url(get_previous_url(request.url))
+    %div{ :itemscope => "", :itemtype=>"http://data-vocabulary.org/Breadcrumb", :class=>"container" }
+      %a{:href => "#{get_previous_url(get_previous_url(request.url))}", :itemprop=>"url"}
+        %span{:itemprop=>"title"} Subjects
     &#47 
-    = link_to @subject.code, get_previous_url(request.url)
+    %div{ :itemscope => "", :itemtype=>"http://data-vocabulary.org/Breadcrumb", :class=>"container" }
+      %a{:href => "#{get_previous_url(request.url)}", :itemprop=>"url"}
+        %span{:itemprop=>"title"}= @subject.code
     &#47 
     =name_and_number
 
