@@ -136,6 +136,12 @@ line-height:115%;
   -moz-border-radius: 5px;
   border-radius: 5px;
   margin-bottom: 2em;
+
+  .logo {
+    width: 50px;
+    height: 100px;
+    background: url("uiuc.png");
+  }
 }
 
 /* the add class button on the course page */
