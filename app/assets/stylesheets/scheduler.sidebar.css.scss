@@ -100,16 +100,17 @@
             padding: .4em;
             position: relative;
           }
+
           span.code {
             position: absolute;
             top: 5px;
-            right: 4px;
+            right: 18px;
             font-size: .9em;
           }
           span.time {
             position: absolute;
             top: 7px;
-            left: 130px;
+            left: 117px;
             text-transform: uppercase;
             font-size: .8em;
           }
@@ -125,6 +126,12 @@
             left: 36px;
             top: 4px;
             font-size: .9em;
+          }
+
+          span.enrollment {
+            position: absolute;
+            right: 0px;
+            top: 4px;
           }
         }
 

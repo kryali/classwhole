@@ -6,6 +6,8 @@
   - if current_user  
     - if not current_user.courses.empty?
       %h1= $CURRENT_SEMESTER.name
+    - else
+      %h1 Type classes to get started
     - for course in current_user.courses
       %li
         %a.remove-link X

@@ -57,7 +57,7 @@ $showcase-bg        : url('showcase-bg.png');
 }
 
 .ui-draggable {
-  z-index: 100;
+  z-index: 0;
 }
 
 .small-width {
@@ -97,7 +97,23 @@ $showcase-bg        : url('showcase-bg.png');
 
   span {
     position: absolute;
+  }
 
+  .enrollment {
+    top: $schedule_block_padding;
+    right: 31px;
+  }
+
+  .status-3 {
+    top: 5px;
+  }
+
+  .status-2 {
+    top: 4px;
+  }
+
+  .status-1 {
+    top: 3px;
   }
 
   .section-code {
@@ -110,6 +126,7 @@ $showcase-bg        : url('showcase-bg.png');
     top:    $schedule_block_padding;
     left:   $schedule_block_padding;
     color: #444;
+    font-size: 13.5px;
   }
   .section-type {
     top:    $schedule_block_padding;
@@ -474,4 +491,23 @@ ul.friends {
 
 .ui-draggable-dragging {
 	z-index: 5000;
+}
+
+// ICONS
+.enrollment {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+
+.status-3 {
+  background: url("stop.png");
+}
+
+.status-2 {
+  background: url("warning-triangle.png");
+}
+
+.status-1 {
+  background: url("green-circle.png");
 }

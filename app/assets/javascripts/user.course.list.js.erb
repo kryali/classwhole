@@ -133,15 +133,8 @@ ClassList.prototype.has_classes = function() {
 function show_button() {
     if( has_classes ) return;
 
-    $(".user-course-list span.hint")
-        .animate({
-            opacity: 0,
-            display: 'none',
-          }, 200, function() {
-            $(this).slideUp();
-          });
-
-
+    $(".user-course-list span.hint").slideUp();
+    $(".user-course-list h1").hide(true);
     var course_list = $(".user-course-list");
     var header = $("<h1/>").text("<%= $CURRENT_SEMESTER.name %>").addClass("hidden");
     course_list.prepend(header);

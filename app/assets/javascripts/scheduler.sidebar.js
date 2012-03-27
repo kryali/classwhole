@@ -49,6 +49,8 @@ Sidebar.prototype.render_section_row = function( section ) {
                 .addClass("code")
                 .text( section.code ) ); 
     row.append( $("<span/>")
+                .addClass("enrollment status-" + section.enrollment_status) );
+    row.append( $("<span/>")
                 .addClass("time")
                 .text(print_time(meeting.start_time) + "-" + print_time(meeting.end_time))); 
   }
