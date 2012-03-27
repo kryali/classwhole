@@ -9,50 +9,25 @@ class UIUCParser
   @base_url = "http://courses.illinois.edu/cisapp/explorer/schedule/"
 
   def self.parse_meeting(meeting, meeting_number, current_section)
-    current_meeting = current_section.meetings.find_by_meeting_number(meeting_number)
-    if current_meeting.nil?
-      current_meeting = current_section.meetings.new
-      current_meeting.meeting_number = meeting_number    
-    end       
+    current_meeting = Meeting.new
     current_meeting.start_time = meeting["start"][0] if meeting.key?("start")     
     current_meeting.end_time = meeting["end"][0] if meeting.key?("end")  
     current_meeting.room = meeting["roomNumber"][0]    if meeting.key?("roomNumber")      
     current_meeting.days = meeting["daysOfTheWeek"][0].strip if meeting.key?("daysOfTheWeek")
     current_meeting.class_type = meeting["type"][0]["content"]       if meeting.key?("type")
-    building = meeting["buildingName"][0] if meeting.key?("buildingName")
-    current_building = Building.find_by_name(building)
-    if current_building.nil?
-      current_building = Building.new
-      current_building.name = building
-      current_building.save
-    end
-    current_meeting.building = current_building
-    current_meeting.save
+    current_meeting.building = meeting["buildingName"][0] if meeting.key?("buildingName")
+    pp current_meeting
+    return current_meeting
+  end
+=begin
     #add instructor to database
     if not meeting["instructors"][0].empty?
-      #loop over all the professors for the meeting (some have multiple instructors)      
       for instructor in  meeting["instructors"][0]["instructor"]
         full_name = instructor["content"]
-        #instructor table
-        instructor_alone = Instructor.find_by_full_name(full_name)        
-        instructor_alone = Instructor.new  if instructor_alone.nil?
-        instructor_alone.full_name = full_name
-        instructor_alone.save
-        #instructors.meetings
-        instructor_meeting = instructor_alone.meetings.find_by_id(current_meeting.id)
-        instructor_alone.meetings << current_meeting if instructor_meeting.nil?
-        #meetings.instructors 
-        meeting_instructor = current_meeting.instructors.find_by_full_name(full_name) 
-        meeting_instructor = current_meeting.instructors.new if meeting_instructor.nil?
-        meeting_instructor.full_name = full_name
-        #### checkkkkkkkkkkkkkkkkkkk
-        meeting_instructor.save   
       end
     end   
-    # current_instructor = Instructor.find_by_full_name
-    #current_meeting.save
-  
-  end
+=end
+
 
   def self.parse_section(section_xml, current_course, name)
     course_number = section_xml["parents"][0]["course"].first[0] #probably a better way to do this     
@@ -109,10 +84,14 @@ class UIUCParser
       # iterate through the meetings
       meetings = section_xml["meetings"][0]["meeting"]
       #for each course in the subject    
+      meeting_list = []
       meetings.each do |id, meeting|
-        self.parse_meeting meeting, id, current_section
+        meeting_list << self.parse_meeting(meeting, id, current_section)
       end
-    end   
+    section_id = current_section.id
+    $redis.set("section:#{section_id}:meetings", meeting_list.to_json) 
+    pp meeting_list.size 
+    end  
   end
 
   def self.parse_course(course_xml, current_subject, name) 

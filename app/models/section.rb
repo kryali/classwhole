@@ -1,7 +1,24 @@
 class Section < ActiveRecord::Base
   belongs_to :course
   belongs_to :configuration
-  has_many :meetings
+
+  def meetings
+    ret = $redis.get("section:#{self.id}:meetings")   
+    decoded = ActiveSupport::JSON.decode(ret) 
+    meetings_list = []
+    for meeting in decoded
+      current_meeting = Meeting.new
+      current_meeting.start_time = meeting["table"]["start_time"]
+      current_meeting.class_type= meeting["table"]["class_type"]
+      current_meeting.end_time = meeting["table"]["end_time"]
+      current_meeting.class_type = meeting["table"]["class_type"]
+      current_meeting.days = meeting["table"]["days"]
+      current_meeting.section_id = meeting["table"]["section_id"]
+      meetings_list << current_meeting   
+     end
+    
+    return meetings_list
+  end
 
   def short_type_s
     return short_type || "N/A"
