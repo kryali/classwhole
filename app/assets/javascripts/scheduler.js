@@ -106,7 +106,7 @@ $(function(){
       to the server instead.
    */
   function init_download_schedule() {
-    var canvas = document.getElementById('schedule-render');
+    var canvas = document.getElementById('schedule-canvas');
     $(".download").click( function() {
       var schedule_ids = get_schedule_ids();
 
@@ -144,6 +144,29 @@ $(function(){
         myForm.appendChild(dataInput);
         document.body.appendChild(myForm);
         myForm.submit();
+  }
+  
+    function init_download_icalendar() {
+    $(".icalendar").click( function() {
+      var schedule_ids = get_schedule_ids();
+      var myForm = document.createElement("form");
+          myForm.setAttribute("method", "post" );
+          myForm.setAttribute("action", "/scheduler/icalendar" );
+          myForm.setAttribute("authenticity_token", AUTH_TOKEN);
+      var auth_token = document.createElement("input");
+          auth_token.setAttribute("name", "authenticity_token");
+          auth_token.setAttribute("type", "hidden");
+          auth_token.setAttribute("value", AUTH_TOKEN);
+          myForm.appendChild(auth_token);
+      var dataInput = document.createElement("input");
+          dataInput.setAttribute("type", "hidden");
+          dataInput.setAttribute("name", "schedule");
+          dataInput.setAttribute("value", schedule_ids);
+          dataInput.setAttribute("authenticity_token", AUTH_TOKEN);
+          myForm.appendChild(dataInput);
+          document.body.appendChild(myForm);
+          myForm.submit();
+    });
   }
 
   function init_modals() {
@@ -264,6 +287,7 @@ $(function(){
     init_modals();
     init_share_button();
     init_download_schedule();
+    init_download_icalendar();
     init_pagination();
 
     //init_mini_pagination();

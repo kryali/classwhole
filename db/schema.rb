@@ -11,7 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(:version => 20120327030255) do
+=======
+ActiveRecord::Schema.define(:version => 20120327044229) do
+>>>>>>> 93bb3dc7f6e74f4f7cd8e301e1476e4f2523e06e
 
   create_table "attribs", :force => true do |t|
     t.string "code"
@@ -38,7 +42,6 @@ ActiveRecord::Schema.define(:version => 20120327030255) do
 
   create_table "courses", :force => true do |t|
     t.integer  "number"
-    t.integer  "credit_hours",         :limit => 255
     t.text     "description"
     t.string   "title"
     t.string   "subject_code"
@@ -48,6 +51,8 @@ ActiveRecord::Schema.define(:version => 20120327030255) do
     t.datetime "updated_at"
     t.text     "section_information"
     t.text     "schedule_information"
+    t.integer  "hours_min"
+    t.integer  "hours_max"
   end
 
   create_table "courses_users", :id => false, :force => true do |t|
@@ -111,6 +116,9 @@ ActiveRecord::Schema.define(:version => 20120327030255) do
     t.string   "special_approval"
     t.integer  "configuration_id"
     t.string   "short_type"
+    t.integer  "hours"
+    t.datetime "start_date"
+    t.datetime "end_date"
   end
 
   create_table "sections_meetings", :id => false, :force => true do |t|

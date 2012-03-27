@@ -17,7 +17,9 @@
       -for subject in @semester.subjects  
         -if first_letter != subject.code[0]
           -first_letter = subject.code[0]
-          %tr
+          %tr.break
+            %td
+              <br>                                  
             %td
               <br>                                  
         -if counter==@pagination_indeces[index_counter+1][0]-2

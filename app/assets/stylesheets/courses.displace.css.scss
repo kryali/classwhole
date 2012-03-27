@@ -9,6 +9,9 @@
 }
 
 
+tr.break td{
+  background: #F5F5F5;
+}
 
 /* This is for the table that lists
    the different majors */
@@ -17,6 +20,7 @@
   font-family: 'Arial', 'Tahoma', sans-serif;
   font-size:13pt;
   border-collapse: collapse;
+  margin: 0 auto;
 }
 /* This is for the cells inside of the table above */
 .major_cells
@@ -28,8 +32,9 @@
 
 .major_cells2
 {
-  padding: 0px;
+  padding: 5px 0px;
   border: 0px solid black;
+  font-size: 19px;
 }
 
 /* This is the title of the page where you select
@@ -41,6 +46,11 @@
   font-size:20pt;
   font-weight:bold;
   margin-bottom: 0.75em;
+  text-align: center;
+  border-bottom: 1px solid #CCC;
+  border-top: 1px solid #CCC;
+  background: #F9f9f9;
+  padding: 1em 0;
 }
 
 /* This is for the table that lists
@@ -48,8 +58,9 @@
 #course_table
 {
   font-family: 'Arial', 'Tahoma', sans-serif;
-  font-size:13pt;
+  font-size:19px;
   border-collapse: collapse;
+  margin: 0 auto;
 }
 
 /* This is for the cells inside of the tables above */
@@ -64,9 +75,9 @@
 /* the other cells inside the course list table */
 .course_cells_title
 {
-font-family: 'Arial', 'Tahoma', sans-serif;
-padding: 0px;
-border: 0px solid black;
+  font-family: 'Arial', 'Tahoma', sans-serif;
+  padding: 7px 0px;
+  border: 0px solid black;
 }
 
 /*these are the breadcrumbs links */
@@ -136,6 +147,7 @@ line-height:115%;
   -moz-border-radius: 5px;
   border-radius: 5px;
   margin-bottom: 2em;
+  overflow: hidden;
 
   .logo {
     width: 50px;
@@ -269,7 +281,7 @@ font-weight:bold;
   tr:nth-child(odd) {
     background-color: white; 
   }
-
+  background: #fafafa;
 }
 
 #hack{

@@ -65,6 +65,8 @@ def build_course_trie
         $redis.sadd("courses", course.id)
         $redis.hset("id:course:#{course.id}", "label", course.to_s)
         $redis.hset("id:course:#{course.id}", "title", course.title)
+        $redis.hset("id:course:#{course.id}", "hours_min", course.hours_min)
+        $redis.hset("id:course:#{course.id}", "hours_max", course.hours_max)
         $redis.hset("id:course:#{course.id}", "value", course.to_s)
         str = course.to_s
         size = str.size

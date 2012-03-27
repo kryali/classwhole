@@ -22,6 +22,12 @@ Whiteboard::Application.routes.draw do
   match  'courses/:season/:year/:subject_code/:course_number' => 'catalog#course', :as => 'show_course'
 
 
+  # Professor routes
+  match 'profs/' => 'profs#index', :as => 'profs_index'
+  match 'profs/:name_slug' => 'profs#show'
+  match 'professors/' => 'profs#index'
+  match 'professors/:name_slug' => 'profs#show'
+
   # Temp hack to return json array of section ids
   match  'sections/' => 'catalog#sections', :via => :post
 
@@ -36,7 +42,7 @@ Whiteboard::Application.routes.draw do
   match 'user/header' => 'user#header', :via => :post
 
   # Scheduler routes
-  get "scheduler/index"
+  match "scheduler/" => "scheduler#index", :as => "scheduler_index"
   get "scheduler/show"
   get "scheduler/new"
   match 'scheduler/sidebar' => 'scheduler#sidebar', :via => :post
@@ -48,6 +54,7 @@ Whiteboard::Application.routes.draw do
   match 'scheduler/share' => 'scheduler#share', :via => :post
   match 'scheduler/register' => 'scheduler#register', :as => 'scheduler_register'
   match 'scheduler/download' => 'scheduler#download', :via => :post
+  match 'scheduler/icalendar' => 'scheduler#icalendar', :via => :post
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

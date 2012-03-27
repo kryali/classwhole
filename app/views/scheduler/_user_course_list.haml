@@ -6,11 +6,14 @@
   - if current_user  
     - if not current_user.courses.empty?
       %h1= $CURRENT_SEMESTER.name
+    - else
+      %h1 Type classes to get started
     - for course in current_user.courses
-      %li
+      %li{"data-hours-max" => course.hours_max, "data-hours-min" => course.hours_min }
         %a.remove-link X
         %span.code= course.to_s
         %span.title= course.title
+        %span.hours= course.hours
         %span{ :class=> "hidden id"}= course.id
       -# Leave this out for now
       =#render :partial => 'classmates', :locals => { :course => course }
@@ -18,3 +21,7 @@
 =render 'shared/class_search'
 %div.clear
 =link_to "Schedule", scheduler_new_path, :class => 'button blue schedule large'
+- if current_user.min_hours > 0
+  %div.hour-count{"data-hours-min" => "#{current_user.min_hours}", "data-hours-max" => "#{current_user.max_hours}"}= "Total #{current_user.total_course_hours} hrs"
+- else
+  %div.hour-count{ :style=>"display: none;", "data-hours-min" => "0", "data-hours-max" => "0" }= "Total 0 hrs"

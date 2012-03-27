@@ -15,7 +15,7 @@ $course-list-bg     : white; //#E6E6E6;
   }
 
   .user-course-list {
-    padding: 45px;
+    padding: 30px;
     background: $course-list-bg;
     border: 1px solid #bbbbbb;
     overflow: hidden;
@@ -23,8 +23,19 @@ $course-list-bg     : white; //#E6E6E6;
     margin: 0 auto;
     position: relative;
 
+    .hour-count {
+      font-size: 12px;
+      width: 120px;
+      background: #EFEFEF;
+      text-align: center;
+      margin: 0 auto 0em auto;
+      border: 1px solid #AAA;
+      padding: 5px;
+      box-shadow: inset 0px 2px 3px #ccc;
+    }
+
     a.schedule {
-      margin: 2em auto 2em auto;
+      margin: 1.5em auto 0em auto;
       width: 140px;
       display: block;
       text-align: center;
@@ -58,17 +69,22 @@ $course-list-bg     : white; //#E6E6E6;
   h1 {
     font-size: 1em;
     text-align: center;
-    border-bottom: 1px solid #CDCDCD;
-    padding-bottom: .7em;
-    color: #999;
+    border: 1px solid #BBB;
+    padding: 10px;
+    color: #888;
     margin: 0 auto;
+    background: #EEE;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    font-size: 19px;
   }
 
   li {
     font-size: .6em;
     list-style-type: none;
     height: 2.5em;
-    border-bottom: 1px dotted #cccccc;
+    border: 1px solid #cccccc;
+    border-top: none;
     background: #fefefe;
     color: #888;
     position: relative;
@@ -87,7 +103,7 @@ $course-list-bg     : white; //#E6E6E6;
     }
 
     span.code {
-      right: 75%;
+      right: 78%;
       font-size: 1em;
       color: #666;
       font-weight: bold;
@@ -104,7 +120,7 @@ $course-list-bg     : white; //#E6E6E6;
     }
 
     span.title {
-      left: 30%;
+      left: 25%;
       text-align: center
     }
 
@@ -140,16 +156,12 @@ $course-list-bg     : white; //#E6E6E6;
   }
 
   .hours {
-    opacity: 0;
     position: absolute;
-    right: -3em;
-    bottom: -1.2em;
     display: block;
     color: #777;
-    z-index: 1000;
-    span {
-      font-size: 2em;
-    }
+    font-size: 10px;
+    top: 15px;
+    right: 27px;
   }
 
 }
@@ -158,7 +170,7 @@ $course-list-bg     : white; //#E6E6E6;
   color: #aaa;
   padding: 1em;
   background: #313131;
-  width: 468px;
+  width: 438px;
   font-size: 12px;
   margin: 0 auto;
   text-align: center;
@@ -174,6 +186,7 @@ $course-list-bg     : white; //#E6E6E6;
   position: relative;
   width: 100%;
   overflow: hidden;
+  margin-top: 1.25em;
 
   .feature-row {
     margin: 0 auto;

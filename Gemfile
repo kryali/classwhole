@@ -26,6 +26,8 @@ gem 'haml'
 
 gem 'rails3-jquery-autocomplete', '~> 0.9.1' 
 
+gem 'icalendar'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

@@ -2,13 +2,23 @@ var class_counter = 0;
 var has_classes = false;
 var selected_classes = {};
 var course_destroy_url  = '/user/courses/destroy/';
+var min_hours = 0;
+var max_hours = 0;
 
 function ClassList(){ }
 
 ClassList.prototype.init = function() {
+    min_hours = parseInt($(".hour-count").attr("data-hours-min"));
+    max_hours = parseInt($(".hour-count").attr("data-hours-max"));
     $(".user-course-list ul li ").each( function() { 
         has_classes = true;
         var class_id = $(this).find(".id").text(); 
+        var class_min_hours = $(this).attr("data-hours-min");
+        var class_max_hours = $(this).attr("data-hours-max");
+        //console.log( class_min_hours + "-" + class_max_hours );
+        //min_hours += class_min_hours;
+        //max_hours += class_max_hours;
+
         selected_classes[class_id] = $(this);
 
         var class_li = $(this);
@@ -18,6 +28,10 @@ ClassList.prototype.init = function() {
 								type: 'GET',
                 url: course_destroy_url + class_id,
                 success: function() {
+                  max_hours -= class_max_hours;
+                  min_hours -= class_min_hours;
+                  update_hours();
+                  //console.log( class_max_hours + "-" + class_min_hours );
                   delete selected_classes[ class_id ];
                   class_li.slideUp(function(){ $(this).remove() });
                 }
@@ -38,7 +52,6 @@ ClassList.prototype.add_class_callback = function(event, ui) {
 
     if ( ui.item ) {
         mpq.track("Class added");
-        show_button();
         var class_id = ui.item.id;
         if( class_id in selected_classes ){
             /* return if the user as already selected the class*/
@@ -53,6 +66,15 @@ ClassList.prototype.add_class_callback = function(event, ui) {
 
         /* Append the course to the currently populated list */
         var remove_course = $("<a/>").text("X").addClass("remove-link");
+        max_hours += parseInt(ui.item.max_hours);
+        min_hours += parseInt(ui.item.min_hours);
+        show_button();
+        update_hours();
+        var hour_string;
+        if( ui.item.max_hours - ui.item.min_hours != 0 )
+          hour_string = ui.item.min_hours + "-" + ui.item.max_hours + " hr";
+        else
+          hour_string = ui.item.min_hours + " hr";
         var course_li = $("<li/>")
                             .append(remove_course)
                             .append($("<span/>")
@@ -62,6 +84,9 @@ ClassList.prototype.add_class_callback = function(event, ui) {
                                 .text(ui.item.title)
                                 .addClass("title"))
                             .append($("<span/>")
+                                .text(hour_string)
+                                .addClass("hours"))
+                            .append($("<span/>")
                                 .text(ui.item.id)
                                 .addClass("hidden id"))
                             .css("display", "none");
@@ -69,15 +94,18 @@ ClassList.prototype.add_class_callback = function(event, ui) {
         course_li.slideDown();
 
         remove_course.click( function() {
-            mpq.track("Class removed");
-            var removed = 0;
-            $.ajax({
-								type: 'GET',
-								url:  '/user/courses/destroy/'+ui.item.id,
-							});
-            course_li.slideUp();
-            $(this).remove();
-            delete selected_classes[class_id];
+          mpq.track("Class removed");
+          var removed = 0;
+          $.ajax({
+              type: 'GET',
+              url:  '/user/courses/destroy/'+ui.item.id,
+            });
+          course_li.slideUp();
+          $(this).remove();
+          max_hours -= parseInt( ui.item.max_hours );
+          min_hours -= parseInt( ui.item.min_hours );
+          update_hours();
+          delete selected_classes[class_id];
         });
 
         selected_classes[class_id] = course_li;
@@ -106,7 +134,7 @@ function add_users_to_course( course, users ) {
   var current_user_id = parseInt( $("#current_user").text() );
   for( var i = 0; i < users.length; i++ ) {
     if( users[i].id == current_user_id ) {
-      console.log( "user is the same wtf!" );
+      //console.log( "user is the same wtf!" );
     }
   }
   // Get current user
@@ -130,18 +158,21 @@ ClassList.prototype.has_classes = function() {
   return has_classes;
 }
 
+function update_hours() {
+  if( min_hours - max_hours != 0 )
+    var hour_string = "Total " + min_hours + "-" + max_hours + " hrs";
+  else
+    var hour_string = "Total " + max_hours + " hrs";
+  $(".hour-count").text( hour_string );
+}
+
 function show_button() {
     if( has_classes ) return;
 
-    $(".user-course-list span.hint")
-        .animate({
-            opacity: 0,
-            display: 'none',
-          }, 200, function() {
-            $(this).slideUp();
-          });
-
-
+    $(".user-course-list span.hint").slideUp();
+    $(".user-course-list h1").hide(true);
+    update_hours();
+    setTimeout( function() {$(".hour-count").slideDown();}, 500);
     var course_list = $(".user-course-list");
     var header = $("<h1/>").text("<%= $CURRENT_SEMESTER.name %>").addClass("hidden");
     course_list.prepend(header);

@@ -14,9 +14,11 @@
     -for course in @courses
       -if first_number != course.number.to_s[0].to_i
         -first_number =  course.number.to_s[0].to_i
-        %tr
+        %tr.break
           %td
-            <br>                           
+            <br>                                  
+          %td
+            <br>                                  
       %tr      
         %td{:class => 'course_cells_code'}
           = @subject.code + " " + course.number.to_s()

@@ -1,0 +1,19 @@
+%div.scheduler-content
+  %div{:class=>"course_box prof-box"}
+    %div{ :class=>"prof-img" }
+    %div.prof-info
+      %span.prof-name= "Kumar, B"
+      %div{ :class=>"rating", "data-value" => "3.8"}
+        %div{ :class=>"rating-type"} Easiness
+        %div{ :class=>"stars fg" }
+        %div{ :class=>"stars bg" }
+      %div{ :class=>"rating", "data-value" => "1.4"}
+        %div{ :class=>"rating-type"} Average
+        %div{ :class=>"stars fg" }
+        %div{ :class=>"stars bg" }
+    %div.classes
+      %div.classes-title Classes
+      %a{ :href=> "http://redtube.com" } CS 125
+      %a{ :href=> "http://redtube.com" } CS 225
+
+  =javascript_include_tag "ratings.js"

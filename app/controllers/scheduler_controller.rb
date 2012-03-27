@@ -20,10 +20,10 @@ class SchedulerController < ApplicationController
                                                 :data => 'valid_schedules' ) {
 
       begin      
-      scheduler = Scheduler.new(current_user.courses)
-      status = Timeout::timeout(5) {     
-        scheduler.schedule_courses
-      } 
+        scheduler = Scheduler.new(current_user.courses)
+        status = Timeout::timeout(5) {     
+          scheduler.schedule_courses
+        } 
       rescue Timeout::Error
         logger.error current_user.courses
         redirect_to "/500.html"
@@ -83,7 +83,7 @@ class SchedulerController < ApplicationController
     schedule = []
     params["schedule"].each do |section_id|
       section = Section.find_by_id(section_id.to_i)
-      build_section( section )
+      Scheduler.build_section( section )
       schedule << section
     end
     section_hints = []
@@ -94,7 +94,7 @@ class SchedulerController < ApplicationController
 
       # Have to give the client all the data about the section, which spans multiple tables
       section_hints.map do |section_hint| 
-        build_section( section_hint )
+        Scheduler.build_section( section_hint )
       end
     end
 
@@ -191,4 +191,54 @@ class SchedulerController < ApplicationController
     render :text => decoded
   end
 
+  def icalendar
+    sections = []
+    params["schedule"].split(",").each do |section_id|
+      begin
+        sections << Section.find( section_id.to_i )
+      rescue ActiveRecord::RecordNotFound
+        render :json => { :status => :error }
+        return
+      end
+    end
+    cal = Icalendar::Calendar.new
+    sections.each do |section|
+      section.meetings.each do |meeting|
+        d = section.start_date
+        s = meeting.start_time
+        e = meeting.end_time
+        sdt = DateTime.new(d.year, d.month, d.day, s.hour, s.min, s.sec)
+        edt = DateTime.new(d.year, d.month, d.day, e.hour, e.min, e.sec)
+        udt = section.end_date
+        meeting.days.split("").each do |day|
+          case day
+          when "M"
+            wday = 1
+          when "T"
+            wday = 2
+          when "W"
+            wday = 3
+          when "R"
+            wday = 4
+          when "F"
+            wday = 5
+          else
+            wday = 6
+          end
+          offset = wday - sdt.wday
+          event = cal.event
+          event.dtstart = sdt+offset
+          event.dtend = edt+offset
+          event.recurrence_rules = ["FREQ=WEEKLY;UNTIL=#{(udt+offset).strftime("%Y%m%dT%H%M%S")}"]
+          event.summary = "#{section.course_subject_code} #{section.course_number} - #{section.section_type}"
+          event.description = "#{section.course.title} - #{section.course.description}"
+          event.location = meeting.building.name
+        end
+      end
+    end
+    response.headers["Content-Type"] = "text/calendar"
+    response.headers["Content-Disposition"] = "attachment; filename=\"ClasswholeSchedule.ics\""
+    
+    render :text => cal.to_ical
+  end
 end

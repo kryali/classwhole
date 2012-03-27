@@ -1,4 +1,4 @@
-$suggestion_y_offest : 11px;
+$suggestion_y_offest : 10px;
 $suggestion_x_offset : 14px;
 $autocomplete_bg_h   : 100%;
 $autocomplete_input_font_size: .7em;
@@ -13,6 +13,7 @@ $menu_border_color: #aaaaaa;
 #autocomplete-list {
   display: block;
 
+  font-family: 'Arial', sans-serif;
   font-size: $autocomplete_input_font_size;
   z-index: 5;
   padding: 1px 0 0 $autocomplete_input_left_padding;
@@ -47,10 +48,11 @@ input.autocomplete-list:focus {
 
   background: #e6e6e6;
   background: white;
-  border: 1px solid #a2a2a2;
-  box-shadow: inset 0px 0px 2px #a2a2a2;
-  -moz-box-shadow: inset 0px 0px 2px #a2a2a2;
-  -webkit-box-shadow: inset 0px 0px 2px #a2a2a2;
+  border: 1px solid #666;
+  box-shadow: inset 0px 0px 5px #666;
+  -moz-box-shadow: inset 0px 0px 5px #666;
+  -webkit-box-shadow: inset 0px 0px 5px #666;
+  padding-right: 13px;
 }
 
 .autocomplete-suggestion{
@@ -70,7 +72,8 @@ input.autocomplete-list:focus {
   display: none;
 }
 
-$auto_width: 100%;
+//$auto_width: 100%;
+$auto_width: 385px;
 .autocomplete-search-box {
   width: $auto_width;
   height: $autocomplete_height;
