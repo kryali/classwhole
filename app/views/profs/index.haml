@@ -1,6 +1,15 @@
 %div.scheduler-content
-  %div.course_box
+  %div{:class=>"course_box prof-box"}
     %div{ :class=>"prof-img" }
-    %span.prof-name= "Kumar, B"
-    %div{ :class=>"rating"}
-      =star
+    %div.prof-info
+      %span.prof-name= "Kumar, B"
+      %div{ :class=>"rating", "data-value" => "3.8"}
+        %div{ :class=>"rating-type"} Easiness
+        %div{ :class=>"stars fg" }
+        %div{ :class=>"stars bg" }
+      %div{ :class=>"rating", "data-value" => "1.4"}
+        %div{ :class=>"rating-type"} Average
+        %div{ :class=>"stars fg" }
+        %div{ :class=>"stars bg" }
+
+  =javascript_include_tag "ratings.js"
