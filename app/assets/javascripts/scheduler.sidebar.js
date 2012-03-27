@@ -27,7 +27,7 @@ Sidebar.prototype.render_section_row = function( section ) {
   var row = $("<div/>");
 
   for( i in section.meetings ) {
-    var meeting = section.meetings[i];
+    var meeting = section.meetings[i].table;
     row.append( $("<span/>")
                 .addClass("hidden id")
                 .text( section.id ) ); 

@@ -1,6 +1,7 @@
 require 'xmlsimple'
 require 'net/http'
 require 'pp'
+require 'time'
 
 #xml_data_second8week = Net::HTTP.get_response(URI.parse(url_second8week)).body
 #catalog_first8week = XmlSimple.xml_in(xml_data_first8week, 'ForceArray' => ['subject'], 'SuppressEmpty' => nil)
@@ -10,24 +11,23 @@ class UIUCParser
 
   def self.parse_meeting(meeting, meeting_number, current_section)
     current_meeting = Meeting.new
-    current_meeting.start_time = meeting["start"][0] if meeting.key?("start")     
-    current_meeting.end_time = meeting["end"][0] if meeting.key?("end")  
+    current_meeting.start_time = Time.parse(meeting["start"][0]).to_i if meeting.key?("start") and meeting.key?("end")    
+    current_meeting.end_time = Time.parse(meeting["end"][0]).to_i if meeting.key?("end")  
     current_meeting.room = meeting["roomNumber"][0]    if meeting.key?("roomNumber")      
     current_meeting.days = meeting["daysOfTheWeek"][0].strip if meeting.key?("daysOfTheWeek")
     current_meeting.class_type = meeting["type"][0]["content"]       if meeting.key?("type")
     current_meeting.building = meeting["buildingName"][0] if meeting.key?("buildingName")
-    pp current_meeting
-    return current_meeting
-  end
-=begin
-    #add instructor to database
+    current_meeting.section_id = current_section.id
+    instructor_list = []
     if not meeting["instructors"][0].empty?
       for instructor in  meeting["instructors"][0]["instructor"]
-        full_name = instructor["content"]
+        instructor_list << instructor["content"]
       end
     end   
-=end
-
+    current_meeting.instructors = instructor_list
+    pp current_meeting
+    return current_meeting
+  end 
 
   def self.parse_section(section_xml, current_course, name)
     course_number = section_xml["parents"][0]["course"].first[0] #probably a better way to do this     
@@ -90,7 +90,6 @@ class UIUCParser
       end
     section_id = current_section.id
     $redis.set("section:#{section_id}:meetings", meeting_list.to_json) 
-    pp meeting_list.size 
     end  
   end
 

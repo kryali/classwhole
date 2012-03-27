@@ -67,26 +67,23 @@
             Building
           %th.tab_columns
             Section      
-          -logger.info("*********************************")
-          -logger.info(pp @meetings)
           -for meeting in @meetings 
-            -logger.info(pp meeting.start_time)          
             -if type == meeting.class_type
               %tr
                 %td.table_data
                   -if !meeting.start_time.nil? and !meeting.end_time.nil?                               
-                    = meeting.start_time
+                    = meeting.duration_s
                 %td.table_data
                   -if !meeting.days.nil?  
                     = meeting.days            
                 %td.table_data
-                  -#if !meeting.instructors.first.nil?  
-                    =# meeting.instructors.first.full_name
+                  -if !meeting.instructors.empty?  
+                    = meeting.instructors[0]
                 %td.table_data
                   -if !meeting.building.nil? 
-                    = meeting.building.name
+                    = meeting.building
                 %td#hack.table_data
-                  -#if !meeting.section.code.nil?  and meeting.section.code != "NO CODE" 
-                    =# meeting.section.code
+                  -if !meeting.section.code.nil?  and meeting.section.code != "NO CODE" 
+                    = meeting.section.code
 
 

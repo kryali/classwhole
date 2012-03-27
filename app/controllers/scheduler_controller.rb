@@ -70,8 +70,8 @@ class SchedulerController < ApplicationController
   # prepares a section object for json
   def build_section( section )
     meetings = []
-    section.meetings.each do |meeting|
-        meeting["instructors"] = meeting.instructors
+    section.meetings.each do |meeting|    
+       # meeting["instructors"] = meeting.instructors[0]
         meetings << meeting
     end
     section['short_type'] = section.short_type_s

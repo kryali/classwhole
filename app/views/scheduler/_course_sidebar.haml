@@ -27,7 +27,7 @@
                   %span.crn= section.reference_number
                 - section.meetings.each do |meeting|
                   -if not meeting.instructors.empty?
-                    %span.instructor= shorten(meeting.instructors[0].full_name, 12, "..")
+                    %span.instructor= shorten(meeting.instructors[0], 12, "..")
                   -else 
                     %span.instructor TBD
                   -if meeting.start_time
