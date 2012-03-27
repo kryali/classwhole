@@ -68,7 +68,7 @@ class UIUCParser
       code = "NO CODE"
     end   
     Section.transaction do    
-      current_section = current_course.sections.find_by_code(crn)
+      current_section = current_course.sections.find_by_reference_number(crn)
       if current_section.nil?
         current_section = current_course.sections.new
       end
@@ -159,7 +159,7 @@ class UIUCParser
     # Add subjects, like ECE
     Subject.transaction do      
       current_subject = current_semester.subjects.find_by_code(subject_code)  
-      if current_subject.nil? 
+      if current_subject.nil?
         current_subject = current_semester.subjects.new
         current_subject.code = subject_code        
       end       
