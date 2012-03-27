@@ -44,8 +44,6 @@ Schedule.prototype.render_sections = function( sections ) {
 Schedule.prototype.render_section = function( section, is_hint ) {
   for( i in section.meetings ) {
     var meeting = section.meetings[i].table;
-    console.log(section);
-    console.log(meeting.start_time);
     var section_block = $("<div/>")
                         .addClass("schedule-block")
                         .attr("days", meeting.days);
@@ -53,7 +51,6 @@ Schedule.prototype.render_section = function( section, is_hint ) {
     var end_time = new Date(meeting.end_time);
     start_time.setHours(start_time.getHours()-5);
     end_time.setHours(end_time.getHours()-5);
-    console.log(section_block)
     // Find duration and offset
     var duration_scale = duration( start_time, end_time );
     var height = block_height * duration_scale;

@@ -25,7 +25,6 @@ class UIUCParser
       end
     end   
     current_meeting.instructors = instructor_list
-    pp current_meeting
     return current_meeting
   end 
 
