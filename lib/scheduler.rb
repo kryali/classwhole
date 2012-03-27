@@ -54,4 +54,19 @@ class Scheduler
       end
     end    
   end
+
+  # 'Static' shit
+
+  # prepares a section object for json
+  def self.build_section( section )
+    meetings = []
+    section.meetings.each do |meeting|
+        meeting["instructors"] = meeting.instructors
+        meeting["building"] = meeting.building
+        meetings << meeting
+    end
+    section['short_type'] = section.short_type_s
+    section['meetings'] = meetings
+    return section
+  end
 end

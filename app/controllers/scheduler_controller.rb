@@ -67,23 +67,12 @@ class SchedulerController < ApplicationController
     render :partial => "course_sidebar", :locals => { :sections => sections}
   end
 
-  # prepares a section object for json
-  def build_section( section )
-    meetings = []
-    section.meetings.each do |meeting|
-        meeting["instructors"] = meeting.instructors
-        meetings << meeting
-    end
-    section['short_type'] = section.short_type_s
-    section['meetings'] = meetings
-  end
-
   # Route that delivers section hints via AJAX
   def move_section
     schedule = []
     params["schedule"].each do |section_id|
       section = Section.find_by_id(section_id.to_i)
-      build_section( section )
+      Scheduler.build_section( section )
       schedule << section
     end
     section_hints = []
@@ -94,7 +83,7 @@ class SchedulerController < ApplicationController
 
       # Have to give the client all the data about the section, which spans multiple tables
       section_hints.map do |section_hint| 
-        build_section( section_hint )
+        Scheduler.build_section( section_hint )
       end
     end
 

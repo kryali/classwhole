@@ -5,9 +5,8 @@ var TOP_OFFSET = 30;
 var BLOCK_WIDTH = 122
 var BLOCK_HEIGHT = 75;
 var TEXT_OFFSET = 5;
-//var canvas = document.getElementById('schedule-render');
 
-function ScheduleCanvas( canvas, sections ) { 
+function ScheduleCanvas( canvas, sections ) {
   this.canvas = canvas;
   this.sections = sections;
   this.init();
@@ -26,14 +25,18 @@ ScheduleCanvas.prototype.image_data = function() {
 function generate_schedule_canvas( canvas, sections ) {
   var start_time;
   var end_time;
-
   for (var i = 0; i < sections.length; i++) {
-    var start = new Date(sections[i]["start_time"]);
-    var end = new Date(sections[i]["end_time"]);
-    if(start_time == null || start < start_time)
-      start_time = start;
-    if(end_time == null || end > end_time)
-      end_time = end;
+    var section = sections[i];
+    for (var j = 0; j < section.meetings.length; j++) {
+      var meeting = section.meetings[j];
+      console.log(meeting);
+      var start = new Date(meeting.start_time);
+      var end = new Date(meeting.end_time);
+      if(start_time == null || start < start_time)
+        start_time = start;
+      if(end_time == null || end > end_time)
+        end_time = end;
+    }
   }
 
   var start_hour = start_time.getUTCHours() - 1;
@@ -110,26 +113,32 @@ function draw_background(context, start_hour, end_hour) {
     for (var j = 0; j < hours; j++) {
       var x = LEFT_OFFSET + i * BLOCK_WIDTH;
       var y = TOP_OFFSET + j * BLOCK_HEIGHT;
-      draw_block(context, x, y)
+      draw_block(context, x, y);
     }
   }
 }
 
 function draw_section(context, start_hour, section, color) {
-  var start_time = new Date(section["start_time"]);
-  var end_time = new Date(section["end_time"]);
+  for (var i = 0; i < section.meetings.length; i++) {
+    draw_meeting(context, start_hour, section, color, section.meetings[i]);
+  }
+}
+
+function draw_meeting(context, start_hour, section, color, meeting) {
+  var start_time = new Date(meeting.start_time);
+  var end_time = new Date(meeting.end_time);
   var start_position = BLOCK_HEIGHT * (time_float(start_time) - start_hour);
   var end_position = BLOCK_HEIGHT * (time_float(end_time) - start_hour);
   var height = end_position - start_position;
 
-  var days = section["days"];
+  var days = meeting.days;
   if( days == null )
     return;
 
-  var section_name = section["course_subject_code"] + " " + section["course_number"];
-  var section_type = section["section_type"];
+  var section_name = section.course_subject_code + " " + section.course_number;
+  //var section_type = meeting["short_type"];
   var section_time = time_string(start_time) + " - " + time_string(end_time);
-  var section_room = section["room"] + " " + section["building"];
+  var section_room = meeting.room + " " + meeting.building;
 
   for(var i = 0; i < days.length; i++) {
     var index = day_index(days.charAt(i));
@@ -156,8 +165,8 @@ function draw_section(context, start_hour, section, color) {
     context.fillText(section_name, x + TEXT_OFFSET, y + TEXT_OFFSET);
     context.font = "10pt Arial";
     context.textAlign = "right";
-    context.fillText(section_type, x + BLOCK_WIDTH - TEXT_OFFSET, y + TEXT_OFFSET);
-    if( section["building"] != null ) {
+    //context.fillText(section_type, x + BLOCK_WIDTH - TEXT_OFFSET, y + TEXT_OFFSET);
+    if( section.building != null ) {
       context.fillText(section_room, x + BLOCK_WIDTH - TEXT_OFFSET, y + TEXT_OFFSET + 20);
     }
     context.textBaseline = "bottom";
@@ -166,13 +175,19 @@ function draw_section(context, start_hour, section, color) {
 }
 
 function draw_section_shadow(context, start_hour, section) {
-  var start_time = new Date(section["start_time"]);
-  var end_time = new Date(section["end_time"]);
+  for (var i = 0; i < section["meetings"].length; i++) {
+    draw_meeting_shadow(context, start_hour, section["meetings"][i]);
+  }
+}
+
+function draw_meeting_shadow(context, start_hour, meeting) {
+  var start_time = new Date(meeting["start_time"]);
+  var end_time = new Date(meeting["end_time"]);
   var start_position = BLOCK_HEIGHT * (time_float(start_time) - start_hour);
   var end_position = BLOCK_HEIGHT * (time_float(end_time) - start_hour);
   var height = end_position - start_position;
 
-  var days = section["days"];
+  var days = meeting["days"];
   if( days == null ) {
     return;
   }

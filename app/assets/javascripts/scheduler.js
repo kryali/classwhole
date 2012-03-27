@@ -106,7 +106,7 @@ $(function(){
       to the server instead.
    */
   function init_download_schedule() {
-    var canvas = document.getElementById('schedule-render');
+    var canvas = document.getElementById('schedule-canvas');
     $(".download").click( function() {
       var schedule_ids = get_schedule_ids();
 
