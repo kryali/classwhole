@@ -20,10 +20,10 @@ class SchedulerController < ApplicationController
                                                 :data => 'valid_schedules' ) {
 
       begin      
-      scheduler = Scheduler.new(current_user.courses)
-      status = Timeout::timeout(5) {     
-        scheduler.schedule_courses
-      } 
+        scheduler = Scheduler.new(current_user.courses)
+        status = Timeout::timeout(5) {     
+          scheduler.schedule_courses
+        } 
       rescue Timeout::Error
         logger.error current_user.courses
         redirect_to "/500.html"

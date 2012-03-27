@@ -9,7 +9,7 @@
     - else
       %h1 Type classes to get started
     - for course in current_user.courses
-      %li
+      %li{"data-hours-max" => course.hours_max, "data-hours-min" => course.hours_min }
         %a.remove-link X
         %span.code= course.to_s
         %span.title= course.title

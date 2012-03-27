@@ -8,11 +8,17 @@ var max_hours = 0;
 function ClassList(){ }
 
 ClassList.prototype.init = function() {
+    min_hours = parseInt($(".hour-count").attr("data-hours-min"));
+    max_hours = parseInt($(".hour-count").attr("data-hours-max"));
     $(".user-course-list ul li ").each( function() { 
         has_classes = true;
         var class_id = $(this).find(".id").text(); 
-        var class_min_hours = min_hours = parseInt($(".hour-count").attr("data-hours-min"));
-        var class_max_hours = max_hours = parseInt($(".hour-count").attr("data-hours-max"));
+        var class_min_hours = $(this).attr("data-hours-min");
+        var class_max_hours = $(this).attr("data-hours-max");
+        //console.log( class_min_hours + "-" + class_max_hours );
+        //min_hours += class_min_hours;
+        //max_hours += class_max_hours;
+
         selected_classes[class_id] = $(this);
 
         var class_li = $(this);
@@ -25,7 +31,7 @@ ClassList.prototype.init = function() {
                   max_hours -= class_max_hours;
                   min_hours -= class_min_hours;
                   update_hours();
-                  console.log( class_max_hours + "-" + class_min_hours );
+                  //console.log( class_max_hours + "-" + class_min_hours );
                   delete selected_classes[ class_id ];
                   class_li.slideUp(function(){ $(this).remove() });
                 }
