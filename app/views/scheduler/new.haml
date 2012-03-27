@@ -20,5 +20,4 @@
     %a{:href=>"#", :class=>"next"}
     -if @possible_schedules.size > 1
       = render :partial => 'mini_schedule_grids', :locals => { :possible_schedules => @possible_schedules }
-
-  = render "render" # wtf kind of naming is this classwhole
+  = render "schedule_canvas"

@@ -231,7 +231,7 @@ class CatalogController < ApplicationController
     sections = []
     params["schedule"].each do |section_id|
       begin
-        sections << Section.find( section_id.to_i )
+        sections << Scheduler.build_section(Section.find( section_id.to_i ))
       rescue ActiveRecord::RecordNotFound
         render :json => { :status => :error }
         return
