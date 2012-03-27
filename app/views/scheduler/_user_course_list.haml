@@ -21,3 +21,7 @@
 =render 'shared/class_search'
 %div.clear
 =link_to "Schedule", scheduler_new_path, :class => 'button blue schedule large'
+- if current_user.total_course_hours > 0
+  %div.hour-count{"data-hours-min" => "#{current_user.total_course_hours}", "data-hours-max" => "#{current_user.total_course_hours}"}= "Total #{current_user.total_course_hours} hrs"
+- else
+  %div.hour-count{ :style=>"display: none;", "data-hours-min" => "0", "data-hours-max" => "0" }= "Total 0 hrs"

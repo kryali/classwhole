@@ -15,7 +15,7 @@ class Fake_user
   def total_course_hours
     hours = 0
     @courses.each do |course|
-      hours += course.hours 
+      hours += course.credit_hours.to_i 
     end
     return hours
   end

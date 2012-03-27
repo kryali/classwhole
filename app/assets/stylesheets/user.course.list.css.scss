@@ -23,8 +23,19 @@ $course-list-bg     : white; //#E6E6E6;
     margin: 0 auto;
     position: relative;
 
+    .hour-count {
+      font-size: 12px;
+      width: 120px;
+      background: #EFEFEF;
+      text-align: center;
+      margin: 0 auto 0em auto;
+      border: 1px solid #AAA;
+      padding: 5px;
+      box-shadow: inset 0px 2px 3px #ccc;
+    }
+
     a.schedule {
-      margin: 2em auto 2em auto;
+      margin: 1.5em auto 0em auto;
       width: 140px;
       display: block;
       text-align: center;
@@ -92,7 +103,7 @@ $course-list-bg     : white; //#E6E6E6;
     }
 
     span.code {
-      right: 75%;
+      right: 78%;
       font-size: 1em;
       color: #666;
       font-weight: bold;
@@ -109,7 +120,7 @@ $course-list-bg     : white; //#E6E6E6;
     }
 
     span.title {
-      left: 30%;
+      left: 25%;
       text-align: center
     }
 
@@ -175,6 +186,7 @@ $course-list-bg     : white; //#E6E6E6;
   position: relative;
   width: 100%;
   overflow: hidden;
+  margin-top: 1.25em;
 
   .feature-row {
     margin: 0 auto;
