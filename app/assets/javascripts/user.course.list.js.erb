@@ -25,6 +25,7 @@ ClassList.prototype.init = function() {
                   max_hours -= class_max_hours;
                   min_hours -= class_min_hours;
                   update_hours();
+                  console.log( class_max_hours + "-" + class_min_hours );
                   delete selected_classes[ class_id ];
                   class_li.slideUp(function(){ $(this).remove() });
                 }
@@ -59,10 +60,15 @@ ClassList.prototype.add_class_callback = function(event, ui) {
 
         /* Append the course to the currently populated list */
         var remove_course = $("<a/>").text("X").addClass("remove-link");
-        max_hours += parseInt(ui.item.hours);
-        min_hours += parseInt(ui.item.hours);
+        max_hours += parseInt(ui.item.max_hours);
+        min_hours += parseInt(ui.item.min_hours);
         show_button();
         update_hours();
+        var hour_string;
+        if( ui.item.max_hours - ui.item.min_hours != 0 )
+          hour_string = ui.item.min_hours + "-" + ui.item.max_hours + " hr";
+        else
+          hour_string = ui.item.min_hours + " hr";
         var course_li = $("<li/>")
                             .append(remove_course)
                             .append($("<span/>")
@@ -72,7 +78,7 @@ ClassList.prototype.add_class_callback = function(event, ui) {
                                 .text(ui.item.title)
                                 .addClass("title"))
                             .append($("<span/>")
-                                .text(ui.item.hours + " hr")
+                                .text(hour_string)
                                 .addClass("hours"))
                             .append($("<span/>")
                                 .text(ui.item.id)
@@ -90,8 +96,8 @@ ClassList.prototype.add_class_callback = function(event, ui) {
             });
           course_li.slideUp();
           $(this).remove();
-          max_hours -= parseInt( ui.item.hours );
-          min_hours -= parseInt( ui.item.hours );
+          max_hours -= parseInt( ui.item.max_hours );
+          min_hours -= parseInt( ui.item.min_hours );
           update_hours();
           delete selected_classes[class_id];
         });
@@ -122,7 +128,7 @@ function add_users_to_course( course, users ) {
   var current_user_id = parseInt( $("#current_user").text() );
   for( var i = 0; i < users.length; i++ ) {
     if( users[i].id == current_user_id ) {
-      console.log( "user is the same wtf!" );
+      //console.log( "user is the same wtf!" );
     }
   }
   // Get current user
