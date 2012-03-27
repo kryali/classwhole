@@ -69,12 +69,16 @@ class Course < ActiveRecord::Base
     "course:#{self.id}:#{str}"
   end
 
-  def hours
+  def credit_hours
     if hours_min - hours_max != 0
-      "#{hours_min}-#{hours_max} hr"
+      "#{hours_min}-#{hours_max}"
     else
-      "#{hours_min} hr"
+      "#{hours_min}"
     end
+  end
+
+  def hours
+    "#{credit_hours} hr"
   end
 
 end

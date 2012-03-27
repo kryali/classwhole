@@ -1,0 +1,14 @@
+.course_box {
+  .prof-img {
+    width: 128px;
+    height: 128px;
+    background: url("prof.png");
+    display: block;
+    float: left;
+  }
+
+  .prof-name {
+    float: left;
+    font-size: 36px;
+  }
+}

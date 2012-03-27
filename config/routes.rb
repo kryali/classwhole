@@ -22,6 +22,12 @@ Whiteboard::Application.routes.draw do
   match  'courses/:season/:year/:subject_code/:course_number' => 'catalog#course', :as => 'show_course'
 
 
+  # Professor routes
+  match 'profs/' => 'profs#index', :as => 'profs_index'
+  match 'profs/:name_slug' => 'profs#show'
+  match 'professors/' => 'profs#index'
+  match 'professors/:name_slug' => 'profs#show'
+
   # Temp hack to return json array of section ids
   match  'sections/' => 'catalog#sections', :via => :post
 

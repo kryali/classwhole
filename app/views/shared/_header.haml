@@ -2,8 +2,9 @@
   %div.center
     %h3= link_to "", root_path, {:id => "logo"}
     %nav
-      = link_to "Course List", show_semester_path($CURRENT_SEMESTER.season,$CURRENT_SEMESTER.year)
       = link_to "Scheduler", scheduler_index_path
+      = link_to "Course List", show_semester_path($CURRENT_SEMESTER.season,$CURRENT_SEMESTER.year)
+      = link_to "Professors", profs_index_path
       = link_to "About", about_path
       - if Rails.env == "development"
         = link_to "Sandbox", sandbox_index_path
