@@ -68,7 +68,7 @@ class UIUCParser
       code = "NO CODE"
     end   
     Section.transaction do    
-      current_section = current_course.sections.find_by_code(crn)
+      current_section = current_course.sections.find_by_reference_number(crn)
       if current_section.nil?
         current_section = current_course.sections.new
       end
@@ -92,6 +92,7 @@ class UIUCParser
       current_section.course_title = section_xml["parents"][0]["course"].first[1]["content"]
       current_section.course_number = section_xml["parents"][0]["course"].first[0]
       current_section.code = section_xml["sectionNumber"][0]    if section_xml.has_key?("sectionNumber")
+      current_section.hours = section_xml["creditHours"][0].scan(/\d/).map{|n| n.to_i} if section_xml.has_key?("creditHours")
 
       # setup course configuration
       if current_section.configuration.nil?
@@ -124,11 +125,19 @@ class UIUCParser
         current_course = current_subject.courses.new
       end       
       current_course.number = course_number    
-      current_course.credit_hours = course_xml["creditHours"][0].split(" ")[0].to_i if course_xml.key?("creditHours")
+      #current_course.credit_hours = course_xml["creditHours"][0].split(" ")[0].to_i if course_xml.key?("creditHours")
       current_course.description = course_xml["description"][0] if course_xml.key?("description")
       current_course.title = course_xml["label"][0]  if course_xml.key?("label")
       current_course.subject_code = name.split(" ")[0]
-      current_course.save    
+      hours = course_xml["creditHours"][0].scan(/\d/).map{|n| n.to_i}
+      if hours.size == 1
+        current_course.hours_min = nil
+        current_course.hours_max = hours[0]
+      elsif hours.size == 2
+        current_course.hours_min = hours[0]
+        current_course.hours_max = hours[1]
+      end
+      current_course.save
       sections = course_xml["detailedSections"][0]["detailedSection"] if course_xml.key?("detailedSections")
       sections.each do |id, detailedSection|
         self.parse_section detailedSection, current_course, id
@@ -150,7 +159,7 @@ class UIUCParser
     # Add subjects, like ECE
     Subject.transaction do      
       current_subject = current_semester.subjects.find_by_code(subject_code)  
-      if current_subject.nil? 
+      if current_subject.nil?
         current_subject = current_semester.subjects.new
         current_subject.code = subject_code        
       end       
