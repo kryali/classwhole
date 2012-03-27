@@ -22,12 +22,12 @@
                 %span{:class=>"hidden id"}=section.id
                 %span{:class=>"section-type label"}= section.short_type_s
                 %span.code= section.code
+                %span{ :class=>"enrollment status-#{section.enrollment_status}" }
                 -if nil
                   %span.crn= section.reference_number
                 - section.meetings.each do |meeting|
                   -if not meeting.instructors.empty?
-                    - meeting.instructors.each do |instructor|
-                      %span.instructor= shorten(instructor.full_name, 12, "..")
+                    %span.instructor= shorten(meeting.instructors[0].full_name, 12, "..")
                   -else 
                     %span.instructor TBD
                   -if meeting.start_time
