@@ -23,11 +23,13 @@ class Course < ActiveRecord::Base
       label = $redis.hget("id:course:#{course_id}", "label")
       title = $redis.hget("id:course:#{course_id}", "title")
       value = $redis.hget("id:course:#{course_id}", "value")
-      hours = $redis.hget("id:course:#{course_id}", "hours")
+      min_hours = $redis.hget("id:course:#{course_id}", "hours_min")
+      max_hours = $redis.hget("id:course:#{course_id}", "hours_max")
       courses << { :label => label,
                    :title => title,
                    :value => value,
-                   :hours => hours,
+                   :min_hours => min_hours,
+                   :max_hours => max_hours,
                    :id =>    course_id }
     end
     return courses 
@@ -68,7 +70,11 @@ class Course < ActiveRecord::Base
   end
 
   def hours
-    "#{credit_hours} hr"
+    if hours_min - hours_max != 0
+      "#{hours_min}-#{hours_max} hr"
+    else
+      "#{hours_min} hr"
+    end
   end
 
 end

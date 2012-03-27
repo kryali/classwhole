@@ -48,6 +48,7 @@
   }
   &:active {
     @include gradient(#0069ce, #017aae);
+    box-shadow: inset 0px 0px 10px #333;
   }
 }
 
@@ -61,6 +62,7 @@
   }
   &:active {
     @include gradient(#EEE, #DDD);
+    box-shadow: inset 0px 0px 8px #ccc;
   }
 }
 
