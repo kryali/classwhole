@@ -8,7 +8,7 @@
         %li{:class=> "course-header #{colors[course.id]}"}
           %span.course-name= course.to_s
           %span.course-title= course.title
-          %span.course-hours= "(#{course.credit_hours} hr)"
+          %span.course-hours= "(#{course.hours_max} hr)"
         -if nil
           %li 
             %span.title Description
