@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120327020048) do
+ActiveRecord::Schema.define(:version => 20120327044229) do
 
   create_table "attribs", :force => true do |t|
     t.string "code"
@@ -124,6 +124,8 @@ ActiveRecord::Schema.define(:version => 20120327020048) do
     t.integer  "configuration_id"
     t.string   "short_type"
     t.integer  "hours"
+    t.datetime "start_date"
+    t.datetime "end_date"
   end
 
   create_table "sections_meetings", :id => false, :force => true do |t|
