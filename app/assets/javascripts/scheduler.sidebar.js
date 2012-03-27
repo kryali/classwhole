@@ -48,7 +48,6 @@ Sidebar.prototype.render_section_row = function( section ) {
     row.append( $("<span/>")
                 .addClass("code")
                 .text( section.code ) ); 
-
     row.append( $("<span/>")
                 .addClass("enrollment status-" + section.enrollment_status) );
     row.append( $("<span/>")
