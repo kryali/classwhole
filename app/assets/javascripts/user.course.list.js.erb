@@ -53,6 +53,7 @@ ClassList.prototype.add_class_callback = function(event, ui) {
 
         /* Append the course to the currently populated list */
         var remove_course = $("<a/>").text("X").addClass("remove-link");
+        console.log( ui.item );
         var course_li = $("<li/>")
                             .append(remove_course)
                             .append($("<span/>")
@@ -61,6 +62,9 @@ ClassList.prototype.add_class_callback = function(event, ui) {
                             .append($("<span/>")
                                 .text(ui.item.title)
                                 .addClass("title"))
+                            .append($("<span/>")
+                                .text(ui.item.hours + " hr")
+                                .addClass("hours"))
                             .append($("<span/>")
                                 .text(ui.item.id)
                                 .addClass("hidden id"))
