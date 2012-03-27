@@ -42,7 +42,7 @@ Whiteboard::Application.routes.draw do
   match 'user/header' => 'user#header', :via => :post
 
   # Scheduler routes
-  get "scheduler/index"
+  match "scheduler/" => "scheduler#index", :as => "scheduler_index"
   get "scheduler/show"
   get "scheduler/new"
   match 'scheduler/sidebar' => 'scheduler#sidebar', :via => :post
