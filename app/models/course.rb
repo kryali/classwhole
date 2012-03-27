@@ -23,9 +23,11 @@ class Course < ActiveRecord::Base
       label = $redis.hget("id:course:#{course_id}", "label")
       title = $redis.hget("id:course:#{course_id}", "title")
       value = $redis.hget("id:course:#{course_id}", "value")
+      hours = $redis.hget("id:course:#{course_id}", "hours")
       courses << { :label => label,
                    :title => title,
                    :value => value,
+                   :hours => hours,
                    :id =>    course_id }
     end
     return courses 
@@ -63,6 +65,10 @@ class Course < ActiveRecord::Base
 
   def key( str )
     "course:#{self.id}:#{str}"
+  end
+
+  def hours
+    "#{credit_hours} hr"
   end
 
 end

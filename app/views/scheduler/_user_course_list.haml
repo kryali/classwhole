@@ -13,6 +13,7 @@
         %a.remove-link X
         %span.code= course.to_s
         %span.title= course.title
+        %span.hours= course.hours
         %span{ :class=> "hidden id"}= course.id
       -# Leave this out for now
       =#render :partial => 'classmates', :locals => { :course => course }

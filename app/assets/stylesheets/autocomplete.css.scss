@@ -1,4 +1,4 @@
-$suggestion_y_offest : 11px;
+$suggestion_y_offest : 10px;
 $suggestion_x_offset : 14px;
 $autocomplete_bg_h   : 100%;
 $autocomplete_input_font_size: .7em;
@@ -13,6 +13,7 @@ $menu_border_color: #aaaaaa;
 #autocomplete-list {
   display: block;
 
+  font-family: 'Arial', sans-serif;
   font-size: $autocomplete_input_font_size;
   z-index: 5;
   padding: 1px 0 0 $autocomplete_input_left_padding;

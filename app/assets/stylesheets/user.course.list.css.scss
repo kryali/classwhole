@@ -145,16 +145,12 @@ $course-list-bg     : white; //#E6E6E6;
   }
 
   .hours {
-    opacity: 0;
     position: absolute;
-    right: -3em;
-    bottom: -1.2em;
     display: block;
     color: #777;
-    z-index: 1000;
-    span {
-      font-size: 2em;
-    }
+    font-size: 10px;
+    top: 15px;
+    right: 27px;
   }
 
 }
