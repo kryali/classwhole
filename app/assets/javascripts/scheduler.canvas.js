@@ -45,6 +45,11 @@ function generate_schedule_canvas( canvas, sections ) {
   canvas.height = TOP_OFFSET + ((end_hour-start_hour) * BLOCK_HEIGHT) +1;
   var context = canvas.getContext('2d');
 
+  // make entire background white
+  context.fillStyle = "white";
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  
+  // draw hours, days of the week, and blocks
   draw_background(context, start_hour, end_hour);
 
   // draw section shadows
@@ -137,7 +142,7 @@ function draw_meeting(context, start_hour, section, color, meeting) {
   var section_name = section.course_subject_code + " " + section.course_number;
   var section_type = meeting.short_type;
   var section_time = time_string(start_time) + " - " + time_string(end_time);
-  var section_room = meeting.room + " " + meeting.building;
+  var section_room = (meeting.room + " " + meeting.building).substring(0,18);
   for(var i = 0; i < days.length; i++) {
     var index = day_index(days.charAt(i));
     if(index == -1) { 
@@ -162,11 +167,13 @@ function draw_meeting(context, start_hour, section, color, meeting) {
     context.font = "12pt Arial";
     context.fillText(section_name, x + TEXT_OFFSET, y + TEXT_OFFSET);
     context.font = "10pt Arial";
+    context.textBaseline = "middle";
+    if(meeting.building) {
+      context.fillText(section_room, x + TEXT_OFFSET, y + BLOCK_HEIGHT/2);
+    }
+    context.textBaseline = "top";
     context.textAlign = "right";
     context.fillText(section_type, x + BLOCK_WIDTH - TEXT_OFFSET, y + TEXT_OFFSET);
-    if(meeting.building) {
-      context.fillText(section_room, x + BLOCK_WIDTH - TEXT_OFFSET, y + TEXT_OFFSET + 20);
-    }
     context.textBaseline = "bottom";
     context.fillText(section_time, x + BLOCK_WIDTH - TEXT_OFFSET, TOP_OFFSET + end_position - TEXT_OFFSET);
   }
