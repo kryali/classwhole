@@ -27,11 +27,6 @@
           %tr
             %td 
               %a{:name => "#{@pagination_indeces[index_counter][1]}"}
-        -else
-          -logger.info("*****************************************************")
-          -logger.info(counter)
-          -logger.info(@pagination_indeces[index_counter])
-          -logger.info(pp @pagination_indeces)
               
         %tr      
           %td{:class => 'major_cells'}

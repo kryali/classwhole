@@ -159,7 +159,6 @@ module SchedulerHelper
   # This function takes an array of section array of ActiveRecord 
   # objects spits out the sections in ids in an array
   def section_ids_from_schedules( all_schedules )
-    logger.info(all_schedules.inspect)
     schedules = []
     all_schedules.each do |sections|
       section_ids = []

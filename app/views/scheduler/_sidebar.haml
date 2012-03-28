@@ -9,9 +9,9 @@
       %div.download{:title => "Schedule picture"}
         %span#down-img
         %a{ :class => "button grey download-schedule"} Download
-      %div.icalendar{:title => "Google Calendar Compatible"}
-        %span#down-img
-        %a{ :class => "button grey download-icalendar"} Calendar
+      -#%div.icalendar{:title => "Google Calendar Compatible"}
+      -#  %span#down-img
+      -#  %a{ :class => "button grey download-icalendar"} Calendar
     %a{ :class => "button blue share-schedule", :title => "Show your friends what you're taking"} Share
     %a{ "data-controls-modal" => "register-modal", "data-keyboard" => "true", :class => "button grey register-schedule tooltip", :title => "Get your CRNS and register on Enterprise"} Register
   = render :partial =>  "course_sidebar", :locals => { :sections => sections }
