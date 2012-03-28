@@ -4,7 +4,8 @@
     %nav
       = link_to "Scheduler", scheduler_index_path
       = link_to "Courses", show_semester_path($CURRENT_SEMESTER.season,$CURRENT_SEMESTER.year)
-      = link_to "Professors", profs_index_path
+      - if Rails.env == "development"
+        = link_to "Professors", profs_index_path
       = link_to "About", about_path
       - if Rails.env == "development"
         = link_to "Sandbox", sandbox_index_path
