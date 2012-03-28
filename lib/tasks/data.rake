@@ -23,6 +23,7 @@ class UIUCParser
     if not meeting["instructors"][0].empty?
       for instructor in  meeting["instructors"][0]["instructor"]
         instructor_list << instructor["content"]
+        Instructor.add( instructor["content"], current_section.course )
       end
     end   
     current_meeting.instructors = instructor_list

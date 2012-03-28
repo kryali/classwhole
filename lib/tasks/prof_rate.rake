@@ -2,6 +2,9 @@ require 'net/http'
 require 'uri'
 require 'nokogiri'
 
+def clear_profs
+  Instructor.delete_all
+end
 
 def parse_prof_for_letter( letter )
   base_url = 'http://www.ratemyprofessors.com/'
@@ -20,6 +23,12 @@ def parse_prof_for_letter( letter )
     easy = entry.css('.profEasy').inner_html
     avg = entry.css('.profAvg').inner_html
     num_ratings = entry.css('.profRatings').inner_html
+    names = prof_name.to_s.gsub(/\s/,'').split(",")
+    last_name = names[0]
+    first_name = names[1][0]
+    redis_key = "#{last_name}, #{first_name}"
+    Instructor.add_rating( redis_key, "easy", easy )
+    Instructor.add_rating( redis_key, "avg", avg )
     puts "#{prof_name} - #{prof_url}"
     puts "RATINGS: \n\teasy-#{easy}\n\tavg-#{avg}\n\tnum-#{num_ratings}"
     puts "#######"
@@ -33,6 +42,11 @@ def parse_all_profs
 end
 
 namespace :prof do 
+  task :setup => [:environment] do
+    clear_profs
+    parse_all_profs
+  end
+
   task :update => [:environment] do
     parse_all_profs
   end

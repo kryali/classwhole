@@ -52,6 +52,15 @@
   }
 }
 
+.green {
+  @include gradient(#62c462, #51a351);
+  border: 1px solid #ccc;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  &:active {
+    box-shadow: inset 0px 0px 8px #333;
+  }
+}
+
 .grey {
   border: 1px solid #AAAAAA;
   color: #333;
