@@ -37,7 +37,7 @@ Sidebar.prototype.render_section_row = function( section ) {
 
     var instructor_name;
     if (meeting.instructors.length >= 1)  {
-      instructor_name = meeting.instructors[0].full_name;
+      instructor_name = meeting.instructors[0];
     } else {
       instructor_name = "TBD";
     }
