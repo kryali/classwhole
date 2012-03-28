@@ -142,7 +142,7 @@ function draw_meeting(context, start_hour, section, color, meeting) {
   var section_name = section.course_subject_code + " " + section.course_number;
   var section_type = meeting.short_type;
   var section_time = time_string(start_time) + " - " + time_string(end_time);
-  var section_room = meeting.room + " " + meeting.building.substring(0,14);
+  var section_room = (meeting.room + " " + meeting.building).substring(0,18);
   for(var i = 0; i < days.length; i++) {
     var index = day_index(days.charAt(i));
     if(index == -1) { 
