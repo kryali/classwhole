@@ -8,16 +8,18 @@ class Section < ActiveRecord::Base
     meetings_list = []
     for meeting in decoded     
       current_meeting = Meeting.new
-      current_meeting.start_time = Time.at(meeting["table"]["start_time"].to_i) if meeting["table"].key?("start_time") 
-      current_meeting.class_type= meeting["table"]["class_type"] if meeting["table"].key?("class_type")
-      current_meeting.end_time = Time.at(meeting["table"]["end_time"].to_i) if meeting["table"].key?("end_time")
+      if meeting["table"].key?("end_time") and meeting["table"].key?("start_time")
+        current_meeting.start_time, current_meeting.end_time = Scheduler.parse_hours(meeting["table"]["start_time"], meeting["table"]["end_time"])
+      end      
+      current_meeting.room = meeting["table"]["room"]
+      current_meeting.class_type = meeting["table"]["class_type"]
       current_meeting.days = meeting["table"]["days"] if meeting["table"].key?("days")
       current_meeting.building = meeting["table"]["building"] if meeting["table"].key?("building")
       current_meeting.section_id = meeting["table"]["section_id"]
-      current_meeting.instructors = meeting["table"]["instructors"]
+      current_meeting.instructors = meeting["table"]["instructors"] if meeting["table"].key?("instructors")
+      current_meeting.short_type = meeting["table"]["short_type"] if meeting["table"].key?("short_type")
       meetings_list << current_meeting   
-     end
-    
+    end
     return meetings_list
   end
 

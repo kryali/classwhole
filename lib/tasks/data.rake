@@ -11,13 +11,14 @@ class UIUCParser
 
   def self.parse_meeting(meeting, meeting_number, current_section)
     current_meeting = Meeting.new
-    current_meeting.start_time = Time.parse(meeting["start"][0]).to_i if meeting.key?("start") and meeting.key?("end")    
-    current_meeting.end_time = Time.parse(meeting["end"][0]).to_i if meeting.key?("end")  
+    current_meeting.start_time = meeting["start"][0] if meeting.key?("start") and meeting.key?("end")    
+    current_meeting.end_time = meeting["end"][0] if meeting.key?("end")
     current_meeting.room = meeting["roomNumber"][0]    if meeting.key?("roomNumber")      
     current_meeting.days = meeting["daysOfTheWeek"][0].strip if meeting.key?("daysOfTheWeek")
     current_meeting.class_type = meeting["type"][0]["content"]       if meeting.key?("type")
     current_meeting.building = meeting["buildingName"][0] if meeting.key?("buildingName")
     current_meeting.section_id = current_section.id
+    current_meeting.short_type = meeting["type"][0]["code"]
     instructor_list = []
     if not meeting["instructors"][0].empty?
       for instructor in  meeting["instructors"][0]["instructor"]
@@ -225,7 +226,6 @@ class UIUCParser
       current.attribute = hash[key]
     end
   end
-
 end
 
 namespace :data do 

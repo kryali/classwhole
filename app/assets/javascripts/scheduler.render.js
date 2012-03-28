@@ -49,8 +49,7 @@ Schedule.prototype.render_section = function( section, is_hint ) {
                         .attr("days", meeting.days);
     var start_time = new Date(meeting.start_time);
     var end_time = new Date(meeting.end_time);
-    start_time.setHours(start_time.getHours()-5);
-    end_time.setHours(end_time.getHours()-5);
+
     // Find duration and offset
     var duration_scale = duration( start_time, end_time );
     var height = block_height * duration_scale;
@@ -81,9 +80,6 @@ Schedule.prototype.render_section = function( section, is_hint ) {
 }
 
 function fill_section_info( section, meeting, section_block ) {
-  console.log(section);
-  console.log(meeting);
-  console.log(section_block);
   section_block.append( $("<span/>")
                         .addClass("hidden id")
                         .text(section.id) );

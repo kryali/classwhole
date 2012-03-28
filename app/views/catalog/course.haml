@@ -68,6 +68,8 @@
           %th.tab_columns
             Section      
           -for meeting in @meetings 
+            -logger.info("**************************************************************************")
+            -logger.info meeting
             -if type == meeting.class_type
               %tr
                 %td.table_data

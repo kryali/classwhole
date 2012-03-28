@@ -28,8 +28,7 @@ function generate_schedule_canvas( canvas, sections ) {
   for (var i = 0; i < sections.length; i++) {
     var section = sections[i];
     for (var j = 0; j < section.meetings.length; j++) {
-      var meeting = section.meetings[j];
-      console.log(meeting);
+      var meeting = section.meetings[j].table;
       var start = new Date(meeting.start_time);
       var end = new Date(meeting.end_time);
       if(start_time == null || start < start_time)
@@ -120,7 +119,7 @@ function draw_background(context, start_hour, end_hour) {
 
 function draw_section(context, start_hour, section, color) {
   for (var i = 0; i < section.meetings.length; i++) {
-    draw_meeting(context, start_hour, section, color, section.meetings[i]);
+    draw_meeting(context, start_hour, section, color, section.meetings[i].table);
   }
 }
 
@@ -136,10 +135,9 @@ function draw_meeting(context, start_hour, section, color, meeting) {
     return;
 
   var section_name = section.course_subject_code + " " + section.course_number;
-  //var section_type = meeting["short_type"];
+  var section_type = meeting.short_type;
   var section_time = time_string(start_time) + " - " + time_string(end_time);
   var section_room = meeting.room + " " + meeting.building;
-
   for(var i = 0; i < days.length; i++) {
     var index = day_index(days.charAt(i));
     if(index == -1) { 
@@ -165,8 +163,8 @@ function draw_meeting(context, start_hour, section, color, meeting) {
     context.fillText(section_name, x + TEXT_OFFSET, y + TEXT_OFFSET);
     context.font = "10pt Arial";
     context.textAlign = "right";
-    //context.fillText(section_type, x + BLOCK_WIDTH - TEXT_OFFSET, y + TEXT_OFFSET);
-    if( section.building != null ) {
+    context.fillText(section_type, x + BLOCK_WIDTH - TEXT_OFFSET, y + TEXT_OFFSET);
+    if(meeting.building) {
       context.fillText(section_room, x + BLOCK_WIDTH - TEXT_OFFSET, y + TEXT_OFFSET + 20);
     }
     context.textBaseline = "bottom";
@@ -175,8 +173,8 @@ function draw_meeting(context, start_hour, section, color, meeting) {
 }
 
 function draw_section_shadow(context, start_hour, section) {
-  for (var i = 0; i < section["meetings"].length; i++) {
-    draw_meeting_shadow(context, start_hour, section["meetings"][i]);
+  for (var i = 0; i < section.meetings.length; i++) {
+    draw_meeting_shadow(context, start_hour, section.meetings[i].table);
   }
 }
 
