@@ -15,7 +15,6 @@ def parse_prof_for_letter( letter )
   doc = Nokogiri::HTML::Document::parse( html )
 
   doc.css('.entry').each do |entry|
-    puts "#######"
     name_link = entry.css('.profName a')
     prof_url = name_link.attribute("href")
     prof_name = name_link.children
@@ -27,8 +26,9 @@ def parse_prof_for_letter( letter )
     last_name = names[0]
     first_name = names[1][0]
     redis_key = "#{last_name}, #{first_name}"
-    Instructor.add_rating( redis_key, "easy", easy )
-    Instructor.add_rating( redis_key, "avg", avg )
+    Instructor.set( redis_key, "easy", easy )
+    Instructor.set( redis_key, "avg", avg )
+    Instructor.set( redis_key, "num_ratings", num_ratings )
     puts "#{prof_name} - #{prof_url}"
     puts "RATINGS: \n\teasy-#{easy}\n\tavg-#{avg}\n\tnum-#{num_ratings}"
     puts "#######"
@@ -37,8 +37,8 @@ end
 
 def parse_all_profs
   # ('A'..'Z').each do |letter|
-  # end
   parse_prof_for_letter 'A'
+  # end
 end
 
 namespace :prof do 
