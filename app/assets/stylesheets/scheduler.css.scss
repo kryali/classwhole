@@ -24,9 +24,9 @@
 // schedule
 $schedule-block-h   : 48px;
 $numblocks          : 12;
-$scheduler-content-width: 940px;
+$scheduler-content-width: 965px;
 $scheduler-content-padding: 15px;
-$schedule-day-width : 120px;
+$schedule-day-width : 125px;
 /* all colors */
 // These are the main element colors 
 $default-font-color : #4D4D4D;
@@ -100,20 +100,8 @@ $showcase-bg        : url('showcase-bg.png');
   }
 
   .enrollment {
-    top: $schedule_block_padding;
-    right: 31px;
-  }
-
-  .status-3 {
-    top: 5px;
-  }
-
-  .status-2 {
-    top: 4px;
-  }
-
-  .status-1 {
-    top: 3px;
+    top: 7px;
+    right: 35px;
   }
 
   .section-code {
@@ -126,7 +114,7 @@ $showcase-bg        : url('showcase-bg.png');
     top:    $schedule_block_padding;
     left:   $schedule_block_padding;
     color: #444;
-    font-size: 13.5px;
+    font-size: 15px;
   }
   .section-type {
     top:    $schedule_block_padding;
@@ -169,7 +157,7 @@ $showcase-bg        : url('showcase-bg.png');
 
   .schedule-content {
     float: left;
-    width: 660px;
+    width: 685px;
   }
 
   .fb-comments,
@@ -496,20 +484,24 @@ ul.friends {
 // ICONS
 .enrollment {
   display: block;
-  width: 16px;
-  height: 16px;
+  width: 9px;
+  height: 9px;
+  background: url("status-icons.png");
 }
 
+// RED
 .status-3 {
-  background: url("stop.png");
+  background-position: 20px 0px;
 }
 
+// YELLOW
 .status-2 {
-  background: url("warning-triangle.png");
+  background-position: 9px 0px;
 }
 
+// GREEN
 .status-1 {
-  background: url("green-circle.png");
+  background-position: 0px 0px;
 }
 
 #schedule-canvas{
