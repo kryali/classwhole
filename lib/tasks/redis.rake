@@ -28,6 +28,31 @@ def clear_redis
   $redis.flushdb
 end
 
+
+def delete_keys( pattern )
+  $redis.keys( pattern ).each {|key| $redis.del(key)}
+end
+
+def clear_subject_trie
+  delete_keys( "subjects" )
+  delete_keys( "id:subject*" )
+  delete_keys( "subject*" )
+  puts "Cleared subject trie."
+end
+
+def clear_course_trie
+  delete_keys( "courses" )
+  delete_keys( "id:course*" )
+  delete_keys( "course*" )
+  puts "Cleared course trie."
+end
+
+def clear_catalog_tries
+  puts "Clearing catalog tries.."
+  clear_subject_trie
+  clear_course_trie
+end
+
 def build_catalog_tries
   puts "Building catalog tries.."
   build_subject_trie
@@ -37,9 +62,8 @@ end
 def build_subject_trie
   $redis.multi do
     $CURRENT_SEMESTER.subjects.each do |subject|
-
       # Only add subjects with courses
-      if $CURRENT_SEMESTER.subjects.first.courses.size > 0
+      if subject.courses.size > 0
         $redis.sadd("subjects", subject.id)
         $redis.hset("id:subject:#{subject.id}", "label", subject.to_s)
         $redis.hset("id:subject:#{subject.id}", "title", subject.title)
@@ -125,8 +149,12 @@ namespace :redis do
   end
 
   task :setup => [:environment] do
-    clear_redis
+    clear_catalog_tries
     build_catalog_tries
+  end
+
+  task :flushcatalog => [:environment] do
+    clear_catalog_tries
   end
   
   task :seed => [:environment] do
