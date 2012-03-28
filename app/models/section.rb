@@ -3,6 +3,10 @@ class Section < ActiveRecord::Base
   belongs_to :configuration
 
   def meetings
+    @meetings_list ||= fetch_meetings
+  end
+
+  def fetch_meetings
     ret = $redis.get("section:#{self.id}:meetings") 
     decoded = ActiveSupport::JSON.decode(ret) 
     meetings_list = []
