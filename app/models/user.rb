@@ -49,7 +49,11 @@ class User < ActiveRecord::Base
     sections = []
     section_ids = $redis.smembers("user:#{id}:schedule")
     section_ids.each do |section_id|
-      sections << Section.find( section_id )
+      begin
+        sections << Section.find( section_id )
+      rescue ActiveRecord::RecordNotFound
+        next
+      end
     end
     return sections
   end
