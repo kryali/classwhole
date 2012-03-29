@@ -5,6 +5,7 @@
 
 :javascript
   $(document).ready(function() {
+    mpq.track("Schedule created");
     var course_ids = #{@course_ids};
     possible_schedules = #{section_ids_from_schedules( @possible_schedules ).to_json }; 
     init();
@@ -19,7 +20,4 @@
     %a{:href=>"#", :class=>"next"}
     -if @possible_schedules.size > 1
       = render :partial => 'mini_schedule_grids', :locals => { :possible_schedules => @possible_schedules }
-
-  = render :partial=>"need_to_login", :locals => {:name => "save"}
-  = render :partial=>"need_to_login", :locals => {:name => "share"}
-  = render "render"
+  = render "schedule_canvas"

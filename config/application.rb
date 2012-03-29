@@ -48,5 +48,12 @@ module Whiteboard
     config.assets.version = '1.0'
 
     # config.time_zone = "Central Time (US & Canada)"
+    config.after_initialize do 
+      begin
+        $CURRENT_SEMESTER = Semester.find_by_season_and_year("fall", "2012")
+      rescue
+        $CURRENT_SEMESTER = nil
+      end
+    end
   end
 end

@@ -1,8 +1,10 @@
 class Course < ActiveRecord::Base
   belongs_to :subject
   has_many :sections
-  has_many :announcements
-#   has_and_belongs_to_many :users
+  has_many :configurations
+  has_and_belongs_to_many :geneds
+  has_and_belongs_to_many :users
+  set_primary_key :id
 
   def self.trie(term)
     results_needed = 100
@@ -21,9 +23,13 @@ class Course < ActiveRecord::Base
       label = $redis.hget("id:course:#{course_id}", "label")
       title = $redis.hget("id:course:#{course_id}", "title")
       value = $redis.hget("id:course:#{course_id}", "value")
+      min_hours = $redis.hget("id:course:#{course_id}", "hours_min")
+      max_hours = $redis.hget("id:course:#{course_id}", "hours_max")
       courses << { :label => label,
                    :title => title,
                    :value => value,
+                   :min_hours => min_hours,
+                   :max_hours => max_hours,
                    :id =>    course_id }
     end
     return courses 
@@ -62,4 +68,17 @@ class Course < ActiveRecord::Base
   def key( str )
     "course:#{self.id}:#{str}"
   end
+
+  def credit_hours
+    if hours_min - hours_max != 0
+      "#{hours_min}-#{hours_max}"
+    else
+      "#{hours_min}"
+    end
+  end
+
+  def hours
+    "#{credit_hours} hr"
+  end
+
 end

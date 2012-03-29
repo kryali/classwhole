@@ -2,23 +2,7 @@ class Scheduler
   attr_accessor :valid_schedules
 
   def initialize(user_courses)
-    @courses = []
-    user_courses.each do |course|
-      @courses << Register_Course.new(course)
-    end
-  end
-
-  def initialize_configuration_permutations(course_index)
-    if course_index == @courses.size
-      @configuration_permutations << @permutation.clone
-      return
-    end
-    course = @courses[course_index]
-    course.configurations_array.each do |configuration|
-      @permutation.push(configuration)
-      initialize_configuration_permutations(course_index+1)
-      @permutation.pop
-    end
+    @courses = user_courses
   end
 
   # schedule courses
@@ -34,6 +18,19 @@ class Scheduler
     end
   end
 
+  def initialize_configuration_permutations(course_index)
+    if course_index == @courses.size
+      @configuration_permutations << @permutation.clone
+      return
+    end
+    course = @courses[course_index]
+    course.configurations.each do |configuration|
+      @permutation.push(configuration)
+      initialize_configuration_permutations(course_index+1)
+      @permutation.pop
+    end
+  end
+
   def schedule_permutation_recursive(permutation, configuration_index, sections_index)
     if configuration_index == permutation.size #valid schedule!
       @valid_schedules << @schedule.clone
@@ -41,11 +38,11 @@ class Scheduler
       return
     end
     configuration = permutation[configuration_index]
-    if sections_index == configuration.size
+    if sections_index == configuration.sections_array.size
       schedule_permutation_recursive(permutation, configuration_index + 1, 0)
       return
     end
-    sections = configuration[sections_index]
+    sections = configuration.sections_array[sections_index]
     sections.each do |section|
       unless section.schedule_conflict?(@schedule)
         @schedule.push(section)
@@ -56,5 +53,45 @@ class Scheduler
         end
       end
     end    
+  end
+
+  # 'Static' shit
+
+  # prepares a section object for json
+  def self.build_section( section )
+    meetings = []
+    section.meetings.each do |meeting|
+        #meeting["instructors"] = meeting.instructors
+        #meeting["building"] = meeting.building
+        meetings << meeting
+    end
+    section['short_type'] = section.short_type_s
+    section['meetings'] = meetings
+    return section
+  end
+
+  def self.parse_hours( start_time_string, end_time_string)
+    
+    start_time_match = /(?<hour>\d\d):(?<min>\d\d)\s*(?<am_pm>\w+)/.match(start_time_string)
+    return nil if not start_time_match
+
+    end_time_match = /(?<hour>\d\d):(?<min>\d\d)\s*(?<am_pm>\w+)/.match(end_time_string)
+    return nil if not end_time_match
+
+    start_hour = start_time_match[:hour].to_i
+    end_hour = end_time_match[:hour].to_i
+
+    if( start_time_match[:am_pm] == "PM" and start_time_match[:hour].to_i != 12)
+      start_hour += 12 
+    end
+    if( end_time_match[:am_pm] == "PM" and end_time_match[:hour].to_i != 12)
+      end_hour += 12 
+    end
+
+    # this year month and day do not matter, as long as it is consistent    
+    # TODO: Don't hardcode year you moron
+    start_time = Time.utc(1990, 7, 1, start_hour, start_time_match[:min].to_i)
+      end_time = Time.utc(1990, 7, 1, end_hour,   end_time_match[:min].to_i)
+    return start_time, end_time
   end
 end

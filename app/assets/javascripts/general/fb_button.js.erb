@@ -2,13 +2,28 @@
  * fb_button_init.js
  * File Summary: initializes the facebook sdk and contains login logic via facebook 
  */
+
+/* Constants */
+var LOGIN_PATH = "/user/login";
+
 $(document).ready(function() { 
 
-  /* Constants */
-  var LOGIN_PATH = "/user/login";
+  init_fb();
+
+  FB.getLoginStatus(function(response) {
+    if(response.authResponse){
+      //console.log( "User is logged into facebook already!" );
+      /* User is logged in to facebook, let him in */
+      //console.log( response.authResponse );
+      //post_to_url(LOGIN_PATH, response["authResponse"]);
+    }
+  });
+
+});
 
 
-
+// Make global so you can update new fb elements inserted via js
+init_fb = function () {
   /*
    * This creates a hidden form and posts this data to rails
    *  A BETTER way would be to actually have a hidden form on the login page,
@@ -27,31 +42,34 @@ $(document).ready(function() {
           // track the name
           mpq.name_tag($(data).find(".name").text());
           //console.log(data["user"]["name"]);
-          $("ul.secondary-nav").empty().append( $(data) );
+          $(".secondary-nav").empty().append( $(data) );
           $(document).trigger("logged-in");
+          hideModal();
 
         },
         error: function(jqXHR, textStatus, errorThrown) {
-          console.log( jqXHR );
+          //console.log( jqXHR );
           pop_alert( textStatus, errorThrown.toString() );
         }
       });
   }
 
-  init_fb();
-
-  FB.getLoginStatus(function(response) {
-    if(response.authResponse){
-      //console.log( "User is logged into facebook already!" );
-      /* User is logged in to facebook, let him in */
-      //console.log( response.authResponse );
-      //post_to_url(LOGIN_PATH, response["authResponse"]);
-    }
+  /* 
+   * FB.init starts the facebook sdk, enabling calls against the facebook api
+   * also, the facebook "sdk" sucks.
+   */
+  FB.init({
+    appId  : <%= Facebook::APP_ID %>,
+    status : true, // check login status
+    cookie : true, // enable cookies to allow the server to access the session
+    xfbml  : true, // parse XFBML
+    oauth  : true // enable OAuth 2.0
   });
 
   /* When a user clicks a button, */
   $('.fb-button').unbind('click').click( function(event) {
-    //console.log("Button clicked!");
+
+    showModal('/shared/_loading',{"name": "Signing in"});
     /* FB.getLoginStatus allows you to determine if a user is 
      * logged into facebook.*/
     FB.getLoginStatus(function(response) {
@@ -67,22 +85,5 @@ $(document).ready(function() {
     FB.Event.subscribe('auth.login', function(response) {
       post_to_url(LOGIN_PATH, response["authResponse"]);
     });
-  });
-
-});
-
-
-// Make global so you can update new fb elements inserted via js
-init_fb = function () {
-  /* 
-   * FB.init starts the facebook sdk, enabling calls against the facebook api
-   * also, the facebook "sdk" sucks.
-   */
-  FB.init({
-    appId  : <%= Facebook::APP_ID %>,
-    status : true, // check login status
-    cookie : true, // enable cookies to allow the server to access the session
-    xfbml  : true, // parse XFBML
-    oauth  : true // enable OAuth 2.0
   });
 };

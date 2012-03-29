@@ -56,15 +56,17 @@ module SchedulerHelper
     latest_end_time = 0
     
     all_possible_sections.each do |section|
-      next if !section.start_time
-      current_start_time = section.start_time.hour * 60 + section.start_time.min
-      current_end_time = section.end_time.hour * 60 + section.end_time.min
+      section.meetings.each do |meeting|
+        next if !meeting.start_time
+        current_start_time = meeting.start_time.hour * 60 + meeting.start_time.min
+        current_end_time = meeting.end_time.hour * 60 + meeting.end_time.min
 
-      if current_start_time < earliest_start_hour
-        earliest_start_hour = current_start_time
-      end
-      if current_end_time > latest_end_time
-        latest_end_time = current_end_time
+        if current_start_time < earliest_start_hour
+          earliest_start_hour = current_start_time
+        end
+        if current_end_time > latest_end_time
+          latest_end_time = current_end_time
+        end
       end
     end
 
@@ -73,30 +75,28 @@ module SchedulerHelper
     return earliest_start_hour, latest_end_hour
   end
 
-  def sections_by_days(sections)
-    sections_by_days = Hash.new
-    ["M","T","W","R","F"].each do |day|
-      sections_by_days[day] = Array.new
-    end
+  def meetings_by_days(sections)
+    meetings_by_days = Hash.new
+    ["M","T","W","R","F"].each {|day| meetings_by_days[day] = Array.new }
 
     sections.each do |section|
-      next if not section.days
-      days = section.days.split("")
-      days.each do |day|
-        sections_by_days[day].push(section) if sections_by_days.has_key?(day)
+      section.meetings.each do |meeting|
+        next if not meeting.days
+        days = meeting.days.split("")
+        days.each { |day| meetings_by_days[day].push(meeting) if meetings_by_days.has_key?(day) }
       end
     end
 
-    return  sections_by_days
+    return  meetings_by_days
   end
 
-  def section_top_px( section, start_hour )
-    top_px = (section.start_time.hour - start_hour + (section.start_time.min/60.0)) * 48 # scheduler_block_height
+  def meeting_top_px( meeting, start_hour )
+    top_px = (meeting.start_time.hour - start_hour + (meeting.start_time.min/60.0)) * 48 # scheduler_block_height
     return top_px
   end
 
-  def section_height_px( section )
-    return section.duration * 48#@scheduler_block_height
+  def meeting_height_px( meeting )
+    return meeting.duration * 48#@scheduler_block_height
   end
 
   def section_colors( sections )
@@ -117,7 +117,9 @@ module SchedulerHelper
 
     onl_sections = []
     sections.each do |section|
-      onl_sections << section if section.start_time.nil?
+      section.meetings.each do |meeting|
+        onl_sections << section if meeting.start_time.nil? # MIGHT ADD DUPLICATES
+      end
     end
 
     onl_sections.each do |onl_section|
@@ -133,13 +135,13 @@ module SchedulerHelper
     return letters[0..(length-1)].join + end_string
   end
 
-  def mini_section_top_px( section )
-    top_px = (section.start_time.hour - 7 + (section.start_time.min/60.0)) * 6
+  def mini_meeting_top_px( meeting )
+    top_px = (meeting.start_time.hour - 7 + (meeting.start_time.min/60.0)) * 6
     return top_px
   end
 
-  def mini_section_height_px( section )
-    return section.duration * 6
+  def mini_meeting_height_px( meeting )
+    return meeting.duration * 6
   end
 
   def courses_from_sections( sections )
@@ -152,10 +154,6 @@ module SchedulerHelper
       course_section_hash[course.id] << section
     end
     return courses, course_section_hash
-  end
-
-  def fb_img_link( user, type = "large" ) 
-    "https://graph.facebook.com/#{user.id}/picture?type=#{type}"
   end
 
   # This function takes an array of section array of ActiveRecord 

@@ -1,116 +1,89 @@
 /* The Course Page */
-= content_for :title, "#{@course.to_s} - #{@course.title} at UIUC"
+= content_for :title, "#{@course.to_s} UIUC - #{@course.title}"
+= javascript_include_tag "tabs"
+= stylesheet_link_tag "tabs"
+= content_for :meta_description, "#{@course.to_s} uiuc - #{@course.description}" 
+ 
 
+:javascript
+  window.onload = function()
+      {
+          init();
+      };
 %div.scheduler-content  
   = javascript_include_tag "course"
+
   -uppercase_string = @semester.season[0,1].upcase + @semester.season[1..-1] + " " + @semester.year
-  -name_and_number =  @subject.code + " " + @course.number.to_s
   %div.breadcrumb  
-    = link_to  "Subjects", get_previous_url(get_previous_url(request.url))
-    &#47 
-    = link_to @subject.code, get_previous_url(request.url)
-    &#47 
-    =name_and_number
+    %div{ :itemscope => "", :itemtype=>"http://data-vocabulary.org/Breadcrumb", :class=>"container" }
+      %a{:href => "#{get_previous_url(get_previous_url(request.url))}", :itemprop=>"url"}
+        %span{:itemprop=>"title"} Subjects
+      &#47 
+    %div{ :itemscope => "", :itemtype=>"http://data-vocabulary.org/Breadcrumb", :class=>"container" }
+      %a{:href => "#{get_previous_url(request.url)}", :itemprop=>"url"}
+        %span{:itemprop=>"title"}= @subject.code
+      &#47 
+    %div{ :itemscope => "", :itemtype=>"http://data-vocabulary.org/Breadcrumb", :class=>"container" }
+      %a{:href => "#{request.url}", :itemprop=>"url"}
+        %span{:itemprop=>"title"}= @course.to_s
 
 
-  %div.course_box    
-    %button{:class => "btn large success", :id=> "add_class_button", :type => "submit"}
+  %div{:class=> "course_box", :itemscope=>"", :itemtype=>"http://schema.org/Thing"}
+    %meta{:itemprop=>"image", :content => "http://i.imgur.com/j0LXM.jpg" } 
+    %meta{:itemprop=>"url", :content => "#{request.url}" } 
+
+    %button{:class => "button large green", :id=> "add_class_button", :type => "submit"}
       %span{:class => "hidden id"}= @course.id
       %span{:class => "font"} Add Class
 
     %div{:id => "course_num"}
-      =name_and_number    
+      %span{:itemprop=>"name"}= @course.to_s    
      
-    %div{:id => "course_name"}
+    %div{:id => "course_name", :itemprop=>""}
       =@course.title
     %div{:id => "hours"}  
-      = @course.hours.to_s + " credit hours"
+      = @course.credit_hours.to_s + " credit hours"
     
-    %p{:id => "course_description"}
+    %p{:id => "course_description", :itemprop=>"description"}
       =@course.description
+  
+  %ul#tabs
+    -for type in @types_of_sections
+      %li.tab_headers              
+        =link_to type, "#"+type
 
-  -first_flag = 1;
-  %div.section_tabs
-    %ul{:class => "tabs"}
-      -for type in @types_of_sections
-
-        -if first_flag==0
-          -first_flag=0
-          %li  
-            =link_to full_name(type), "#"+type
-
-        -if first_flag==1
-          -first_flag=0
-          %li{:class => "active"}              
-            =link_to full_name(type), "#"+type
-
-  -first_flag = 1;    
+ 
   %div.sections_table
-    %div{:class => "pill-content"}
-      -for type in @types_of_sections      
-        -if first_flag == 0        
-          %table{:class => "zebra-striped", :id => "#{type}"}                            
-            %th
-              Time
-            %th
-              Days
-            %th
-              Professor
-            %th
-              Building
-            %th
-              Section      
-            -for section in @course.sections
-              -if type == section.section_type
-                %tr
-                  %td
-                    -if !section.start_time.nil?                
-                      = section.duration_s            
-                  %td
-                    -if !section.days.nil?  
-                      = section.days            
-                  %td
-                    -if !section.instructor.nil?  
-                      = section.instructor
-                  %td
-                    -if !section.building.nil?  
-                      = section.building[1..-1]
-                  %td
-                    -if !section.code.nil?  
-                      = section.code
-        -if first_flag == 1
-          -first_flag = 0        
-          %table{:class => "zebra-striped active", :id => "#{type}"}                            
-            %th
-              Time
-            %th
-              Days
-            %th
-              Professor
-            %th
-              Building
-            %th
-              Section      
-            -for section in @course.sections
-              -if type == section.section_type
-                %tr
-                  %td
-                    -if !section.start_time.nil?                
-                      = section.duration_s            
-                  %td
-                    -if !section.days.nil?  
-                      = section.days            
-                  %td
-                    -if !section.instructor.nil?  
-                      = section.instructor
-                  %td
-                    -if !section.building.nil?  
-                      = section.building[1..-1]
-                  %td
-                    -if !section.code.nil?  
-                      = section.code
+    -for type in @types_of_sections      
+      %div{:class => "tabContent", :id => "#{type}"}       
+        %table.zebra                            
+          %th.tab_columns
+            Time
+          %th.tab_columns
+            Days
+          %th.tab_columns
+            Professor
+          %th.tab_columns
+            Building
+          %th.tab_columns
+            Section      
+          -for meeting in @meetings 
+            -if type == meeting.class_type
+              %tr
+                %td.table_data
+                  -if !meeting.start_time.nil? and !meeting.end_time.nil?                               
+                    = meeting.duration_s
+                %td.table_data
+                  -if !meeting.days.nil?  
+                    = meeting.days            
+                %td.table_data
+                  -if !meeting.instructors.empty?  
+                    = meeting.instructors[0]
+                %td.table_data
+                  -if !meeting.building.nil? 
+                    = meeting.building
+                %td#hack.table_data
+                  -if !meeting.section.code.nil?  and meeting.section.code != "NO CODE" 
+                    = meeting.section.code
 
-  :javascript
-    $(function () {
-      $('.tabs').tabs();
-    });
+

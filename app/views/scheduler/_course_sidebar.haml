@@ -8,7 +8,7 @@
         %li{:class=> "course-header #{colors[course.id]}"}
           %span.course-name= course.to_s
           %span.course-title= course.title
-          %span.course-hours= "(#{course.hours} hr)"
+          %span.course-hours= "(#{course.hours})"
         -if nil
           %li 
             %span.title Description
@@ -20,19 +20,20 @@
             %li 
               %div
                 %span{:class=>"hidden id"}=section.id
-                %span{:class=>"section-type label"}= section.section_type
-                -if section.instructor
-                  %span.instructor= shorten(section.instructor, 12, "..")
-                -else 
-                  %span.instructor TBD
+                %span{:class=>"section-type label"}= section.short_type_s
                 %span.code= section.code
+                %span{ :class=>"enrollment status-#{section.enrollment_status}" }
                 -if nil
                   %span.crn= section.reference_number
-                -# For online sections
-                -if section.start_time
-                  %span.time= section.duration_s
-                - else
-                  %span.time Online / Arr
+                - section.meetings.each do |meeting|
+                  -if not meeting.instructors.empty?
+                    %span.instructor= shorten(meeting.instructors[0], 12, "..")
+                  -else 
+                    %span.instructor TBD
+                  -if meeting.start_time
+                    %span.time= meeting.duration_s
+                  - else
+                    %span.time Online / Arr
         = render :partial => 'classmates', :locals => {:course => course }
 
         -# Mixpanel tracking

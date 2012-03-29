@@ -1,4 +1,6 @@
 source 'http://rubygems.org'
+
+gem 'rake', '0.8.7'
 gem 'mysql2'
 gem 'rails', '3.1.1'
 # gem 'thinking-sphinx', '2.0.5'
@@ -23,6 +25,8 @@ gem 'redis'
 gem 'haml'
 
 gem 'rails3-jquery-autocomplete', '~> 0.9.1' 
+
+gem 'icalendar'
 
 # Gems used only for assets and not required
 # in production environments by default.

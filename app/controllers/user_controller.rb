@@ -2,13 +2,13 @@
 # Handles user login/registration interaction
 #
 class UserController < ApplicationController
-include ApplicationHelper
+  include ApplicationHelper
 
   def login
     user_id = params["userID"]
     begin 
       @user = User.find(user_id)
-    rescue ActiveRecord::RecordNotFound
+    rescue #ActiveRecord::RecordNotFound # Sometimes we get a SQLException?
       @user = register(params["accessToken"], params["userID"])
     ensure
       self.current_user=@user
@@ -152,7 +152,7 @@ include ApplicationHelper
  #
 	def add_course_to_cookie(id)
 		if cookies["classes"]
-      logger.info(id)
+      #logger.info(id)
 			course_id_string = id.to_s			
 			cook = cookies["classes"] # this is used in the next line, so I didn't have to deal with quotes inside a string		
 			cookies["classes"] = { :value => "#{cook}#{course_id_string}|", :expires => 1.day.from_now } 				

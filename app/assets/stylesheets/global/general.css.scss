@@ -1,19 +1,23 @@
-$bg-color           : url('grey-bg.png');
+$bg-color           : url('background.png');
 $default-font-color : #4D4D4D;
 
 .ui-autocomplete-loading {
   background: image-url("small-ajax-loading.gif");
 }
 
+* {
+  font-family: 'RobotoRegular','Helvetica' ,'Arial', 'Tahoma', sans-serif;
+}
+
 html, body {
   background: $bg-color;
   line-height: 1.22;
-  font-family: 'Arial', 'Tahoma', sans-serif;
+  font-family: 'Helvetica', 'Arial', 'Tahoma', sans-serif;
 }
 
 #wrapper {
   width: 100%;
-  max-width: 940px;
+  max-width: 960px;
   margin: 0 auto;
   color: $default-font-color;
   min-height: 100%;
@@ -33,12 +37,26 @@ em { font-style: italic; }
   text-align: center;
 }
 
-$content-bg-color   : url('grey-bg.png');
+$a-link-color: #0069D6;
+a {
+  text-decoration: none;
+  color: $a-link-color;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:visited {
+  color: $a-link-color;
+}
+
+$content-bg-color   : url('background.png');
 #content {
   font-family: 'Arial', 'Tahoma', sans-serif;
-  padding: 40px;
+  padding: 6em 40px 0 40px;
   position: relative;
-  margin-top: 3em;
+  //margin-top: 3em;
 }
 
 .content {
@@ -72,4 +90,16 @@ $content-bg-color   : url('grey-bg.png');
 
   img {
   }
+}
+.clear {
+  clear: both;
+}
+
+.big-logo {
+  width: 320px;
+  height: 72px;
+  background: url("big-logo.png");
+  margin: 0 auto 15px auto;
+  display: block;
+  position: relative;
 }

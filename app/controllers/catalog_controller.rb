@@ -29,6 +29,28 @@ class CatalogController < ApplicationController
     @course_number = params[:course_number] 
     @course = @subject.courses.find_by_number(@course_number)
   end
+
+
+  # gets the indeces to jump to for the pagination
+  # neccesary because the header covers ~2em
+
+  def get_pagination_indeces(semester)
+    counter = 0
+    ret_list = []
+    first_letter = -1
+    for sub in semester.subjects
+      if first_letter != sub.code[0]
+        inside_array = []
+        first_letter = sub.code[0]
+        inside_array << counter
+        inside_array << sub.code[0]        
+        ret_list << inside_array
+      end      
+      counter+=1
+    end
+    ret_list << -1
+    return ret_list
+  end
   # </helpers>
 
   # Description:
@@ -51,6 +73,7 @@ class CatalogController < ApplicationController
   def semester
     @semester = get_semester(params)
     @subjects = @semester.subjects
+    @pagination_indeces = get_pagination_indeces(@semester)
 		render 'semester'
   end
 
@@ -74,7 +97,13 @@ class CatalogController < ApplicationController
   #   courses/:season/:year/:subject_code/:courseNumber
   def course
     @course = get_course(params)
-    @sections = @course.sections     
+    @sections = @course.sections
+    @meetings  = []
+    for section in @sections
+      for meeting in section.meetings      
+        @meetings << meeting
+      end
+    end     
 		@types_of_sections = get_different_sections()
 		render 'course'
   end
@@ -93,10 +122,10 @@ class CatalogController < ApplicationController
 		for section in @sections do
 			if !list.include? section.section_type
 				list << section.section_type			
-				if section.section_type == 'LEC'
+				if section.section_type == 'lecture'
 					lecture_index = index			
 				end
-				if section.section_type == 'LCD'
+				if section.section_type == 'lecture-discussion'
 					lecture_discussion_index = index				
 				end
 				index = index + 1				
@@ -202,7 +231,7 @@ class CatalogController < ApplicationController
     sections = []
     params["schedule"].each do |section_id|
       begin
-        sections << Section.find( section_id.to_i )
+        sections << Scheduler.build_section(Section.find( section_id.to_i ))
       rescue ActiveRecord::RecordNotFound
         render :json => { :status => :error }
         return
@@ -210,5 +239,8 @@ class CatalogController < ApplicationController
     end
     render :json => { :status => :success, :sections => sections }
   end
+
+
+
 
 end

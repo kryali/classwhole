@@ -63,11 +63,11 @@ $(function(){
         }
         else if (data["status"] == "error") {
           //pop_alert("error", data["message"]);
-          $('#save-modal').modal('show');            
+          showModal('/scheduler/_need_to_login',{"name": "save"});
           mpq.track("Prompt log in");
           $(document).bind('logged-in', function() {
             $(document).unbind('logged-in');
-            $("#save-modal").modal("hide");
+            hideModal();
             save_schedule();
             return true;
           });
@@ -106,7 +106,7 @@ $(function(){
       to the server instead.
    */
   function init_download_schedule() {
-    var canvas = document.getElementById('schedule-render');
+    var canvas = document.getElementById('schedule-canvas');
     $(".download").click( function() {
       var schedule_ids = get_schedule_ids();
 
@@ -145,17 +145,35 @@ $(function(){
         document.body.appendChild(myForm);
         myForm.submit();
   }
+  
+    function init_download_icalendar() {
+    $(".icalendar").click( function() {
+      var schedule_ids = get_schedule_ids();
+      var myForm = document.createElement("form");
+          myForm.setAttribute("method", "post" );
+          myForm.setAttribute("action", "/scheduler/icalendar" );
+          myForm.setAttribute("authenticity_token", AUTH_TOKEN);
+      var auth_token = document.createElement("input");
+          auth_token.setAttribute("name", "authenticity_token");
+          auth_token.setAttribute("type", "hidden");
+          auth_token.setAttribute("value", AUTH_TOKEN);
+          myForm.appendChild(auth_token);
+      var dataInput = document.createElement("input");
+          dataInput.setAttribute("type", "hidden");
+          dataInput.setAttribute("name", "schedule");
+          dataInput.setAttribute("value", schedule_ids);
+          dataInput.setAttribute("authenticity_token", AUTH_TOKEN);
+          myForm.appendChild(dataInput);
+          document.body.appendChild(myForm);
+          myForm.submit();
+    });
+  }
 
   function init_modals() {
     $(".save").unbind('click').click( function() {
       save_schedule();
     });
 
-    $(".close-modal").click( function() {
-      $('#register-modal').modal('hide');
-      $('#save-modal').modal('hide');
-      $('#share-modal').modal('hide');
-    });
     $(".register-schedule").unbind('click').click( function() {
       mpq.track("Register schedule");
       $('#crns').empty()
@@ -177,7 +195,6 @@ $(function(){
       }
       //console.log(crns.toString());
       window.location = "/scheduler/register?crns=" + crns.toString();
-      //$('#register-modal').modal('show');
     });
   }
 
@@ -202,11 +219,11 @@ $(function(){
         }
         else if (data["status"] == "error") {
           //pop_alert("error", data["message"]);
-          $('#share-modal').modal('show');    
+          showModal('/scheduler/_need_to_login',{"name": "share"});
           mpq.track("Prompt log in");
           $(document).bind('logged-in', function() {
             $(document).unbind('logged-in');
-            $('#share-modal').modal('hide');    
+            hideModal(); 
             share_schedule();
             return true;
           });
@@ -270,6 +287,7 @@ $(function(){
     init_modals();
     init_share_button();
     init_download_schedule();
+    init_download_icalendar();
     init_pagination();
 
     //init_mini_pagination();
@@ -386,10 +404,11 @@ $(function(){
       });
     });
 
+    // Hide the course titles if the block is too small
     $(".schedule-block").each( function() {
-      if( $(this).height() < 50 ) {
+      //if( $(this).height() < 50 ) {
         $(this).find(".course-title").hide();
-      }
+      //}
     });
   }
 
@@ -415,6 +434,7 @@ $(function(){
     This function also caches the sections and schedules w/hints
   */
   function fetch_schedule(data, textStatus, jqXHR, day, section_id, schedule_ids) {
+    //console.log( data);
     // Cache sections for fun
     for( i in data.schedule ) {
       var section = data.schedule[i];
@@ -551,7 +571,9 @@ $(function(){
   function update_sidebar_contents( old_section_id, new_section_id ) {
     var current_schedule = get_current_schedule();
     var sidebar = new Sidebar();
-    var row = sidebar.render_section_row( section_cache[ new_section_id ] );
+    var section = section_cache[ new_section_id ];
+    //console.log( section );
+    var row = sidebar.render_section_row( section );
 
     current_schedule.find("ul.sections li div").each( function() {
       // Find the section row to replace
