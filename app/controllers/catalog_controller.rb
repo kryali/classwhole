@@ -14,19 +14,24 @@ class CatalogController < ApplicationController
   #
   def get_semester(params)
     @year = params[:year]
-    @season = params[:season] 
-    @semester = Semester.find_by_year_and_season(@year, @season)  
+    @season = params[:season]     
+    @semester = Semester.find_by_year_and_season(@year, @season)
+    if @semester.nil?
+      @semester = $CURRENT_SEMESTER
+    end
 	end
 
   def get_subject(params)
-    @semester = get_semester(params)
-    @subject_code = params[:subject_code] 
+    get_semester(params)
+    @subject_code = params[:subject_code]
+    return if @semester.nil?
     @subject = @semester.subjects.find_by_code(@subject_code)
   end
 
   def get_course(params)
-    @subject = get_subject(params)
-    @course_number = params[:course_number] 
+    get_subject(params)
+    @course_number = params[:course_number]
+    return if @subject.nil?
     @course = @subject.courses.find_by_number(@course_number)
   end
 
@@ -71,7 +76,7 @@ class CatalogController < ApplicationController
   # Route:
   #   courses/:season/:year 
   def semester
-    @semester = get_semester(params)
+    get_semester(params)
     @subjects = @semester.subjects
     @pagination_indeces = get_pagination_indeces(@semester)
 		render 'semester'
@@ -84,7 +89,11 @@ class CatalogController < ApplicationController
   # Route:
   #   courses/:season/:year/:subject_code
   def subject
-    @subject = get_subject(params)
+    get_subject(params)
+    if @subject.nil?
+      redirect_to "/"
+      return
+    end
     @courses = @subject.courses
 		render 'subject'
   end
@@ -96,7 +105,11 @@ class CatalogController < ApplicationController
   # Route:
   #   courses/:season/:year/:subject_code/:courseNumber
   def course
-    @course = get_course(params)
+    get_course(params)
+    if @course.nil?
+      redirect_to "/"
+      return
+    end
     @sections = @course.sections
     @meetings  = []
     for section in @sections
