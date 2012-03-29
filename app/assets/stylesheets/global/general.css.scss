@@ -1,4 +1,4 @@
-$bg-color           : url('texture.png');
+$bg-color           : url('background.png');
 $default-font-color : #4D4D4D;
 
 .ui-autocomplete-loading {
@@ -51,7 +51,7 @@ a:visited {
   color: $a-link-color;
 }
 
-$content-bg-color   : url('grey-bg.png');
+$content-bg-color   : url('background.png');
 #content {
   font-family: 'Arial', 'Tahoma', sans-serif;
   padding: 6em 40px 0 40px;
