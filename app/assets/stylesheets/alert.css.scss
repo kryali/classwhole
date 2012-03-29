@@ -1,3 +1,5 @@
+@import 'mixins';
+
 .alert-box {
   font-family: 'Arial', 'Helvetica', sans-serif;
   z-index: 1;
@@ -8,15 +10,16 @@
   display: none;
 
   .alert-message {
-    width: 400px;
+    width: 200px;
     margin: 0 auto;
     background: red;
-    padding: 1em;
+    padding: 10px;
     font-size: 14px;
     border-radius: 5px;
     margin-bottom: 5px;
     border: 1px solid;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    //text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    text-shadow: -0.5px -1px 0 rgba(9, 9, 9, 0.4);
 
     .close {
       float: right;
@@ -34,14 +37,24 @@
   }
 
   .error {
-    background-color: #F2DEDE;
-    border-color: #EED3D7;
-    color: #B94A48;
+    //background-color: #F2DEDE;
+    //color: #B94A48;
+    border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    color: white;
+    @include gradient(#ee5f5b, #bd362f);
   }
 
   .success {
-    background-color: #DFF0D8;
-    border-color: #D6E9C6;
-    color: #468847;
+    background-color: #5BB75B;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    color: white;
+    @include gradient( #62c462, #51a351);
+  }
+
+  .info {
+    background-color: #49AFCD;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    color: white;
+    @include gradient( #5bc0de, #2f96b4 );
   }
 }

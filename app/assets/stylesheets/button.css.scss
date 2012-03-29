@@ -1,16 +1,4 @@
-@mixin gradient( $start, $end) {
-  background: -webkit-gradient(linear, left top, left bottom, from($start), to($end));
-  background: -moz-gradient(top, $start, $end);
-	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr="#{$start}", endColorstr='#{$end}');
-}
-
-@mixin transition($time, $mode) {
-  -webkit-transition: $time $mode all;
-  -moz-transition: $time $mode all;
-  -ms-transition: $time $mode all;
-  -o-transition: $time $mode all;
-  transition: $time $mode all;
-}
+@import 'mixins';
 
 .button {
   display: inline-block;
