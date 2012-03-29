@@ -13,7 +13,7 @@
         = "to share #{ @user.owns } schedule with you."
       =link_to "Click here to make your own", scheduler_index_path, :id => "temp-message-link"
   = render "schedule", :sections => @sections
-  = render "render"
+  = render "schedule_canvas"
 
 :javascript
   $(document).ready( function() {
