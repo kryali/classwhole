@@ -44,6 +44,7 @@ init_fb = function () {
           //console.log(data["user"]["name"]);
           $(".secondary-nav").empty().append( $(data) );
           $(document).trigger("logged-in");
+          hideModal();
 
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -67,6 +68,8 @@ init_fb = function () {
 
   /* When a user clicks a button, */
   $('.fb-button').unbind('click').click( function(event) {
+
+    showModal('/shared/_loading',{"name": "Signing in"});
     /* FB.getLoginStatus allows you to determine if a user is 
      * logged into facebook.*/
     FB.getLoginStatus(function(response) {
