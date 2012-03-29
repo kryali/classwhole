@@ -1,0 +1,2 @@
+mysqldump --quick --opt -hDB_HOST -uDB_USER -pDB_PASSWORD DB_NAME | gzip -9 > `date "+%Y-%m-%d-%s"`.sql.gz
+mysql -u DB_USER -pDB_PASSWORD < path/to/backups/dumped_file.sql
