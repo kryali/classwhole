@@ -6,10 +6,10 @@
  
 
 :javascript
-  window.onload = function()
-      {
-          init();
-      };
+  $(document).ready(function() {
+    init();
+    linkify_classes($("#course_description"));
+  });
 %div.scheduler-content  
   = javascript_include_tag "course"
 
