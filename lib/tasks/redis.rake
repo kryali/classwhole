@@ -141,6 +141,19 @@ def refresh_friends( user )
   end
 end
 
+
+#
+# HACK: For some reason, 
+#       we the users in courses, 
+#       so we do this extra step to (hopefully) fix it
+#
+def add_users_to_courses
+  User.all.each do |user|
+    user.courses.each { |course| course.add_user(user) }
+  end
+  puts "Updated users"
+end
+
 namespace :redis do 
   task :flushdb => [:environment] do
     clear_redis
@@ -149,6 +162,7 @@ namespace :redis do
   task :setup => [:environment] do
     clear_catalog_tries
     build_catalog_tries
+    add_users_to_courses
   end
 
   task :flushcatalog => [:environment] do
