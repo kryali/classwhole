@@ -1,8 +1,9 @@
 .tipsy {
   font-family: 'Helvetica', 'Arial', sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   .tipsy-inner {
-    padding: 1em;
+    padding: .5em;
+    max-width: 275px;
   }
   opacity: 1;
 }

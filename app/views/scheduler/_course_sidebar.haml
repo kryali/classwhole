@@ -22,7 +22,7 @@
                 %span{:class=>"hidden id"}=section.id
                 %span{:class=>"section-type label"}= section.short_type_s
                 %span.code= section.code
-                %span{ :class=>"enrollment status-#{section.enrollment_status}" }
+                %span{ :class=>"enrollment status-#{section.enrollment_status}", :title => "#{section.notes}"  }
                 -if nil
                   %span.crn= section.reference_number
                 - section.meetings.each do |meeting|

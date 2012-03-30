@@ -78,6 +78,8 @@ $(function(){
 
   function init_tooltips() {
     $(".register-schedule").tipsy({ gravity: 'n', opacity: .9});
+    $(".schedule-block .enrollment").tipsy({ gravity: 's', opacity: .9});
+    $(".courses .enrollment").tipsy({ gravity: 'e', opacity: .9});
     //$(".download").tipsy({ gravity: 's' });
     $(".share-schedule").tipsy({ gravity: 's', opacity: .9});
     //$(".save").tipsy({ gravity: 's' });
@@ -515,6 +517,8 @@ $(function(){
   }
 
   function re_init( current_schedule ) {
+    // Hide any tooltips taht are accidentally open HACK
+    $(".tipsy").hide();
     // Make the hints droppable
     var section_hints = current_schedule.find(".droppable").find(".schedule-block");
     section_hints.droppable(options.droppable);
@@ -533,6 +537,9 @@ $(function(){
 
     // Enable the new sections to be draggable
     init_draggable();
+
+    $(".schedule-block .enrollment").tipsy({ gravity: 's', opacity: .9});
+    $(".courses .enrollment").tipsy({ gravity: 'e', opacity: .9});
     //init_modals();
     //init_share_button();
   }

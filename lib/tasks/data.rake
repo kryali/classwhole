@@ -51,6 +51,7 @@ class UIUCParser
       current_section.reference_number = crn        
       current_section.code = code        
       current_section.part_of_term = section_xml["partOfTerm"][0] if section_xml.key?("partOfTerm")
+      current_section.notes = section_xml["sectionNotes"][0] if section_xml.key?("sectionNotes")
       #1 means course is open, 0 means it's not    
       if section_xml["enrollmentStatus"][0].include?("Restricted")
         enrollment_status = 2
