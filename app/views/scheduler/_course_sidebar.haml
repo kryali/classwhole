@@ -27,7 +27,9 @@
                   %span.crn= section.reference_number
                 - section.meetings.each do |meeting|
                   -if not meeting.instructors.empty?
-                    %span.instructor= shorten(meeting.instructors[0], 12, "..")
+                    - prof = meeting.instructors[0]
+                    %span.instructor 
+                      =link_to shorten(prof, 12, ".."), show_prof_path(Instructor.slugify(prof)), :target => "_blank"
                   -else 
                     %span.instructor TBD
                   -if meeting.start_time

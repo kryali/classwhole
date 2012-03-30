@@ -13,6 +13,19 @@ class Instructor
     return instructors
   end
 
+  def slug
+    name.gsub(/,\s/,"-")
+  end
+
+  def self.slugify( name )
+    slug = name.gsub(/,\s/,"-")
+  end
+
+  def self.decode( slug )
+    name = slug.gsub(/-/,", ")
+    self.get( name )
+  end
+
   # 
   # initializes and returns a requested instructor object
   #
@@ -33,9 +46,13 @@ class Instructor
 
   def courses
     ret = []
-    course_ids = $redis.get("instructor:#{self.name}:courses")
+    course_ids = $redis.smembers("instructor:#{self.name}:courses")
     course_ids.each { |id| ret << Course.find( id ) }
     return ret
+  end
+
+  def to_s
+    name
   end
 
   #

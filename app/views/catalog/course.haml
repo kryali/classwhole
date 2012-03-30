@@ -78,7 +78,8 @@
                     = meeting.days            
                 %td.table_data
                   -if !meeting.instructors.empty?  
-                    = meeting.instructors[0]
+                    - prof = meeting.instructors[0]
+                    =link_to prof, show_prof_path(Instructor.slugify(prof))
                 %td.table_data
                   -if !meeting.building.nil? 
                     = meeting.building

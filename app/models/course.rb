@@ -81,4 +81,8 @@ class Course < ActiveRecord::Base
     "#{credit_hours} hr"
   end
 
+  def semester
+    subject.semester
+  end
+
 end

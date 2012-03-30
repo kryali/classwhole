@@ -36,9 +36,9 @@ def parse_prof_for_letter( letter )
 end
 
 def parse_all_profs
-  # ('A'..'Z').each do |letter|
-  parse_prof_for_letter 'A'
-  # end
+  ('A'..'Z').each do |letter|
+    parse_prof_for_letter letter
+  end
 end
 
 namespace :prof do 
