@@ -68,7 +68,7 @@ class UIUCParser
       current_section.course_subject_code = section_xml["parents"][0]["subject"].first[0]
       current_section.course_title = section_xml["parents"][0]["course"].first[1]["content"]
       #current_section.course_number = section_xml["parents"][0]["course"].first[0]
-      current_section.code = section_xml["sectionNumber"][0]    if section_xml.has_key?("sectionNumber")
+      current_section.code = section_xml["sectionNumber"][0].strip    if section_xml.has_key?("sectionNumber")
       if section_xml.has_key?("creditHours")
         current_section.hours = section_xml["creditHours"][0].scan(/\d/).map{|n| n.to_i} 
       else
