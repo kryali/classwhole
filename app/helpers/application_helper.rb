@@ -20,6 +20,6 @@ module ApplicationHelper
   end
 
   def fb_img_link( user, type = "large" ) 
-    "https://graph.facebook.com/#{user.id}/picture?type=#{type}"
+    "https://graph.facebook.com/#{user.fb_id}/picture?type=#{type}"
   end
 end
