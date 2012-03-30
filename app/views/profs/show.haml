@@ -1,3 +1,5 @@
+= content_for :title, "#{@prof.name} UIUC"
+= content_for :meta_description, "Professor Ratings for #{@prof.name} at UIUC who teaches #{@prof.print_courses}"
 %div.scheduler-content
   %div{:class=>"course_box prof-box"}
     %div{ :class=>"prof-img" }

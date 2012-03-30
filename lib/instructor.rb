@@ -13,10 +13,6 @@ class Instructor
     return instructors
   end
 
-  def slug
-    name.gsub(/,\s/,"-")
-  end
-
   def self.slugify( name )
     slug = name.gsub(/,\s/,"-")
   end
@@ -51,10 +47,21 @@ class Instructor
     return ret
   end
 
+  def print_courses
+    ret = ""
+    courses.each do |course|
+      ret = "#{ret}#{course.to_s} "
+    end
+    return ret
+  end
+
   def to_s
     name
   end
 
+  def slug
+    name.gsub(/,\s/,"-")
+  end
   #
   # Takes in a name and a course and adds an instructor if it doesnt exist
   #

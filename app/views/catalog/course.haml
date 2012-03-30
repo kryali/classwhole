@@ -1,6 +1,6 @@
 /* The Course Page */
 = content_for :title, "#{@course.to_s} UIUC - #{@course.title}"
-= javascript_include_tag "tabs"
+= javascript_include_tag "tabs", "catalog.course"
 = stylesheet_link_tag "tabs"
 = content_for :meta_description, "#{@course.to_s} uiuc - #{@course.description}" 
  
