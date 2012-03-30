@@ -41,19 +41,21 @@ Sidebar.prototype.render_section_row = function( section ) {
                 .text( section.short_type ) ); 
 
     var instructor_name;
+    var instructor;
     if (meeting.instructors.length >= 1)  {
       instructor_name = meeting.instructors[0];
+      instructor =  $("<a/>")
+                    .attr("href", show_prof_path(instructor_name ))
+                    .attr("target", "_BLANK")
+                    .text( instructor_name );
     } else {
       instructor_name = "TBD";
+      instructor = instructor_name;
     }
 
     row.append( $("<span/>")
                 .addClass("instructor")
-                .append( 
-                  $("<a/>")
-                  .attr("href", show_prof_path(instructor_name ))
-                  .attr("target", "_BLANK")
-                  .text( instructor_name ) ));
+                .append( instructor ));
     row.append( $("<span/>")
                 .addClass("code")
                 .text( section.code ) ); 
