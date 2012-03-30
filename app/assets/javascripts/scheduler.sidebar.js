@@ -50,7 +50,7 @@ Sidebar.prototype.render_section_row = function( section ) {
                 .text( section.code ) ); 
     row.append( $("<span/>")
                 .addClass("enrollment status-" + section.enrollment_status)
-                .attr("title", section.notes) );
+                .attr("title", section.reason) );
     row.append( $("<span/>")
                 .addClass("time")
                 .text(print_time(meeting.start_time) + "-" + print_time(meeting.end_time))); 

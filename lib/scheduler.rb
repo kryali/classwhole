@@ -67,6 +67,7 @@ class Scheduler
     end
     section['short_type'] = section.short_type_s
     section['meetings'] = meetings
+    section['reason'] = section.reason
     return section
   end
 

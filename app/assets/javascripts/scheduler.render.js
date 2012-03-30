@@ -94,7 +94,7 @@ function fill_section_info( section, meeting, section_block ) {
                         .text( section.course_subject_code + " " + section.course_number) );
   section_block.append( $("<span/>")
                         .addClass("enrollment status-" + section.enrollment_status)
-                        .attr("title", section.notes ) );
+                        .attr("title", section.reason ) );
   section_block.append( $("<span/>")
                         .addClass("course-title")
                         .text( section.course_title ) );
