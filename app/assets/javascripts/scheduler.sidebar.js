@@ -23,6 +23,11 @@ function Sidebar( sections  ) {
   this.sections = sections;
 }
 
+function show_prof_path( name ) {
+  var slug = name.replace(", ", "-");
+  return "http://classwhole.com/profs/" + slug
+}
+
 Sidebar.prototype.render_section_row = function( section ) {
   var row = $("<div/>");
 
@@ -44,7 +49,11 @@ Sidebar.prototype.render_section_row = function( section ) {
 
     row.append( $("<span/>")
                 .addClass("instructor")
-                .text( instructor_name ) ); 
+                .append( 
+                  $("<a/>")
+                  .attr("href", show_prof_path(instructor_name ))
+                  .attr("target", "_BLANK")
+                  .text( instructor_name ) ));
     row.append( $("<span/>")
                 .addClass("code")
                 .text( section.code ) ); 
