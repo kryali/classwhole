@@ -1,6 +1,7 @@
 class Subject < ActiveRecord::Base
 	validates :code, :uniqueness => true
 	has_many :courses
+  belongs_to :semester
 
   def self.trie(str)
     begin

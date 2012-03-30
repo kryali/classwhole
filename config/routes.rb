@@ -24,7 +24,7 @@ Whiteboard::Application.routes.draw do
 
   # Professor routes
   match 'profs/' => 'profs#index', :as => 'profs_index'
-  match 'profs/:name_slug' => 'profs#show'
+  match 'profs/:name_slug' => 'profs#show', :as => 'show_prof'
   match 'professors/' => 'profs#index'
   match 'professors/:name_slug' => 'profs#show'
 
