@@ -277,6 +277,25 @@ $(function(){
     });
   }
 
+  function init_profs() {
+
+    var config = {
+      over: function() {
+        var t = new Tooltip();
+        t.putAbove($(this));
+        $(this).mouseleave( function() {
+          t.close();
+        });
+      },
+      timeout: 0,
+      sensitivity: 1,
+      interval: 200,
+      out: function(){}
+    };
+
+    $(".instructor a").hoverIntent(config);//(function(){})
+  }
+
   init = function() {
     // Setup the slidejs plugin
     //$("#slides").slides(options.slides);
@@ -291,6 +310,7 @@ $(function(){
     init_download_schedule();
     init_download_icalendar();
     init_pagination();
+    init_profs();
 
     //init_mini_pagination();
 
