@@ -9,7 +9,6 @@
     var course_ids = #{@course_ids};
     possible_schedules = #{section_ids_from_schedules( @possible_schedules ).to_json }; 
     init();
-    linkify_classes($(".course .course-name"));
   });
 
 %div.scheduler-content

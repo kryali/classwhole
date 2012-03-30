@@ -38,10 +38,11 @@
                     %span.time Online / Arr
         = render :partial => 'classmates', :locals => {:course => course }
 
-        -# Mixpanel tracking
         :javascript 
           $(document).ready( function() {
+            linkify_classes($(".course .course-name"));
             $("ul.classmates a").click( function() {
               mpq.track( "click sidebar profile" );
+              //Mixpanel tracking
             });
           });
