@@ -4,6 +4,7 @@ require 'nokogiri'
 
 def clear_profs
   Instructor.delete_all
+  puts "All instructors cleared"
 end
 
 def parse_prof_for_letter( letter )
