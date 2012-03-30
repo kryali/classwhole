@@ -310,7 +310,7 @@ $(function(){
     init_download_schedule();
     init_download_icalendar();
     init_pagination();
-    init_profs();
+    //init_profs();
 
     //init_mini_pagination();
 
