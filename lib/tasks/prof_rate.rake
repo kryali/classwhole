@@ -50,4 +50,8 @@ namespace :prof do
   task :update => [:environment] do
     parse_all_profs
   end
+
+  task :clear => [:environment] do
+    clear_profs
+  end
 end
