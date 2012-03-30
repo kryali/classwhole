@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   protected
   def current_user    
 		if session[:user_id]     	
-			return @current_user ||= User.find(session[:user_id]) 	
+			return @current_user ||= User.find_by_fb_id(session[:user_id]) 	
      elsif @current_user #a temp user has already been created
       return @current_user    
     else
@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
 
   def current_user=(new_user)
 		@current_user = new_user
-    session[:user_id] = new_user.id
+    session[:user_id] = new_user.fb_id
   end
 
  # def current_user.is_temp?
