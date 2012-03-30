@@ -35,14 +35,12 @@ end
 
 def clear_subject_trie
   delete_keys( "subjects" )
-  delete_keys( "id:subject*" )
   delete_keys( "subject*" )
   puts "Cleared subject trie."
 end
 
 def clear_course_trie
   delete_keys( "courses" )
-  delete_keys( "id:course*" )
   delete_keys( "course*" )
   puts "Cleared course trie."
 end

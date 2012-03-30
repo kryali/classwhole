@@ -16,9 +16,6 @@ class CatalogController < ApplicationController
     @year = params[:year]
     @season = params[:season]     
     @semester = Semester.find_by_year_and_season(@year, @season)
-    if @semester.nil?
-      @semester = $CURRENT_SEMESTER
-    end
 	end
 
   def get_subject(params)
@@ -77,6 +74,10 @@ class CatalogController < ApplicationController
   #   courses/:season/:year 
   def semester
     get_semester(params)
+    if @semester.nil?
+      redirect_to show_semester_path( $CURRENT_SEMESTER.season, $CURRENT_SEMESTER.year )
+      return
+    end
     @subjects = @semester.subjects
     @pagination_indeces = get_pagination_indeces(@semester)
 		render 'semester'
@@ -91,6 +92,14 @@ class CatalogController < ApplicationController
   def subject
     get_subject(params)
     if @subject.nil?
+      all_semesters = Semester.all
+      (all_semesters.size..1).each do |i|
+        semester = all_semesters[i-1]
+        semester_subjects = semester.subjects.find_by_code( params[:subject_code] )
+        next if semester_subjects.nil?
+        redirect_to show_subject_path( semester.season, semester.year, params[:subject_code] )
+        return
+      end
       redirect_to "/"
       return
     end
@@ -103,10 +112,21 @@ class CatalogController < ApplicationController
   # - Show all the sections for a given course
   #
   # Route:
-  #   courses/:season/:year/:subject_code/:courseNumber
+  #   courses/:season/:year/:subject_code/:course_number
   def course
     get_course(params)
     if @course.nil?
+      all_semesters = Semester.all
+      (all_semesters.size..1).each do |i|
+        semester = all_semesters[i-1]
+        semester_subjects = semester.subjects.find_by_code( params[:subject_code] )
+        next if semester_subjects.nil?
+        course = semester_subjects.courses.find_by_number( params[:course_number] )
+        next if course.nil?
+
+        redirect_to show_course_path( semester.season, semester.year, params[:subject_code], params[:course_number] )
+        return
+      end
       redirect_to "/"
       return
     end
