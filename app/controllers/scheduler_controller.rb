@@ -6,7 +6,8 @@ class SchedulerController < ApplicationController
   end
     
   def show
-    @user = User.find( params["id"].to_i )
+    #@user = User.find( params["id"].to_i )
+    @user = User.find_by_fb_id( params["id"].to_i )
     @sections = @user.schedule
     @hide_buttons = true
   end
