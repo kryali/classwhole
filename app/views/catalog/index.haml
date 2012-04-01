@@ -1,5 +1,37 @@
-%div.scheduler-content 
-  %div.semester_list
-    - for semester in Semester.all
-      -uppercase_string = semester.season[0,1].upcase + semester.season[1..-1]    #change fall to Fall and spring to Spring
-      = link_to uppercase_string + " " + semester.year + " Course List"  , show_semester_path(semester.season,semester.year)
+= javascript_include_tag "autocomplete"
+= javascript_include_tag "user.course.list.js"
+= javascript_include_tag "scheduler.index.js"
+
+= content_for :title, "Classwhole"
+= content_for :meta_description, "Classwhole is a social and interactive scheduler for UIUC. People use Classwhole to discover classes and the people in them. With drag-and-drop sections, scheduling has never been easier."
+
+%div#content
+  %div{:class => "blur vertical-center"}
+    %div.user-course-list-wrapper
+      = link_to "", scheduler_index_path, :class => 'big-logo'
+      %div.user-course-list
+        = render "scheduler/user_course_list"
+        %div.feature-box
+          %div.feature-row
+            %div{:class=>"feature drag"}
+              %div.icon
+              %div.text Drag-and-drop class sections
+            %div{:class=>"feature fb"}
+              %div.icon
+              %div.text Optional Facebook integration
+      %div.video-link
+        Currently supports 
+        =link_to "UIUC","http://illinois.edu"
+        -#Want to learn more?
+        =#link_to "Watch a Video", "youtube.com"
+          
+      <div class="fb-like" data-href="classwhole.com" data-send="true" data-width="400" data-show-faces="true"></div>
+      %div.hours
+        - if current_user
+          -#%span= current_user.total_course_hours
+        - else
+          -#%span= 0
+        -#hrs.
+      - unless current_user.is_temp?
+        -if current_user and current_user.friends
+          =# render :partial => "friends", :locals => {:user => current_user}
