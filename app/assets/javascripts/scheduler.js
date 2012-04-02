@@ -354,7 +354,8 @@ $(function(){
       });
     };
 
-    $(".schedule-block:not(.ui-droppable)").hoverIntent( mouseover, mouseleave );
+    //$(".schedule-block:not(.ui-droppable)").hoverIntent( mouseover, mouseleave );
+    $(".schedule-block:not(.ui-droppable)").hover( mouseover, mouseleave );
 
     // Hide the course titles if the block is too small
     $(".schedule-block").each( function() {
