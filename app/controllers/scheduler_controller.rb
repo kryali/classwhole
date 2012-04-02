@@ -19,7 +19,17 @@ class SchedulerController < ApplicationController
     end
     all_possible_schedules = Rails.cache.fetch( :courses => course_ids,   
                                                 :data => 'valid_schedules' ) {
-      [Scheduler.initial_schedule(current_user.courses)]
+      begin
+        scheduler = Scheduler.new(current_user.courses)
+        status = Timeout::timeout(5) {
+          scheduler.schedule_courses
+        }
+      rescue Timeout::Error
+        logger.error current_user.courses
+        redirect_to "/500.html"
+      end
+      scheduler.valid_schedules
+      #[Scheduler.initial_schedule(current_user.courses)]
     }
     @course_ids = course_ids.to_json
     # Restricting to smaller number of schedules, until new method implemented
