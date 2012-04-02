@@ -7,7 +7,7 @@ class UserController < ApplicationController
   def login
     user_id = params["userID"]
     begin 
-      @user = User.find(user_id)
+      @user = User.find_by_fb_id(user_id)
     rescue #ActiveRecord::RecordNotFound # Sometimes we get a SQLException?
       @user = register(params["accessToken"], params["userID"])
     ensure
@@ -73,6 +73,15 @@ class UserController < ApplicationController
       friends.each { |friend| $redis.sadd("user:#{@user.id}:friends", friend["id"]) }
     end
     @user.save
+
+    if @user.nil?
+      logger.info "ERROR!"
+      logger.error "#{userID}" if @user.nil?
+      logger.error user_data.inspect if @user.nil?
+    else
+      logger.info "#{userID} successfully registered"
+    end
+
     return @user  
   end
 

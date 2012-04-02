@@ -70,6 +70,7 @@ class Course < ActiveRecord::Base
   end
 
   def credit_hours
+    return "" if hours_min.nil? or hours_max.nil?
     if hours_min - hours_max != 0
       "#{hours_min}-#{hours_max}"
     else
