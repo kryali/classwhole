@@ -22,4 +22,3 @@ function hideModal() {
   document.getElementById('modalPage').style.display = "none";
   $(".modalContainer").empty();
 }
-
