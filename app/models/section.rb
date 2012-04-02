@@ -83,7 +83,7 @@ class Section < ActiveRecord::Base
     if not((self.part_of_term == "A" and section.part_of_term == "B") or (self.part_of_term == "B" and section.part_of_term == "A"))
       self.meetings.each do |self_meeting|
         section.meetings.each do |section_meeting|
-          return meeting_conflict?(self_meeting, section_meeting)
+          return true if meeting_conflict?(self_meeting, section_meeting)
         end
       end
     end
