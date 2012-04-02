@@ -9,6 +9,7 @@ require 'json'
 class CustomConfigurationParser
 
   def self.parse_file( filename )
+    puts "Migrating #{filename}"
     f = File.read(filename)
     course_data = JSON.parse(f)
     semester = Semester.find_by_season_and_year(course_data["season"], course_data["year"])
@@ -34,8 +35,19 @@ end
 
 namespace :configuration do 
 
-  #MIGRATE TASK
+  #MIGRATE TASKS
 
+  # all
+  task :migrateall, :season, :year, :needs => [:environment] do |t, args|
+    Dir.foreach("db/configuration/#{args[:season]}_#{args[:year]}/") do |filename|
+      if filename.end_with?(".json")
+        path = "db/configuration/#{args[:season]}_#{args[:year]}/#{filename}"
+        CustomConfigurationParser.parse_file path
+      end
+    end
+  end
+
+  #specific file
   task :migrate, :season, :year, :filename, :needs => [:environment] do |t, args|
     filename = "db/configuration/#{args[:season]}_#{args[:year]}/#{args[:filename]}"
     filename = filename + ".json" unless filename.end_with?(".json")
