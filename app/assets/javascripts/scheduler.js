@@ -326,85 +326,13 @@ $(function(){
         }
     });
 
-    // TODO: BUG IF YOU CLICK TOO FAST
-    $(".prev").click( function() {
-      mpq.track("Clicked left arrow");
-      if( current_selected > 1 )
-        current_selected--;
-      else {
-        $(".mini-prev").click();
-        current_selected = mini_grids_showing;
-      }
-    });
-
-    $(".next").click( function() {
-      mpq.track("Clicked right arrow");
-      current_selected++;
-      if( current_selected > mini_grids_showing ){
-        $(".mini-next").click();
-        current_selected = 1;
-      }
-    });
-
     var children = $(".mini-pagination").children();
     $('.mini-pagination').css("width", children.width() * children.length + 30);
   }
 
-  function init_mini_pagination() {
-    var width = $(".mini-pagination-container").width() + 1;
-    var mini_pagination = $(".mini-pagination");
-    var children = $(".mini-pagination").children();
-    var start = 0;
-    var end = mini_grids_showing;
-
-    mini_pagination.css("width", children.width() * children.length);
-
-    $(".mini-prev").click( function() {
-      var current_pos = mini_pagination.position().left;
-      // Make sure it's not already the the most left
-      if( current_pos != 0) {
-        end = start;
-        start -= mini_grids_showing;
-        mini_pagination.animate({ left: current_pos + width + "px"}, 250, undefined);
-      }
-    });
-
-    $(".mini-next").click( function() {
-      var current_pos = mini_pagination.position().left;
-      if( end <= mini_grids_count) {
-        //console.log("starting a request");
-        $.ajax({
-          type: 'POST',
-          url: paginate_path,
-          data: { 
-            courses: course_ids, 
-            start: start, 
-            end: end,
-          },
-          success: function(data, textStatus, jqXHR) {
-            var full = $(data).first();
-            var mini = $(data).last();
-            $(".slides_control").append( full.children() );
-            mini_pagination.append( mini.children() );
-
-            var children = mini_pagination.children();
-            mini_pagination.css("width", children.width() * children.length);
-            mini_pagination.animate({ left: current_pos - width + "px"}, 250, undefined);
-            $("#slides").slides(options.slides);
-          }
-        });
-      } else {
-        start = end;
-        end = end + mini_grids_showing;
-        mini_grids_count += mini_grids_showing;
-        mini_pagination.animate({ left: current_pos - width + "px"}, 250, undefined);
-      }
-    });
-  }
-
   function init_draggable() {
     $(".schedule-block:not(.ui-droppable)").draggable(options.draggable);
-    $(".schedule-block:not(.ui-droppable)").mouseover( function(){
+    function mouseover(){
       if( is_showing_hints ) return;
       is_showing_hints = true;
 
@@ -415,16 +343,18 @@ $(function(){
       //console.log( "Selected" + section );
       //console.log( schedule_ids );
       update_schedule( section_id, schedule_ids );
-    });
+    };
     
-    $(".schedule-block:not(.ui-droppable)").mouseleave( function(){
+    function mouseleave() {
       // Sometimes a mouseleave gets fired when a user is dragging
       if( is_dragging) { return; }
       is_showing_hints = false;
       $(".droppable").stop().fadeOut( 200, function() {
         $(this).remove();
       });
-    });
+    };
+
+    $(".schedule-block:not(.ui-droppable)").hoverIntent( mouseover, mouseleave );
 
     // Hide the course titles if the block is too small
     $(".schedule-block").each( function() {
