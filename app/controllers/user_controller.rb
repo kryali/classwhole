@@ -7,7 +7,7 @@ class UserController < ApplicationController
   def login
     user_id = params["userID"]
     begin 
-      @user = User.find_by_fb_id(user_id)
+      @user = User.find(user_id)
     rescue #ActiveRecord::RecordNotFound # Sometimes we get a SQLException?
       @user = register(params["accessToken"], params["userID"])
     ensure
@@ -49,6 +49,7 @@ class UserController < ApplicationController
   #   uses koala to retrieve the user's data and facebook friends
   #
   def register(accessToken, userID)
+    #logger.info "Starting registration for #{userID}"
     # User wasn't found, register him
     @user = User.new
     graph = Koala::Facebook::API.new(accessToken)
@@ -76,8 +77,8 @@ class UserController < ApplicationController
 
     if @user.nil?
       logger.info "ERROR!"
-      logger.error "#{userID}" if @user.nil?
-      logger.error user_data.inspect if @user.nil?
+      logger.info "#{userID}" if @user.nil?
+      logger.info user_data.inspect if @user.nil?
     else
       logger.info "#{userID} successfully registered"
     end
