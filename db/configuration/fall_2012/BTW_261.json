@@ -1,0 +1,28 @@
+{
+  "season": "fall",
+  "year": "2012",
+  "subject_code": "BTW",
+  "number": 261,
+  "configurations": {
+    "ALL": {
+      "LCD": [
+        {
+          "crn": 31438,
+          "code": "C"
+        },
+        {
+          "crn": 31444,
+          "code": "S"
+        },
+        {
+          "crn": 31446,
+          "code": "T"
+        },
+        {
+          "crn": 31441,
+          "code": "X"
+        }
+      ]
+    }
+  }
+}

@@ -57,6 +57,41 @@ class Scheduler
 
   # 'Static' shit
 
+  def self.initial_schedule( courses )
+    configurations = []
+    courses.each do |course|
+      configurations << course.configurations.first
+    end
+    return self.schedule_configurations(configurations)
+  end
+
+  def self.schedule_configurations( configurations )
+    @schedule = []
+    @valid = false
+    self.schedule_configurations_recursive( configurations, 0, 0 )
+    return @schedule
+  end
+
+  def self.schedule_configurations_recursive(configurations, configuration_index, sections_index)
+    if configuration_index == configurations.size #valid schedule!
+      @valid = true
+      return
+    end
+    configuration = configurations[configuration_index]
+    if sections_index == configuration.sections_array.size
+      return self.schedule_configurations_recursive(configurations, configuration_index + 1, 0)
+    end
+    sections = configuration.sections_array[sections_index]
+    sections.each do |section|
+      unless section.schedule_conflict?(@schedule)
+        @schedule.push(section)
+        self.schedule_configurations_recursive(configurations, configuration_index, sections_index+1)
+        break if @valid
+        @schedule.pop
+      end
+    end    
+  end
+
   # prepares a section object for json
   def self.build_section( section )
     meetings = []

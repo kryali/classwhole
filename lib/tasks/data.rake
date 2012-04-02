@@ -115,7 +115,7 @@ class UIUCParser
       current_course.description = course_xml["description"][0] if course_xml.key?("description")
       current_course.title = course_xml["label"][0]  if course_xml.key?("label")
       current_course.subject_code = name.split(" ")[0]
-      hours = course_xml["creditHours"][0].scan(/\d/).map{|n| n.to_i}
+      hours = course_xml["creditHours"][0].scan(/\d+/).map{|n| n.to_i}
       if hours.size == 1
         current_course.hours_min = hours[0]
         current_course.hours_max = hours[0]
