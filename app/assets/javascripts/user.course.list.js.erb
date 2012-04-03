@@ -27,18 +27,16 @@ ClassList.prototype.init = function() {
         $(this).find(".remove-link").click( function() {
           mpq.track("Class removed");
 					$.ajax({
-								type: 'GET',
-                url: course_destroy_url + class_id,
-                success: function() {
-                  max_hours -= class_max_hours;
-                  min_hours -= class_min_hours;
-                  update_hours();
-                  //console.log( class_max_hours + "-" + class_min_hours );
-                  delete selected_classes[ class_id ];
-                  class_li.slideUp(function(){ $(this).remove() });
-                  num_classes--;
-                }
+            type: 'GET',
+            url: course_destroy_url + class_id,
+            success: function() {}
 					});
+          max_hours -= class_max_hours;
+          min_hours -= class_min_hours;
+          update_hours();
+          delete selected_classes[ class_id ];
+          class_li.slideUp(function(){ $(this).remove() });
+          //console.log( class_max_hours + "-" + class_min_hours );
         });
     });
 }
@@ -101,9 +99,9 @@ ClassList.prototype.add_class_callback = function(event, ui) {
           mpq.track("Class removed");
           var removed = 0;
           $.ajax({
-              type: 'GET',
-              url:  '/user/courses/destroy/'+ui.item.id,
-            });
+            type: 'GET',
+            url:  '/user/courses/destroy/'+ui.item.id,
+          });
           course_li.slideUp();
           $(this).remove();
           num_classes--;

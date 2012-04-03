@@ -56,7 +56,7 @@ class Scheduler
   end
 
   # 'Static' shit
-
+=begin
   def self.initial_schedule( courses )
     configurations = []
     courses.each do |course|
@@ -91,7 +91,7 @@ class Scheduler
       end
     end    
   end
-
+=end
   # prepares a section object for json
   def self.build_section( section )
     meetings = []

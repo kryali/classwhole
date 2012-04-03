@@ -49,6 +49,7 @@ class UserController < ApplicationController
   #   uses koala to retrieve the user's data and facebook friends
   #
   def register(accessToken, userID)
+    #logger.info "Starting registration for #{userID}"
     # User wasn't found, register him
     @user = User.new
     graph = Koala::Facebook::API.new(accessToken)
@@ -73,6 +74,15 @@ class UserController < ApplicationController
       friends.each { |friend| $redis.sadd("user:#{@user.id}:friends", friend["id"]) }
     end
     @user.save
+
+    if @user.nil?
+      logger.info "ERROR!"
+      logger.info "#{userID}" if @user.nil?
+      logger.info user_data.inspect if @user.nil?
+    else
+      logger.info "#{userID} successfully registered"
+    end
+
     return @user  
   end
 

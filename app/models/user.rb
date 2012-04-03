@@ -23,17 +23,18 @@ class User < ActiveRecord::Base
 
   def min_hours
     hours = 0
-    courses.each {|course| hours += course.hours_min }
+    courses.each {|course| hours += course.hours_min if not course.hours_min.nil? }
     return hours
   end
 
   def max_hours
     hours = 0
-    courses.each {|course| hours += course.hours_max }
+    courses.each {|course| hours += course.hours_max if not course.hours_max.nil? }
     return hours
   end
 
   def total_course_hours
+    return "" if min_hours.nil? or max_hours.nil?
     if min_hours - max_hours != 0
       "#{min_hours}-#{max_hours}"
     else
