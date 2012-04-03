@@ -16,6 +16,10 @@
     border-right: 1px solid #005AB8;
   }
 
+  .register-schedule {
+    margin-bottom: 0;
+  }
+
   .share-schedule {
     padding-left: 64px;
   }
@@ -97,9 +101,19 @@
     }
   }
 
+  .export {
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+    font-size: 12px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
   /* Way to make a confusing clusterfuck kiran. */
   ul.courses {
     background: #fefefe;
+    margin-top: 1em;
     //border: 1px solid #ccc;
 
     li.course-item {

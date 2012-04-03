@@ -223,7 +223,7 @@ class SchedulerController < ApplicationController
           event.recurrence_rules = ["FREQ=WEEKLY;UNTIL=#{(udt+offset).strftime("%Y%m%dT%H%M%S")}"]
           event.summary = "#{section.course_subject_code} #{section.course_number} - #{section.section_type}"
           event.description = "#{section.course.title} - #{section.course.description}"
-          event.location = meeting.building.name
+          event.location = meeting.building
         end
       end
     end
