@@ -31,9 +31,48 @@ class CustomConfigurationParser
     end
   end
 
+  def self.seed_course (course)
+    puts "Seeding #{course.subject_code} #{course.number}"
+    # generate new configurations
+    course.sections.each do |section|
+      key = section.generate_configuration_key
+      configuration = Configuration.find_by_course_id_and_key(course.id, key)
+      if configuration.nil?
+        configuration = Configuration.new(:key=>key)
+        configuration.course = course
+        configuration.save
+        section.configuration = configuration
+        section.save
+      end
+    end
+    # remove old configurations
+    course.configurations.each do |configuration|
+      Configuration.delete(configuration.id) if configuration.sections.count == 0
+    end
+  end
+
 end
 
 namespace :configuration do 
+
+  #SEED
+
+  task :seed, :season, :year, :needs => [:environment] do |t, args|
+    #re seed all courses
+    semester = Semester.find_by_season_and_year(args[:season], args[:year])
+    semester.subjects.all.each do |subject|
+      subject.courses.all.each do |course|
+        CustomConfigurationParser.seed_course course
+      end
+    end
+    # rerun all migrations
+    Dir.foreach("db/configuration/#{args[:season]}_#{args[:year]}/") do |filename|
+      if filename.end_with?(".json")
+        path = "db/configuration/#{args[:season]}_#{args[:year]}/#{filename}"
+        CustomConfigurationParser.parse_file path
+      end
+    end
+  end
 
   #MIGRATE TASKS
 
