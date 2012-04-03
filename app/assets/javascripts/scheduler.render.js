@@ -44,6 +44,8 @@ Schedule.prototype.render_sections = function( sections ) {
 Schedule.prototype.render_section = function( section, is_hint ) {
   for( i in section.meetings ) {
     var meeting = section.meetings[i].table; //not sure why i have to .table, you dont need to in ruby
+    if( meeting.days == undefined )
+      continue;
     var section_block = $("<div/>")
                         .addClass("schedule-block")
                         .attr("days", meeting.days);
