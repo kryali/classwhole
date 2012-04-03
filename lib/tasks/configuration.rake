@@ -41,9 +41,9 @@ class CustomConfigurationParser
         configuration = Configuration.new(:key=>key)
         configuration.course = course
         configuration.save
-        section.configuration = configuration
-        section.save
-      end
+      end        
+      section.configuration = configuration
+      section.save
     end
     # remove old configurations
     course.configurations.each do |configuration|
