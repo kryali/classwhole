@@ -205,35 +205,37 @@ class SchedulerController < ApplicationController
     cal = Icalendar::Calendar.new
     sections.each do |section|
       section.meetings.each do |meeting|
-        d = section.start_date
-        s = meeting.start_time
-        e = meeting.end_time
-        sdt = DateTime.new(d.year, d.month, d.day, s.hour, s.min, s.sec)
-        edt = DateTime.new(d.year, d.month, d.day, e.hour, e.min, e.sec)
-        udt = section.end_date
-        meeting.days.split("").each do |day|
-          case day
-          when "M"
-            wday = 1
-          when "T"
-            wday = 2
-          when "W"
-            wday = 3
-          when "R"
-            wday = 4
-          when "F"
-            wday = 5
-          else
-            wday = 6
+        unless section.start_date.nil? or meeting.start_time.nil? or meeting.end_time.nil?
+          d = section.start_date
+          s = meeting.start_time
+          e = meeting.end_time
+          sdt = DateTime.new(d.year, d.month, d.day, s.hour, s.min, s.sec)
+          edt = DateTime.new(d.year, d.month, d.day, e.hour, e.min, e.sec)
+          udt = section.end_date
+          meeting.days.split("").each do |day|
+            case day
+            when "M"
+              wday = 1
+            when "T"
+              wday = 2
+            when "W"
+              wday = 3
+            when "R"
+              wday = 4
+            when "F"
+              wday = 5
+            else
+              wday = 6
+            end
+            offset = wday - sdt.wday
+            event = cal.event
+            event.dtstart = sdt+offset
+            event.dtend = edt+offset
+            event.recurrence_rules = ["FREQ=WEEKLY;UNTIL=#{(udt+offset).strftime("%Y%m%dT%H%M%S")}"]
+            event.summary = "#{section.course_subject_code} #{section.course_number} - #{section.section_type}"
+            event.description = "#{section.course.title} - #{section.course.description}"
+            event.location = meeting.building
           end
-          offset = wday - sdt.wday
-          event = cal.event
-          event.dtstart = sdt+offset
-          event.dtend = edt+offset
-          event.recurrence_rules = ["FREQ=WEEKLY;UNTIL=#{(udt+offset).strftime("%Y%m%dT%H%M%S")}"]
-          event.summary = "#{section.course_subject_code} #{section.course_number} - #{section.section_type}"
-          event.description = "#{section.course.title} - #{section.course.description}"
-          event.location = meeting.building
         end
       end
     end
