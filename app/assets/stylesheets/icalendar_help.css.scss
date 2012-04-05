@@ -1,0 +1,19 @@
+$help-bg : white;
+
+.help {
+  padding: 30px;
+  background: $help-bg;
+  border: 1px solid #bbbbbb;
+  overflow: hidden;
+  width: 700px;
+  margin: 0 auto;
+  position: relative;
+  ol {
+    margin-left: 20px;
+    list-style: decimal;
+  }
+  li {
+    list-style: decimal;
+    padding: 10px;
+  }
+}
