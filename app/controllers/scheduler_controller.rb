@@ -244,4 +244,7 @@ class SchedulerController < ApplicationController
     
     render :text => cal.to_ical
   end
+
+  def icalendar_help
+  end
 end
