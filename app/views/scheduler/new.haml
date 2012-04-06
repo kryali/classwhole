@@ -7,7 +7,7 @@
   $(document).ready(function() {
     mpq.track("Schedule created");
     var course_ids = #{@course_ids};
-    possible_schedules = #{section_ids_from_schedules( @possible_schedules ).to_json }; 
+    schedule = #{ @schedule.to_json};
     init();
   });
 
@@ -15,9 +15,5 @@
   %div#slides
     %div.slides_container
       -# @possible_schedules.each do |sections|
-      = render "schedule", :sections => @possible_schedules.first
-    %a{:href=>"#", :class=>"prev"}
-    %a{:href=>"#", :class=>"next"}
-    -if @possible_schedules.size > 1
-      = render :partial => 'mini_schedule_grids', :locals => { :possible_schedules => @possible_schedules }
+      = render "schedule", :sections => @schedule
   = render "schedule_canvas"
