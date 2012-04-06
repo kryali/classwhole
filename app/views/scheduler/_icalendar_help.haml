@@ -1,7 +1,9 @@
-= content_for :title, "Classwhole - icalendar help"
-
-%div#content
-  %div.help
+%div.modal
+  %div.modal-header
+    %a{ :class => "x-button", :onclick => "hideModal()"} 
+    %h3 iCalendar Export
+  %div.modal-body
+    %a{:class=>"button grey icalendar-export", :style => "width: 100%"} Download iCalendar
     %ol
       %li
         <p>Click the <strong>Export to Google Calendar and iCalender</strong> button and save the '.ics' file</p>
@@ -15,5 +17,5 @@
         <p>Click <strong>Choose file</strong> and find the file that you saved in step 1, then click <strong>Open</strong>.</p>
       %li
         <p>Select the Google Calendar where you'd like to import events, then click <strong>Import</strong>.</p>
-      %li
-        <p>Your schedule will now be on your calendar.  Go to the semester start date to see your classes</p>
+  %div.modal-footer
+    %a{:class=>"button grey close-modal small", :onclick => "hideModal()"} Close
