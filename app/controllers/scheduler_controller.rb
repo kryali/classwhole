@@ -14,50 +14,18 @@ class SchedulerController < ApplicationController
 
   def new
     course_ids = []
+    configurations = {}
     current_user.courses.each do |course|
       course_ids << course.id
-    end
-    all_possible_schedules = Rails.cache.fetch( :courses => course_ids,   
-                                                :data => 'valid_schedules' ) {
-      #[Scheduler.initial_schedule(current_user.courses)]
-      begin      
-        scheduler = Scheduler.new(current_user.courses)
-        status = Timeout::timeout(5) {     
-          scheduler.schedule_courses
-        } 
-      rescue Timeout::Error
-        logger.error current_user.courses
-        redirect_to "/500.html"
+      configurations[course.id] = []
+      course.configurations.each do |configuration|
+        configurations[course.id] << configuration
       end
-      scheduler.valid_schedules
-    }
+    end
+    
+    @schedule = Scheduler.initial_schedule(current_user.courses)
     @course_ids = course_ids.to_json
-    # Restricting to smaller number of schedules, until new method implemented
-    # Show twenty max. The less schedules the algo gives them, then the better we're doing
-    @possible_schedules = all_possible_schedules[0..60]
-  end
-
-  def paginate
-    range_start = params["start"].to_i
-    @range_end = params["end"].to_i
-    course_ids = params["courses"]
-    course_ids.size.times do |i|
-      course_ids[i] = course_ids[i].to_i
-    end
-
-    all_possible_schedules = Rails.cache.fetch( :courses => course_ids,   
-                                                :data => 'valid_schedules' ) {
-      #logger.info "Why is this happening...." # This usually shouldn't happen
-      courses = []
-      course_ids.each do | course_id |
-        courses << Course.find( course_id.to_i )
-      end
-      scheduler = Scheduler.new(courses)
-      scheduler.schedule_courses
-      scheduler.valid_schedules
-    }
-    @possible_schedules = all_possible_schedules[range_start..@range_end]
-    render "paginate", :layout => false
+    @configurations = configurations
   end
 
   def sidebar
@@ -66,17 +34,6 @@ class SchedulerController < ApplicationController
       sections << Section.find_by_id(section_id.to_i)
     end
     render :partial => "course_sidebar", :locals => { :sections => sections}
-  end
-
-  # prepares a section object for json
-  def build_section( section )
-    meetings = []
-    section.meetings.each do |meeting|    
-        #meeting["instructors"] = meeting.instructors[0]
-        meetings << meeting
-    end
-    section['short_type'] = section.short_type_s
-    section['meetings'] = meetings
   end
 
   # Route that delivers section hints via AJAX
@@ -245,6 +202,4 @@ class SchedulerController < ApplicationController
     render :text => cal.to_ical
   end
 
-  def icalendar_help
-  end
 end
