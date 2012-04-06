@@ -35,13 +35,13 @@ class Section < ActiveRecord::Base
   # this may need to become more advanced depending on if we discover unusual courses
   def generate_configuration_key
     if self.course_subject_code == "PHYS" #PHYSICS DEPARTMENT Y U NO CONSISTENT?
-      key = self.course_subject_code
+      key = "ALL"
     elsif self.code.nil? #If there is no code, assume all courses are in the same configuration
-      key = self.course_subject_code
+      key = "NON"
     elsif (true if Integer(self.code) rescue false) #If the code is an integer, assume the courses should be in the same configuration
-      key = self.course_subject_code
-    elsif self.code.length == 1
-      key = self.course_subject_code
+      key = "INT"
+    elsif self.code.length == 1 # code is letters of length 1
+      key = "ALL"
     elsif self.code.length == 2
       if (true if Integer(self.code[0]) rescue false)
         key = self.code[1]
@@ -54,8 +54,6 @@ class Section < ActiveRecord::Base
         unless (true if Integer(self.code[2]) rescue false)
           key << self.code[1]
         end
-      else
-        key << self.code[0]
       end
     end
     return key
