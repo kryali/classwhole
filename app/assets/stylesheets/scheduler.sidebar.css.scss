@@ -102,12 +102,20 @@
   }
 
   .export {
-    width: 100%;
+    width: 70%;
     text-align: center;
     display: inline-block;
     font-size: 12px;
     padding-left: 0px;
     padding-right: 0px;
+  }
+
+  a.help {
+    background: #ccc;
+    color: white;
+    padding: 3px;
+    border-radius: 9px;
+    font-weight: bold;
   }
 
   /* Way to make a confusing clusterfuck kiran. */
