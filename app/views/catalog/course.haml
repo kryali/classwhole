@@ -52,12 +52,12 @@
       =@course.description
   
   %ul#tabs
-    -for type in @types_of_sections
-      %li.tab_headers              
-        =link_to type, "#"+type
     %li.tab_headers
-      =link_to "sched", "#sched"
-
+      =link_to "Schedule", "#sched"
+    -for type in @types_of_sections
+      %li.tab_headers
+        -first_letter_capitalized = type.slice(0,1).capitalize + type.slice(1..-1)              
+        =link_to first_letter_capitalized, "#"+type
  
   %div.sections_table
     -for type in @types_of_sections      
