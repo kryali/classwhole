@@ -1,4 +1,5 @@
 var class_counter = 0;
+var num_classes = 0;
 var has_classes = false;
 var selected_classes = {};
 var course_destroy_url  = '/user/courses/destroy/';
@@ -20,22 +21,22 @@ ClassList.prototype.init = function() {
         //max_hours += class_max_hours;
 
         selected_classes[class_id] = $(this);
+        num_classes++;
 
         var class_li = $(this);
         $(this).find(".remove-link").click( function() {
           mpq.track("Class removed");
 					$.ajax({
-								type: 'GET',
-                url: course_destroy_url + class_id,
-                success: function() {
-                  max_hours -= class_max_hours;
-                  min_hours -= class_min_hours;
-                  update_hours();
-                  //console.log( class_max_hours + "-" + class_min_hours );
-                  delete selected_classes[ class_id ];
-                  class_li.slideUp(function(){ $(this).remove() });
-                }
+            type: 'GET',
+            url: course_destroy_url + class_id,
+            success: function() {}
 					});
+          max_hours -= class_max_hours;
+          min_hours -= class_min_hours;
+          update_hours();
+          delete selected_classes[ class_id ];
+          class_li.slideUp(function(){ $(this).remove() });
+          //console.log( class_max_hours + "-" + class_min_hours );
         });
     });
 }
@@ -70,6 +71,7 @@ ClassList.prototype.add_class_callback = function(event, ui) {
         min_hours += parseInt(ui.item.min_hours);
         show_button();
         update_hours();
+        num_classes++;
         var hour_string;
         if( ui.item.max_hours - ui.item.min_hours != 0 )
           hour_string = ui.item.min_hours + "-" + ui.item.max_hours + " hr";
@@ -97,11 +99,12 @@ ClassList.prototype.add_class_callback = function(event, ui) {
           mpq.track("Class removed");
           var removed = 0;
           $.ajax({
-              type: 'GET',
-              url:  '/user/courses/destroy/'+ui.item.id,
-            });
+            type: 'GET',
+            url:  '/user/courses/destroy/'+ui.item.id,
+          });
           course_li.slideUp();
           $(this).remove();
+          num_classes--;
           max_hours -= parseInt( ui.item.max_hours );
           min_hours -= parseInt( ui.item.min_hours );
           update_hours();
@@ -155,6 +158,8 @@ function get_course_li( course_id ) {
 }
 
 ClassList.prototype.has_classes = function() {
+  if( num_classes <= 0 )
+    has_classes = false;
   return has_classes;
 }
 

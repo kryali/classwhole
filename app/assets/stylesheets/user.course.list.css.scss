@@ -213,8 +213,8 @@ $course-list-bg     : white; //#E6E6E6;
     float: left;
     font-size: 12px;
     width: 103px;
-    margin-left: 19px;
-    margin: 5px 0 0 19px;
+    margin: 0px 0 0 19px;
+    line-height: 14px;
   }
 
   .feature {
@@ -227,7 +227,7 @@ $course-list-bg     : white; //#E6E6E6;
 
 .fb-like,
 .fb_edge_widget_with_comment {
-  margin: 20px auto 0 auto;
+  margin: 20px auto 0 30px;
 }
 
 .hidden-course-form {

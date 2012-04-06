@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
 
   def current_user=(new_user)
 		@current_user = new_user
-    session[:user_id] = new_user.fb_id
+    session[:user_id] = new_user.id
   end
 
  # def current_user.is_temp?

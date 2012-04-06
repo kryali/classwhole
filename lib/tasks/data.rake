@@ -67,10 +67,9 @@ class UIUCParser
       current_section.short_type = section_xml["meetings"][0]["meeting"].first[1]["type"][0]["code"]
       current_section.course_subject_code = section_xml["parents"][0]["subject"].first[0]
       current_section.course_title = section_xml["parents"][0]["course"].first[1]["content"]
-      #current_section.course_number = section_xml["parents"][0]["course"].first[0]
       current_section.code = section_xml["sectionNumber"][0].strip    if section_xml.has_key?("sectionNumber")
       if section_xml.has_key?("creditHours")
-        current_section.hours = section_xml["creditHours"][0].scan(/\d/).map{|n| n.to_i} 
+        current_section.hours = section_xml["creditHours"][0].scan(/\d+/).map{|n| n.to_i}[0]
       else
         current_section.hours = 0
       end
@@ -115,7 +114,7 @@ class UIUCParser
       current_course.description = course_xml["description"][0] if course_xml.key?("description")
       current_course.title = course_xml["label"][0]  if course_xml.key?("label")
       current_course.subject_code = name.split(" ")[0]
-      hours = course_xml["creditHours"][0].scan(/\d/).map{|n| n.to_i}
+      hours = course_xml["creditHours"][0].scan(/\d+/).map{|n| n.to_i}
       if hours.size == 1
         current_course.hours_min = hours[0]
         current_course.hours_max = hours[0]
