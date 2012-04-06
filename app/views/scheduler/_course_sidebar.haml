@@ -9,10 +9,10 @@
           %span.course-name= course.to_s
           %span.course-title= shorten(course.title, 14)
           %span.course-hours= "(#{course.hours})"
-          %select.right
-            %option AA
-            %option BB
-            %option DD
+          -if @configurations and @configurations.has_key?(course.id) and @configurations[course.id].size > 1
+            %select.right
+              - @configurations[course.id].each do |key|
+                %option{"data-course-id" => course.id}= key
         -if nil
           %li 
             %span.title Description

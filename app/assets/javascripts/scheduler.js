@@ -1,3 +1,4 @@
+/* LOL SPAGETTI CODE ENJOY */
 $(function(){
   
   //var block_height = 74;
@@ -336,6 +337,34 @@ $(function(){
     $(".instructor a").hoverIntent(config);//(function(){})
   }
 
+
+  function init_configurations() {
+    $(".course-header").each(function() {
+      $(this).find("select").change(function() {
+        var selected = $(this).find("option:selected");
+        var new_config_key = selected.text();
+        var course_id = selected.attr("data-course-id");
+        var url = "/scheduler/configuration/change";
+        var data = {
+          ids: get_schedule_ids(),
+          new_config_key: new_config_key,
+          course_id: course_id
+        };
+        console.log( data );
+        $.ajax({
+          type: 'POST',
+          data: data,
+          url:  url,
+          success: function(data, textStatus, jqXHR) {
+            console.log(data);
+            //fetch_schedule(data, textStatus, jqXHR, undefined);
+            //is_showing_hints = false;
+          }
+        });
+      });
+    });
+  }
+
   init = function() {
     //tab shit for course page
     var tabList = document.getElementById('tabs');
@@ -354,6 +383,7 @@ $(function(){
     init_share_button();
     init_download_schedule();
     init_pagination();
+    init_configurations();
     //init_profs();
 
     //init_mini_pagination();

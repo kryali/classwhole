@@ -19,13 +19,17 @@ class SchedulerController < ApplicationController
       course_ids << course.id
       configurations[course.id] = []
       course.configurations.each do |configuration|
-        configurations[course.id] << configuration
+        configurations[course.id] << configuration.key
       end
     end
     
     @schedule = Scheduler.initial_schedule(current_user.courses)
     @course_ids = course_ids.to_json
     @configurations = configurations
+  end
+
+  def change_configuration
+    render :json => { :penis => :vagina }
   end
 
   def sidebar
