@@ -110,12 +110,16 @@
     padding-right: 0px;
   }
 
-  a.help {
-    background: #ccc;
+  a.help-icon {
+    background: #bbb;
     color: white;
     padding: 3px;
     border-radius: 9px;
     font-weight: bold;
+
+    &:hover {
+      background: #999;
+    }
   }
 
   /* Way to make a confusing clusterfuck kiran. */

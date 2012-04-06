@@ -18,6 +18,6 @@
   = render :partial =>  "course_sidebar", :locals => { :sections => sections }
   -# hiding until we can find a better place for it, also button is not style correctly on chrome on osx
   %a{:class=>"button grey export icalendar"} Export to Google Cal and iCal
-  =link_to "?", scheduler_icalendar_help_path, :title=> "How does this work?", :target => "_blank", :class => "help"
+  =link_to "?", scheduler_icalendar_help_path, :title=> "How does this work?", :target => "_blank", :class => "help-icon"
   -if @user and not @user.friends.empty?
     = render :partial => "friends", :locals => {:user => @user}
