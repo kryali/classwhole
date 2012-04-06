@@ -140,6 +140,6 @@ class Section < ActiveRecord::Base
   end
 
   def reason
-    notes || special_approval
+    notes || special_approval || "Open (Restricted)"
   end
 end

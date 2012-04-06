@@ -48,6 +48,7 @@ $modal_width : 320px;
   z-index: 750;
 }
 .modal {
+  position: fixed;
   width: $modal_width;
   z-index: 1000;
   padding: 0px;
@@ -63,6 +64,7 @@ $modal_width : 320px;
   -webkit-background-clip: padding-box;
   -moz-background-clip: padding-box;
   background-clip: padding-box;
+
 }
 
 .modal-header {
@@ -117,3 +119,6 @@ $modal_width : 320px;
   }
 }
 
+.modal .large {
+  width: 700px;
+}
