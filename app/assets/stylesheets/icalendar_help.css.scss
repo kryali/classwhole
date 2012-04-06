@@ -4,8 +4,6 @@ $help-bg : white;
   padding: 30px;
   background: $help-bg;
   border: 1px solid #bbbbbb;
-  overflow: hidden;
-  width: 700px;
   margin: 0 auto;
   position: relative;
   ol {
@@ -16,4 +14,14 @@ $help-bg : white;
     list-style: decimal;
     padding: 10px;
   }
+
+  .icalendar-export {
+    color: black;
+    padding: .25em;
+  }
+}
+
+.icalendar-modal {
+  padding: 0.5em;
+  font-size: 14px;
 }

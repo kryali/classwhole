@@ -2,7 +2,7 @@ $(document).keyup(function(e) {
   if (e.keyCode == 27) { hideModal(); }   // esc
 });
 
-function showModal(modal, locals) {
+function showModal(modal, locals, callback) {
   $.ajax({
     type: 'POST',
     data: { "modal": modal, "locals": locals },
@@ -14,6 +14,8 @@ function showModal(modal, locals) {
       modal_page.style.display = "block";
       modal_page.style.top = document.body.scrollTop;
       $(".modalBackground").click( hideModal );
+      Utils.centerElement($(".modal"));
+      callback();
     }
   });
 }

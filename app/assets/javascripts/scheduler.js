@@ -148,7 +148,6 @@ $(function(){
         myForm.submit();
   }
 
-/*
   function start_download_icalendar() {
     $(".icalendar-export").click( function() {
       mpq.track("iCalendar Downloaded");
@@ -172,7 +171,7 @@ $(function(){
           myForm.submit();
     });
   }
-*/
+
   function init_modals() {
     $(".save").unbind('click').click( function() {
       save_schedule();
@@ -203,8 +202,9 @@ $(function(){
 
     $(".icalendar-modal").unbind('click').click( function() {
       mpq.track("iCalendar Help");
-      showModal('/scheduler/_icalendar_help',{});
-      //start_download_icalendar();
+      showModal('/scheduler/_icalendar_help',{}, function() {
+        start_download_icalendar();
+      });
     });
   }
 
