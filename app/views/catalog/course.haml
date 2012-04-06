@@ -2,6 +2,9 @@
 = content_for :title, "#{@course.to_s} UIUC - #{@course.title}"
 = javascript_include_tag "tabs", "catalog.course"
 = stylesheet_link_tag "tabs"
+= javascript_include_tag "scheduler.render.js"
+= javascript_include_tag "scheduler.sidebar.js"
+= javascript_include_tag "scheduler.js"
 = content_for :meta_description, "#{@course.to_s} uiuc - #{@course.description}" 
  
 
@@ -49,10 +52,12 @@
       =@course.description
   
   %ul#tabs
+    %li.tab_headers
+      =link_to "Schedule", "#sched"
     -for type in @types_of_sections
-      %li.tab_headers              
-        =link_to type, "#"+type
-
+      %li.tab_headers
+        -first_letter_capitalized = type.slice(0,1).capitalize + type.slice(1..-1)              
+        =link_to first_letter_capitalized, "#"+type
  
   %div.sections_table
     -for type in @types_of_sections      
@@ -87,5 +92,8 @@
                 %td#hack.table_data
                   -if !meeting.section.code.nil?  and meeting.section.code != "NO CODE" 
                     = meeting.section.code
+  %div{:class => "tabContent", :id => "sched"}
+    =render "schedule", :sections => @possible_schedules.first
+    %div.clear
 
 
