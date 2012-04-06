@@ -16,7 +16,6 @@
       Share Schedule
     %a{ "data-controls-modal" => "register-modal", "data-keyboard" => "true", :class => "button grey register-schedule tooltip", :title => "Get your CRNS and register on Enterprise"} Register
   = render :partial =>  "course_sidebar", :locals => { :sections => sections }
-  %a{:class=>"button grey export icalendar", :style => "width: 90%"} Export to Google Calendar and iCalender
-  = link_to "?", scheduler_icalendar_help_path, :title=> "How does this work?", :target => "_blank"
+  %a{:class=>"button grey icalendar-modal"} Export to Google Calendar
   -if @user and not @user.friends.empty?
     = render :partial => "friends", :locals => {:user => @user}
