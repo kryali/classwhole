@@ -271,6 +271,7 @@ $(function(){
         success: function(data, textStatus, jqXHR) {
           var contents = $(data).children();
           $("ul.courses").empty().append(contents);
+          linkify_classes( contents.find(".course-name") );
           init_fb();
         }
       });
@@ -666,7 +667,6 @@ $(function(){
       $(this).remove();
       is_showing_hints = false;
     });
-
   }
 
 });
