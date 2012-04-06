@@ -76,6 +76,37 @@ $(function(){
     });
   }
 
+  function init_tabs(tabList){
+      tabListItems = tabList.childNodes;
+      for ( var i = 0; i < tabListItems.length; i++ ) {
+        if ( tabListItems[i].nodeName == "LI" ) {
+          var tabLink = getFirstChildWithTagName( tabListItems[i], 'A' );
+          var id = getHash( tabLink.getAttribute('href') );
+          tabLinks[id] = tabLink;
+          contentDivs[id] = document.getElementById( id );
+        }
+      }
+
+      // Assign onclick events to the tab links, and
+      // highlight the first tab
+      var i = 0;
+
+      for ( var id in tabLinks ) {
+        tabLinks[id].onclick = showTab;
+        tabLinks[id].onfocus = function() { this.blur() };
+        if ( i == 0 ) tabLinks[id].className = 'selected';
+        i++;
+      }
+
+      // Hide all content divs except the first
+      var i = 0;
+
+      for ( var id in contentDivs ) {
+        if ( i != 0 ) contentDivs[id].className = 'tabContent hide';
+        i++;
+      }
+}
+
   function init_tooltips() {
     $(".register-schedule").tipsy({ gravity: 'n', opacity: .9});
     $(".schedule-block .enrollment").tipsy({ gravity: 's', opacity: .9});
@@ -148,7 +179,6 @@ $(function(){
         myForm.submit();
   }
 
-/*
   function start_download_icalendar() {
     $(".icalendar-export").click( function() {
       mpq.track("iCalendar Downloaded");
@@ -172,7 +202,7 @@ $(function(){
           myForm.submit();
     });
   }
-*/
+
   function init_modals() {
     $(".save").unbind('click').click( function() {
       save_schedule();
@@ -203,8 +233,9 @@ $(function(){
 
     $(".icalendar-modal").unbind('click').click( function() {
       mpq.track("iCalendar Help");
-      showModal('/scheduler/_icalendar_help',{});
-      //start_download_icalendar();
+      showModal('/scheduler/_icalendar_help',{}, function() {
+        start_download_icalendar();
+      });
     });
   }
 
@@ -279,6 +310,7 @@ $(function(){
         success: function(data, textStatus, jqXHR) {
           var contents = $(data).children();
           $("ul.courses").empty().append(contents);
+          linkify_classes( contents.find(".course-name") );
           init_fb();
         }
       });
@@ -305,6 +337,11 @@ $(function(){
   }
 
   init = function() {
+    //tab shit for course page
+    var tabList = document.getElementById('tabs');
+    if(tabList != null){
+      init_tabs(tabList);
+    }
     // Setup the slidejs plugin
     //$("#slides").slides(options.slides);
 
@@ -673,7 +710,6 @@ $(function(){
       $(this).remove();
       is_showing_hints = false;
     });
-
   }
 
 });
