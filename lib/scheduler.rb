@@ -9,8 +9,8 @@ class Scheduler
     return self.schedule_configurations(configurations)
   end
 
-  def self.schedule_change( schedule, config_old, config_new )
-    schedule.delete_if {|s| s.configuration == config_old}
+  def self.schedule_change( schedule, config_new )
+    schedule.delete_if {|s| s.course == config_new.course}
     @schedule = schedule
     return self.schedule_configurations( [config_new] )
   end

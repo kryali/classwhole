@@ -29,7 +29,14 @@ class SchedulerController < ApplicationController
   end
 
   def change_configuration
-    render :json => { :penis => :vagina }
+    course = Course.find(params["course_id"])
+    configuration = course.configurations.find_by_key(params["new_config_key"])
+    old_schedule = []
+    params["ids"].each do |id|
+      old_schedule << Section.find(id)
+    end
+    schedule = Scheduler.schedule_change( old_schedule, configuration )
+    render :json => schedule
   end
 
   def sidebar
