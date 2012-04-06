@@ -147,9 +147,11 @@ $(function(){
         document.body.appendChild(myForm);
         myForm.submit();
   }
-  
-    function init_download_icalendar() {
-    $(".icalendar").click( function() {
+
+/*
+  function start_download_icalendar() {
+    $(".icalendar-export").click( function() {
+      mpq.track("iCalendar Downloaded");
       var schedule_ids = get_schedule_ids();
       var myForm = document.createElement("form");
           myForm.setAttribute("method", "post" );
@@ -170,7 +172,7 @@ $(function(){
           myForm.submit();
     });
   }
-
+*/
   function init_modals() {
     $(".save").unbind('click').click( function() {
       save_schedule();
@@ -197,6 +199,12 @@ $(function(){
       }
       //console.log(crns.toString());
       window.location = "/scheduler/register?crns=" + crns.toString();
+    });
+
+    $(".icalendar-modal").unbind('click').click( function() {
+      mpq.track("iCalendar Help");
+      showModal('/scheduler/_icalendar_help',{});
+      //start_download_icalendar();
     });
   }
 
@@ -309,7 +317,6 @@ $(function(){
     init_modals();
     init_share_button();
     init_download_schedule();
-    init_download_icalendar();
     init_pagination();
     //init_profs();
 

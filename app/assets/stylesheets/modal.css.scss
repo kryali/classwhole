@@ -46,9 +46,9 @@ $modal_width : 320px;
   margin: 0 auto;
   top: 40%;
   z-index: 750;
-  width: $modal_width;
 }
 .modal {
+  width: $modal_width;
   z-index: 1000;
   padding: 0px;
   background: white;
