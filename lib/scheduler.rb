@@ -10,9 +10,20 @@ class Scheduler
   end
 
   def self.schedule_change( schedule, config_new )
-    schedule.delete_if {|s| s.course == config_new.course}
     @schedule = schedule
-    return self.schedule_configurations( [config_new] )
+    self.remove_configuration(config_new)
+    schedule_configs = [config_new]
+    self.schedule_configurations( schedule_configs )
+    # couldnt schedule this config? loop until we get a valid schedule
+    while not @valid and @schedule.length > 0
+      self.remove_configuration( @schedule.first.configuration )
+      self.schedule_configurations( configs )
+    end
+    return @schedule
+  end
+
+  def self.remove_configuration(configuration)
+    @schedule.delete_if {|s| s.course == configuration.course}
   end
 
   def self.schedule_configurations( configurations )
