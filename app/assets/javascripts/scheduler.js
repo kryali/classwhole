@@ -341,7 +341,7 @@ $(function(){
     var tabList = document.getElementById('tabs');
     if(tabList != null){
       init_tabs(tabList);
-      document.getElementsByClassName('sidebar')[0].style.margin = '-1em 0em 0em 0.4em';
+      document.getElementsByClassName('sidebar')[0].style.margin = '-1em 0em 0em 0.5em';
     }
     // Setup the slidejs plugin
     //$("#slides").slides(options.slides);

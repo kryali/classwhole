@@ -142,10 +142,10 @@ class CatalogController < ApplicationController
     course_list = []
     course_list << @course
     course_ids << @course.id
-    @schedule = []
-    for sec in @course.sections
-      @schedule << sec
-    end
+    @schedule = Scheduler.initial_schedule(course_list)
+#    for sec in @course.sections
+#      @schedule << sec
+#    end
     @course_ids = course_ids.to_json
 		render 'course'
   end
