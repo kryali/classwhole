@@ -36,7 +36,9 @@ class SchedulerController < ApplicationController
       old_schedule << Section.find(id)
     end
     schedule = Scheduler.schedule_change( old_schedule, configuration )
-    render :json => schedule
+    schedule.map { |section| Scheduler.build_section section }
+    start_hour, end_hour = Section.hour_range( schedule )
+    render :json => { :schedule => schedule, :start_hour => start_hour, :end_hour => end_hour }
   end
 
   def sidebar

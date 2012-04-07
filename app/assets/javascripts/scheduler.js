@@ -345,8 +345,9 @@ $(function(){
         var new_config_key = selected.text();
         var course_id = selected.attr("data-course-id");
         var url = "/scheduler/configuration/change";
+        var old_schedule_ids = get_schedule_ids();
         var data = {
-          ids: get_schedule_ids(),
+          ids: old_schedule_ids,
           new_config_key: new_config_key,
           course_id: course_id
         };
@@ -357,7 +358,7 @@ $(function(){
           url:  url,
           success: function(data, textStatus, jqXHR) {
             console.log(data);
-            //fetch_schedule(data, textStatus, jqXHR, undefined);
+            fetch_schedule(data, textStatus, jqXHR, undefined);
             //is_showing_hints = false;
           }
         });
@@ -493,7 +494,7 @@ $(function(){
     var new_schedule = new Schedule( data.schedule, data.start_hour, data.end_hour );
     new_schedule.add_hints( data.section_hints );
     var contents = new_schedule.render().children();
-    //console.log( new_schedule );
+    console.log( contents );
 
     if( typeof schedule_ids != "undefined" ) {
       // Cache 
