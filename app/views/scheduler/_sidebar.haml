@@ -15,7 +15,7 @@
       %span.fb-share
       Share Schedule
     %a{ "data-controls-modal" => "register-modal", "data-keyboard" => "true", :class => "button grey register-schedule tooltip", :title => "Get your CRNS and register on Enterprise"} Register
-  = render :partial =>  "scheduler/course_sidebar", :locals => { :sections => sections }
+  = render :partial =>  "scheduler/course_sidebar", :locals => { :sections => sections, :course_page => course_page }
   -if not course_page  
     %a{:class=>"button grey icalendar-modal small"} Export to Google Calendar
   -if @user and not @user.friends.empty? and not course_page
