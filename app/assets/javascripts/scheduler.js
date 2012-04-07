@@ -337,6 +337,13 @@ $(function(){
     $(".instructor a").hoverIntent(config);//(function(){})
   }
 
+  function inArray( array, element ) {
+    for( var j in array ) {
+      if( array[j] == element ) 
+        return true;
+    }
+    return false;
+  }
 
   function init_configurations() {
     $(".course-header").each(function() {
@@ -356,12 +363,69 @@ $(function(){
           data: data,
           url:  url,
           success: function(data, textStatus, jqXHR) {
+            if( data.schedule.length <= 0 ) {
+              pop_alert("error", "Section Conflict :-(");
+              return;
+            }
+
             fetch_schedule(data, textStatus, jqXHR, undefined);
+
+            var old_sections = [];
+            var new_sections = [];
+            var ids = get_schedule_ids();
+            console.log( old_schedule_ids );
+            console.log( ids );
+            for( var i in old_schedule_ids ) {
+              if( !inArray( ids, old_schedule_ids[i] ) )
+                old_sections.push( old_schedule_ids[i] );
+            }
+            for( var i in ids ) {
+              if( !inArray( old_schedule_ids, ids[i] ) )
+                new_sections.push( ids[i] );
+            }
+            console.log( old_sections );
+            console.log( new_sections );
+            update_sidebar( old_sections, new_sections, course_id );
             //is_showing_hints = false;
           }
         });
       });
     });
+  }
+
+  function sidebar_remove_section( id ) {
+    var current_schedule = get_current_schedule();
+    current_schedule.find("ul.sections li").each( function() {
+      // Find the section row to replace
+      if( $(this).find(".id").text() == id ) {
+        $(this).remove();
+      }
+    });
+  }
+
+  function sidebar_add_section( course_id, section_id ) {
+    var current_schedule = get_current_schedule();
+    var sidebar = new Sidebar();
+    var section = section_cache[ section_id ];
+    var row = sidebar.render_section_row( section );
+
+    current_schedule.find("ul.course").each( function() {
+      // Find the section row to replace
+      if( $(this).attr("data-course-id") == course_id ) {
+        $(this).find("ul.sections").append( $("<li/>")
+                                            .append(
+                                              $("<div/>").append( row.children() )));
+      }
+    });
+  }
+
+  function update_sidebar( old_sections, new_sections, course_id ) {
+    for( var i in old_sections ) {
+      sidebar_remove_section( old_sections[i] );
+    }
+    for( var i in new_sections ) {
+      sidebar_add_section( course_id, new_sections[i] );
+    }
   }
 
   init = function() {

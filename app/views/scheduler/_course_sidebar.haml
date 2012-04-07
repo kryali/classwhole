@@ -4,7 +4,7 @@
   - courses.each do |course|
     - sections = course_section_hash[course.id]
     %li.course-item
-      %ul.course
+      %ul{:class => "course", "data-course-id" => course.id}
         %li{:class=> "course-header #{colors[course.id]}"}
           %span.course-name= course.to_s
           %span.course-title= shorten(course.title, 14)
