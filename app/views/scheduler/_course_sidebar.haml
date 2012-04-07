@@ -33,7 +33,7 @@
                     %span.time= meeting.duration_s
                   - else
                     %span.time Online / Arr
-        = render :partial => 'classmates', :locals => {:course => course }
+        = render :partial => 'scheduler/classmates', :locals => {:course => course }
 
         :javascript 
           $(document).ready( function() {
