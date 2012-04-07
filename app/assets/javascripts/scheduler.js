@@ -345,19 +345,18 @@ $(function(){
         var new_config_key = selected.text();
         var course_id = selected.attr("data-course-id");
         var url = "/scheduler/configuration/change";
+        var old_schedule_ids = get_schedule_ids();
         var data = {
-          ids: get_schedule_ids(),
+          ids: old_schedule_ids,
           new_config_key: new_config_key,
           course_id: course_id
         };
-        console.log( data );
         $.ajax({
           type: 'POST',
           data: data,
           url:  url,
           success: function(data, textStatus, jqXHR) {
-            console.log(data);
-            //fetch_schedule(data, textStatus, jqXHR, undefined);
+            fetch_schedule(data, textStatus, jqXHR, undefined);
             //is_showing_hints = false;
           }
         });
@@ -493,7 +492,6 @@ $(function(){
     var new_schedule = new Schedule( data.schedule, data.start_hour, data.end_hour );
     new_schedule.add_hints( data.section_hints );
     var contents = new_schedule.render().children();
-    //console.log( new_schedule );
 
     if( typeof schedule_ids != "undefined" ) {
       // Cache 
@@ -582,8 +580,10 @@ $(function(){
   // scan through the currently selected schedule and build all the section ids
   function get_schedule_ids() {
     var schedule = get_current_schedule();
+    //console.log( schedule );
     var sections = [];
-    var all_section_ids = $("ul.sections .id");
+    //var all_section_ids = $("ul.sections .id");
+    var all_section_ids = schedule.find(".schedule-block:not(.ui-droppable) .id");
     for( var i = 0; i < all_section_ids.size(); i++ ){
       
       // Ignore droppable sections
