@@ -370,26 +370,28 @@ $(function(){
 
             fetch_schedule(data, textStatus, jqXHR, undefined);
 
-            var old_sections = [];
+            // Update the sidebar
             var new_sections = [];
-            var ids = get_schedule_ids();
-            console.log( old_schedule_ids );
-            console.log( ids );
-            for( var i in old_schedule_ids ) {
-              if( !inArray( ids, old_schedule_ids[i] ) )
-                old_sections.push( old_schedule_ids[i] );
+            for( var i in data.schedule ) {
+              if( data.schedule[i].course_id == course_id )
+                new_sections.push( data.schedule[i].id );
             }
-            for( var i in ids ) {
-              if( !inArray( old_schedule_ids, ids[i] ) )
-                new_sections.push( ids[i] );
-            }
-            console.log( old_sections );
-            console.log( new_sections );
-            update_sidebar( old_sections, new_sections, course_id );
-            //is_showing_hints = false;
+            sidebar_clear_course( course_id );
+            for( var i in new_sections )
+              sidebar_add_section( course_id, new_sections[i] );
           }
         });
       });
+    });
+  }
+
+  function sidebar_clear_course( course_id ) {
+    var current_schedule = get_current_schedule();
+    current_schedule.find("ul.course").each( function() {
+      // Find the section row to replace
+      if( $(this).attr("data-course-id") == course_id ) {
+        $(this).find("ul.sections").empty();
+      }
     });
   }
 
