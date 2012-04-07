@@ -23,11 +23,26 @@ Autocomplete.prototype.init = function() {
   this.state = "closed";
   this.mode = "subject";
 
-  extend_autocomplete_plugin();
-
   this.override_keyboard_for_input();
 
+  var that = this;
+  /*
+  $.ajax({
+    type: 'GET',
+    url: '/courses/search/auto/subject/all',
+    success: function( data, textStatus, xhQR ) {
+      that.start(data);
+    }
+  });*/
+  this.start();
+  extend_autocomplete_plugin(this);
+  menu = this;
+}
+
+Autocomplete.prototype.start = function(data) {
+  //this.subject_data_source = data;
   this.input.autocomplete({ 
+    //source: this.subject_data_source,
     source: this.ajax_search_url,
     minLength: 1,
     delay: 0,
@@ -37,8 +52,7 @@ Autocomplete.prototype.init = function() {
     close: this.list_closed,
     open: this.list_opened,
   });
-
-  menu = this;
+  this.input.autocomplete( "search" );
 }
 
 /* 
@@ -47,17 +61,15 @@ Autocomplete.prototype.init = function() {
    We do this so we can Override the display 
    form for the autocomplete
    */ 
-function extend_autocomplete_plugin() {
+function extend_autocomplete_plugin(that) {
   var proto = $.ui.autocomplete.prototype, initSource = proto._initSource;
   $.extend( proto, { 
     _renderItem: render_item,
-    ///close: function(event) { console.log("CLOSE");}
   });
 }
 
 /* Override the display */
 function render_item(ul, item) {
-  //console.log(item);
   var input_text = this.element.val(); 
   var bold_text = $("<strong></strong");
   var index = item.label.indexOf(input_text.toUpperCase());
@@ -104,6 +116,7 @@ function render_item(ul, item) {
 
 Autocomplete.prototype.switch_to_subject_mode = function() {
   this.input.autocomplete( "option", "select", this.subject_select ); 
+  //this.input.autocomplete( "option", "source",  this.subject_data_source ); 
   this.input.autocomplete( "option", "source",  this.ajax_search_url ); 
   this.input.autocomplete( "search" );
   this.mode = "subject";
@@ -166,7 +179,8 @@ Autocomplete.prototype.form_has_characters = function() {
 
     /* If character is a letter or a number */
     if(   (form_value[i] >= "A" && form_value[i] <= "Z")
-        || (form_value[i] >= "0" && form_value[i] <= "9")) {
+        || (form_value[i] >= "0" && form_value[i] <= "9")
+        || (form_value[i] >= "a" && form_value[i] <= "z")) {
       return true;
     }
   }

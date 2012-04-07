@@ -292,7 +292,8 @@ class CatalogController < ApplicationController
     render :json => { :status => :success, :sections => sections }
   end
 
-
-
+  def get_subjects
+    render :json => Subject.mini_all
+  end
 
 end
