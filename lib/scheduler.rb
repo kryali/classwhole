@@ -16,7 +16,9 @@ class Scheduler
     self.schedule_configurations( schedule_configs )
     # couldnt schedule this config? loop until we get a valid schedule
     while not @valid and @schedule.length > 0
-      self.remove_configuration( @schedule.first.configuration )
+      removed_conf = @schedule.first.configuration
+      schedule_configs << removed_conf
+      self.remove_configuration( removed_conf )
       self.schedule_configurations( schedule_configs )
     end
     return @schedule
