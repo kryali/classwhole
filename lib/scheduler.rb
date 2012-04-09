@@ -1,5 +1,4 @@
 class Scheduler
-
   def self.initial_schedule( courses )
     configurations = []
     courses.each do |course|

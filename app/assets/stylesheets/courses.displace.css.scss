@@ -186,7 +186,7 @@ float: right;
 font-family: 'Arial', 'Tahoma', sans-serif;
 font-size:14pt;
 float: left;
-padding-left: 0.5em;
+margin-left: 0px;
 padding-right: 0.5em;
 
 
@@ -313,9 +313,9 @@ font-weight:bold;
 #sched{
   background:#f1f0ee;;
   border: none; 
-  width: 685px;
+  width: 947px;
   overflow: auto;
-  margin-left: 9px;
+  margin-left: 0px; //was 9
   border: 1px solid #C9C3BA;;
 }
 
