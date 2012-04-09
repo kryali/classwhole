@@ -43,11 +43,7 @@ class Section < ActiveRecord::Base
     elsif self.code.length == 1 # code is letters of length 1
       key = "ALL"
     elsif self.code.length == 2
-      if (true if Integer(self.code[0]) rescue false)
-        key = self.code[1]
-      else
-        key = self.code[0]
-      end
+      key = self.code
     else
       key = self.code[0]
       if (true if Integer(self.code[1]) rescue false)
