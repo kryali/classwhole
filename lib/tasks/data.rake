@@ -52,9 +52,9 @@ class UIUCParser
       current_section.code = code
       if section_xml.key?("partOfTerm")
         partOfTerm = section_xml["partOfTerm"][0]
-        if partOfTerm = "A"
+        if partOfTerm == "A"
           current_section.part_of_term = 1
-        elsif partOfTerm = "B"
+        elsif partOfTerm == "B"
           current_section.part_of_term = 2
         else
           current_section.part_of_term = 3
