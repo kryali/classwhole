@@ -1,6 +1,7 @@
 .prof-box {
   margin-bottom: 0px;
   margin-top: 10px;
+  font-family: 'Arial', sans-serif;
 
   .prof-img {
     width: 128px;
@@ -11,6 +12,7 @@
     margin-right: 20px;
     margin-left: 10px;
   }
+
   .prof-info {
     float: left;
   }
@@ -32,7 +34,7 @@
     position: absolute;
     left: 0px;
     bottom: 0px;
-    width: 100%;
+    width: 65px;
     height: 14px;
   }
 

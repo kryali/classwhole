@@ -7,7 +7,7 @@
       %ul{:class => "course", "data-course-id" => course.id}
         %li{:class=> "course-header #{colors[course.id]}"}
           %span.course-name= course.to_s
-          %span.course-title= shorten(course.title, 14)
+          %span.course-title= shorten(course.title, 13)
           %span.course-hours= "(#{course.hours})"
           -if @configurations and @configurations.has_key?(course.id) and @configurations[course.id].size > 1
             %select.right

@@ -17,5 +17,3 @@
       %div.classes-title Classes
       - @prof.courses.each do |course|
         =link_to course.to_s, show_course_path( course.semester.year, course.semester.season, course.subject_code, course.number )
-
-  =javascript_include_tag "ratings.js"
