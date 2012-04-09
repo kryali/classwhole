@@ -322,8 +322,13 @@ $(function(){
 
     var config = {
       over: function() {
-        var t = new Tooltip();
-        t.putAbove($(this));
+        var professor_name = $(this).text();
+        var url = "profs/_tooltip";
+        var t = new Tooltip(url, {name:professor_name});
+        function callback() {
+          init_ratings();
+        }
+        t.putAbove($(this), callback);
         $(this).mouseleave( function() {
           t.close();
         });
@@ -449,7 +454,7 @@ $(function(){
     init_download_schedule();
     init_pagination();
     init_configurations();
-    //init_profs();
+    init_profs();
 
     //init_mini_pagination();
 
