@@ -74,7 +74,7 @@ class Section < ActiveRecord::Base
   #   Method: check that these sections fall within the same semester slot then
   #     check each meeting time to see if any conflict
   def section_conflict?(section)
-    if not((self.part_of_term == "A" and section.part_of_term == "B") or (self.part_of_term == "B" and section.part_of_term == "A"))
+    unless self.part_of_term & section.part_of_term
       self.meetings.each do |self_meeting|
         section.meetings.each do |section_meeting|
           return true if meeting_conflict?(self_meeting, section_meeting)
