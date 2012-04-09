@@ -23,9 +23,18 @@ class SchedulerController < ApplicationController
       end
     end
     
-    @schedule = Scheduler.initial_schedule(current_user.courses)
-    @course_ids = course_ids.to_json
-    @configurations = configurations
+
+    begin
+      # Don't take longer than 20 seconds to retrieve & parse an RSS feed
+      Timeout::timeout(5) do
+        @schedule = Scheduler.initial_schedule(current_user.courses)
+        @course_ids = course_ids.to_json
+        @configurations = configurations
+      end
+    rescue Timeout::Error
+      redirect_to "/500.html"
+      return
+    end
   end
 
   def change_configuration
