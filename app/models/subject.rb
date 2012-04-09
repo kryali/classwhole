@@ -3,15 +3,27 @@ class Subject < ActiveRecord::Base
 	has_many :courses
   belongs_to :semester
 
-  def self.trie(str)
+  def self.mini_all
+    return self.trie( "", true )
+  end
+
+  def self.trie(str, return_all=false)
     begin
-      possible_subjects = $redis.smembers("subject:#{str.upcase.gsub(/\s+/, "")}")
+      if return_all
+        possible_subjects = $redis.smembers("subjects")
+      else
+        possible_subjects = $redis.smembers("subject:#{str.upcase.gsub(/\s+/, "")}")
+      end
     rescue Errno::ECONNREFUSED
       return nil
     end
     
     subjects = []
-    max_results = 100
+    if return_all
+      max_results = 9999999
+    else
+      max_results = 100
+    end
     possible_subjects.each do |subject_id|
       label = $redis.hget("id:subject:#{subject_id}", "label")
       title = $redis.hget("id:subject:#{subject_id}", "title")

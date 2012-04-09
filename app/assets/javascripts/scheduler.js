@@ -337,6 +337,13 @@ $(function(){
     $(".instructor a").hoverIntent(config);//(function(){})
   }
 
+  function inArray( array, element ) {
+    for( var j in array ) {
+      if( array[j] == element ) 
+        return true;
+    }
+    return false;
+  }
 
   function init_configurations() {
     $(".course-header").each(function() {
@@ -356,12 +363,71 @@ $(function(){
           data: data,
           url:  url,
           success: function(data, textStatus, jqXHR) {
+            if( data.schedule.length <= 0 ) {
+              pop_alert("error", "Section Conflict :-(");
+              return;
+            }
+
             fetch_schedule(data, textStatus, jqXHR, undefined);
-            //is_showing_hints = false;
+
+            // Update the sidebar
+            var new_sections = [];
+            for( var i in data.schedule ) {
+              if( data.schedule[i].course_id == course_id )
+                new_sections.push( data.schedule[i].id );
+            }
+            sidebar_clear_course( course_id );
+            for( var i in new_sections )
+              sidebar_add_section( course_id, new_sections[i] );
           }
         });
       });
     });
+  }
+
+  function sidebar_clear_course( course_id ) {
+    var current_schedule = get_current_schedule();
+    current_schedule.find("ul.course").each( function() {
+      // Find the section row to replace
+      if( $(this).attr("data-course-id") == course_id ) {
+        $(this).find("ul.sections").empty();
+      }
+    });
+  }
+
+  function sidebar_remove_section( id ) {
+    var current_schedule = get_current_schedule();
+    current_schedule.find("ul.sections li").each( function() {
+      // Find the section row to replace
+      if( $(this).find(".id").text() == id ) {
+        $(this).remove();
+      }
+    });
+  }
+
+  function sidebar_add_section( course_id, section_id ) {
+    var current_schedule = get_current_schedule();
+    var sidebar = new Sidebar();
+    var section = section_cache[ section_id ];
+    var row = sidebar.render_section_row( section );
+
+    current_schedule.find("ul.course").each( function() {
+      // Find the section row to replace
+      if( $(this).attr("data-course-id") == course_id ) {
+        $(this).find("ul.sections").append( $("<li/>")
+                                            .append(
+                                              $("<div/>").append( row.children() )));
+      }
+    });
+  }
+
+  function update_sidebar( old_sections, new_sections, course_id ) {
+    for( var i in old_sections ) {
+      sidebar_remove_section( old_sections[i] );
+    }
+    for( var i in new_sections ) {
+      sidebar_add_section( course_id, new_sections[i] );
+    }
   }
 
   init = function() {
@@ -369,6 +435,8 @@ $(function(){
     var tabList = document.getElementById('tabs');
     if(tabList != null){
       init_tabs(tabList);
+      document.getElementsByClassName('sidebar')[0].style.margin = '-1em 0em 0em 0.5em';
+      document.getElementsByClassName('sidebar')[0].style.width = '250px';
     }
     // Setup the slidejs plugin
     //$("#slides").slides(options.slides);

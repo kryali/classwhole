@@ -11,7 +11,9 @@ Whiteboard::Application.routes.draw do
   match 'jobs' => 'home#careers'
 
   # Autocomplete routes
+  match  'courses/search/auto/subject/all' => 'catalog#get_subjects'
   match  'courses/search/auto/subject' => 'catalog#subject_auto_search'
+  #match  'courses/search/auto/subject/:subject_code/all' => 'catalog#all_courses'
   match  'courses/search/auto/subject/:subject_code' => 'catalog#course_auto_search'
   match  'courses/search' => 'catalog#simple_search', :via => :post
 

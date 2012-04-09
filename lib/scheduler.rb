@@ -1,5 +1,4 @@
 class Scheduler
-
   def self.initial_schedule( courses )
     # create a list of configurations for each course
     course_configurations = []

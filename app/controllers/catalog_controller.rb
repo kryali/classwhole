@@ -138,25 +138,15 @@ class CatalogController < ApplicationController
       end
     end     
 		@types_of_sections = get_different_sections()
-    course_ids = [@course.id]
-    all_possible_schedules = Rails.cache.fetch( :courses => course_ids,   
-                                                :data => 'valid_schedules' ) {
-
-      begin 
-        course_list = []
-        course_list << @course
-        scheduler = Scheduler.new(course_list)
-        status = Timeout::timeout(5) {     
-          scheduler.schedule_courses
-        } 
-      rescue Timeout::Error
-        logger.error current_user.courses
-        redirect_to "/500.html"
-      end
-      scheduler.valid_schedules
-    }
+    course_ids = []
+    course_list = []
+    course_list << @course
+    course_ids << @course.id
+    @schedule = Scheduler.initial_schedule(course_list)
+#    for sec in @course.sections
+#      @schedule << sec
+#    end
     @course_ids = course_ids.to_json
-    @possible_schedules = all_possible_schedules[0..60]
 		render 'course'
   end
 
@@ -292,7 +282,8 @@ class CatalogController < ApplicationController
     render :json => { :status => :success, :sections => sections }
   end
 
-
-
+  def get_subjects
+    render :json => Subject.mini_all
+  end
 
 end

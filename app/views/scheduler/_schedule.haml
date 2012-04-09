@@ -10,12 +10,12 @@
 - meetings_in_days = meetings_by_days(sections)
 - colors = section_colors( sections )
 - all_sections = sections
-
+- if not defined? course_page
+  -course_page = false
 - if @section_hints
   - section_hints_in_days = meetings_by_days(@section_hints)
 - else 
   - section_hints_in_days = {}
-
 %div{:class => "schedule-wrapper" }
   %div{:class => "schedule-content", "data-tooltip" => "" }
     %div{:class => "schedule-display" }
@@ -35,10 +35,10 @@
             - for hour in (start_hour..end_hour)
               %li
             - sections.each do |meeting|
-              = render 'meeting', :meeting => meeting, :start_hour => start_hour, :colors => colors
+              = render 'scheduler/meeting', :meeting => meeting, :start_hour => start_hour, :colors => colors
             - if section_hints_in_days[day_code]
               - section_hints_in_days[day_code].each do |section|
-                %div.droppable= render 'section', :section => section, :start_hour => start_hour, :colors => colors
+                %div.droppable= render 'scheduler/section', :section => section, :start_hour => start_hour, :colors => colors
     - if @user and not all_sections.empty?
       <div class="fb-comments" data-href="#{root_url.chop + scheduler_show_path(@user.id)}" data-num-posts="1" data-width="607"></div>
-  = render "sidebar" , :sections => sections
+  = render "scheduler/sidebar" , :sections => sections, :course_page => course_page
