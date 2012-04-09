@@ -1,11 +1,30 @@
 class Scheduler
   def self.initial_schedule( courses )
-    configurations = []
-    courses.each do |course|
-      configurations << course.configurations.first
+    # create a list of configurations for each course
+    course_configurations = []
+    (0...courses.count).each do |index|
+      course_configurations[index] = []
+      courses[index].configurations.each do |configuration|
+        course_configurations[index] << configuration
+      end
     end
+    puts course_configurations.inspect
+    course_configurations.sort!{|x,y| x.count <=> y.count}
     @schedule = []
-    return self.schedule_configurations(configurations)
+    return self.configuration_recurse([], course_configurations, 0)
+  end
+
+  def self.configuration_recurse( configurations, course_configurations, index )
+    return self.schedule_configurations(configurations) if index == course_configurations.count
+    course_configurations[index].each do |configuration|
+      configurations.push(configuration)
+      schedule = self.configuration_recurse(configurations, course_configurations, index+1)
+      return schedule if @valid
+      configurations.pop
+    end
+    if index == 0 # no valid schedule found
+      return []
+    end
   end
 
   def self.schedule_change( schedule, config_new )
