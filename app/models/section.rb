@@ -136,7 +136,9 @@ class Section < ActiveRecord::Base
   end
 
   def reason
-    if enrollment_status == 1
+    if enrollment_status == 0
+      "Closed"
+    elsif enrollment_status == 1
       "Open"
     else
       notes || special_approval || "Open (Restricted)"
