@@ -38,11 +38,14 @@ class SchedulerController < ApplicationController
   end
 
   def change_configuration
+    logger.error params.inspect
     course = Course.find(params["course_id"])
     configuration = course.configurations.find_by_key(params["new_config_key"])
     old_schedule = []
-    params["ids"].each do |id|
-      old_schedule << Section.find(id)
+    unless params["ids"].nil?
+      params["ids"].each do |id|
+        old_schedule << Section.find(id)
+      end
     end
     schedule = Scheduler.schedule_change( old_schedule, configuration )
     schedule.map { |section| Scheduler.build_section section }
