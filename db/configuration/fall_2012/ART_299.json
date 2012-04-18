@@ -1,0 +1,32 @@
+{
+  "season": "fall",
+  "year": "2012",
+  "subject_code": "ART",
+  "number": 299,
+  "configurations": {
+    "A": {
+      "LAB": [
+        {
+          "crn": 58412,
+          "code": "A2"
+        },
+        {
+          "crn": 59786,
+          "code": "A3"
+        },
+        {
+          "crn": 59971,
+          "code": "A4"
+        }
+      ]
+    },
+    "ARR": {
+      "ONL": [
+        {
+          "crn": 55681,
+          "code": "A1"
+        }
+      ]
+    }
+  }
+}
