@@ -61,7 +61,9 @@ class UIUCParser
       end
       current_section.notes = section_xml["sectionNotes"][0] if section_xml.key?("sectionNotes")
       #1 means course is open, 0 means it's not    
-      if section_xml["enrollmentStatus"][0].include?("Restricted")
+      if section_xml["enrollmentStatus"][0].include?("Closed")
+        enrollment_status = 0
+      elsif section_xml["enrollmentStatus"][0].include?("Restricted")
         enrollment_status = 2
       elsif section_xml["enrollmentStatus"][0].include?("Open")
         enrollment_status = 1
