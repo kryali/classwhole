@@ -112,6 +112,7 @@ Schedule.prototype.pick_colors = function() {
   this.colors = {};
   var colors_current = 0;
   //sections.sort!
+  this.sections.sort()
   for( i in this.sections) {
     var section = this.sections[i];
     if( ! this.colors[ section.course_id ] ) {

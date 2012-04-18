@@ -23,14 +23,19 @@
   }
 
   .rating {
-    width: 65px;
     height: 30px;
     position: relative;
     margin-top: 13px;
   }
 
+  .rating-type span {
+    color: #999;
+    font-size: 14px;
+    font-weight: bold;
+  }
+
   .stars {
-    background: url("google-icons.png");
+    background: url("google-icons.png") no-repeat left center;
     position: absolute;
     left: 0px;
     bottom: 0px;
@@ -62,4 +67,10 @@
       text-align: center;
     }
   }
+}
+
+.prof-source {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 14px;
 }

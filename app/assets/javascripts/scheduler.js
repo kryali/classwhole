@@ -318,30 +318,6 @@ $(function(){
     });
   }
 
-  function init_profs() {
-
-    var config = {
-      over: function() {
-        var professor_name = $(this).text();
-        var url = "profs/_tooltip";
-        var t = new Tooltip(url, {name:professor_name});
-        function callback() {
-          init_ratings();
-        }
-        t.putAbove($(this), callback);
-        $(this).mouseleave( function() {
-          t.close();
-        });
-      },
-      timeout: 0,
-      sensitivity: 1,
-      interval: 200,
-      out: function(){}
-    };
-
-    $(".instructor a").hoverIntent(config);//(function(){})
-  }
-
   function inArray( array, element ) {
     for( var j in array ) {
       if( array[j] == element ) 
@@ -424,6 +400,8 @@ $(function(){
                                               $("<div/>").append( row.children() )));
       }
     });
+
+    init_profs();
   }
 
   function update_sidebar( old_sections, new_sections, course_id ) {
@@ -816,3 +794,26 @@ $(function(){
   }
 
 });
+
+function init_profs() {
+  var config = {
+    over: function() {
+      var professor_name = $(this).text();
+      var url = "profs/_tooltip";
+      var t = new Tooltip(url, {name:professor_name});
+      function callback() {
+        init_ratings();
+      }
+      t.putAbove($(this), callback);
+      $(this).mouseleave( function() {
+        t.close();
+      });
+    },
+    timeout: 0,
+    sensitivity: 1,
+    interval: 200,
+    out: function(){}
+  };
+
+  $(".instructor a").hoverIntent(config);//(function(){})
+}

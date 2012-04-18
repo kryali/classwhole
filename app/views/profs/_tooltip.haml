@@ -8,12 +8,12 @@
           %span.small-prof-name= @prof.name
         %div.tooltip-ratings
           %div{ :class=>"small-rating", "data-value" => (@prof.easy || 0)}
-            %div{ :class=>"rating-type"} Easiness
+            %div{ :class=>"rating-type"}= "Easiness - #{@prof.easy}"
             %div
               %div{ :class=>"stars fg" }
               %div{ :class=>"stars bg" }
           %div{ :class=>"small-rating", "data-value" => (@prof.avg || 0)}
-            %div{ :class=>"rating-type"} Overall
+            %div{ :class=>"rating-type"}= "Overall - #{@prof.avg}"
             %div
               %div{ :class=>"stars fg" }
               %div{ :class=>"stars bg" }
