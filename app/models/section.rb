@@ -137,7 +137,7 @@ class Section < ActiveRecord::Base
 
   def reason
     if enrollment_status == 0
-      "Closed"
+      "Full/Closed"
     elsif enrollment_status == 1
       "Open"
     else
