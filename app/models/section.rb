@@ -38,6 +38,8 @@ class Section < ActiveRecord::Base
       key = "ALL"
     elsif self.code.nil? #If there is no code, assume all courses are in the same configuration
       key = "NON"
+    elsif self.short_type == "ONL" or self.short_type == "ARR"
+      key = "ARR"
     elsif (true if Integer(self.code) rescue false) #If the code is an integer, assume the courses should be in the same configuration
       key = "INT"
     elsif self.code.length == 1 # code is letters of length 1
@@ -134,7 +136,9 @@ class Section < ActiveRecord::Base
   end
 
   def reason
-    if enrollment_status == 1
+    if enrollment_status == 0
+      "Full/Closed"
+    elsif enrollment_status == 1
       "Open"
     else
       notes || special_approval || "Open (Restricted)"
