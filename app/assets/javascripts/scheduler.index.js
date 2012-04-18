@@ -5,9 +5,19 @@ $(document).ready(function(){
 
   initialize_autocomplete();
   $(".schedule").click( function(event) {
+    /*
+    setTimeout( 
+      function() { 
+        showModal('/shared/_loading',{"name": "Generating schedule.."}, function() {
+          window.location = $(".schedule").attr("href");
+        });
+      },
+      1000
+    );
+    */
     if(!class_list.has_classes()) {
-      pop_alert("error", "No classes selected.");
       event.preventDefault();
+      pop_alert("error", "No classes selected.");
       return true;
     }
   });

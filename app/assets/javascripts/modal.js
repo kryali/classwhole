@@ -15,7 +15,7 @@ function showModal(modal, locals, callback) {
       modal_page.style.top = document.body.scrollTop;
       $(".modalBackground").click( hideModal );
       Utils.centerElement($(".modal"));
-      callback();
+      if( callback ) callback();
     }
   });
 }

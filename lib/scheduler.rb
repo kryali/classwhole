@@ -8,7 +8,7 @@ class Scheduler
         course_configurations[index] << configuration
       end
     end
-    puts course_configurations.inspect
+    #puts course_configurations.inspect
     course_configurations.sort!{|x,y| x.count <=> y.count}
     @schedule = []
     return self.configuration_recurse([], course_configurations, 0)

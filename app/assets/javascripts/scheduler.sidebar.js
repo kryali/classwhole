@@ -16,7 +16,9 @@ function print_time(time) {
     hour = 12;
   }
 
-  return hour + ":" + ("0" + time.getUTCMinutes()).slice(-2) + am_pm;
+  var time_s = hour + ":" + ("0" + time.getUTCMinutes()).slice(-2) + am_pm;
+  time_s = time_s.replace(/:00/, "");
+  return time_s;
 }
 
 function Sidebar( sections  ) { 
@@ -26,6 +28,10 @@ function Sidebar( sections  ) {
 function show_prof_path( name ) {
   var slug = name.replace(", ", "-");
   return "http://classwhole.com/profs/" + slug
+}
+
+function print_type( type ) {
+  if( type == "online" ) return "ONLINE/iARR";
 }
 
 Sidebar.prototype.render_section_row = function( section ) {
@@ -62,9 +68,16 @@ Sidebar.prototype.render_section_row = function( section ) {
     row.append( $("<span/>")
                 .addClass("enrollment status-" + section.enrollment_status)
                 .attr("title", section.reason) );
-    row.append( $("<span/>")
-                .addClass("time")
-                .text(print_time(meeting.start_time) + "-" + print_time(meeting.end_time))); 
+    if( meeting.start_time && meeting.end_time ) {
+      row.append( $("<span/>")
+                  .addClass("time")
+                  .text(print_time(meeting.start_time) + "-" + print_time(meeting.end_time))); 
+    } else {
+      console.log( meeting );
+      row.append( $("<span/>")
+                  .addClass("time")
+                  .text( print_type(meeting.class_type) )); 
+    }
   }
   return row;
 }

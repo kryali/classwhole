@@ -26,7 +26,7 @@ class SchedulerController < ApplicationController
 
     begin
       # Don't take longer than 20 seconds to retrieve & parse an RSS feed
-      Timeout::timeout(5) do
+      Timeout::timeout(25) do
         @schedule = Scheduler.initial_schedule(current_user.courses)
         @course_ids = course_ids.to_json
         @configurations = configurations
