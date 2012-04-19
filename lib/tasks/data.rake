@@ -41,7 +41,7 @@ class UIUCParser
     if section_xml.has_key?("sectionNumber")   
       code = section_xml["sectionNumber"][0] 
     else
-      code = "NO CODE"
+      code = ""
     end   
     Section.transaction do    
       current_section = current_course.sections.find_by_reference_number(crn)

@@ -32,6 +32,8 @@ class SchedulerController < ApplicationController
         @configurations = configurations
       end
     rescue Timeout::Error
+      logger.error "SCHEDULE TIMEOUT"
+      logger.error current_user.courses.inspect
       redirect_to "/500.html"
       return
     end
