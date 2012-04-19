@@ -31,7 +31,7 @@ function show_prof_path( name ) {
 }
 
 function print_type( type ) {
-  if( type == "online" ) return "ONLINE/iARR";
+  if( type == "online" ) return "ONLINE / ARR";
 }
 
 Sidebar.prototype.render_section_row = function( section ) {

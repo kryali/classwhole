@@ -511,7 +511,6 @@ $(function(){
     This function also caches the sections and schedules w/hints
   */
   function fetch_schedule(data, textStatus, jqXHR, day, section_id, schedule_ids) {
-    //console.log( data);
     // Cache sections for fun
     for( i in data.schedule ) {
       var section = data.schedule[i];
@@ -630,24 +629,12 @@ $(function(){
 
   // scan through the currently selected schedule and build all the section ids
   function get_schedule_ids() {
-    var schedule = get_current_schedule();
-    //console.log( schedule );
-    var sections = [];
-    //var all_section_ids = $("ul.sections .id");
-    var all_section_ids = schedule.find(".schedule-block:not(.ui-droppable) .id");
-    for( var i = 0; i < all_section_ids.size(); i++ ){
-      
-      // Ignore droppable sections
-      if (!$(all_section_ids[i]).parent().hasClass("ui-droppable")) {
-        var current_section_id = all_section_ids[i].innerHTML;
-
-        // Make sure we don't already have the section in our array
-        if( sections.indexOf(parseInt(current_section_id)) == -1 ) {
-          sections.push(parseInt(current_section_id));
-        }
-      }
+    var ids = [];
+    var all_sections = $(".sections .id");
+    for( var i = 0; i < all_sections.length; i++) {
+      ids.push( parseInt($(all_sections[i]).text()) );
     }
-    return sections.sort();
+    return ids;
   }
 
 

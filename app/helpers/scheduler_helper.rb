@@ -100,15 +100,18 @@ module SchedulerHelper
   end
 
   def section_colors( sections )
+    courses = []
+    sections.each {|section| courses << section.course_id unless courses.include?(section.course_id)}
+    courses.sort!
+
     colors = Hash.new
     colors_current = 0
-    sections.sort!
-    sections.each do |section|
-      unless colors.has_key?(section.course_id)
-        colors[section.course_id] = "color-#{colors_current}"
+    courses.each do |course|
+        colors[course] = "color-#{colors_current}"
         colors_current += 1 
-      end
     end
+
+    logger.info colors.inspect
     return colors 
   end
 

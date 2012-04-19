@@ -9,7 +9,7 @@ class Meeting < OpenStruct
   end
 
   def duration_s
-    return "#{print_time(start_time)} - #{print_time(end_time)}"
+    return "#{print_time(start_time)}-#{print_time(end_time)}"
   end
 
   # NOTE: move this somewhere where every method can use it
