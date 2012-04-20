@@ -1,9 +1,19 @@
 .sidebar {
   float: left;
-  width: 270px;
+  width: 285px;
   margin: 0em 0em 0em 8px;
   font-size: .9em;
   color: #555;
+
+  .remove-course-link {
+    color: white;
+    background: #AAA;
+    padding: 0 4px;
+    border-radius: 9px;
+    &:hover {
+      text-decoration: none;
+    }
+  }
 
   .fb-share {
     width: 39px;

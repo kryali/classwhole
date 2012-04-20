@@ -227,12 +227,12 @@ ul.hidden-data {
 
 .scheduler-content {
   font-family: 'Arial', 'Tahoma', sans-serif;
-  padding: $scheduler-content-padding*2 $scheduler-content-padding;
+  padding: $scheduler-content-padding*2 10px;
   position: relative;
   background: white;
   border: 1px solid #aaaaaa;
   margin: 40px auto 0 auto;
-  width: $scheduler-content-width;
+  //width: $scheduler-content-width;
   overflow: hidden;
 
   h1 {

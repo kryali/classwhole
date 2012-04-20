@@ -114,6 +114,11 @@ class User < ActiveRecord::Base
     self.courses.delete( course )
   end
 
+  def add_course( course )
+    course.add_user( self )
+    self.courses << course
+  end
+
   def owns
     if gender == "male"
       "his"

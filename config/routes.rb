@@ -36,8 +36,6 @@ Whiteboard::Application.routes.draw do
   # User auth routes
   match 'user/login' => 'user#login', :via => :post
   match 'user/register' => 'user#register', :via => :post
-  match 'user/courses/new' => 'user#add_course', :via => :post, :as => :add_course
-  match 'user/courses/destroy/:course_id' => 'user#remove_course', :as => :remove_course
 	match 'user/courses/remove' => 'user#remove_course', :via => :post  
 	match 'user/logout', :as => 'logout'
   match 'user/refresh' => 'user#refresh', :via => :post	
@@ -59,6 +57,8 @@ Whiteboard::Application.routes.draw do
   match 'scheduler/icalendar' => 'scheduler#icalendar', :via => :post
   match 'scheduler/configuration/change' => 'scheduler#change_configuration'
   match 'scheduler/schedule' => 'scheduler#schedule'
+  match 'scheduler/courses/new' => 'scheduler#add_course', :via => :post, :as => :add_course
+  match 'scheduler/courses/destroy/:course_id' => 'scheduler#remove_course', :as => :remove_course
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   protected
   def current_user    
 		if session[:user_id]     	
-			return @current_user ||= User.find_by_fb_id(session[:user_id]) 	
+			return @current_user ||= User.find(session[:user_id]) 	
      elsif @current_user #a temp user has already been created
       return @current_user    
     else
@@ -32,10 +32,8 @@ class ApplicationController < ActionController::Base
  # end
 
   def create_temp_user
-    if cookies["classes"].nil?
-      @current_user = Fake_user.new  
-    else
-      @current_user = Fake_user.new
+    @current_user = Fake_user.new( cookies ) 
+    if not cookies["classes"].nil?
       for id in cookie_class_list
         begin
           @current_user.courses << Course.find(id)

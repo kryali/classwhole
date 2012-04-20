@@ -3,6 +3,8 @@ $(document).ready(function() {
   var autocomplete = initialize_autocomplete();
 
   selected_classes = {};
+  init_sidebar();
+
   function add_course_callback(event, ui) {
 
     event.preventDefault();
@@ -26,10 +28,14 @@ $(document).ready(function() {
             type: 'POST',
             data: { id: class_id },
             dataType: 'json',
-            url:  '/user/courses/new',
+            url:  '/scheduler/courses/new',
             success: function( data, textStatus, xh ) {
+              console.log( data );
               if( data.status == "success" ) {
                 fetch_schedule(data, textStatus);
+                var row = $(data.sidebar_row);
+                $("ul.courses").append( row );
+                init_sidebar();
               } else {
                 pop_alert( data.status, data.message );
               }
@@ -63,6 +69,28 @@ $(document).ready(function() {
         */
     }
   }
+
+  function init_sidebar() {
+    $(".remove-course-link").click( function() {
+      var course = $(this).closest(".course");
+      var course_id = parseInt(course.attr("data-course-id"));
+      course.slideUp( 500, function() {
+        $(this).remove();
+      });
+      $.ajax({
+        type: 'GET',
+        url:  '/scheduler/courses/destroy/'+course_id,
+        success: function( data, textStatus ) {
+          if( data.status == "success" ) {
+            fetch_schedule(data, textStatus);
+          } else {
+            pop_alert( data.status, data.message );
+          }
+        }
+      });
+    });
+  }
+
   function initialize_autocomplete(){
     var autocomplete = new Autocomplete();
     autocomplete.input_suggestion = ".autocomplete-suggestion";
@@ -73,4 +101,5 @@ $(document).ready(function() {
     return autocomplete;
     //class_list.init();
   }
+
 });

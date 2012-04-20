@@ -111,7 +111,6 @@ module SchedulerHelper
         colors_current += 1 
     end
 
-    logger.info colors.inspect
     return colors 
   end
 
