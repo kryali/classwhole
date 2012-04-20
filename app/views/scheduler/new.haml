@@ -5,9 +5,7 @@
 
 :javascript
   $(document).ready(function() {
-    mpq.track("Schedule created");
-    var course_ids = #{@course_ids};
-    schedule = #{ @schedule.to_json};
+    //mpq.track("Schedule created");
     init();
   });
 
@@ -16,4 +14,5 @@
     %div.slides_container
       -# @possible_schedules.each do |sections|
       = render "schedule", :sections => @schedule
+      = render "scheduler/sidebar" , :sections => @schedule
   = render "schedule_canvas"

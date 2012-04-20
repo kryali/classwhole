@@ -1,0 +1,35 @@
+%li.course-item
+  %ul{:class => "course", "data-course-id" => course.id}
+    %li{:class=> "course-header #{colors[course.id]}"}
+      %span.course-name= course.to_s
+      %span.course-title= shorten(course.title, 13)
+      %span.course-hours= "(#{course.hours})"
+      -if @configurations and @configurations.has_key?(course.id) and @configurations[course.id].size > 1
+        %select.right
+          - @configurations[course.id].each do |key|
+            %option{"data-course-id" => course.id}= key
+    -if nil
+      %li 
+        %span.title Description
+        %span.data= shorten(course.description, 130)
+    %ul.sections
+      - sections.each do |section|
+        - section.meetings.each do |meeting|
+          %li 
+            %div
+              %span{:class=>"hidden id"}=section.id
+              %span{:class=>"section-type label"}= section.short_type_s
+              %span.code= section.code
+              %span{ :class=>"enrollment status-#{section.enrollment_status}", :title => "#{section.reason}"  }
+              %span.crn=# section.reference_number
+              -if not meeting.instructors.empty?
+                - prof = meeting.instructors[0]
+                %span.instructor 
+                  =link_to shorten(prof, 12, ".."), show_prof_path(Instructor.slugify(prof)), :target => "_blank"
+              -else 
+                %span.instructor TBD
+              -if meeting.start_time
+                %span.time= meeting.duration_s
+              - else
+                %span.time Online / Arr
+    = render :partial => 'scheduler/classmates', :locals => {:course => course }

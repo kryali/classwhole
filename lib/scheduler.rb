@@ -73,6 +73,10 @@ class Scheduler
     end    
   end
 
+  def self.pack_schedule( schedule )
+    schedule.each {|section| Scheduler.build_section(section)}
+  end
+
   # prepares a section object for json
   def self.build_section( section )
     meetings = []
@@ -111,4 +115,16 @@ class Scheduler
       end_time = Time.utc(1990, 7, 1, end_hour,   end_time_match[:min].to_i)
     return start_time, end_time
   end
+
+  def self.get_configurations( courses ) 
+    configurations = {}
+    course_ids = []
+    courses.each do |course|
+      course_ids << course.id
+      configurations[course.id] = []
+      course.configurations.each { |configuration| configurations[course.id] << configuration.key }
+    end
+    return configurations
+  end
+
 end

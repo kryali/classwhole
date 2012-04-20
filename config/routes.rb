@@ -44,7 +44,7 @@ Whiteboard::Application.routes.draw do
   match 'user/header' => 'user#header', :via => :post
 
   # Scheduler routes
-  match "scheduler/" => "scheduler#index", :as => "scheduler_index"
+  match "scheduler/" => "scheduler#realtime", :as => "scheduler_index"
   get "scheduler/show"
   get "scheduler/new"
   match 'scheduler/sidebar' => 'scheduler#sidebar', :via => :post
@@ -58,6 +58,7 @@ Whiteboard::Application.routes.draw do
   match 'scheduler/download' => 'scheduler#download', :via => :post
   match 'scheduler/icalendar' => 'scheduler#icalendar', :via => :post
   match 'scheduler/configuration/change' => 'scheduler#change_configuration'
+  match 'scheduler/schedule' => 'scheduler#schedule'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -143,6 +143,10 @@ Autocomplete.prototype.subject_select = function(event, ui) {
   }
 };
 
+Autocomplete.prototype.clear = function() {
+  menu.input.val("");
+}
+
 /* ========= Helper Functions ========= */
 
 max_string_length = undefined;

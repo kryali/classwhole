@@ -12,24 +12,17 @@ class SchedulerController < ApplicationController
     @hide_buttons = true
   end
 
+  def schedule
+    logger.info "LOLOL"
+  end
+
   def new
-    course_ids = []
-    configurations = {}
-    current_user.courses.each do |course|
-      course_ids << course.id
-      configurations[course.id] = []
-      course.configurations.each do |configuration|
-        configurations[course.id] << configuration.key
-      end
-    end
-    
+    @configurations = Scheduler.get_configurations( current_user.courses )
 
     begin
       # Don't take longer than 20 seconds to retrieve & parse an RSS feed
       Timeout::timeout(25) do
         @schedule = Scheduler.initial_schedule(current_user.courses)
-        @course_ids = course_ids.to_json
-        @configurations = configurations
       end
     rescue Timeout::Error
       logger.error "SCHEDULE TIMEOUT"
@@ -174,6 +167,23 @@ class SchedulerController < ApplicationController
      
     #write decoded data
     render :text => decoded
+  end
+
+
+  #
+  # Route for realtime scheduling
+  #
+  def realtime
+    begin
+      # Don't take longer than 20 seconds to retrieve & parse an RSS feed
+      Timeout::timeout(5) do
+        @schedule = Scheduler.initial_schedule(current_user.courses)
+        @configurations = Scheduler.get_configurations( current_user.courses )
+      end
+    rescue Timeout::Error
+      # If we got a timeout, then that means that the user has a configuration of bad courses
+      current_user.courses = []
+    end
   end
 
   def icalendar

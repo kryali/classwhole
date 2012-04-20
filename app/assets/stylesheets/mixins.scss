@@ -11,3 +11,10 @@
   -o-transition: $time $mode all;
   transition: $time $mode all;
 }
+
+@mixin user-select( $type ) {
+  -moz-user-select: $type;
+  -o-user-select: $type;
+  -khtml-user-select: $type;
+  -webkit-user-select: $type;
+}

@@ -14,6 +14,7 @@
 
   -h: height; 
 */
+@import "mixins";
 
 @mixin shadow($x, $y, $blur, $color, $inset : "") {
   box-shadow: $inset $x $y $blur $color;
@@ -90,6 +91,7 @@ $showcase-bg        : url('showcase-bg.png');
   position: absolute;
   border: 1px solid #999999;
   cursor: move;
+  @include user-select(none);
 
   box-shadow: 1px 2px 2px 1px #cccccc;
   -webkit-box-shadow: 1px 2px 2px 1px #cccccc;
@@ -150,10 +152,12 @@ $showcase-bg        : url('showcase-bg.png');
 }
 
 .schedule-wrapper {
+  @include user-select(none);
   clear: both;
   //overflow: hidden;
   margin-bottom: 10px;
   position: relative;
+  float: left;
 
   .schedule-content {
     float: left;

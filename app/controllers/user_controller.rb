@@ -121,7 +121,16 @@ class UserController < ApplicationController
         else
           course.add_user( current_user )
         end
-        render :json => { :status => "success", :message => "Class added"}# , :users => course_users }
+        @schedule = Scheduler.initial_schedule(current_user.courses)
+        Scheduler.pack_schedule( @schedule )
+        start_hour, end_hour = Section.hour_range( @schedule )
+        render :json => { 
+                          :status => "success", 
+                          :message => "Class added", 
+                          :schedule => @schedule,
+                          :start_hour => start_hour,
+                          :end_hour => end_hour
+                        }
       end
     rescue ActiveRecord::RecordNotFound
         render :json => { :status => "error", :message => "Class not found" }

@@ -1,0 +1,12 @@
+= javascript_include_tag "scheduler.render.js"
+= javascript_include_tag "scheduler.sidebar.js"
+= javascript_include_tag "scheduler.js"
+= javascript_include_tag "autocomplete"
+= javascript_include_tag "scheduler.realtime.js"
+= content_for :title, "Classwhole"
+
+:javascript
+%div.scheduler-content
+  = render "schedule", :sections => @schedule
+  = render "realtime.sidebar", :sections => @schedule
+  = render "schedule_canvas"
