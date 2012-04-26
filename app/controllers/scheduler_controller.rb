@@ -175,6 +175,8 @@ class SchedulerController < ApplicationController
   # Route for realtime scheduling
   #
   def realtime
+    # need this function called before we can use it, p weird
+    current_user
     begin
       # Don't take longer than 20 seconds to retrieve & parse an RSS feed
       Timeout::timeout(5) do
@@ -183,7 +185,7 @@ class SchedulerController < ApplicationController
       end
     rescue Timeout::Error
       # If we got a timeout, then that means that the user has a configuration of bad courses
-      current_user.courses = []
+      #current_user.courses = [] if current_user
     end
   end
 
@@ -247,6 +249,7 @@ class SchedulerController < ApplicationController
   # We should probably be looking up the id instead of doing a slow search here
   #
   def add_course
+    current_user
     # If the person isn't logged into facebook, create a cookie, but don't overwrite it
     if cookies["classes"].nil? and current_user.is_temp?
       cookies["classes"] = { :value => "", :expires => 1.day.from_now }			

@@ -26,7 +26,7 @@
         -if all_sections.empty?
           -if @user
             %h1= "#{@user.name} hasn't shared a schedule yet."
-          -else 
+          -elsif params[:action] != "realtime" 
             %h1 Sorry, we couldn't find a schedule.
           - break
         -else
