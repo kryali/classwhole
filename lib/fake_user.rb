@@ -3,9 +3,12 @@ class Fake_user
     @courses = []
     @@is_temp = 1 
   end  
-
   def id
     return "nil"
+  end
+
+  def courses=(new_courses)
+    courses = new_courses
   end
 
   def courses
