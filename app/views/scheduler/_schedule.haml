@@ -35,7 +35,8 @@
             - for hour in (start_hour..end_hour)
               %li
             - sections.each do |meeting|
-              = render 'scheduler/meeting', :meeting => meeting, :start_hour => start_hour, :colors => colors
+              - if not meeting.start_time.nil?
+                = render 'scheduler/meeting', :meeting => meeting, :start_hour => start_hour, :colors => colors
             - if section_hints_in_days[day_code]
               - section_hints_in_days[day_code].each do |section|
                 %div.droppable= render 'scheduler/section', :section => section, :start_hour => start_hour, :colors => colors
