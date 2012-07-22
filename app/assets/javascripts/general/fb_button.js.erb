@@ -70,20 +70,23 @@ init_fb = function () {
   $('.fb-button').unbind('click').click( function(event) {
 
     showModal('/shared/_loading',{"name": "Signing in"});
-    /* FB.getLoginStatus allows you to determine if a user is 
-     * logged into facebook.*/
-    FB.getLoginStatus(function(response) {
-      if(response.authResponse){
-        /* User is logged in to facebook, let him in */
-        mpq.identify( response.authResponse["userID"] );
-        post_to_url(LOGIN_PATH, response["authResponse"]);
-      }
-   });
 
-    /* FB.Event.subscribe('auth.login') gets fired when the user logs in
-     * Register the user by silently posting a form to rails */
-    FB.Event.subscribe('auth.login', function(response) {
-      post_to_url(LOGIN_PATH, response["authResponse"]);
-    });
+    FB.login( function() {
+      /* FB.getLoginStatus allows you to determine if a user is 
+       * logged into facebook.*/
+      FB.getLoginStatus(function(response) {
+        if(response.authResponse){
+          /* User is logged in to facebook, let him in */
+          mpq.identify( response.authResponse["userID"] );
+          post_to_url(LOGIN_PATH, response["authResponse"]);
+        }
+     });
+
+      /* FB.Event.subscribe('auth.login') gets fired when the user logs in
+       * Register the user by silently posting a form to rails */
+      FB.Event.subscribe('auth.login', function(response) {
+        post_to_url(LOGIN_PATH, response["authResponse"]);
+      });
+    }, "<%= Facebook::SCOPE %>" );
   });
 };
