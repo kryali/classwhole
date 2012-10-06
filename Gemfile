@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rake', '0.8.7'
+gem 'rake', '>= 0.9.2'
 gem 'mysql2'
 gem 'rails', '3.1.1'
 gem 'whenever', :require => false

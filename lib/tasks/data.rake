@@ -242,10 +242,10 @@ end
 namespace :data do 
   task :update => [:environment] do
     puts "Parsing?"
-    UIUCParser.parse_year 2012
+    UIUCParser.parse_year 2013
   end
 
-  task :seed, :season, :year, :needs => [:environment] do |t, args|
+  task :seed, [:season, :year, :needs] => [:environment] do |t, args|
     year = args[:year]
     season = args[:season]
     UIUCParser.parse_term_sy(season,year)
