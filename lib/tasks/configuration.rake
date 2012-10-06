@@ -57,7 +57,7 @@ namespace :configuration do
 
   #SEED
 
-  task :seed, :season, :year, :needs => [:environment] do |t, args|
+  task :seed, [:season, :year] => [:environment] do |t, args|
     #re seed all courses
     semester = Semester.find_by_season_and_year(args[:season], args[:year])
     semester.subjects.all.each do |subject|
@@ -77,7 +77,7 @@ namespace :configuration do
   #MIGRATE TASKS
 
   # all
-  task :migrateall, :season, :year, :needs => [:environment] do |t, args|
+  task :migrateall, [:season, :year] => [:environment] do |t, args|
     Dir.foreach("db/configuration/#{args[:season]}_#{args[:year]}/") do |filename|
       if filename.end_with?(".json")
         path = "db/configuration/#{args[:season]}_#{args[:year]}/#{filename}"
@@ -87,7 +87,7 @@ namespace :configuration do
   end
 
   #specific file
-  task :migrate, :season, :year, :filename, :needs => [:environment] do |t, args|
+  task :migrate, [:season, :year, :filename] => [:environment] do |t, args|
     filename = "db/configuration/#{args[:season]}_#{args[:year]}/#{args[:filename]}"
     filename = filename + ".json" unless filename.end_with?(".json")
     CustomConfigurationParser.parse_file filename
@@ -95,7 +95,7 @@ namespace :configuration do
 
   # GENERATE TASK
 
-  task :generate, :season, :year, :subject_code, :number, :show_configurations, :needs => [:environment] do |t, args|
+  task :generate, [:season, :year, :subject_code, :number, :show_configurations] => [:environment] do |t, args|
     semester = Semester.find_by_season_and_year(args[:season], args[:year])
     subject = semester.subjects.find_by_code(args[:subject_code])
     course = subject.courses.find_by_number(args[:number])

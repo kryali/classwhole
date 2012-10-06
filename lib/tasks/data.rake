@@ -189,6 +189,9 @@ class UIUCParser
       term_xml = XmlSimple.xml_in( xml_str, { 'KeyAttr' => 'id' } )
     rescue ArgumentError
       puts "Bad term"
+      puts "attempted #{term_url}"
+      puts "shitty cites api returned"
+      pp xml_str
       return
     end
     # find the current semester by year and seasn (later add school_id)
@@ -245,7 +248,8 @@ namespace :data do
     UIUCParser.parse_year 2013
   end
 
-  task :seed, [:season, :year, :needs] => [:environment] do |t, args|
+  task :seed, [:season, :year] => [:environment] do |t, args|
+    puts "Seeding #{args[:season]} #{args[:year]}" 
     year = args[:year]
     season = args[:season]
     UIUCParser.parse_term_sy(season,year)
