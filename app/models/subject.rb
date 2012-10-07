@@ -3,8 +3,17 @@ class Subject < ActiveRecord::Base
 	has_many :courses
   belongs_to :semester
 
-  def self.mini_all
-    return self.trie( "", true )
+  def self.minify(subjects)
+    payload = []
+    subjects.all.each do |subject|
+      payload << {
+                    :title => subject.title,
+                    :value => subject.code,
+                    :label => subject.to_s,
+                    :id => subject.id,
+      }
+    end
+    return payload
   end
 
   def self.trie(str, return_all=false)
@@ -49,4 +58,18 @@ class Subject < ActiveRecord::Base
     return code
   end
 
+  def mini_courses
+    payload = []
+    courses.each do |course|
+      payload << {
+        :id => course.id,
+        :title => course.title,
+        :course => course.to_s,
+        :label => course.to_s,
+        :hours_min => course.hours_min,
+        :hours_max => course.hours_max,
+      }
+    end
+    return payload
+  end
 end

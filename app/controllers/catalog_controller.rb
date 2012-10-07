@@ -228,35 +228,6 @@ class CatalogController < ApplicationController
     end
   end
 
-  # Description:
-  # - Return a json formatted list of subjects for autocomplete
-  #
-  # Route:
-  #   courses/search/auto/subject
-  def subject_auto_search
-    result_json = Subject.trie(params["term"])
-    if result_json
-      render :json => result_json 
-      return
-    end
-    
-    # If result_json is nil, then we couldn't connect to redis
-    unless result_json
-      # NOTE: this section likely belongs in the model as a function self.backup_search(params)
-      #       couldn't figure it out
-      subject_list = []
-      all_subjects.each do |subject|
-        if params["term"] and subject.starts_with?(params["term"].upcase) or not params["term"]
-          subject_list << { :label => "#{subject.to_s}",
-                            :title => "#{subject.title}",
-                            :value => "#{subject.code}" }
-        end
-      end
-
-      render :json => subject_list 
-    end
-  end
-
   def simple_search
     render :json => Course.trie(params[:term])
   end
@@ -283,7 +254,15 @@ class CatalogController < ApplicationController
   end
 
   def get_subjects
-    render :json => Subject.mini_all
+    render :json => Subject.minify($CURRENT_SEMESTER.subjects)
   end
 
+  def get_courses
+    subject = $CURRENT_SEMESTER.subjects.find_by_code(params[:subject_code].upcase)
+    if subject
+      render :json => subject.mini_courses 
+    else
+      render :json => { success: false, message: "Subject #{params[:subject_code]} not found" } 
+    end
+  end
 end

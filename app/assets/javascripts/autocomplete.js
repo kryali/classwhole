@@ -26,28 +26,27 @@ Autocomplete.prototype.init = function() {
   this.override_keyboard_for_input();
 
   var that = this;
-  /*
   $.ajax({
     type: 'GET',
-    url: '/courses/search/auto/subject/all',
+    url: 'json/subject/all',
     success: function( data, textStatus, xhQR ) {
       that.start(data);
     }
-  });*/
-  this.start();
+  });
   extend_autocomplete_plugin(this);
+  override_search();
+  this.cache = {};
+  menu.fetching = false;
   menu = this;
 }
 
 Autocomplete.prototype.start = function(data) {
-  //this.subject_data_source = data;
+  this.subject_data_source = data;
   this.input.autocomplete({ 
-    //source: this.subject_data_source,
-    source: this.ajax_search_url,
+    source: this.subject_data_source,
     minLength: 1,
     delay: 0,
     autoFocus: true,
-    //focus: input_focus,
     select: this.subject_select,
     close: this.list_closed,
     open: this.list_opened,
@@ -62,10 +61,56 @@ Autocomplete.prototype.start = function(data) {
    form for the autocomplete
    */ 
 function extend_autocomplete_plugin(that) {
-  var proto = $.ui.autocomplete.prototype, initSource = proto._initSource;
+  var proto = $.ui.autocomplete.prototype;
   $.extend( proto, { 
     _renderItem: render_item,
   });
+}
+
+function override_search() {
+  var proto = $.ui.autocomplete.prototype;
+  $.extend(proto, { 
+    _search: function(value) {
+      if ( typeof this.options.source == "string" ) {
+        var url = this.options.source;
+        var that = this;
+        if (menu.fetching) return;
+        menu.fetching = true;
+        $.getJSON(url, function(data) {
+          menu.fetching = false;
+          if (data.success == false) return;
+          var key = menu.subject_code;
+          menu.cache[key] = data;
+          menu.input.autocomplete("option", "source", data);
+          that.response(search(value, data));
+        });
+      } else {
+        this.response(search(value, this.options.source));
+      }
+    },
+  });
+}
+
+function search(term, data) {
+  var found = [];
+  if (!term || term.length <= 0) return found;
+  for (var i = 0; i < data.length; i++) {
+    if (match(term, data[i])) {
+      found.push(data[i]);
+    }
+  }
+  return found;
+}
+
+function match(term, data) {
+  var termStr = term.toUpperCase();
+  var dataStr = data.label.toUpperCase();
+  for (var i = 0; i < termStr.length; i++) {
+    if (termStr[i] != dataStr[i]) {
+      return false;
+    }
+  }
+  return true;
 }
 
 /* Override the display */
@@ -115,17 +160,26 @@ function render_item(ul, item) {
  */
 
 Autocomplete.prototype.switch_to_subject_mode = function() {
+  if (this.mode == "subject") return; // No need to switch.
+  menu.subject_code = undefined;
   this.input.autocomplete( "option", "select", this.subject_select ); 
-  //this.input.autocomplete( "option", "source",  this.subject_data_source ); 
-  this.input.autocomplete( "option", "source",  this.ajax_search_url ); 
+  this.input.autocomplete( "option", "source",  this.subject_data_source ); 
   this.input.autocomplete( "search" );
   this.mode = "subject";
 }
 
 Autocomplete.prototype.switch_to_course_mode = function (subject_id) {
+  if (this.mode == "course") return; // No need to switch.
+  menu.subject_code = subject_id.toUpperCase();
+  var data_source;
+  if (typeof menu.cache[menu.subject_code] == "undefined") {
+    data_source = 'json/subject/' + menu.subject_code + '/courses';
+  } else {
+    data_source = menu.cache[menu.subject_code];
+  }
   this.input.autocomplete( "option", "select", this.course_select ); 
-  this.input.autocomplete( "option", "source",  this.ajax_search_url + subject_id.toUpperCase()); 
-  this.input.autocomplete( "search" );
+  this.input.autocomplete("option", "source", data_source);
+  this.input.autocomplete("search");
   this.mode = "course";
 }
 
@@ -177,8 +231,8 @@ function is_lower_case(c) {
     return false;
 }
 
-Autocomplete.prototype.form_has_characters = function() {
-  var form_value = this.input.val();
+function form_has_characters(form) {
+  var form_value = form.val();
   for(var i = 0; i < form_value.length; i++){
 
     /* If character is a letter or a number */
@@ -190,10 +244,6 @@ Autocomplete.prototype.form_has_characters = function() {
   }
   /* No letters or numbers found */
   return false;
-};
-
-Autocomplete.prototype.watch_for_empty_form = function() {
-  if(!this.form_has_characters()) this.switch_to_subject_mode();
 };
 
 Autocomplete.prototype.form_suggestion = function() {
@@ -213,12 +263,14 @@ Autocomplete.prototype.form_suggestion = function() {
   }
 }
 
-Autocomplete.prototype.watch_for_single_subject = function() {
+function is_single_subject() {
+  if (this.mode != "subject") return false;
   var results_array = $(".ui-autocomplete .ui-menu-item .course-label");
   if( results_array.length <= 0 ) return;
   var best_result = $(".ui-autocomplete .ui-menu-item .course-label").first().text();
 
-  if( this.mode == "subject" && results_array.length == 1 ) {
+  if(results_array.length == 1) {
+    return best_result;
     this.switch_to_course_mode(best_result);
     this.input.autocomplete("search");
   }
@@ -233,10 +285,20 @@ Autocomplete.prototype.override_keyboard_for_input = function() {
 
 Autocomplete.prototype.override_keyup = function() {
   this.input.keyup(function(event) {
-    /* A keyup event signifies that the user has changed the input, thus do checks */
-    menu.watch_for_empty_form();
-    menu.watch_for_single_subject();
+
+    var single_subject = is_single_subject();
+    if (single_subject) {
+      menu.switch_to_course_mode(single_subject);
+      return;
+    }
+
+    if (menu.mode == "course" && menu.input.val().indexOf(" ") == -1) {
+      menu.switch_to_subject_mode();
+      return;
+    }
+
     menu.form_suggestion();
+    /* A keyup event signifies that the user has changed the input, thus do checks */
 
     var keycode = $.ui.keyCode;
     var form_value = menu.input.val();
