@@ -93,12 +93,12 @@ class UIUCParser
         if configuration.nil?
           configuration = Configuration.new(:key=>key)
           configuration.course = current_course
-          configuration.save
+          configuration.save!
         end
         current_section.configuration = configuration
       end  
       
-      current_section.save
+      current_section.save!
       # iterate through the meetings
       meetings = section_xml["meetings"][0]["meeting"]
       #for each course in the subject    
@@ -132,7 +132,7 @@ class UIUCParser
         current_course.hours_min = hours[0]
         current_course.hours_max = hours[1]
       end
-      current_course.save
+      current_course.save!
       sections = course_xml["detailedSections"][0]["detailedSection"] if course_xml.key?("detailedSections")
       sections.each do |id, detailedSection|
         self.parse_section detailedSection, current_course, id
@@ -165,7 +165,7 @@ class UIUCParser
       current_subject.title = term_xml["label"][0] if term_xml.key?("label")
       current_subject.phone = term_xml["phoneNumber"][0] if term_xml.key?("phoneNumber")
       current_subject.web_site_address = term_xml["webSiteURL"][0] if term_xml.key?("webSiteURL")  
-      current_subject.save
+      current_subject.save!
       courses = term_xml["cascadingCourses"][0]["cascadingCourse"] if term_xml.key?("cascadingCourses")
       #for each course in the subject      
       puts "#{current_subject.title}"
@@ -201,7 +201,7 @@ class UIUCParser
       current_semester = Semester.new
       current_semester.year = year
       current_semester.season = season
-      current_semester.save    
+      current_semester.save!
     end    
     subjects = term_xml["subjects"][0]["subject"]
     subjects.each do |id, subject|
