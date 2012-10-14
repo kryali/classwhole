@@ -1,39 +1,4 @@
-.prof-box {
-  margin-bottom: 0px;
-  margin-top: 10px;
-  font-family: 'Arial', sans-serif;
-
-  .prof-img {
-    width: 128px;
-    height: 128px;
-    background: url("prof.png");
-    display: block;
-    float: left;
-    margin-right: 20px;
-    margin-left: 10px;
-  }
-
-  .prof-info {
-    float: left;
-  }
-
-  .prof-name {
-    display: block;
-    font-size: 36px;
-  }
-
-  .rating {
-    height: 30px;
-    position: relative;
-    margin-top: 13px;
-  }
-
-  .rating-type span {
-    color: #999;
-    font-size: 14px;
-    font-weight: bold;
-  }
-
+.rating {
   .stars {
     background: url("google-icons.png") no-repeat left center;
     position: absolute;
@@ -51,26 +16,4 @@
     background-position: -100px -275px;
     z-index: 1;
   }
-
-  .classes {
-    float: right;
-
-    .classes-title {
-      text-align: center;
-      margin: 15px 14px 9px 0px;
-      font-size: 25px;
-    }
-
-    a {
-      display: block;
-      padding: 10px 23px 10px 10px;
-      text-align: center;
-    }
-  }
-}
-
-.prof-source {
-  margin-top: 24px;
-  text-align: center;
-  font-size: 14px;
 }
