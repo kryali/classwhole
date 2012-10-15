@@ -1,0 +1,95 @@
+@import 'mixins';
+@import "colors";
+
+header {
+  height: 60px;
+  background: #3b8fb4;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  display: block;
+
+  a#logo {
+    display: block;
+    width: 158px;
+    height: 32px;
+    background: url('header-logo.png') no-repeat center;
+    padding: 14px 0 14px 0;
+    margin: 0 15px 0 15px;
+    float: left;
+  }
+
+  nav {
+    display: block;
+    float: left;
+    width: 50%;
+
+    a {
+      padding: 24px 20px 22px 20px;
+      display: block;
+      float: left;
+      text-decoration: none;
+      @include roboto();
+    }
+  }
+
+  nav.secondary-nav {
+    float: right;
+    height: 100%;
+    width: 26%;
+    min-width: 100px;
+
+    a {
+      padding: 0;
+    }
+
+    a#user-link {
+      height: 100%;
+      width: 75%;
+      float: right;
+
+      .fb-login-pic {
+        width: 35px;
+        height: 35px;
+        display: block;
+        float: right;
+        margin-top: 13px;
+      }
+
+      span {
+        display: block;
+        float: right;
+        margin: 23px 0 0 10px;
+        font-size: 18px;
+        color: #c0e6f7;;
+      }
+
+      span:hover {
+        color: $a_highlight_color;
+      }
+    }
+
+    div#dropdown-image {
+      width: 40px;
+      height: 100%;
+      background: url('dropdown.png') no-repeat center;
+      float: right;
+      cursor: pointer;
+      position: relative;
+    }
+
+    div.dropdown-menu {
+      z-index: 10;
+      background: #333;
+      position: absolute;
+      bottom: -36px;
+      right: 0px;
+      width: 100px;
+
+      a {
+        padding: 10px 0 10px 0;
+        text-align: center;
+        width: 100%;
+      }
+    }
+  } 
+}

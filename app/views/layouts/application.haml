@@ -21,8 +21,9 @@
     = render "shared/modal"
     %div.alert-box
     %div#fb-root
-    = render "shared/header"
     %div#wrapper
-      = yield
+      = render "shared/header"
+      %div#content
+        = yield
     %div#footer
       = render "shared/footer"

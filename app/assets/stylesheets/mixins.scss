@@ -18,3 +18,7 @@
   -khtml-user-select: $type;
   -webkit-user-select: $type;
 }
+
+@mixin roboto() {
+  font-family: 'RobotoRegular', 'Arial', sans-serif;
+}

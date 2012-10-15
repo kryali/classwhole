@@ -1,5 +1,4 @@
-$bg-color           : url('background.png');
-$default-font-color : #4D4D4D;
+@import "colors";
 
 .ui-autocomplete-loading {
   background: image-url("small-ajax-loading.gif");
@@ -9,17 +8,19 @@ $default-font-color : #4D4D4D;
   font-family: 'RobotoRegular','Helvetica' ,'Arial', 'Tahoma', sans-serif;
 }
 
+a {
+  font-family: 'RobotoRegular','Helvetica' ,'Arial', 'Tahoma', sans-serif;
+}
+
 html, body {
-  background: $bg-color;
   line-height: 1.22;
-  font-family: 'Helvetica', 'Arial', 'Tahoma', sans-serif;
 }
 
 #wrapper {
   width: 100%;
   max-width: 1000px;
-  margin: 0 auto;
-  color: $default-font-color;
+  min-width: 790px;
+  margin: 40px auto 0 auto;
   min-height: 100%;
 }
 
@@ -37,60 +38,28 @@ em { font-style: italic; }
   text-align: center;
 }
 
-$a-link-color: #0069D6;
 a {
   text-decoration: none;
-  color: $a-link-color;
-}
-
-a:hover {
-  text-decoration: underline;
+  color: $a_link_color;
 }
 
 a:visited {
-  color: $a-link-color;
+  color: $a_link_color;
 }
 
-$content-bg-color   : url('background.png');
+a:hover {
+  color: $a_highlight_color;
+  text-decoration: none;
+}
+
 #content {
-  font-family: 'Arial', 'Tahoma', sans-serif;
-  padding: 6em 40px 0 40px;
-  position: relative;
-  //margin-top: 3em;
-}
-
-.content {
   font-family: 'Arial', 'Tahoma', sans-serif;
   padding: 40px;
   position: relative;
-  background: #fff;
-  margin-top: 3em;
-  border: 1px solid #ccc;
-  clear: both;
-  overflow: hidden;
-
-  h1 {
-    font-size: 24px;
-    font-weight: bold;
-  }
-
-  p {
-    margin-top: 1.5em;
-    line-height: 24px;
-  }
-
-  .email {
-    background: #eee;
-    border-radius: 1em;
-  }
-
-  #about {
-    width: 20em;
-  }
-
-  img {
-  }
+  background: #535353;
+  z-index: 1;
 }
+
 .clear {
   clear: both;
 }

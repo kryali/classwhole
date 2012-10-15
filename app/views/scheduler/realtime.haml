@@ -5,8 +5,6 @@
 = javascript_include_tag "scheduler.realtime.js"
 = content_for :title, "Classwhole"
 
-:javascript
-%div.scheduler-content
-  = render "schedule", :sections => @schedule
-  = render "realtime.sidebar", :sections => @schedule
-  = render "schedule_canvas"
+= render "schedule", :sections => @schedule
+= render "realtime.sidebar", :sections => @schedule
+= render "schedule_canvas"
