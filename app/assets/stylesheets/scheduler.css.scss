@@ -1,0 +1,15 @@
+@import 'colors';
+
+.sidebar {
+  width: 265px;
+  float: right;
+  background: $sidebar_color;
+  padding: 12px;
+}
+
+.schedule-wrapper {
+  width: 50%;
+  float: left;
+  background: blue;
+  min-height: 100px;
+}

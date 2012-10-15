@@ -22,3 +22,17 @@
 @mixin roboto() {
   font-family: 'RobotoRegular', 'Arial', sans-serif;
 }
+
+@mixin arial() {
+  font-family: 'Arial', sans-serif;
+}
+
+@mixin box-shadow($options) {
+  box-shadow: $options;
+  -moz-box-shadow: $options;
+  -webkit-box-shadow: $options;
+}
+
+@mixin border-radius($options) {
+  border-radius: $options;
+}
