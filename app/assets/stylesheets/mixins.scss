@@ -19,8 +19,16 @@
   -webkit-user-select: $type;
 }
 
+@mixin sans_serif($font) {
+  font-family: $font, 'Arial', sans-serif;
+}
+
 @mixin roboto() {
   font-family: 'RobotoRegular', 'Arial', sans-serif;
+}
+
+@mixin roboto_medium() {
+  @include sans_serif("RobotoMedium"); 
 }
 
 @mixin arial() {

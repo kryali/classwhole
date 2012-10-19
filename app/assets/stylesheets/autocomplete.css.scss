@@ -13,6 +13,11 @@ $font_size: 15px;
 $menu_highlight_bg: #D9ECF9;
 $menu_border_color: #aaaaaa;
 
+.autocomplete-container {
+  padding: 12px;
+  overflow: hidden;
+}
+
 .autocomplete-search-box {
   width: $auto_width;
   height: $autocomplete_height;
