@@ -42,4 +42,3 @@
                 %div.droppable= render 'scheduler/section', :section => section, :start_hour => start_hour, :colors => colors
     - if @user and not all_sections.empty?
       <div class="fb-comments" data-href="#{root_url.chop + scheduler_show_path(@user.id)}" data-num-posts="1" data-width="607"></div>
-  = render 'scheduler/sidebar' , :sections => sections, :course_page => course_page
