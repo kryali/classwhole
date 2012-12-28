@@ -6,6 +6,7 @@ $(function(){
     xhr.setRequestHeader("X-CSRF-Token", AUTH_TOKEN);
   });
 
-  //Utils.centerAll();
+  Utils.allCenterVertical();
+  Utils.allFillWidth();
   //$(".tooltip").tipsy();
 });
