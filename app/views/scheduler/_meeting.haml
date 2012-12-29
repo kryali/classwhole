@@ -11,7 +11,7 @@
   %span{ :class => "enrollment status-#{section.enrollment_status}", :title => "#{section.reason}"}
   %span{ :class => "section-type label"}= section.short_type_s
   %span.duration= meeting.duration_s
-  %ul.hidden-data{ :style => "top: #{height_px}px;" }
+  %ul.hidden{ :style => "top: #{height_px}px;" }
     %li 
       - course = section.course
       %span.title Credit Hours

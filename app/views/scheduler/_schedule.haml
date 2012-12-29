@@ -18,6 +18,13 @@
   - section_hints_in_days = {}
 %div{:class => "schedule-wrapper" }
   %div{:class => "schedule-content", "data-tooltip" => "" }
+    %ul.toolbar
+      %li
+        %a{:href => "#"} save
+      %li
+        %a{:href => "#"} image
+      %li
+        %a{:href => "#"} share
     %div{:class => "schedule-display" }
       %ul.time-label
         - for hour in (start_hour..end_hour)
