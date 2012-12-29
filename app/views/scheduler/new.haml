@@ -10,9 +10,6 @@
   });
 
 %div.scheduler-content
-  %div#slides
-    %div.slides_container
-      -# @possible_schedules.each do |sections|
-      = render "schedule", :sections => @schedule
-      = render "scheduler/sidebar" , :sections => @schedule
+  = render "schedule", :sections => @schedule
+  = render "scheduler/sidebar" , :sections => @schedule
   = render "schedule_canvas"

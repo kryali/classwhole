@@ -1,8 +1,45 @@
 @import 'colors';
+@import 'mixins';
 
 .schedule-wrapper {
-  width: 50%;
+  width: 70%;
   float: left;
   background: blue;
-  min-height: 100px;
+}
+
+.time-label {
+  display: none;
+}
+
+.schedule-day {
+  width: 20%;
+  float: left;
+  position: relative;
+
+  li {
+    @include roboto();
+    height: 40px;
+  }
+
+  li:nth-child(even) {
+    background: #eee;
+  }
+  li:nth-child(odd) {
+    background: #ddd;
+  }
+
+  li:first-child {
+    height: auto;
+    background: #fff;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 10px 10px 8px 10px;
+    font-size: 10px;
+    color: #777;
+  }
+
+  .schedule-block {
+    position: absolute;
+    width: 100%
+  }
 }

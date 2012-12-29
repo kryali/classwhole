@@ -4,15 +4,15 @@ module SchedulerHelper
   def print_day(day_short_code)
     case day_short_code
     when "M"
-      return "Monday"
+      return "Mon"
     when "T"
-      return "Tuesday"
+      return "Tue"
     when "W"
-      return "Wednesday"
+      return "Wed"
     when "R"
-      return "Thursday"
+      return "Thu"
     when "F"
-      return "Friday"
+      return "Fri"
     else
       return "nil"
     end

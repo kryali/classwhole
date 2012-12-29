@@ -72,7 +72,7 @@ $(document).ready(function() {
 
   function init_sidebar() {
     $(".remove-course-link").click( function() {
-      var course = $(this).closest(".course");
+      var course = $(this).closest("ul");
       var course_id = parseInt(course.attr("data-course-id"));
       course.slideUp( 500, function() {
         $(this).remove();

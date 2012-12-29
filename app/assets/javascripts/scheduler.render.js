@@ -129,15 +129,15 @@ function hr_to_s( hour ) {
 function day_header( day ) {
   switch( day ) {
     case "M":
-      return "Monday";
+      return "Mon";
     case "T":
-      return "Tuesday";
+      return "Tue";
     case "W":
-      return "Wednesday";
+      return "Wed";
     case "R":
-      return "Thursday";
+      return "Thu";
     case "F":
-      return "Friday";
+      return "Fri";
     default:
       return "lulzwut?";
   }
