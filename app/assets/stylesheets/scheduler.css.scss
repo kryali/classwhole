@@ -2,38 +2,6 @@
 @import 'mixins';
 @import 'sizes';
 
-// Toolbar
-ul.toolbar {
-  width: 100%;
-  height: $toolbar_h;
-  background: #f4f4f4;
-  border-bottom: 2px solid #c8c8c8;
-
-  li a {
-    color: #777;
-    float: left;
-    padding: 14px 15px 12px 15px;
-    @include roboto_medium();
-    text-transform: uppercase;
-    font-size: 14px;
-  }
-
-  li a:hover {
-    background: #eee;
-  }
-
-  li span {
-    float: left;
-    height: 20px;
-    background: #DDD;
-    width: 1px;
-    display: block;
-    margin-top: 9px;
-    border-left: 1px solid white;
-  }
-}
-
-
 // Schedule
 .schedule-wrapper {
   width: 70%;
@@ -146,7 +114,7 @@ ul.toolbar {
 
     .enrollment {
       top: 7px;
-      right: 35px;
+      right: 32px;
     }
 
     .duration {

@@ -1,0 +1,122 @@
+@import 'colors';
+@import 'mixins';
+
+.sidebar {
+  width: 28%;
+  float: right;
+  background: $sidebar_color;
+}
+
+ul.courses {
+  .course-header {
+    background: #fff;
+    height: 30px;
+    text-transform: uppercase;
+    font-size: 14px;
+    border-top: 1px solid #cbcbcb;;
+    border-bottom: 1px solid #cbcbcb;;
+    overflow: hidden;
+    @include roboto_medium();
+    box-shadow: 0px 1px 2px #ddd;
+
+    .highlight {
+      width: 7px;
+      float: left;
+      height: 100%;
+      margin-right: 6px;
+    }
+
+    .right {
+      right: 5px;
+    }
+  }
+
+  .header-container {
+    left: 15px;
+  }
+
+  a {
+    color: #444;
+    font-weight: normal;;
+    font-size: 14px;
+    @include roboto_medium();
+  }
+
+  a:hover {
+    color: #666666;
+  }
+
+  .course-hours {
+    font-size: 10px;
+    margin-left: 5px;
+    @include roboto_medium();
+    color: #999;
+  }
+
+  .course-title {
+    margin-left: 5px;
+    color: #777;
+    @include roboto_light();
+    font-size: 13px;
+  }
+
+  .sections {
+    li {
+      position: relative;
+      font-size: 12px;
+      border-bottom: 1px solid #ddd;
+
+      div {
+        height: 30px;
+      }
+    }
+
+    span {
+      position: absolute;
+      color: #555;
+      font-size: 10px;
+    }
+
+    .section-type {
+      left: 5px;
+      top: 9px;
+      color: #fff;
+    }
+
+    .enrollment {
+      top: 10px;
+      right: 5px;
+    }
+
+    .instructor {
+      left: 35px;
+      top: 10px;
+      font-size: 12px;
+      @include roboto_medium();
+
+      a {
+        font-size: 12px;
+        color: #555;
+      }
+      a:hover {
+        color: #999;
+      }
+    }
+    
+    .time {
+      top: 11px;
+      left: 105px;
+      text-transform: uppercase;
+    }
+
+    .code {
+      top: 11px;
+      right: 30px;
+    }
+
+    .crn {
+      top: 11px;
+      right: 57px;
+    }
+  }
+}

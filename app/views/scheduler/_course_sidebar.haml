@@ -2,11 +2,11 @@
   - courses, course_section_hash = courses_from_sections( sections )
   - colors = section_colors( sections )
   - courses.each do |course|
-    = render "course_sidebar_row", :course => course, :sections => course_section_hash[course.id], :colors => colors
+    = render "scheduler/course_sidebar_row", :course => course, :sections => course_section_hash[course.id], :colors => colors
 
 :javascript 
   $(document).ready( function() {
-    linkify_classes($(".course .course-name"));
+    linkify_classes($(".course-header .course-name"));
     $("ul.classmates a").click( function() {
       mpq.track( "click sidebar profile" );
       //Mixpanel tracking

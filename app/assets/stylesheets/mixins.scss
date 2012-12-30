@@ -32,7 +32,7 @@
 }
 
 @mixin roboto_light() {
-  @include sans_serif("RobotoThin"); 
+  @include sans_serif("RobotoLight"); 
 }
 
 @mixin arial() {
