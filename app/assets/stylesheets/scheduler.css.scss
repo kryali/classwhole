@@ -85,11 +85,19 @@ ul.toolbar {
   li:nth-child(odd) {
     background: #f8f8f8;
   }
+}
 
-  .schedule-block {
-    position: absolute;
-    width: 100%;
-  }
+.schedule-display {
+  position: relative;
+}
+
+.schedule-block {
+  position: absolute;
+  width: 100%;
+  //box-shadow: 0px 0px 2px #333;
+  background: red;
+  //border: 1px solid #333;
+  //margin-left: -1px;
 }
 
 ul.day-header {

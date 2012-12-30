@@ -35,22 +35,17 @@
       - day_header_arr.each do |day|
         %li.header= day
     %div{:class => "schedule-display" }
-      - meetings_by_days.each do |day_code, sections|
-        -if all_sections.empty?
-          -if @user
-            %h1= "#{@user.name} hasn't shared a schedule yet."
-          -elsif params[:action] != "realtime" 
-            %h1 Sorry, we couldn't find a schedule.
-          - break
-        -else
-          %ul{:class => "schedule-day #{day_code}", :day => day_code }
+      - if all_sections.empty?
+        -if @user
+          %h1= "#{@user.name} hasn't shared a schedule yet."
+        -elsif params[:action] != "realtime" 
+          %h1 Sorry, we couldn't find a schedule.
+      - else
+        - day_header_arr.each do |day|
+          %ul{:class => "schedule-day"}
             - for hour in (start_hour..end_hour)
               %li
-            - sections.each do |meeting|
-              - if not meeting.start_time.nil?
-                = render 'scheduler/meeting', :meeting => meeting, :start_hour => start_hour, :colors => colors
-            - if section_hints_in_days[day_code]
-              - section_hints_in_days[day_code].each do |section|
-                %div.droppable= render 'scheduler/section', :section => section, :start_hour => start_hour, :colors => colors
-    - if @user and not all_sections.empty?
-      <div class="fb-comments" data-href="#{root_url.chop + scheduler_show_path(@user.id)}" data-num-posts="1" data-width="607"></div>
+        - all_sections.each do |section|
+          - section.meetings.each do |meeting|
+            - if not meeting.start_time.nil?
+              = render 'scheduler/meeting', :meeting => meeting, :start_hour => start_hour, :colors => colors

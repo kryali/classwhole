@@ -211,16 +211,44 @@ function duration( start_time, end_time ) {
 }
 
 Schedule.layout = function() {
-  var start_time_s, start_hour, start_min, y_offset;
-  var global_start_hour = parseInt($("ul.time-label").attr("start-hour"));
-  var section_height = $("ul.schedule-day li:not(.header)").height();
-  $(".schedule-block").each(function() {
-    start_time_s = $(this).attr("start-time");
-    start_hour = start_time_s.split(":")[0];
-    start_min = start_time_s.split(":")[1];
-    y_offset = ((start_hour - global_start_hour) * (section_height + 1)) ;
-    y_offset += (start_min / 60 * section_height);
-    $(this).css("top", y_offset + "px");
-    //var end_time_s = $(this).attr("start-time");
-  });
+
+  layout_sections();
+
+  function layout_sections() {
+    var days = ["M", "T", "W", "R", "F"];
+    var height, time_s, start_hour, start_min, end_hour, end_min, y_offset, x_offset;
+    var global_start_hour = parseInt($("ul.time-label").attr("start-hour"));
+    var section_height = $("ul.schedule-day li").height();
+    var section_width = $("ul.schedule-day").outerWidth();
+    $(".schedule-block").each(function() {
+      layout_block($(this));
+    });
+
+    function layout_block(section) {
+      var day = section.attr("day");
+
+      // y_offset
+      time_s = section.attr("start-time");
+      start_hour = time_s.split(":")[0];
+      start_min = time_s.split(":")[1] / 60;
+      y_offset = ((start_hour - global_start_hour) * (section_height + 1)) ;
+      y_offset += start_min * section_height;
+
+      // x_offset
+      x_offset = days.indexOf(day) * section_width;
+
+      // height 
+      time_s = section.attr("end-time");
+      end_hour = time_s.split(":")[0];
+      end_min = time_s.split(":")[1] / 60;
+      height = ((end_hour - start_hour) + end_min - start_min) * section_height;
+
+      section.css("left", x_offset);
+      section.css("top", y_offset);
+      section.css("width", section_width - 2); // -2 for borders
+      section.css("height", height);
+      //var end_time_s = $(this).attr("start-time");
+    }
+  }
+
 };
