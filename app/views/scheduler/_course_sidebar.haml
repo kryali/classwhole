@@ -1,8 +1,30 @@
-%ul.courses
-  - courses, course_section_hash = courses_from_sections( sections )
-  - colors = section_colors( sections )
-  - courses.each do |course|
-    = render "scheduler/course_sidebar_row", :course => course, :sections => course_section_hash[course.id], :colors => colors
+= javascript_include_tag "course.list.ctrl.js"
+-#%ul.courses
+-#  - courses, course_section_hash = courses_from_sections( sections )
+-#  - colors = section_colors( sections )
+-#  - courses.each do |course|
+-#    = render "scheduler/course_sidebar_row", :course => course, :sections => course_section_hash[course.id], :colors => colors
+%ul.courses{"ng-controller" => "CourseListCtrl", "ng-model" => "courses"}
+  %li{"ng-repeat" => "course in courses"}
+    %ul
+      %li
+        %div.course-header
+          %div{:class => "highlight color-0"}
+          %div{:class => "header-container vertical-center fill-width"}
+            %span.course-name {{course.name}}
+            %span.course-title {{course.title}}
+            %span.course-hours {{course.hours}}
+          %div{:class => "right vertical-center"}
+            %a{:href=>"#", :class=>"remove-course-link" } x
+        %ul.sections{"ng-repeat" => "section in course.sections"}
+          %li{"ng-repeat" => "meeting in section.meetings"}
+            %div
+              %span{:class=>"section-type label"} {{section.type}}
+              %span.code {{section.code}}
+              %span{ :class=>"enrollment status-0"}
+              %span.crn {{section.crn}}
+              %span.instructor {{print_instructor(meeting.instructor)}}
+              %span.time {{meeting.duration}}
 
 :javascript 
   $(document).ready( function() {

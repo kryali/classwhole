@@ -56,6 +56,7 @@ Whiteboard::Application.routes.draw do
   match 'scheduler/icalendar' => 'scheduler#icalendar', :via => :post
   match 'scheduler/configuration/change' => 'scheduler#change_configuration'
   match 'scheduler/schedule' => 'scheduler#schedule'
+  match 'scheduler/courses' => 'scheduler#courses'
   match 'scheduler/courses/new' => 'scheduler#add_course', :via => :post, :as => :add_course
   match 'scheduler/courses/destroy/:course_id' => 'scheduler#remove_course', :as => :remove_course
 

@@ -183,6 +183,7 @@ class SchedulerController < ApplicationController
         @schedule = Scheduler.initial_schedule(current_user.courses)
         @configurations = Scheduler.get_configurations( current_user.courses )
       end
+      @schedule_json = Scheduler.pkg(current_user.courses, @schedule).to_json
     rescue Timeout::Error
       # If we got a timeout, then that means that the user has a configuration of bad courses
       #current_user.courses = [] if current_user
@@ -328,5 +329,10 @@ class SchedulerController < ApplicationController
                       :end_hour => end_hour,
                     }
     return
+  end
+
+  def courses
+    @schedule = Scheduler.initial_schedule(current_user.courses) unless @schedule
+    render :json => Scheduler.pkg(current_user.courses, @schedule)
   end
 end

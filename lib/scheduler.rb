@@ -127,4 +127,35 @@ class Scheduler
     return configurations
   end
 
+  def self.pkg(courses, schedule)
+    pkg = []
+    courses.each do |course|
+      pkg << {
+        :name => course.to_s,
+        :title => course.title,
+        :hours => course.hours,
+        :sections => []
+      }
+    end
+
+    schedule.each do |section|
+      section_pkg = {
+        :type => section.short_type_s,
+        :code => section.code,
+        :crn => section.reference_number,
+        :meetings => []
+      }
+      section.meetings.each do |meeting| 
+        section_pkg[:meetings] << { 
+          :duration => meeting.duration_s,
+          :start_time => meeting.start_time,
+          :end_time => meeting.start_time,
+          :instructor => meeting.instructors[0]
+        }
+      end
+      pkg.select{|course| course[:name] == section.course_to_s}[0][:sections] << section_pkg
+    end
+    
+    return pkg
+  end
 end

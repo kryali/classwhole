@@ -28,7 +28,7 @@ Autocomplete.prototype.init = function() {
   var that = this;
   $.ajax({
     type: 'GET',
-    url: 'json/subject/all',
+    url: '/json/subject/all',
     success: function( data, textStatus, xhQR ) {
       that.start(data);
     }
