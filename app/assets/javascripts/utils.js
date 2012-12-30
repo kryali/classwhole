@@ -18,21 +18,21 @@ Utils = {
       //console.log("verticalOffset: " + verticalOffset);
       $(this).css("position", "absolute");
       $(this).css("top", verticalOffset);
-      console.log($(this));
     });
   },
 
   allFillWidth: function() {
     $(".fill-width").each(function() {
+      console.log(this);
       var parent = $(this).parent();
       var parentWidth = parent.width();
       var totalChildrenWidth = 0;
       parent.children().each(function() {
         totalChildrenWidth += $(this).width();
+        console.log($(this));
       });
       totalChildrenWidth -= $(this).width();
       var leftOverWidth = parentWidth - totalChildrenWidth;
-      leftOverWidth -= $(this).position().left;
       console.log("parentWidth: " + parentWidth);
       console.log("totalChildrenWidth: " + totalChildrenWidth);
       console.log("leftOverWidth: " + leftOverWidth);

@@ -1,8 +1,5 @@
-- header_height = 34
-- top_px = meeting_top_px(meeting, start_hour) + header_height
-- height_px = meeting_height_px( meeting )
 - section = meeting.section
-%div.schedule-block{ :style => "top: #{top_px}px; height: #{height_px}px;", :class=>"#{colors[section.course_id]}", :days => "#{meeting.days}"}
+%div.schedule-block{:class=>"#{colors[section.course_id]}", "start-time" => simple_time(meeting.start_time), "end-time" => simple_time(meeting.end_time)}
   %span{ :class => "hidden id"}= section.id
   %span{ :class => "hidden crn" }= section.reference_number
   %span.section-code= section.code
@@ -11,7 +8,7 @@
   %span{ :class => "enrollment status-#{section.enrollment_status}", :title => "#{section.reason}"}
   %span{ :class => "section-type label"}= section.short_type_s
   %span.duration= meeting.duration_s
-  %ul.hidden{ :style => "top: #{height_px}px;" }
+  %ul.hidden
     %li 
       - course = section.course
       %span.title Credit Hours

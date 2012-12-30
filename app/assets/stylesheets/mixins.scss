@@ -31,6 +31,10 @@
   @include sans_serif("RobotoMedium"); 
 }
 
+@mixin roboto_light() {
+  @include sans_serif("RobotoThin"); 
+}
+
 @mixin arial() {
   font-family: 'Arial', sans-serif;
 }

@@ -20,13 +20,13 @@ module SchedulerHelper
 
   def print_hour(hour)
     if( hour > 12 and hour < 24)
-      return "#{hour-12} pm"
+      return "#{hour-12}"
     elsif ( hour < 12 and hour != 0)
-      return "#{hour} am"
+      return "#{hour}"
     elsif ( hour == 24 )
-      return "#{hour-12} am"
+      return "#{hour-12}"
     elsif ( hour == 12 )
-      return "#{hour} pm"
+      return "#{hour}"
     end
     return "nil"
   end
@@ -79,24 +79,34 @@ module SchedulerHelper
     meetings_by_days = Hash.new
     ["M","T","W","R","F"].each {|day| meetings_by_days[day] = Array.new }
 
+    logger.info sections.inspect
     sections.each do |section|
       section.meetings.each do |meeting|
+        logger.info meeting
         next if not meeting.days
         days = meeting.days.split("")
         days.each { |day| meetings_by_days[day].push(meeting) if meetings_by_days.has_key?(day) }
       end
     end
 
-    return  meetings_by_days
+    logger.info meetings_by_days.inspect
+
+    return meetings_by_days
   end
 
+  # TODO: delete
   def meeting_top_px( meeting, start_hour )
     top_px = (meeting.start_time.hour - start_hour + (meeting.start_time.min/60.0)) * 48 # scheduler_block_height
     return top_px
   end
 
+  # TODO: delete
   def meeting_height_px( meeting )
     return meeting.duration * 48#@scheduler_block_height
+  end
+
+  def simple_time(time)
+    return "#{time.hour}:#{time.min}"
   end
 
   def section_colors( sections )
@@ -172,4 +182,7 @@ module SchedulerHelper
     return schedules
   end
 
+  def day_header_arr
+    ["Mon", "Tue", "Wed", "Thu", "Fri"]
+  end
 end

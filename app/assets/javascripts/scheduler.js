@@ -454,6 +454,7 @@ init = function() {
   init_pagination();
   init_configurations();
   init_profs();
+  Schedule.layout();
 
   //init_mini_pagination();
 
@@ -474,6 +475,7 @@ init = function() {
 }
 
 function init_draggable() {
+  return; // TODO RETARDED
   $(".schedule-block:not(.ui-droppable)").draggable(options.draggable);
   function mouseover(){
     if( is_showing_hints ) return;

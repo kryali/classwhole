@@ -1,25 +1,35 @@
 @import 'colors';
 @import 'mixins';
+@import 'sizes';
 
 // Toolbar
 ul.toolbar {
   width: 100%;
-  height: 40px;
+  height: $toolbar_h;
   background: #f4f4f4;
   border-bottom: 2px solid #c8c8c8;
 
   li a {
     color: #777;
     float: left;
-    display: inline-block;
     padding: 14px 15px 12px 15px;
     @include roboto_medium();
     text-transform: uppercase;
     font-size: 14px;
   }
-  
+
   li a:hover {
     background: #eee;
+  }
+
+  li span {
+    float: left;
+    height: 20px;
+    background: #DDD;
+    width: 1px;
+    display: block;
+    margin-top: 9px;
+    border-left: 1px solid white;
   }
 }
 
@@ -27,12 +37,32 @@ ul.toolbar {
 // Schedule
 .schedule-wrapper {
   width: 70%;
+  min-width: 690px;
   float: left;
-  background: blue;
+  @include user-select(none);
 }
 
 .time-label {
-  display: none;
+  float: left;
+  margin-top: $toolbar_h + $day_header_h;
+
+  li {
+    height: $section_block_h;
+    display: block;
+    @include roboto();
+    text-transform: uppercase;
+    font-size: 10px;
+    color: $time_label_color;
+    text-align: center;
+    margin-right: 10px;
+    margin-left: 10px;
+    border-bottom: 1px solid transparent;
+  }
+}
+
+.schedule-content {
+  float: left;
+  margin-left: -1px;
 }
 
 .schedule-day {
@@ -42,28 +72,39 @@ ul.toolbar {
 
   li {
     @include roboto();
-    height: 70px;
+    height: $section_block_h;
+    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    box-shadow: inset 1px 1px 2px 1px white;
   }
 
   li:nth-child(even) {
-    background: #eee;
-  }
-  li:nth-child(odd) {
-    background: #ddd;
+    background: #f4f4f4;
   }
 
-  li:first-child {
-    height: auto;
-    background: #fff;
-    text-transform: uppercase;
-    text-align: center;
-    padding: 10px 10px 8px 10px;
-    font-size: 10px;
-    color: #777;
+  li:nth-child(odd) {
+    background: #f8f8f8;
   }
 
   .schedule-block {
     position: absolute;
-    width: 100%
+    width: 100%;
+  }
+}
+
+ul.day-header {
+  height: $day_header_h;
+  border-bottom: 1px solid #e0e0e0;
+
+  li {
+    height: auto;
+    background: #fff;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 11px 0px 9px 0px;
+    font-size: 10px;
+    color: #777;
+    float: left;
+    width: 20%;
   }
 }

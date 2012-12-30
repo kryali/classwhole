@@ -3,7 +3,7 @@
 
 header {
   height: 60px;
-  background: #3b8fb4;
+  background: #54a6d5;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   display: block;
@@ -24,11 +24,20 @@ header {
     width: 50%;
 
     a {
+      color: $header_a;
       padding: 24px 20px 22px 20px;
       display: block;
       float: left;
       text-decoration: none;
       @include roboto();
+    }
+
+    a:visited {
+      color: $header_a;
+    }
+
+    a:hover {
+      color: $header_a_hover;
     }
   }
 

@@ -209,3 +209,18 @@ function duration( start_time, end_time ) {
   var minutes = end_time.getUTCMinutes() - start_time.getUTCMinutes();
   return (hours + minutes/60);
 }
+
+Schedule.layout = function() {
+  var start_time_s, start_hour, start_min, y_offset;
+  var global_start_hour = parseInt($("ul.time-label").attr("start-hour"));
+  var section_height = $("ul.schedule-day li:not(.header)").height();
+  $(".schedule-block").each(function() {
+    start_time_s = $(this).attr("start-time");
+    start_hour = start_time_s.split(":")[0];
+    start_min = start_time_s.split(":")[1];
+    y_offset = ((start_hour - global_start_hour) * (section_height + 1)) ;
+    y_offset += (start_min / 60 * section_height);
+    $(this).css("top", y_offset + "px");
+    //var end_time_s = $(this).attr("start-time");
+  });
+};

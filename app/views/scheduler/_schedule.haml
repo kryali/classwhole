@@ -7,7 +7,7 @@
 - range = hour_range(sections)
 - start_hour = range[0] - 1
 - end_hour = range[1]
-- meetings_in_days = meetings_by_days(sections)
+- meetings_by_days = meetings_by_days(sections)
 - colors = section_colors( sections )
 - all_sections = sections
 - if not defined? course_page
@@ -17,19 +17,25 @@
 - else 
   - section_hints_in_days = {}
 %div{:class => "schedule-wrapper" }
-  %div{:class => "schedule-content", "data-tooltip" => "" }
+  %ul.time-label{"start-hour" => start_hour}
+    - for hour in (start_hour..end_hour)
+      %li= hour % 2 == 0 ? print_hour(hour) : ""
+  %div{:class => "schedule-content fill-width", "data-tooltip" => "" }
     %ul.toolbar
       %li
         %a{:href => "#"} save
+        %span
       %li
         %a{:href => "#"} image
+        %span
       %li
         %a{:href => "#"} share
+        %span
+    %ul.day-header
+      - day_header_arr.each do |day|
+        %li.header= day
     %div{:class => "schedule-display" }
-      %ul.time-label
-        - for hour in (start_hour..end_hour)
-          %li= print_hour(hour)
-      - meetings_in_days.each do |day_code, sections|
+      - meetings_by_days.each do |day_code, sections|
         -if all_sections.empty?
           -if @user
             %h1= "#{@user.name} hasn't shared a schedule yet."
@@ -38,7 +44,6 @@
           - break
         -else
           %ul{:class => "schedule-day #{day_code}", :day => day_code }
-            %li.header= print_day(day_code)
             - for hour in (start_hour..end_hour)
               %li
             - sections.each do |meeting|
