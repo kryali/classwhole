@@ -1,52 +1,54 @@
 @import 'mixins';
 
-.course-header {
-  background: #fff;
-  height: 30px;
-  text-transform: uppercase;
-  font-size: 12px;
-  border-top: 1px solid #cbcbcb;;
-  border-bottom: 1px solid #cbcbcb;;
-  overflow: hidden;
-  @include roboto();
-  box-shadow: 0px 1px 2px #ddd;
-
-  .highlight {
-    width: 7px;
-    float: left;
-    height: 100%;
-    margin-right: 6px;
-  }
-
-  .right {
-    right: 5px;
-  }
-}
-
-.header-container {
-  left: 15px;
-}
-
-.course-name a {
-  color: #333333;
-  font-weight: normal;;
-  font-size: 14px;
-  @include roboto_medium();
-}
-
-.course-name a:hover {
-  color: #666666;
-}
-
-.course-title {
-  margin-left: 5px;
-  color: #616263;
-}
-
-.sections {
-  li {
-    padding: 10px;
+ul.courses {
+  .course-header {
+    background: #fff;
+    height: 30px;
+    text-transform: uppercase;
     font-size: 12px;
-    border-bottom: 1px solid #ddd;
+    border-top: 1px solid #cbcbcb;;
+    border-bottom: 1px solid #cbcbcb;;
+    overflow: hidden;
+    @include roboto();
+    box-shadow: 0px 1px 2px #ddd;
+
+    .highlight {
+      width: 7px;
+      float: left;
+      height: 100%;
+      margin-right: 6px;
+    }
+
+    .right {
+      right: 5px;
+    }
+  }
+
+  .header-container {
+    left: 15px;
+  }
+
+  .course-name a {
+    color: #333333;
+    font-weight: normal;;
+    font-size: 14px;
+    @include roboto_medium();
+  }
+
+  .course-name a:hover {
+    color: #666666;
+  }
+
+  .course-title {
+    margin-left: 5px;
+    color: #616263;
+  }
+
+  .sections {
+    li {
+      padding: 10px;
+      font-size: 12px;
+      border-bottom: 1px solid #ddd;
+    }
   }
 }

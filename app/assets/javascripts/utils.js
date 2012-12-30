@@ -21,22 +21,33 @@ Utils = {
     });
   },
 
-  allFillWidth: function() {
+  allFill: function() {
     $(".fill-width").each(function() {
-      console.log(this);
-      var parent = $(this).parent();
-      var parentWidth = parent.width();
-      var totalChildrenWidth = 0;
-      parent.children().each(function() {
-        totalChildrenWidth += $(this).width();
-        console.log($(this));
-      });
-      totalChildrenWidth -= $(this).width();
-      var leftOverWidth = parentWidth - totalChildrenWidth;
-      console.log("parentWidth: " + parentWidth);
-      console.log("totalChildrenWidth: " + totalChildrenWidth);
-      console.log("leftOverWidth: " + leftOverWidth);
-      $(this).css("width", leftOverWidth); 
+      fill(this, true);
     });
-  }
+
+    $(".fill-height").each(function() {
+      fill(this, false);
+    });
+
+    function fill(node, width) {
+      var parent = $(node).parent();
+      var parentVal = width ? parent.width() : parent.height();
+      var totalChildrenVal = 0;
+      $(node).siblings().each(function() {
+        totalChildrenVal += width ? $(this).width() : $(this).height();
+      });
+      var leftOverVal = parentVal - totalChildrenVal;
+      if (width) {
+        $(node).css("width", leftOverVal); 
+      } else {
+        $(node).css("height", leftOverVal); 
+      }
+    }
+  },
+
+  layout: function() {
+    Utils.allCenterVertical();
+    Utils.allFill();
+  },
 }

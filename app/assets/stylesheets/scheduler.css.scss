@@ -94,11 +94,89 @@ ul.toolbar {
 .schedule-block {
   position: absolute;
   width: 100%;
-  //box-shadow: 0px 0px 2px #333;
-  background: red;
-  //border: 1px solid #333;
-  //margin-left: -1px;
+  cursor: move;
+  box-shadow: 1px 1px 3px #ccc;
+  background: #fff;
+  border: 1px solid #999;
+
+  .highlight {
+    width: 100%;
+    height: 10px;
+  }
+
+  .section-content {
+    position: relative;
+
+    span {
+      position: absolute;
+      text-transform: uppercase;
+      @include roboto_medium();
+    }
+
+    .course-name {
+      left: 5px;
+      top: 8px;
+      font-size: 16px;
+      color: #444;
+    }
+
+    .section-code {
+      bottom: 5px;
+      right: 5px;
+      font-size: 13px;
+      color: #bbb;
+      @include sans_serif("RobotoLight");
+    }
+
+    .course-title {
+      top: 30px;
+      left: 5px;
+      font-size: 10px;
+      color: #666;
+      @include sans_serif("RobotoLight");
+    }
+
+    .section-type {
+      font-size: 13px;
+      top: 7px;
+      right: 5px;
+      color: #888;
+      @include sans_serif("RobotoLight");
+    }
+
+    .enrollment {
+      top: 7px;
+      right: 35px;
+    }
+
+    .duration {
+      bottom: 5px;
+      left: 5px;
+      font-size: 12px;
+      color: #888;
+    }
+  }
 }
+
+.enrollment {
+  display: block;
+  width: 9px;
+  height: 9px;
+  background: url("status-icons.png");
+}
+
+.status-0 {
+  background-position: 20px 0px;
+}
+
+.status-2 {
+  background-position: 9px 0px;
+}
+
+.status-1 {
+  background-position: 0px 0px;
+}
+
 
 ul.day-header {
   height: $day_header_h;
