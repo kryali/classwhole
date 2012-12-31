@@ -12,10 +12,9 @@
           %div{:class => "highlight color-0"}
           %div{:class => "header-container vertical-center fill-width"}
             %span.course-name {{course.name}}
-            %span.course-title {{course.title}}
+            %span.course-title{:class => "truncate"} {{course.title}}
             %span.course-hours {{course.hours}}
-          %div{:class => "right vertical-center"}
-            %a{:href=>"#", :class=>"remove-course-link" } x
+            %a{:href=>"#", :class=>"remove-course" } x
         %ul.sections{"ng-repeat" => "section in course.sections"}
           %li{"ng-repeat" => "meeting in section.meetings"}
             %div

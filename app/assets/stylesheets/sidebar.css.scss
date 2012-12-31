@@ -51,6 +51,9 @@ ul.courses {
     margin-left: 5px;
     @include roboto_medium();
     color: #999;
+    position: absolute;
+    top: 3px;
+    right: 24px;
   }
 
   .course-title {
@@ -58,6 +61,13 @@ ul.courses {
     color: #777;
     @include roboto_light();
     font-size: 13px;
+  }
+
+  a.remove-course {
+    font-size: 10px;
+    right: 14px;
+    position: absolute;
+    top: 3px;
   }
 
   .sections {

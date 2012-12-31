@@ -9,7 +9,7 @@ class Meeting < OpenStruct
   end
 
   def duration_s
-    return "#{print_time(start_time)}-#{print_time(end_time)}"
+    start_time.nil? ? "Online/Arr" : "#{print_time(start_time)}-#{print_time(end_time)}"
   end
 
   # NOTE: move this somewhere where every method can use it
@@ -30,7 +30,4 @@ class Meeting < OpenStruct
 
     return time_s.gsub(/:00/, "")
   end
-
-
 end
-
