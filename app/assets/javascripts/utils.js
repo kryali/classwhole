@@ -13,9 +13,6 @@ Utils = {
       var parentHeight = $(this).parent().height();
       var elementHeight = $(this).height();
       var verticalOffset = Math.ceil((parentHeight - elementHeight)/2);
-      //console.log("parentHeight: " + parentHeight);
-      //console.log("currentHeight: " + elementHeight);
-      //console.log("verticalOffset: " + verticalOffset);
       $(this).css("position", "absolute");
       $(this).css("top", verticalOffset);
     });

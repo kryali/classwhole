@@ -1,4 +1,5 @@
 class SchedulerController < ApplicationController
+  skip_before_filter :verify_authenticity_token
   before_filter :set_cache_buster
   include ApplicationHelper
   include SchedulerHelper
@@ -312,9 +313,11 @@ class SchedulerController < ApplicationController
   #   from the currently logged in user 
   #
   def remove_course
-    course = Course.find(params["course_id"].to_i)
+    course = Course.find(params["id"].to_i)
     current_user.rem_course( course )
     current_user.courses.delete( course )
+    render :json => { :status => :success, :go => :go}
+=begin
     @schedule = Scheduler.initial_schedule(current_user.courses)
   
     # Prepare the schedule for json delivery
@@ -329,6 +332,7 @@ class SchedulerController < ApplicationController
                       :end_hour => end_hour,
                     }
     return
+=end
   end
 
   def courses

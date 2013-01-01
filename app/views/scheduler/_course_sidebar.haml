@@ -1,4 +1,4 @@
-= javascript_include_tag "course.list.ctrl.js"
+= javascript_include_tag "angular/course.list.ctrl.js"
 -#%ul.courses
 -#  - courses, course_section_hash = courses_from_sections( sections )
 -#  - colors = section_colors( sections )
@@ -14,7 +14,7 @@
             %span.course-name {{course.name}}
             %span.course-title{:class => "truncate"} {{course.title}}
             %span.course-hours {{course.hours}}
-            %a{:href=>"#", :class=>"remove-course" } x
+            %a{:href=>"#", :class=>"remove-course" , "ng-click" => "removeCourse(course.id)"} x
         %ul.sections{"ng-repeat" => "section in course.sections"}
           %li{"ng-repeat" => "meeting in section.meetings"}
             %div

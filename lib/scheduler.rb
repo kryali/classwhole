@@ -131,6 +131,7 @@ class Scheduler
     pkg = []
     courses.each do |course|
       pkg << {
+        :id => course.id,
         :name => course.to_s,
         :title => course.title,
         :hours => course.hours,
