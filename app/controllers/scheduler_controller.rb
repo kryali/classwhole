@@ -254,37 +254,35 @@ class SchedulerController < ApplicationController
     current_user
     # If the person isn't logged into facebook, create a cookie, but don't overwrite it
     if cookies["classes"].nil? and current_user.is_temp?
-      cookies["classes"] = { :value => "", :expires => 1.day.from_now }			
+      cookies["classes"] = {:value => "", :expires => 1.day.from_now}
     end
 
     course_id = params["id"].to_i
-
-    begin 
-      course = Course.find( course_id )
-    rescue ActiveRecord::RecordNotFound
-      render :json => { :success => false, :message => "Class not found" }
-      return
-    end
+    course = Course.find(course_id)
     
     if current_user.courses.include?(course) 
-      render :json => { :success => false, :message => "Class already added" }
+      render :json => { :success => false, :status => "error", :message => "Class already added" }
       return
     else
-      #course_users = current_user.courses.to_json
       courses_copy = current_user.courses.clone 
       courses_copy << course
       begin
         # Don't take longer than 5 seconds to retrieve & parse an RSS feed
         Timeout::timeout(5) do
           @schedule = Scheduler.initial_schedule(courses_copy)
-          current_user.add_course( course )
+          current_user.add_course(course) unless @schedule.empty?
         end
       rescue Timeout::Error
-        render :json => { :success => false, :message => "schedule timeout.. possible conflict?" }
+        render :json => { :success => false, :status => "error", :message => "schedule timeout.. possible conflict?" }
         return
       end
+
+      if @schedule.empty?
+        render :json => {:success => false, :status => "error", :message => "Sorry, there was a conflict"} 
+      else
+        render :json => {:success => true}
+      end
     
-      render :json => {:status => "success", :message => "Class added"}
     end
   end
 
@@ -297,7 +295,7 @@ class SchedulerController < ApplicationController
     course = Course.find(params["id"].to_i)
     current_user.rem_course( course )
     current_user.courses.delete( course )
-    render :json => { :status => :success, :go => :go}
+    render :json => {:status => :success}
 =begin
     @schedule = Scheduler.initial_schedule(current_user.courses)
   

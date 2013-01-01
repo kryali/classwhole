@@ -3,6 +3,7 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
   $scope.colors = ColorList;
   console.log("SchedulerCtrl scope: " + $scope.$id);
   save(initial_schedule);
+  console.log(initial_schedule);
 
   /****************************************
     api methods
@@ -17,8 +18,11 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
 
   $scope.addCourse = function(courseId) {
     SchedulerService.addCourse(courseId, function(data) {
-      console.log(data);
-      update();
+      if (data.success) {
+        update();
+      } else {
+        pop_alert(data.status, data.message);
+      }
     });
   };
 
@@ -74,6 +78,7 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
 
   function update() {
     SchedulerService.get(function(data) {
+      console.log(data);
       save(data);
     });
   }

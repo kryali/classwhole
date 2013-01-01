@@ -1,9 +1,3 @@
--#
--# This view is responsible for displaying a user's schedule
--# - see scheduler_helper for any unfamiliar functions
--#
--# arr_sections = 
-- sections = [] if sections.nil?
 %div{:class => "schedule-wrapper", "ng-show" => "schedule.length > 0" }
   %ul.time-label
     %li{"ng-repeat" => "hour in hourRange"} 
@@ -30,7 +24,7 @@
       - else
         %ul{:class => "schedule-day", "ng-repeat" => "day in days()"}
           %li{"ng-repeat" => "hour in hourRange"}
-        %div.schedule-block{"ng-repeat" => "section in flattenSchedule(schedule)", :day => "{{section.day}}", "start-time" => "10:00", "end-time" => "12:30", "section" => "" }
+        %div.schedule-block{"ng-repeat" => "section in flattenSchedule(schedule)", "section" => ""}
           %div.highlight{:class=>"{{color(section.course.id)}}"}
           %div.section-content{:class => "fill-height"}
             %span.course-name {{section.course.name}}
@@ -39,3 +33,5 @@
             %span{ :class => "enrollment status-{{section.enrollment}}", :title => "{{section.reason}}"}
             %span.section-type {{section.type}}
             %span.duration {{section.duration}}
+%div{"ng-hide"  => "schedule.length > 0", :class => "scheduler-landing"}
+  Add classes -> (todo make it prettier)
