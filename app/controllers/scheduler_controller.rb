@@ -262,12 +262,12 @@ class SchedulerController < ApplicationController
     begin 
       course = Course.find( course_id )
     rescue ActiveRecord::RecordNotFound
-      render :json => { :status => "error", :message => "Class not found" }
+      render :json => { :success => false, :message => "Class not found" }
       return
     end
     
     if current_user.courses.include?(course) 
-      render :json => { :status => "error", :message => "Class already added" }
+      render :json => { :success => false, :message => "Class already added" }
       return
     else
       #course_users = current_user.courses.to_json
@@ -280,30 +280,11 @@ class SchedulerController < ApplicationController
           current_user.add_course( course )
         end
       rescue Timeout::Error
-        render :json => { :status => "error", :message => "schedule timeout.. possible conflict?" }
+        render :json => { :success => false, :message => "schedule timeout.. possible conflict?" }
         return
       end
     
-      # Prepare the schedule for json delivery
-      Scheduler.pack_schedule( @schedule )
-      start_hour, end_hour = Section.hour_range( @schedule )
-      courses, course_section_hash = courses_from_sections( @schedule )
-      colors = section_colors( @schedule )
-      sidebar_row = render_to_string "_course_sidebar_row", 
-                                    :locals => { 
-                                      :course => course, 
-                                      :sections => course_section_hash[course.id], 
-                                      :colors => colors 
-                                    }, 
-                                    :layout => false
-      render :json => { 
-                        :status => "success", 
-                        :message => "Class added", 
-                        :schedule => @schedule,
-                        :start_hour => start_hour,
-                        :end_hour => end_hour,
-                        :sidebar_row => sidebar_row
-                      }
+      render :json => {:status => "success", :message => "Class added"}
     end
   end
 

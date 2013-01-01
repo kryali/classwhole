@@ -210,48 +210,35 @@ function duration( start_time, end_time ) {
   return (hours + minutes/60);
 }
 
-Schedule.layout = function() {
-
-  layout_sections();
+Schedule.layoutSection = function(sectionElement, section, globalStartHour) {
   Utils.layout();
+  var height, start_hour, start_min, end_hour, end_min, y_offset, x_offset;
+  var days = ["M", "T", "W", "R", "F"];
+  var day = section.day;
+  var section_height = $("ul.schedule-day li").height();
+  var section_width = $("ul.schedule-day li").width();
 
-  function layout_sections() {
-    var days = ["M", "T", "W", "R", "F"];
-    var height, time_s, start_hour, start_min, end_hour, end_min, y_offset, x_offset;
-    var global_start_hour = parseInt($("ul.time-label").attr("start-hour"));
-    var section_height = $("ul.schedule-day li").height();
-    var section_width = $("ul.schedule-day li").width();
-    $(".schedule-block").each(function() {
-      layout_block($(this));
-    });
+  // y_offset
+  start_hour = section.start_time.hour;
+  start_min = section.start_time.min / 60;
 
-    function layout_block(section) {
-      var day = section.attr("day");
+  y_offset = ((start_hour - globalStartHour) * (section_height + 1)); // +1 border
+  y_offset += start_min * section_height;
 
-      // y_offset
-      time_s = section.attr("start-time");
-      start_hour = time_s.split(":")[0];
-      start_min = time_s.split(":")[1] / 60;
-      y_offset = ((start_hour - global_start_hour) * (section_height + 1)) ;
-      y_offset += start_min * section_height;
+  // x_offset
+  x_offset = $($("ul.schedule-day").get(days.indexOf(day))).position().left;
 
-      // x_offset
-      x_offset = $($("ul.schedule-day").get(days.indexOf(day))).position().left;
+  // height 
+  end_hour = section.end_time.hour;
+  end_min = section.end_time.min / 60;
+  height = ((end_hour - start_hour) + end_min - start_min) * section_height;
 
-      // height 
-      time_s = section.attr("end-time");
-      end_hour = time_s.split(":")[0];
-      end_min = time_s.split(":")[1] / 60;
-      height = ((end_hour - start_hour) + end_min - start_min) * section_height;
-
-      section.css("left", x_offset);
-      section.css("top", y_offset);
-      section.css("width", section_width - 2); // -2 for borders
-      section.css("height", height);
-      if (height < 63) {
-        section.find(".course-title").css("display", "none");
-      }
-    }
+  sectionElement.css("left", x_offset);
+  sectionElement.css("top", y_offset);
+  sectionElement.css("width", section_width - 2); // -2 for borders
+  sectionElement.css("height", height);
+  if (height < 63) {
+    sectionElement.find(".course-title").css("display", "none");
   }
-
+  Utils.layout();
 };

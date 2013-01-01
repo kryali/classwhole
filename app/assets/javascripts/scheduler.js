@@ -454,7 +454,7 @@ init = function() {
   init_pagination();
   init_configurations();
   init_profs();
-  Schedule.layout();
+  //Schedule.layout();
 
   //init_mini_pagination();
 

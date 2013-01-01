@@ -1,15 +1,14 @@
-= javascript_include_tag "angular/course.list.ctrl.js"
 -#%ul.courses
 -#  - courses, course_section_hash = courses_from_sections( sections )
 -#  - colors = section_colors( sections )
 -#  - courses.each do |course|
 -#    = render "scheduler/course_sidebar_row", :course => course, :sections => course_section_hash[course.id], :colors => colors
-%ul.courses{"ng-model" => "courses"}
-  %li{"ng-repeat" => "course in courses"}
+%ul.courses{"ng-model" => "schedule"}
+  %li{"ng-repeat" => "course in schedule"}
     %ul
       %li
         %div.course-header
-          %div{:class => "highlight color-0"}
+          %div{:class => "highlight {{color(course.id)}}"}
           %div{:class => "header-container vertical-center fill-width"}
             %span.course-name {{course.name}}
             %span.course-title{:class => "truncate"} {{course.title}}

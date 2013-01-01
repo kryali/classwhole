@@ -4,22 +4,10 @@
 -#
 -# arr_sections = 
 - sections = [] if sections.nil?
-- range = hour_range(sections)
-- start_hour = range[0] - 1
-- end_hour = range[1]
-- meetings_by_days = meetings_by_days(sections)
-- colors = section_colors( sections )
-- all_sections = sections
-- if not defined? course_page
-  -course_page = false
-- if @section_hints
-  - section_hints_in_days = meetings_by_days(@section_hints)
-- else 
-  - section_hints_in_days = {}
-%div{:class => "schedule-wrapper" }
-  %ul.time-label{"start-hour" => start_hour}
-    - for hour in (start_hour..end_hour)
-      %li= hour % 2 == 0 ? print_hour(hour) : ""
+%div{:class => "schedule-wrapper", "ng-show" => "schedule.length > 0" }
+  %ul.time-label
+    %li{"ng-repeat" => "hour in hourRange"} 
+      {{print_hour(hour)}}
   %div{:class => "schedule-content fill-width", "data-tooltip" => "" }
     %ul.toolbar
       %li
@@ -32,20 +20,22 @@
         %a{:href => "#"} share
         %span
     %ul.day-header
-      - day_header_arr.each do |day|
-        %li.header= day
-    %div{:class => "schedule-display" }
-      - if all_sections.empty?
+      %li.header{"ng-repeat" => "day in days()"} {{day}}
+    %div{:class => "schedule-display"}
+      - if sections.empty?
         -if @user
           %h1= "#{@user.name} hasn't shared a schedule yet."
         -elsif params[:action] != "realtime" 
           %h1 Sorry, we couldn't find a schedule.
       - else
-        - day_header_arr.each do |day|
-          %ul{:class => "schedule-day"}
-            - for hour in (start_hour..end_hour)
-              %li
-        - all_sections.each do |section|
-          - section.meetings.each do |meeting|
-            - if not meeting.start_time.nil?
-              = render 'scheduler/meeting', :meeting => meeting, :start_hour => start_hour, :colors => colors
+        %ul{:class => "schedule-day", "ng-repeat" => "day in days()"}
+          %li{"ng-repeat" => "hour in hourRange"}
+        %div.schedule-block{"ng-repeat" => "section in flattenSchedule(schedule)", :day => "{{section.day}}", "start-time" => "10:00", "end-time" => "12:30", "section" => "" }
+          %div.highlight{:class=>"{{color(section.course.id)}}"}
+          %div.section-content{:class => "fill-height"}
+            %span.course-name {{section.course.name}}
+            %span.section-code  {{section.code}}
+            %span.course-title {{section.course.title}}
+            %span{ :class => "enrollment status-{{section.enrollment}}", :title => "{{section.reason}}"}
+            %span.section-type {{section.type}}
+            %span.duration {{section.duration}}

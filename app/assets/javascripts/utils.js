@@ -76,4 +76,8 @@ Utils = {
     });
     return { 'width': parentWidth - siblingWidth, 'height': parentHeight - siblingHeight }
   },
+
+  deepCopy: function(obj) {
+    return jQuery.extend(true, {}, obj);
+  },
 }

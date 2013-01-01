@@ -3,7 +3,6 @@
   %head
     %title= yield(:title)
     %meta{ :name => "description", :content => yield(:meta_description) }
-    -# stylesheet_link_tag    "bootstrap.min.css"
     = stylesheet_link_tag    "application" 
     = csrf_meta_tags
     = javascript_tag          "var AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? 
@@ -18,8 +17,8 @@
     = javascript_include_tag "angular/app"
     = javascript_include_tag "angular/directives"
     = javascript_include_tag "angular/services"
+    = javascript_include_tag "angular/utils"
     = javascript_include_tag "general/fb_button"
-    =# javascript_include_tag "main.js"
     = javascript_include_tag "modal.js"
   %body
     = render "shared/modal"
@@ -27,7 +26,7 @@
     %div#fb-root
     %div#wrapper
       = render "shared/header"
-      %div#content{"ng-app"=>"classwhole"}
+      %div#content{"ng-app"=>"classwhole", "ng-controller" => "SchedulerCtrl"}
         = yield
         %div.clear
       %div#footer

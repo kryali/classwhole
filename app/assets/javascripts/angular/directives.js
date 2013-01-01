@@ -14,16 +14,22 @@ angular.module('directives', [])
                   event.preventDefault();
                   if ( ui.item ) {
                     var class_id = ui.item.id;
-                    console.log(class_id);
                     autocomplete.clear();
                     scope.$apply(function($scope) {
-                      console.log("Callback scope: " + $scope.$id);
-                      console.log($scope);
                       $scope.addCourse(class_id);
                     });
                   }
                 }
               });
             }
+    }
+  })
+  .directive("section", function() {
+    return {
+      link: function($scope, iElement, iAttrs) {
+        $(function() {
+          Schedule.layoutSection($(iElement), $scope.section, $scope.hourRange[0]); 
+        });
+      }
     }
   });

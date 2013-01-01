@@ -1,6 +1,6 @@
 - if not defined? course_page
   - course_page = false
-%div.sidebar{"ng-controller" => "CourseListCtrl"}
+%div.sidebar
   - if @user and not course_page
     = render :partial => "profile"
   - if not @user or (@user and current_user.id == @user.id) and not course_page
