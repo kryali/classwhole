@@ -1,1 +1,1 @@
-angular.module('classwhole', ['services']);
+angular.module('classwhole', ['services', 'directives']);

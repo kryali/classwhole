@@ -606,8 +606,6 @@ function fetch_schedule(data, textStatus, jqXHR, day, section_id, schedule_ids) 
     //console.log( contents );
     update_schedule_contents( current_schedule, contents );
   }
-
-
 }
 
 function re_init( current_schedule ) {

@@ -1,4 +1,5 @@
 function CourseListCtrl($scope, $http, SchedulerService) {
+  console.log("CourseListCtrl scope: " + $scope.$id);
   
   function update() {
     SchedulerService.get(function(data) {
@@ -18,8 +19,13 @@ function CourseListCtrl($scope, $http, SchedulerService) {
       console.log(data);
       update();
     });
-    //Scheduler.remove({id : courseId});
     console.log(courseId);
   };
-}
 
+  $scope.addCourse = function(courseId) {
+    SchedulerService.addCourse(courseId, function(data) {
+      console.log(data);
+      update();
+    });
+  }
+}

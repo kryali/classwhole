@@ -4,7 +4,7 @@
 -#  - colors = section_colors( sections )
 -#  - courses.each do |course|
 -#    = render "scheduler/course_sidebar_row", :course => course, :sections => course_section_hash[course.id], :colors => colors
-%ul.courses{"ng-controller" => "CourseListCtrl", "ng-model" => "courses"}
+%ul.courses{"ng-model" => "courses"}
   %li{"ng-repeat" => "course in courses"}
     %ul
       %li
