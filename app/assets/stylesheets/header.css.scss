@@ -1,175 +1,104 @@
-$header-spacing: 7px;
-$a-link-color: #0069D6;
+@import 'mixins';
+@import "colors";
 
 header {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-  font-family: 'Arial','Helvetica', sans-serif;
-  background: white;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.25),inset 0 -1px 0 rgba(0,0,0,0.1);
-  border-bottom: 1px solid #AAA;
-  position: fixed;
-  top: 0px;
-  width: 100%;
-  z-index: 101;
+  height: 60px;
+  background: #54a6d5;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  display: block;
 
-  div.center {
-    width: 940px;
-    margin: 0 auto;
-  }
-
-  h3 a {
-    font-family: 'Helvetica', sans-serif;
+  a#logo {
     display: block;
+    width: 158px;
+    height: 32px;
+    background: url('header-logo.png') no-repeat center;
+    padding: 14px 0 14px 0;
+    margin: 0 15px 0 15px;
     float: left;
-    color: #333;
-    font-size: 20px;
-    font-weight: lighter;
-    line-height: 1;
-    margin-right: 30px;
-    background: red;
-    width: 165px;
-    height: 40px;
-    background: url('small-logo.png') no-repeat center;
-    padding: 13px 0 0 0;
   }
-
-  h3 a:hover { text-decoration: none; }
-  h3 a:visited { color: #333; }
 
   nav {
-    float: left;
-    padding-top: 3px;
-    a { 
-      color: #555; 
-      padding: 18px $header-spacing 18px $header-spacing;
-      display: block;
-      float: left;
-      //margin-right: $header-spacing;
-      font-family: 'RobotoLight', 'Arial', sans-serif;
-    }
-    a:visited {
-      color: #555;
-    }
-    // overide default
-    a:hover:not(.fb_button){ 
-      color: $a-link-color; 
-      background: #f2fbff;
-      text-decoration: none;
-    }
-
-  }
-
-  nav.secondary-nav { 
-    float: right; 
-    //padding: 14px 0;
-    li {
-      float: left;
-    }
-    .fb-button {
-      margin-top: 12px;
-      display: block;
-      float: right;
-    }
-
-    a {
-      display: inline-block;
-      float: left;
-    }
-  }
-
-
-}
-
-.divider {
-  width: 1px;
-  height: 15px;
-  background: #ccc;
-  float: left;
-  margin: 17px 0px 0 0px;
-}
-
-.dropdown {
-  padding: 34px 0 0 19px;
-  width: 12px;
-  height: 16px;
-  background: url("dropdown.png") no-repeat center;
-  display: block;
-  float: left;
-  cursor: pointer;
-  position: relative;
-  border: 1px solid transparent;
-
-  &:hover {
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border: 1px solid #999;
-    box-shadow: 0px -1px 2px #ccc;
-  }
-
-  &:hover .dropdown-menu {
     display: block;
-  }
-
-  .dropdown-menu {
-    display: none;
-    border: 1px solid #999;
-    overflow: hidden;
-    position: absolute;
-    top: 50px;
-    left: -120px;
-    width: 150px;
-    cursor: auto;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    padding-bottom: 3px;
-    padding-top: 3px;
-    background: white;
-    box-shadow: 0px 2px 3px #666;
-
-    &:hover { display: block; }
+    float: left;
+    width: 50%;
 
     a {
-      padding: 10px 2px;
-      background: white;
-      border-bottom: 1px solid #ccc;
-      width: 100%;
+      color: $header_a;
+      padding: 24px 20px 22px 20px;
       display: block;
-      text-align: center;
-      font-size: 14px;
+      float: left;
+      text-decoration: none;
+      @include roboto();
+    }
+
+    a:visited {
+      color: $header_a;
     }
 
     a:hover {
-      background: #FFFCCF;
-      color: #333;
+      color: $header_a_hover;
     }
   }
-}
 
-.dropdown-menu a:last-child {
-  border: none;
-}
+  nav.secondary-nav {
+    float: right;
+    height: 100%;
+    width: 26%;
+    min-width: 100px;
 
-#user-link {
-  padding: 0px;
-  vertical-align: top;
-  img {
-    width: 23px;
-    height: 23px;
-    margin: 0 4px 12px 10px;
-  }
+    a {
+      padding: 0;
+    }
 
-  span {
-    padding: 26px 12px 22px 0px;
-    display: inline-block;
-    line-height: 0px;
-  }
-}
+    a#user-link {
+      height: 100%;
+      width: 75%;
+      float: right;
 
-.fb-button {
-  width: 69px;
-  height: 24px;
-  cursor: pointer;
-  background: url("fblogin-button.png");
+      .fb-login-pic {
+        width: 35px;
+        height: 35px;
+        display: block;
+        float: right;
+        margin-top: 13px;
+      }
+
+      span {
+        display: block;
+        float: right;
+        margin: 23px 0 0 10px;
+        font-size: 18px;
+        color: #c0e6f7;;
+      }
+
+      span:hover {
+        color: $a_highlight_color;
+      }
+    }
+
+    div#dropdown-image {
+      width: 40px;
+      height: 100%;
+      background: url('dropdown.png') no-repeat center;
+      float: right;
+      cursor: pointer;
+      position: relative;
+    }
+
+    div.dropdown-menu {
+      z-index: 10;
+      background: #333;
+      position: absolute;
+      bottom: -36px;
+      right: 0px;
+      width: 100px;
+
+      a {
+        padding: 10px 0 10px 0;
+        text-align: center;
+        width: 100%;
+      }
+    }
+  } 
 }

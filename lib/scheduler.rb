@@ -127,4 +127,87 @@ class Scheduler
     return configurations
   end
 
+  def self.pkg(courses, schedule)
+    hour_range = self.hour_range(schedule)
+    pkg = []
+    courses.each do |course|
+      pkg << {
+        :id => course.id,
+        :name => course.to_s,
+        :title => course.title,
+        :hours => course.hours,
+        :sections => []
+      }
+    end
+
+    schedule.each do |section|
+      section_pkg = {
+        :type => section.short_type_s,
+        :code => section.code,
+        :crn => section.reference_number,
+        :enrollment => section.enrollment_status,
+        :reason => section.reason,
+        :meetings => []
+      }
+      section.meetings.each do |meeting| 
+        section_pkg[:meetings] << { 
+          :duration => meeting.duration_s,
+          :start_time => simple_time(meeting.start_time),
+          :end_time => simple_time(meeting.end_time),
+          :days => meeting.days,
+          :instructor => meeting.instructors[0]
+        }
+      end
+      pkg.select{|course| course[:name] == section.course_to_s}[0][:sections] << section_pkg
+    end
+    
+    return { :hour_range => hour_range, :schedule => pkg }
+  end
+
+  def self.simple_time(time)
+    { :hour => time.hour, :min => time.min } if time
+  end
+
+  def self.hour_range(sections)
+    finished_courses = []
+    all_possible_sections = []
+    sections.each do |section|
+
+      course = section.course
+      next if finished_courses.include?(course.id)
+
+      # Build up a list of all possible sections for the course
+      course.sections.each do |course_section|
+        # Add it if we don't already have the section
+        if !all_possible_sections.include?(course_section)
+          all_possible_sections << course_section
+        end
+      end
+
+      # Mark the course as already processed so we dont do it again
+      finished_courses << course.id
+    end
+
+    earliest_start_time = 24 * 60
+    latest_end_time = 0
+    
+    all_possible_sections.each do |section|
+      section.meetings.each do |meeting|
+        next if !meeting.start_time
+        current_start_time = meeting.start_time.hour * 60 + meeting.start_time.min
+        current_end_time = meeting.end_time.hour * 60 + meeting.end_time.min
+
+        if current_start_time < earliest_start_time
+          earliest_start_time = current_start_time
+        end
+        if current_end_time > latest_end_time
+          latest_end_time = current_end_time
+        end
+      end
+    end
+
+    earliest_start_time = (earliest_start_time.to_f/60).floor
+    latest_end_time = (latest_end_time.to_f/60).ceil
+    return earliest_start_time, latest_end_time
+  end
 end

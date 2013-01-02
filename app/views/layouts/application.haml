@@ -3,26 +3,22 @@
   %head
     %title= yield(:title)
     %meta{ :name => "description", :content => yield(:meta_description) }
-    -# stylesheet_link_tag    "bootstrap.min.css"
     = stylesheet_link_tag    "application" 
     = csrf_meta_tags
     = javascript_tag          "var AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? 
-    - if Rails.env != "development"
-      = javascript_include_tag "google.analytics"
-    = javascript_include_tag "mixpanel.init"
     = javascript_include_tag "http://connect.facebook.net/en_US/all.js"
     = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" 
     = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" 
-    = javascript_include_tag "ratings","linkify","hoverIntent","tooltip","dropdown","utils","jquery.tipsy", "init", "bootstrap-modal.js", "bootstrap-alerts.js", "bootstrap-modal.js", "bootstrap-tabs.js" , "slides.min.jquery.js", "general/alert"
-    = javascript_include_tag "general/fb_button"
-    =# javascript_include_tag "main.js"
-    = javascript_include_tag "modal.js"
+    = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular.js"
+    = javascript_include_tag "application.js" 
   %body
     = render "shared/modal"
     %div.alert-box
     %div#fb-root
-    = render "shared/header"
     %div#wrapper
-      = yield
-    %div#footer
-      = render "shared/footer"
+      = render "shared/header"
+      %div#content{"ng-app"=>"classwhole"}
+        = yield
+        %div.clear
+      %div#footer
+        = render "shared/footer"

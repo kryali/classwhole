@@ -41,13 +41,8 @@ Whiteboard::Application.routes.draw do
   match 'user/header' => 'user#header', :via => :post
 
   # Scheduler routes
-  match "scheduler/" => "scheduler#realtime", :as => "scheduler_index"
-  get "scheduler/show"
-  get "scheduler/new"
-  match 'scheduler/sidebar' => 'scheduler#sidebar', :via => :post
+  match "scheduler/" => "scheduler#index", :as => "scheduler_index"
   match 'scheduler/move_section' => 'scheduler#move_section', :via => :post
-  match 'scheduler/paginate' => 'scheduler#paginate', :via => :post
-	match 'scheduler/new' => 'scheduler#new'
 	match 'scheduler/show/:id' => 'scheduler#show', :as => 'scheduler_show'
   match 'scheduler/save' => 'scheduler#save', :via => :post
   match 'scheduler/share' => 'scheduler#share', :via => :post
@@ -57,7 +52,7 @@ Whiteboard::Application.routes.draw do
   match 'scheduler/configuration/change' => 'scheduler#change_configuration'
   match 'scheduler/schedule' => 'scheduler#schedule'
   match 'scheduler/courses/new' => 'scheduler#add_course', :via => :post, :as => :add_course
-  match 'scheduler/courses/destroy/:course_id' => 'scheduler#remove_course', :as => :remove_course
+  match 'scheduler/courses/destroy' => 'scheduler#remove_course', :via => :post, :as => :remove_course
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

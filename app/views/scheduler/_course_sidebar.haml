@@ -1,14 +1,26 @@
-%ul.courses
-  - courses, course_section_hash = courses_from_sections( sections )
-  - colors = section_colors( sections )
-  - courses.each do |course|
-    = render "course_sidebar_row", :course => course, :sections => course_section_hash[course.id], :colors => colors
+%ul.courses{"ng-model" => "schedule"}
+  %li{"ng-repeat" => "course in schedule"}
+    %div.course-header
+      %div{:class => "highlight {{color(course.id)}}"}
+      %div{:class => "header-container vertical-center fill-width"}
+        %a.course-name {{course.name}}
+        %span.course-title{:class => "truncate"} {{course.title}}
+        %span.course-hours {{course.hours}}
+        %a{:href=>"#", :class=>"remove-course" , "ng-click" => "removeCourse(course.id)"} x
+    %ul.sections{"ng-repeat" => "section in course.sections"}
+      %li{"ng-repeat" => "meeting in section.meetings"}
+        %div
+          %span{:class=>"section-type label"} {{section.type}}
+          %span.code {{section.code}}
+          %span{ :class=>"enrollment status-0"}
+          %span.crn {{section.crn}}
+          %span.instructor {{print_instructor(meeting.instructor)}}
+          %span.time {{meeting.duration}}
 
 :javascript 
   $(document).ready( function() {
-    linkify_classes($(".course .course-name"));
+    linkify_classes($(".course-header .course-name"));
     $("ul.classmates a").click( function() {
       mpq.track( "click sidebar profile" );
-      //Mixpanel tracking
     });
   });

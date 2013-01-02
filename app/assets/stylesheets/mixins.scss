@@ -18,3 +18,33 @@
   -khtml-user-select: $type;
   -webkit-user-select: $type;
 }
+
+@mixin sans_serif($font) {
+  font-family: $font, 'Arial', sans-serif;
+}
+
+@mixin roboto() {
+  font-family: 'RobotoRegular', 'Arial', sans-serif;
+}
+
+@mixin roboto_medium() {
+  @include sans_serif("RobotoMedium"); 
+}
+
+@mixin roboto_light() {
+  @include sans_serif("RobotoLight"); 
+}
+
+@mixin arial() {
+  font-family: 'Arial', sans-serif;
+}
+
+@mixin box-shadow($options) {
+  box-shadow: $options;
+  -moz-box-shadow: $options;
+  -webkit-box-shadow: $options;
+}
+
+@mixin border-radius($options) {
+  border-radius: $options;
+}

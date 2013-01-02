@@ -1,13 +1,12 @@
-<a href="<%=scheduler_show_path( current_user.id)%>" id="user-link">
-  <img src="<%= fb_img_link(current_user, "square") %>"></src>
-  <span><%= current_user.name %></span>
-</a>
-<div class="divider"></div>
 <div class="dropdown" id="dropdown-image">
-  <div class="dropdown-menu">
+  <div class="dropdown-menu hidden">
     <%=link_to 'Logout', logout_path %>
   </div>
 </div>
+<a href="<%=scheduler_show_path( current_user.id)%>" id="user-link">
+  <span><%= current_user.name %></span>
+  <img class="fb-login-pic" src="<%= fb_img_link(current_user, "small") %>"></src>
+</a>
 <span id="current_user" class="hidden">
   <%= current_user.id%>
 </span>

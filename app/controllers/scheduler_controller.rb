@@ -1,20 +1,14 @@
 class SchedulerController < ApplicationController
+  skip_before_filter :verify_authenticity_token
   before_filter :set_cache_buster
   include ApplicationHelper
   include SchedulerHelper
 
-  def index
-  end
-    
   def show
     #@user = User.find( params["id"].to_i )
     @user = User.find_by_fb_id( params["id"].to_i )
     @sections = @user.schedule
     @hide_buttons = true
-  end
-
-  def schedule
-    logger.info "LOLOL"
   end
 
   def new
@@ -47,14 +41,6 @@ class SchedulerController < ApplicationController
     schedule.map { |section| Scheduler.build_section section }
     start_hour, end_hour = Section.hour_range( schedule )
     render :json => { :schedule => schedule, :start_hour => start_hour, :end_hour => end_hour }
-  end
-
-  def sidebar
-    sections = []
-    params["schedule"].each do |section_id|
-      sections << Section.find_by_id(section_id.to_i)
-    end
-    render :partial => "course_sidebar", :locals => { :sections => sections}
   end
 
   # Route that delivers section hints via AJAX
@@ -174,7 +160,7 @@ class SchedulerController < ApplicationController
   #
   # Route for realtime scheduling
   #
-  def realtime
+  def index
     # need this function called before we can use it, p weird
     current_user
     begin
@@ -183,6 +169,7 @@ class SchedulerController < ApplicationController
         @schedule = Scheduler.initial_schedule(current_user.courses)
         @configurations = Scheduler.get_configurations( current_user.courses )
       end
+      @schedule_json = Scheduler.pkg(current_user.courses, @schedule).to_json
     rescue Timeout::Error
       # If we got a timeout, then that means that the user has a configuration of bad courses
       #current_user.courses = [] if current_user
@@ -252,56 +239,35 @@ class SchedulerController < ApplicationController
     current_user
     # If the person isn't logged into facebook, create a cookie, but don't overwrite it
     if cookies["classes"].nil? and current_user.is_temp?
-      cookies["classes"] = { :value => "", :expires => 1.day.from_now }			
+      cookies["classes"] = {:value => "", :expires => 1.day.from_now}
     end
 
     course_id = params["id"].to_i
-
-    begin 
-      course = Course.find( course_id )
-    rescue ActiveRecord::RecordNotFound
-      render :json => { :status => "error", :message => "Class not found" }
-      return
-    end
+    course = Course.find(course_id)
     
     if current_user.courses.include?(course) 
-      render :json => { :status => "error", :message => "Class already added" }
+      render :json => { :success => false, :status => "error", :message => "Class already added" }
       return
     else
-      #course_users = current_user.courses.to_json
       courses_copy = current_user.courses.clone 
       courses_copy << course
       begin
         # Don't take longer than 5 seconds to retrieve & parse an RSS feed
         Timeout::timeout(5) do
           @schedule = Scheduler.initial_schedule(courses_copy)
-          current_user.add_course( course )
+          current_user.add_course(course) unless @schedule.empty?
         end
       rescue Timeout::Error
-        render :json => { :status => "error", :message => "schedule timeout.. possible conflict?" }
+        render :json => {:success => false, :status => "error", :message => "Sorry, there was a conflict"} 
         return
       end
+
+      if @schedule.empty?
+        render :json => {:success => false, :status => "error", :message => "Sorry, there was a conflict"} 
+      else
+        render :json => {:success => true}
+      end
     
-      # Prepare the schedule for json delivery
-      Scheduler.pack_schedule( @schedule )
-      start_hour, end_hour = Section.hour_range( @schedule )
-      courses, course_section_hash = courses_from_sections( @schedule )
-      colors = section_colors( @schedule )
-      sidebar_row = render_to_string "_course_sidebar_row", 
-                                    :locals => { 
-                                      :course => course, 
-                                      :sections => course_section_hash[course.id], 
-                                      :colors => colors 
-                                    }, 
-                                    :layout => false
-      render :json => { 
-                        :status => "success", 
-                        :message => "Class added", 
-                        :schedule => @schedule,
-                        :start_hour => start_hour,
-                        :end_hour => end_hour,
-                        :sidebar_row => sidebar_row
-                      }
     end
   end
 
@@ -311,9 +277,11 @@ class SchedulerController < ApplicationController
   #   from the currently logged in user 
   #
   def remove_course
-    course = Course.find(params["course_id"].to_i)
+    course = Course.find(params["id"].to_i)
     current_user.rem_course( course )
     current_user.courses.delete( course )
+    render :json => {:status => :success}
+=begin
     @schedule = Scheduler.initial_schedule(current_user.courses)
   
     # Prepare the schedule for json delivery
@@ -328,5 +296,11 @@ class SchedulerController < ApplicationController
                       :end_hour => end_hour,
                     }
     return
+=end
+  end
+
+  def schedule
+    @schedule = Scheduler.initial_schedule(current_user.courses) unless @schedule
+    render :json => Scheduler.pkg(current_user.courses, @schedule)
   end
 end

@@ -51,6 +51,12 @@ gem 'rack-ssl', :require => 'rack/ssl'
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
+group :development do
+  gem 'guard'
+  gem 'guard-livereload'
+  gem 'rb-inotify'
+end
+
 group :test do
   # Pretty printed test output
   gem 'turn', :require => false
