@@ -188,7 +188,7 @@ class Scheduler
       finished_courses << course.id
     end
 
-    earliest_start_hour = 24 * 60
+    earliest_start_time = 24 * 60
     latest_end_time = 0
     
     all_possible_sections.each do |section|
@@ -197,8 +197,8 @@ class Scheduler
         current_start_time = meeting.start_time.hour * 60 + meeting.start_time.min
         current_end_time = meeting.end_time.hour * 60 + meeting.end_time.min
 
-        if current_start_time < earliest_start_hour
-          earliest_start_hour = current_start_time
+        if current_start_time < earliest_start_time
+          earliest_start_time = current_start_time
         end
         if current_end_time > latest_end_time
           latest_end_time = current_end_time
@@ -206,9 +206,8 @@ class Scheduler
       end
     end
 
-    earliest_start_hour = (earliest_start_hour.to_f/60).ceil
-    latest_end_hour = (latest_end_time.to_f/60).ceil
-    return earliest_start_hour, latest_end_hour
+    earliest_start_time = (earliest_start_time.to_f/60).floor
+    latest_end_time = (latest_end_time.to_f/60).ceil
+    return earliest_start_time, latest_end_time
   end
-
 end
