@@ -1,3 +1,4 @@
+// TODO: turn into directive
 $(document).ready(function (){
   var emails = $(".to-reverse");
   emails.each( function() {

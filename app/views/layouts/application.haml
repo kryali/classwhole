@@ -6,20 +6,10 @@
     = stylesheet_link_tag    "application" 
     = csrf_meta_tags
     = javascript_tag          "var AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? 
-    - if Rails.env != "development"
-      = javascript_include_tag "google.analytics"
-    = javascript_include_tag "mixpanel.init"
     = javascript_include_tag "http://connect.facebook.net/en_US/all.js"
     = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" 
     = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" 
-    = javascript_include_tag "ratings","linkify","hoverIntent","tooltip","dropdown","utils","jquery.tipsy", "init", "bootstrap-modal.js", "bootstrap-alerts.js", "bootstrap-modal.js", "bootstrap-tabs.js" , "general/alert"
-    = javascript_include_tag "angular.min.js"
-    = javascript_include_tag "angular/app"
-    = javascript_include_tag "angular/directives"
-    = javascript_include_tag "angular/services"
-    = javascript_include_tag "angular/utils"
-    = javascript_include_tag "general/fb_button"
-    = javascript_include_tag "modal.js"
+    = javascript_include_tag "application.js" 
   %body
     = render "shared/modal"
     %div.alert-box
