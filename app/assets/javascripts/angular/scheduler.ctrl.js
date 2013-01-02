@@ -8,8 +8,13 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
   ****************************************/
   $scope.removeCourse = function(courseId) {
     SchedulerService.removeCourse(courseId, function(data) {
+      for (var i = 0; i < $scope.schedule.length; i++) {
+        if ($scope.schedule[i].id == courseId) {
+          $scope.schedule.splice(i, 1);
+          break;
+        } 
+      }
       ColorList.remove(courseId);
-      update();
     });
   };
 

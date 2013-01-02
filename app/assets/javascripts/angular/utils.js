@@ -10,8 +10,7 @@ ColorList.prototype.get = function(id) {
   var colorIndex = this.assigned[id];
   if ( colorIndex == null) {
     if (this.available.length > 0 ) {
-      colorIndex = this.available[0];
-      this.available = this.available.splice(1, this.available.length);
+      colorIndex = this.available.pop();
     } else {
       colorIndex = this.nextColor;
       this.nextColor += 1;
@@ -28,5 +27,5 @@ ColorList.prototype.remove = function(id) {
   }
 
   this.available.push(colorIndex);
-  this.assigned[id] = null;
+  delete this.assigned[id];
 }
