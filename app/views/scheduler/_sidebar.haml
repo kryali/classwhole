@@ -1,4 +1,6 @@
 %div.sidebar
-  = render 'shared/class_search'
+  %div{"ng-hide" => "scheduling"}= render 'shared/class_search'
+  %div.autocomplete-container{"ng-show" => "scheduling"}
+    SCHEUDLING FUK
   %div.clear
   = render "course_sidebar", :sections => @schedule

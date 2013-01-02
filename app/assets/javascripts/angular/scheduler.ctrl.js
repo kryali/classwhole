@@ -19,6 +19,7 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
   };
 
   $scope.addCourse = function(courseId) {
+    $scope.scheduling = true;
     SchedulerService.addCourse(courseId, function(data) {
       if (data.success) {
         update();
@@ -80,6 +81,7 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
 
   function update() {
     SchedulerService.get(function(data) {
+      $scope.scheduling = false;
       save(data);
     });
   }
