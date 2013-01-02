@@ -4,9 +4,6 @@ class SchedulerController < ApplicationController
   include ApplicationHelper
   include SchedulerHelper
 
-  def index
-  end
-    
   def show
     #@user = User.find( params["id"].to_i )
     @user = User.find_by_fb_id( params["id"].to_i )
@@ -175,7 +172,7 @@ class SchedulerController < ApplicationController
   #
   # Route for realtime scheduling
   #
-  def realtime
+  def index
     # need this function called before we can use it, p weird
     current_user
     begin

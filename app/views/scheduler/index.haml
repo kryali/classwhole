@@ -1,37 +1,14 @@
+= javascript_include_tag "scheduler.render.js"
+= javascript_include_tag "scheduler.sidebar.js"
+= javascript_include_tag "scheduler.js"
 = javascript_include_tag "autocomplete"
-= javascript_include_tag "user.course.list.js"
-= javascript_include_tag "scheduler.index.js"
-
+= javascript_include_tag "angular/scheduler.ctrl.js"
 = content_for :title, "Classwhole"
 = content_for :meta_description, "Classwhole is a social and interactive scheduler for UIUC. People use Classwhole to discover classes and the people in them. With drag-and-drop sections, scheduling has never been easier."
 
-%div#content
-  %div{:class => "blur vertical-center"}
-    %div.user-course-list-wrapper
-      = link_to "", scheduler_index_path, :class => 'big-logo'
-      %div.user-course-list
-        = render "scheduler/user_course_list"
-        %div.feature-box
-          %div.feature-row
-            %div{:class=>"feature drag"}
-              %div.icon
-              %div.text Drag-and-drop class sections
-            %div{:class=>"feature fb"}
-              %div.icon
-              %div.text Optional Facebook integration
-      %div.video-link
-        For 
-        =link_to "UIUC","http://illinois.edu"
-        -#Want to learn more?
-        =#link_to "Watch a Video", "youtube.com"
-          
-      <div class="fb-like" data-href="classwhole.com" data-send="true" data-width="450" data-show-faces="true"></div>
-      %div.hours
-        - if current_user
-          -#%span= current_user.total_course_hours
-        - else
-          -#%span= 0
-        -#hrs.
-      - unless current_user.is_temp?
-        -if current_user and current_user.friends
-          =# render :partial => "friends", :locals => {:user => current_user}
+= render "schedule", :sections => @schedule
+= render "sidebar", :sections => @schedule
+= render "schedule_canvas"
+
+:javascript
+  initial_schedule = #{@schedule_json};

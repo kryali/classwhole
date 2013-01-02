@@ -16,22 +16,17 @@
     %ul.day-header
       %li.header{"ng-repeat" => "day in days()"} {{day}}
     %div{:class => "schedule-display"}
-      - if sections.empty?
-        -if @user
-          %h1= "#{@user.name} hasn't shared a schedule yet."
-        -elsif params[:action] != "realtime" 
-          %h1 Sorry, we couldn't find a schedule.
-      - else
-        %ul{:class => "schedule-day", "ng-repeat" => "day in days()"}
-          %li{"ng-repeat" => "hour in hourRange"}
-        %div.schedule-block{"ng-repeat" => "section in flattenSchedule(schedule)", "section" => ""}
-          %div.highlight{:class=>"{{color(section.course.id)}}"}
-          %div.section-content{:class => "fill-height"}
-            %span.course-name {{section.course.name}}
-            %span.section-code  {{section.code}}
-            %span.course-title {{section.course.title}}
-            %span{ :class => "enrollment status-{{section.enrollment}}", :title => "{{section.reason}}"}
-            %span.section-type {{section.type}}
-            %span.duration {{section.duration}}
+      %ul{:class => "schedule-day", "ng-repeat" => "day in days()"}
+        %li{"ng-repeat" => "hour in hourRange"}
+      %div.schedule-block{"ng-repeat" => "section in flattenSchedule(schedule)", "section" => ""}
+        %div.highlight{:class=>"{{color(section.course.id)}}"}
+        %div.section-content{:class => "fill-height"}
+          %span.course-name {{section.course.name}}
+          %span.section-code  {{section.code}}
+          %span.course-title {{section.course.title}}
+          %span{ :class => "enrollment status-{{section.enrollment}}", :title => "{{section.reason}}"}
+          %span.section-type {{section.type}}
+          %span.duration {{section.duration}}
 %div{"ng-hide"  => "schedule.length > 0", :class => "scheduler-landing"}
   Add classes -> (todo make it prettier)
+  <div class="fb-like" data-href="classwhole.com" data-send="true" data-width="450" data-show-faces="true"></div>
