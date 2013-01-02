@@ -22,8 +22,9 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
     $scope.scheduling = true;
     SchedulerService.addCourse(courseId, function(data) {
       if (data.success) {
-        update();
+        update($scope);
       } else {
+        $scope.scheduling = false;
         pop_alert(data.status, data.message);
       }
     });
@@ -79,7 +80,7 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
     $scope.hourRange = enumerateHours(data["hour_range"]);
   }
 
-  function update() {
+  function update($scope) {
     SchedulerService.get(function(data) {
       $scope.scheduling = false;
       save(data);

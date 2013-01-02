@@ -5,6 +5,33 @@
   width: 28%;
   float: right;
   background: $sidebar_color;
+
+  .scheduling {
+    background: white;
+    overflow: hidden;
+    height: 30px;
+    box-shadow: inset 0px 0px 2px #666;
+    border-radius: 3px;
+    
+    span {
+      float: left;
+      font-size: 14px;
+      text-transform: uppercase;
+      color: #666;
+      @include roboto_light();
+      margin-top: 10px;
+    }
+    div.loading-logo {
+      float: left;
+      width: 20px;
+      height: 20px;
+      background: url('loading-logo.gif') no-repeat;
+      background-size: 100%;
+      margin-right: 5px;
+      margin-left: 5px;
+      margin-top: 5px;
+    }
+  }
 }
 
 ul.courses {

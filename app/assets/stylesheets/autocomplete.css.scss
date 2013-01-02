@@ -60,7 +60,7 @@ input.autocomplete-list:focus {
   background: white;;
   //border: 1px solid #f3f3f3;;
   @include box-shadow(inset 0px 0px 2px #666);
-  @include border-radius(5px);
+  @include border-radius(3px);
 }
 
 .autocomplete-suggestion{

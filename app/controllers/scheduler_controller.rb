@@ -258,7 +258,7 @@ class SchedulerController < ApplicationController
           current_user.add_course(course) unless @schedule.empty?
         end
       rescue Timeout::Error
-        render :json => { :success => false, :status => "error", :message => "schedule timeout.. possible conflict?" }
+        render :json => {:success => false, :status => "error", :message => "Sorry, there was a conflict"} 
         return
       end
 
