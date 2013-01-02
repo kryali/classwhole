@@ -2,9 +2,10 @@
 = content_for :title, "Classwhole"
 = content_for :meta_description, "Classwhole is a social and interactive scheduler for UIUC. People use Classwhole to discover classes and the people in them. With drag-and-drop sections, scheduling has never been easier."
 
-= render "schedule", :sections => @schedule
-= render "sidebar", :sections => @schedule
-= render "schedule_canvas"
+%div{"ng-controller" => "SchedulerCtrl"}
+  = render "schedule", :sections => @schedule
+  = render "sidebar", :sections => @schedule
+  = render "schedule_canvas"
 
 :javascript
   initial_schedule = #{@schedule_json};

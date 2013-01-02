@@ -11,10 +11,6 @@ class SchedulerController < ApplicationController
     @hide_buttons = true
   end
 
-  def schedule
-    logger.info "LOLOL"
-  end
-
   def new
     @configurations = Scheduler.get_configurations( current_user.courses )
 
@@ -45,14 +41,6 @@ class SchedulerController < ApplicationController
     schedule.map { |section| Scheduler.build_section section }
     start_hour, end_hour = Section.hour_range( schedule )
     render :json => { :schedule => schedule, :start_hour => start_hour, :end_hour => end_hour }
-  end
-
-  def sidebar
-    sections = []
-    params["schedule"].each do |section_id|
-      sections << Section.find_by_id(section_id.to_i)
-    end
-    render :partial => "course_sidebar", :locals => { :sections => sections}
   end
 
   # Route that delivers section hints via AJAX
@@ -311,7 +299,7 @@ class SchedulerController < ApplicationController
 =end
   end
 
-  def courses
+  def schedule
     @schedule = Scheduler.initial_schedule(current_user.courses) unless @schedule
     render :json => Scheduler.pkg(current_user.courses, @schedule)
   end

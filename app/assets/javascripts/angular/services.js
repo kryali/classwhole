@@ -5,7 +5,7 @@ function SchedulerService($http) {
 }
 
 SchedulerService.prototype.get = function(callback) {
-  this.$http.post("/scheduler/courses").success(callback);
+  this.$http.post("/scheduler/schedule").success(callback);
 }
 
 SchedulerService.prototype.addCourse = function(courseId, callback) {
