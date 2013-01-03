@@ -21,47 +21,26 @@ class SchedulerController < ApplicationController
       end
     end
     schedule = Scheduler.schedule_change( old_schedule, configuration )
-    schedule.map { |section| Scheduler.build_section section }
+    schedule.map { |section| Scheduler.pkg_section(section) }
     start_hour, end_hour = Section.hour_range( schedule )
     render :json => { :schedule => schedule, :start_hour => start_hour, :end_hour => end_hour }
   end
 
-  # Route that delivers section hints via AJAX
-  def move_section
-    schedule = []
-    params["schedule"].each do |section_id|
-      section = Section.find_by_id(section_id.to_i)
-      Scheduler.build_section(section)
-      schedule << section
-    end
+  def section_hints
     section_hints = []
-    if params["section"]
-      section = Section.find(params["section"].to_i)
-      section_hints = section.configuration.sections_hash[section.short_type]
-      section_hints.delete_if{|move| move.schedule_conflict?(schedule)}
+    section = Section.find(params["id"].to_i)
+    section_hints = section.configuration.sections_hash[section.short_type]
+    section_hints.delete_if{|move| move.schedule_conflict?(current_user.schedule)}
 
-      # Have to give the client all the data about the section, which spans multiple tables
-      section_hints.map do |section_hint| 
-        Scheduler.build_section(section_hint)
-      end
-    end
+    # Have to give the client all the data about the section, which spans multiple tables
+    section_hints = section_hints.map {|section_hint| Scheduler.pkg_section(section_hint)}
 
-    # Nothing needs to be rendered
-    # params["render"] forces the render (used for dragndrop render)
-    if section_hints.empty? and not params["render"]
-      render :json => { :status => "error", :message => "no hints for section" }
+    if section_hints.empty?
+      render :json => {:success => false, :status => "error", :message => "no hints for section"}
       return
     end
 
-    start_hour, end_hour = Section.hour_range( schedule )
-
-    render :json => { 
-                      :section_hints => section_hints,
-                      :schedule => schedule,
-                      :start_hour => start_hour,
-                      :end_hour => end_hour
-                    }
-    # render :partial => 'section_ajax', :layout => false
+    render :json => {:success => true, :section_hints => section_hints}
   end
 
   def save

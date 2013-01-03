@@ -2,9 +2,9 @@
   %li{"ng-repeat" => "course in schedule"}
     %div.course-header
       %div{:class => "highlight {{color(course.id)}}"}
-      %div{:class => "header-container vertical-center fill-width"}
+      %div{:class => "header-container vertical-center"}
         %a.course-name {{course.name}}
-        %span.course-title{:class => "truncate"} {{course.title}}
+        %span.course-title{"truncate"=>"35"} {{course.title}}
         %span.course-hours {{course.hours}}
         %a{:href=>"#", :class=>"remove-course" , "ng-click" => "removeCourse(course.id)"} x
     %ul.sections{"ng-repeat" => "section in course.sections"}
@@ -19,8 +19,8 @@
 
 :javascript 
   $(document).ready( function() {
-    linkify_classes($(".course-header .course-name"));
-    $("ul.classmates a").click( function() {
+    linkify_classes($(".course-header .course-name")); //TODO move this into a directive or just make the link u fuk
+    $("ul.classmates a").click(function() {
       mpq.track( "click sidebar profile" );
     });
   });

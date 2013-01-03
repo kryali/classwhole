@@ -42,7 +42,7 @@ Whiteboard::Application.routes.draw do
 
   # Scheduler routes
   match "scheduler/" => "scheduler#index", :as => "scheduler_index"
-  match 'scheduler/move_section' => 'scheduler#move_section', :via => :post
+  match 'scheduler/section/:id/hints' => 'scheduler#section_hints', :via => :post
 	match 'scheduler/show/:id' => 'scheduler#show', :as => 'scheduler_show'
   match 'scheduler/save' => 'scheduler#save', :via => :post
   match 'scheduler/share' => 'scheduler#share', :via => :post
