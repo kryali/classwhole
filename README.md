@@ -1,16 +1,23 @@
 # Getting started
 
-Get your environment setup 
-    
-    sudo ./ubuntu_bootstrap.sh
-    sudo ./install_redis.sh
-    bundle install
-    rvmsudo passenger-install-nginx-module --user=you      # For nginx and nice server stuff
+Get your environment setup
+#### You need
+* [Redis](http://redis.io/download)
+* Ruby 1.9.2p290
     
 ## Setup
-    bundle install
-    rake db:setup       # I would run this in a screen
-    rake redis:setup
+    # Make sure all your gems are up to date (installs rails)
+    bundle install 
+    
+    # Redis Needs to be running for the app to work, I would run this in a screen.
+    redis-server 
+
+    rake db:migrate
+
+    # Scrape course data: This takes a while, I would run this in a screen
+    rake data:update       
+
+
 ## Run (Development)
     rails server
     
@@ -23,10 +30,8 @@ Get your environment setup
 ###Working on a new feature
 
 1. Make a new branch
-2. Push the branch to the remote repo
-3. ???
-4. Submit a pull request
+2. Submit a pull request
 
 #### Example
-    git branch -b new_feature
-    git push new_feature origin (I think)
+    git checkout -b new_feature
+    git push
