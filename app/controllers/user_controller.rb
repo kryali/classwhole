@@ -12,13 +12,12 @@ class UserController < ApplicationController
       @user = register(params["accessToken"], params["userID"])
     ensure
       self.current_user=@user
-      if !cookies["classes"].nil? #if there is a cookie, overwrite any courses in db
-        @user.courses.delete_all        
-        for id in cookie_class_list
-          @user.courses << Course.find(id)
-        end   
-        cookies.delete("classes")  
-      end
+
+      # if there is a cookie, overwrite any courses in db
+      saved_data = Fake_user.get_saved_data(cookies)
+      @user.courses = saved_data[:courses] if saved_data[:courses].any?
+      @user.schedule = saved_data[:schedule] if saved_data[:schedule].any?
+      Fake_user.clear_data(cookies)
       @status = "success"
       @message = "Logged in"
       render :partial => 'shared/user_nav', :layout => false

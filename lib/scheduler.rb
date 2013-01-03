@@ -8,7 +8,6 @@ class Scheduler
         course_configurations[index] << configuration
       end
     end
-    #puts course_configurations.inspect
     course_configurations.sort!{|x,y| x.count <=> y.count}
     @schedule = []
     return self.configuration_recurse([], course_configurations, 0)
@@ -158,7 +157,8 @@ class Scheduler
           :instructor => meeting.instructors[0]
         }
       end
-      pkg.select{|course| course[:name] == section.course_to_s}[0][:sections] << section_pkg
+      course = pkg.select{|course| course[:name] == section.course_to_s}[0]
+      course[:sections] << section_pkg
     end
     
     return { :hour_range => hour_range, :schedule => pkg }

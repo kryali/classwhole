@@ -5,7 +5,7 @@
     = link_to "Courses", show_semester_path($CURRENT_SEMESTER.season,$CURRENT_SEMESTER.year)
     = link_to "About", about_path
   %nav.secondary-nav
-    - if current_user.nil? || current_user.is_temp?
+    - if current_user.is_temp?
       = render 'shared/fb_login_button'
     - else 
       = render 'shared/user_nav', :current_user => current_user

@@ -16,6 +16,13 @@ html, body {
   line-height: 1.22;
 }
 
+.loading-logo  {
+  width: 32px;
+  height: 32px;
+  background: url('loading-logo.gif') no-repeat;
+  background-size: 100%;
+}
+
 #wrapper {
   width: 100%;
   max-width: 1000px;
