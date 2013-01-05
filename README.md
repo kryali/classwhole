@@ -3,14 +3,12 @@
 Get your environment setup 
     
     sudo ./ubuntu_bootstrap.sh
-    sudo ./install_redis.sh
     bundle install
     rvmsudo passenger-install-nginx-module --user=you      # For nginx and nice server stuff
     
 ## Setup
     bundle install
     rake db:setup       # I would run this in a screen
-    rake redis:setup
 ## Run (Development)
     rails server
     

@@ -6,39 +6,6 @@ class Course < ActiveRecord::Base
   has_and_belongs_to_many :users
   set_primary_key :id
 
-  def self.trie(term)
-    results_needed = 100
-
-    begin
-      possible_courses = $redis.smembers("course:#{term.upcase.gsub(/\s+/,"")}")
-    rescue Errno::ECONNREFUSED
-      return nil
-    end
-
-    courses = []
-    possible_courses.each do |course_id|
-      results_needed -= 1
-      break if results_needed <= 0
-
-      label = $redis.hget("id:course:#{course_id}", "label")
-      title = $redis.hget("id:course:#{course_id}", "title")
-      value = $redis.hget("id:course:#{course_id}", "value")
-      min_hours = $redis.hget("id:course:#{course_id}", "hours_min")
-      max_hours = $redis.hget("id:course:#{course_id}", "hours_max")
-      courses << { :label => label,
-                   :title => title,
-                   :value => value,
-                   :min_hours => min_hours,
-                   :max_hours => max_hours,
-                   :id =>    course_id }
-    end
-    return courses 
-  end
-
-  def user_ids
-    user_ids = $redis.smembers( key( :users ) )
-  end
-
   def users
     users = []
     User.transaction do
@@ -55,14 +22,6 @@ class Course < ActiveRecord::Base
 
   def to_s
     subject_code + " " + number.to_s
-  end
-
-  def remove_user( user )
-    $redis.srem( key(:users), user.id )
-  end
-
-  def add_user( user )
-    $redis.sadd( key(:users), user.id )
   end
 
   def key( str )

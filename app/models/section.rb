@@ -2,31 +2,6 @@ class Section < ActiveRecord::Base
   belongs_to :course
   belongs_to :configuration
 
-  def meetings
-    @meetings_list ||= fetch_meetings
-  end
-
-  def fetch_meetings
-    ret = $redis.get("section:#{self.id}:meetings") 
-    decoded = ActiveSupport::JSON.decode(ret) 
-    meetings_list = []
-    for meeting in decoded     
-      current_meeting = Meeting.new
-      if meeting["table"].key?("end_time") and meeting["table"].key?("start_time")
-        current_meeting.start_time, current_meeting.end_time = Scheduler.parse_hours(meeting["table"]["start_time"], meeting["table"]["end_time"])
-      end      
-      current_meeting.room = meeting["table"]["room"]
-      current_meeting.class_type = meeting["table"]["class_type"]
-      current_meeting.days = meeting["table"]["days"] if meeting["table"].key?("days")
-      current_meeting.building = meeting["table"]["building"] if meeting["table"].key?("building")
-      current_meeting.section_id = meeting["table"]["section_id"]
-      current_meeting.instructors = meeting["table"]["instructors"] if meeting["table"].key?("instructors")
-      current_meeting.short_type = meeting["table"]["short_type"] if meeting["table"].key?("short_type")
-      meetings_list << current_meeting   
-    end
-    return meetings_list
-  end
-
   def short_type_s
     return short_type || "N/A"
   end
@@ -61,21 +36,6 @@ class Section < ActiveRecord::Base
     return key
   end
 
-  # Description: Checks to see if there is a conflict between 2 meetings
-  def meeting_conflict?(meeting1, meeting2)
-    return false if meeting1.start_time.nil? or meeting2.start_time.nil?
-    section_days = meeting2.days.split("")
-    section_days.each do |day|
-      if( meeting1.days.include?(day) )
-        if (meeting1.start_time.to_i >= meeting2.start_time.to_i and meeting1.start_time.to_i <= meeting2.end_time.to_i) or 
-           (meeting2.start_time.to_i >= meeting1.start_time.to_i and meeting2.start_time.to_i <= meeting1.end_time.to_i)
-          return true
-        end 
-      end
-    end
-    return false
-  end
-
   # Description: This function ensures that no two sections are conflicting
   #   Method: check that these sections fall within the same semester slot then
   #     check each meeting time to see if any conflict
@@ -83,7 +43,7 @@ class Section < ActiveRecord::Base
     if not((self.part_of_term == "A" and section.part_of_term == "B") or (self.part_of_term == "B" and section.part_of_term == "A"))
       self.meetings.each do |self_meeting|
         section.meetings.each do |section_meeting|
-          return true if meeting_conflict?(self_meeting, section_meeting)
+          return true if self_meeting.meeting_conflict?(section_meeting)
         end
       end
     end

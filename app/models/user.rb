@@ -4,10 +4,6 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :courses
   set_primary_key :id
 
-  def after_initialize
-    $redis.sadd("user", self.id)
-  end
-
   def friends
     friends = []
     friendships.each do |friendship|
