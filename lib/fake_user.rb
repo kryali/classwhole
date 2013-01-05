@@ -1,25 +1,31 @@
 class Fake_user
   def initialize(cookies)
-    @cookies = cookies
-    @courses = []
-    @@is_temp = 1 
-  end  
-  def id
-    return "nil"
+    @store = CookieArrayStore.new(cookies)
+    data = Fake_user.get_saved_data(cookies)
+    @courses = data[:courses]
+    @schedule = data[:schedule]
+  end
+
+  def save_courses(courses)
+    ids = []
+    courses.each {|course| ids << course.id}
+    @store.set(:courses, ids)
   end
 
   def courses=(new_courses)
-    courses = new_courses
+    save_courses(new_courses)
+    @courses = new_courses
   end
 
   def rem_course(course)
-    remove_class_from_cookie( course.id )     
+    @store.delete(:courses, course.id)
+    @courses.delete(course)
   end
 
 
-  def add_course( course )
-    add_course_to_cookie( course.id )
-    courses << course
+  def add_course(course)
+    @store.add(:courses, course.id)
+    @courses << course
   end
 
   def courses
@@ -46,32 +52,92 @@ class Fake_user
     end
   end
 
+  def save
+    save_courses(@courses)
+    save_schedule(@schedule)
+  end
+
   def is_temp?
     return true
   end
-	
-	#
-	#	Description: Helper function to remove a course from the cookie
-	#
-	#
 
-	def remove_class_from_cookie(id)
-		if @cookies["classes"]
-			id_to_be_removed = id.to_s+ "|"		
-			@cookies["classes"] = {:value => @cookies["classes"].sub(id_to_be_removed, ""), :expires=> 1.day.from_now}
-		end	
-	end
- #
- # Description: This function simply adds the course_id to a the coookie
- #
- #
-	def add_course_to_cookie(id)
-		if @cookies["classes"]
-      #logger.info(id)
-			course_id_string = id.to_s			
-			cook = @cookies["classes"] # this is used in the next line, so I didn't have to deal with quotes inside a string		
-			@cookies["classes"] = { :value => "#{cook}#{course_id_string}|", :expires => 1.day.from_now } 				
-		end
-	end
+  def schedule
+    return @schedule
+  end
 
+  def save_schedule(schedule)
+    ids = []
+    schedule.each {|section| ids << section.id}
+    @store.set(:schedule, ids)
+  end
+
+  def schedule=(new_schedule)
+    save_schedule(new_schedule)
+    @schedule = new_schedule
+  end
+
+  def self.get_saved_data(cookies)
+    store = CookieArrayStore.new(cookies)
+    courses = CookieArrayStore.read_array(:courses, Course, store)
+    schedule = CookieArrayStore.read_array(:schedule, Section, store)
+    return {:courses => courses, :schedule => schedule}
+  end
+
+  def self.clear_data(cookies)
+    store = CookieArrayStore.new(cookies)
+    store.clear(:courses)
+    store.clear(:schedule)
+  end
+end
+
+class CookieArrayStore
+
+  def clear(key)
+    @cookies.delete(key)
+  end
+
+  def initialize(cookies)
+    @cookies = cookies
+  end
+  
+  def add(key, obj)
+    saved = get(key)
+    saved << obj
+    set(key, saved)
+  end
+
+  def delete(key, obj)
+    saved = get(key)
+    saved.delete(obj)
+    set(key, saved)
+  end
+
+  def get(key)
+    saved = []
+    if @cookies[key].nil?
+      set(key, saved)
+    else
+      saved = Marshal.load(@cookies[key])
+    end
+    return saved
+  end
+
+  def set(key, obj)
+    @cookies[key] = {:value  => Marshal.dump(obj), :expires => 1.day.from_now}
+  end
+
+  def self.read_array(key, model, store)
+    values = []
+    ids = store.get(key)
+    ids.each do |id|
+      begin
+        values << model.find(id)
+      rescue ActiveRecord::RecordNotFound
+        values = []
+        store.set(key, value)
+        return values
+      end
+    end
+    return values
+  end
 end

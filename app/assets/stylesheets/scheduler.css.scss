@@ -31,6 +31,7 @@
 .schedule-content {
   float: left;
   margin-left: -1px;
+  width: 658px; //TODO: make this fluid
 }
 
 .schedule-day {
@@ -70,10 +71,14 @@
   .highlight {
     width: 100%;
     height: 10px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
   }
 
   .section-content {
     position: relative;
+    height: 100%;
 
     span {
       position: absolute;
@@ -83,7 +88,7 @@
 
     .course-name {
       left: 5px;
-      top: 8px;
+      top: 17px;
       font-size: 16px;
       color: #444;
     }
@@ -97,7 +102,7 @@
     }
 
     .course-title {
-      top: 30px;
+      top: 38px;
       left: 5px;
       font-size: 10px;
       color: #666;
@@ -107,14 +112,14 @@
 
     .section-type {
       font-size: 13px;
-      top: 7px;
+      top: 17px;
       right: 5px;
       color: #888;
       @include sans_serif("RobotoLight");
     }
 
     .enrollment {
-      top: 7px;
+      top: 16px;
       right: 32px;
     }
 
@@ -161,5 +166,27 @@ ul.day-header {
     color: #777;
     float: left;
     width: 20%;
+  }
+}
+
+.section-message {
+  position: absolute;
+  width: 75px;
+  height: 15px;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 5px;
+  z-index: 10;
+
+  span {
+    @include roboto_medium();
+    font-size: 12px;
+    color: #999;
+    text-transform: uppercase;
+  }
+
+  .down-arrow {
+    margin: 0 auto;
+    margin-top: 4px;
   }
 }

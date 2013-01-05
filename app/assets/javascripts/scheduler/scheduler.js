@@ -440,8 +440,6 @@ init = function() {
     document.getElementsByClassName('sidebar')[0].style.margin = '-1em 0em 0em 0.5em';
     document.getElementsByClassName('sidebar')[0].style.width = '250px';
   }
-  // Setup the slidejs plugin
-  //$("#slides").slides(options.slides);
 
   // Hide tooltips if they are a user
   if( $("#current_user").text() == "" ) {
@@ -454,9 +452,6 @@ init = function() {
   init_pagination();
   init_configurations();
   init_profs();
-  //Schedule.layout();
-
-  //init_mini_pagination();
 
   // Use the keyboard to select other schedules
   $(document).keydown( function(event) {

@@ -1,20 +1,29 @@
+@import 'mixins';
 $modal_width : 320px;
 
 .loading-message {
-  
-  z-index: 1000;
   padding: 1em;
   border: 1px solid #999;
   background: #FFFFFF;
   border-radius: 5px;
   max-width: 190px;
   margin: 0 auto;
+  overflow: hidden;
 
-  .loader {
+  .loading-logo {
+    float: left;
     display: inline-block;
-    width: 16px;
-    height: 16px;
-    background: url("loader.gif");
+    width: 20px;
+    height: 20px;
+  }
+
+  span.message {
+    float: left;
+    font-size: 16px;
+    text-transform: uppercase;
+    margin-left: 5px;
+    margin-top: 3px;
+    @include roboto_light();
   }
 }
 
@@ -25,6 +34,7 @@ $modal_width : 320px;
   height: 100%;
   top: 0px; 
   left: 0px;
+  z-index: 1;
 }
 
 .modalBackground {

@@ -8,7 +8,6 @@ class Scheduler
         course_configurations[index] << configuration
       end
     end
-    #puts course_configurations.inspect
     course_configurations.sort!{|x,y| x.count <=> y.count}
     @schedule = []
     return self.configuration_recurse([], course_configurations, 0)
@@ -73,22 +72,8 @@ class Scheduler
     end    
   end
 
-  def self.pack_schedule( schedule )
+  def self.pack_schedule(schedule)
     schedule.each {|section| Scheduler.build_section(section)}
-  end
-
-  # prepares a section object for json
-  def self.build_section( section )
-    meetings = []
-    section.meetings.each do |meeting|
-        #meeting["instructors"] = meeting.instructors
-        #meeting["building"] = meeting.building
-        meetings << meeting
-    end
-    section['short_type'] = section.short_type_s
-    section['meetings'] = meetings
-    section['reason'] = section.reason
-    return section
   end
 
   def self.parse_hours( start_time_string, end_time_string)
@@ -127,6 +112,28 @@ class Scheduler
     return configurations
   end
 
+  def self.pkg_section(section)
+    section_pkg = {
+      :id => section.id,
+      :type => section.short_type_s,
+      :code => section.code,
+      :crn => section.reference_number,
+      :enrollment => section.enrollment_status,
+      :reason => section.reason,
+      :meetings => []
+    }
+    section.meetings.each do |meeting| 
+      section_pkg[:meetings] << { 
+        :duration => meeting.duration_s,
+        :start_time => simple_time(meeting.start_time),
+        :end_time => simple_time(meeting.end_time),
+        :days => meeting.days,
+        :instructor => meeting.instructors[0]
+      }
+    end
+    return section_pkg
+  end
+
   def self.pkg(courses, schedule)
     hour_range = self.hour_range(schedule)
     pkg = []
@@ -141,24 +148,8 @@ class Scheduler
     end
 
     schedule.each do |section|
-      section_pkg = {
-        :type => section.short_type_s,
-        :code => section.code,
-        :crn => section.reference_number,
-        :enrollment => section.enrollment_status,
-        :reason => section.reason,
-        :meetings => []
-      }
-      section.meetings.each do |meeting| 
-        section_pkg[:meetings] << { 
-          :duration => meeting.duration_s,
-          :start_time => simple_time(meeting.start_time),
-          :end_time => simple_time(meeting.end_time),
-          :days => meeting.days,
-          :instructor => meeting.instructors[0]
-        }
-      end
-      pkg.select{|course| course[:name] == section.course_to_s}[0][:sections] << section_pkg
+      course = pkg.select{|course| course[:name] == section.course_to_s}[0]
+      course[:sections] << self.pkg_section(section)
     end
     
     return { :hour_range => hour_range, :schedule => pkg }

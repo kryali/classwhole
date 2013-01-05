@@ -18,49 +18,50 @@ Utils = {
     });
   },
 
-  allFill: function() {
-    $(".fill-width").each(function() {
-      fill(this, true);
-    });
-
-    $(".fill-height").each(function() {
-      fill(this, false);
-    });
-
-    function fill(node, width) {
-      var freeSpace = Utils.getFreeSpace(node);
-      if (width) {
-        $(node).css("width", freeSpace.width); 
-      } else {
-        $(node).css("height", freeSpace.height); 
-      }
+  fill: function(node, width) {
+    var freeSpace = Utils.getFreeSpace(node);
+    if (width) {
+      $(node).css("width", freeSpace.width); 
+    } else {
+      $(node).css("height", freeSpace.height); 
     }
   },
 
-  layout: function() {
-    Utils.allCenterVertical();
-    Utils.allFill();
-    Utils.truncateAll();
+  fillWidth: function(block) {
+    Utils.fill(block, true);
   },
 
-  // Private? damnit I don't understand javascript
+  fillHeight: function(block) {
+    Utils.fill(block, false);
+  },
 
-  truncateAll: function() {
-    $(".truncate").each(function() {
-      var node = $(this);
-      var text = node.text();
-      if (text.match("{{.*}}") != null) return; // This is a template, fuck off.
+  truncate: function(node, extra) {
+    var node = $(node);
+    var text = node.text();
+    if (text.match("{{.*}}") != null) return; // This is a template, fuck off.
 
-      var freeSpace = Utils.getFreeSpace(this);
-      freeSpace.width -= 30; // fragile lol
-      if (node.width() <= freeSpace.width) return;
+    var freeSpace = Utils.getFreeSpace(node);
+    freeSpace.width -= extra; // fragile lol
+    if (node.width() <= freeSpace.width) return;
 
-      var textLength = text.length;
-      while (node.width() > freeSpace.width) {
-        node.text(text.substring(0, textLength) + "...");
-        textLength--;
-      }
-    });
+    var textLength = text.length;
+    while (node.width() > freeSpace.width) {
+      node.text(text.substring(0, textLength) + "...");
+      textLength--;
+    }
+  },
+
+  putAbove: function(element, target, margin) {
+    var offset = target.offset();
+    var height = element.outerHeight();
+    var width = element.outerWidth();
+
+    var otop = offset.top - (height + margin);
+    var left = offset.left - width/2 + target.width()/2;
+
+    element.css("top", otop)
+    element.css("left", left);
+    element.css("display", "absolute");
   },
 
   // fragile : doesn't consider floated elements or padding or margin or anything like that

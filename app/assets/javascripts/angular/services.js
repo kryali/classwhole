@@ -15,3 +15,7 @@ SchedulerService.prototype.addCourse = function(courseId, callback) {
 SchedulerService.prototype.removeCourse = function(courseId, callback) {
   this.$http.post("/scheduler/courses/destroy/", {id:courseId}).success(callback);
 }
+
+SchedulerService.prototype.getHints = function(sectionId, callback) {
+  this.$http.post("/scheduler/section/" + sectionId + "/hints/").success(callback);
+}

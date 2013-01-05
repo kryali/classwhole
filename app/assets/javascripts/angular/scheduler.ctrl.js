@@ -1,6 +1,7 @@
 function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
 
   $scope.colors = ColorList;
+  $scope.showHint = {}
   save(initial_schedule);
 
   /****************************************
@@ -11,6 +12,7 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
       for (var i = 0; i < $scope.schedule.length; i++) {
         if ($scope.schedule[i].id == courseId) {
           $scope.schedule.splice(i, 1);
+          $scope.flatSchedule = flattenSchedule($scope.schedule);
           break;
         } 
       }
@@ -30,6 +32,24 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
     });
   };
 
+  $scope.showHints = function(sectionId, element) {
+    $scope.showHint[sectionId] = true;
+    SchedulerService.getHints(sectionId, function(data) {
+      if (data.success && $scope.showHint[sectionId]) {
+        $scope.scheduleHints = flattenHints(data["section_hints"]);
+      } else {
+        var tooltip = new Tooltip("scheduler/_section_message", {message: data.message}); 
+        tooltip.putAbove(element, 10);
+      }
+      //console.log(data);
+    });
+  };
+
+  $scope.hideHints = function(sectionId) {
+    $scope.showHint[sectionId] = false;
+    $scope.scheduleHints = [];
+  }
+
   /****************************************
     helper methods
   ****************************************/
@@ -41,14 +61,37 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
     return professor ? professor : "TBD";
   };
 
-  $scope.flattenSchedule = function(schedule) {
-    sections = []
+  function flattenHints(sections) {
+    var flatHints = []
+    if (sections) {
+      for (var k = 0; k < sections.length; k++) {
+        var section = sections[k];
+        for (var i = 0; i < section.meetings.length; i++) {
+          var meeting = section.meetings[i];
+          if (meeting.days == null) break;
+          var days = meeting.days.split("");
+          for (var j = 0; j < days.length; j++) {
+            var sectionCopy = Utils.deepCopy(section);
+            sectionCopy.day = days[j];
+            sectionCopy.duration = meeting.duration;
+            sectionCopy.start_time = meeting.start_time;
+            sectionCopy.end_time = meeting.end_time;
+            flatHints.push(sectionCopy);
+          }
+        }
+      }
+    }
+    return flatHints;
+  }
+
+  function flattenSchedule(schedule) {
+    var sections = []
     eachMeeting(schedule, function(meeting, section, course) {
       if (meeting.days == null) return;
       var days = meeting.days.split("");
-      for (var l = 0; l < days.length; l++) {
+      for (var i = 0; i < days.length; i++) {
         var sectionCopy = Utils.deepCopy(section);
-        sectionCopy.day = days[l];
+        sectionCopy.day = days[i];
         sectionCopy.duration = meeting.duration;
         sectionCopy.start_time = meeting.start_time;
         sectionCopy.end_time = meeting.end_time;
@@ -77,6 +120,7 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
 
   function save(data) {
     $scope.schedule = data["schedule"];
+    $scope.flatSchedule = flattenSchedule(data["schedule"]);
     $scope.hourRange = enumerateHours(data["hour_range"]);
   }
 

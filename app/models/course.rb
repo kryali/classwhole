@@ -57,14 +57,6 @@ class Course < ActiveRecord::Base
     subject_code + " " + number.to_s
   end
 
-  def remove_user( user )
-    $redis.srem( key(:users), user.id )
-  end
-
-  def add_user( user )
-    $redis.sadd( key(:users), user.id )
-  end
-
   def key( str )
     "course:#{self.id}:#{str}"
   end
