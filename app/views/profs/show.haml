@@ -6,16 +6,20 @@
     %div.prof-info
       %span.prof-name= @prof.name
       %div{ :class=>"rating", "data-value" => (@prof.easy || 0)}
-        %div{ :class=>"rating-type"} Easiness
+        %div{ :class=>"rating-type"}
+          Easiness
+          %span= "(#{@prof.easy})"
         %div{ :class=>"stars fg" }
         %div{ :class=>"stars bg" }
       %div{ :class=>"rating", "data-value" => (@prof.avg || 0)}
-        %div{ :class=>"rating-type"} Average
+        %div{ :class=>"rating-type"}
+          Overall
+          %span= "(#{@prof.avg})"
         %div{ :class=>"stars fg" }
         %div{ :class=>"stars bg" }
     %div.classes
       %div.classes-title Classes
       - @prof.courses.each do |course|
         =link_to course.to_s, show_course_path( course.semester.year, course.semester.season, course.subject_code, course.number )
-
-  =javascript_include_tag "ratings.js"
+  %div{:class => "prof-source"}
+    %span.center Ratings from <a href="http://ratemyprofessor.com">RateMyProfessor.com</a>

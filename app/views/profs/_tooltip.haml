@@ -1,0 +1,25 @@
+%div.tooltip-box
+  %div{:class=>"prof-box"}
+    - @prof = Instructor.get(name)
+    - if not @prof.nil?
+      %div.prof-info
+        %div.tooltip-prof-header
+          %div{ :class=>"small-prof-img" }
+          %span.small-prof-name= @prof.name
+        %div.tooltip-ratings
+          %div{ :class=>"small-rating", "data-value" => (@prof.easy || 0)}
+            %div{ :class=>"rating-type"}
+              Easiness
+              - if @prof.easy
+                %span= @prof.easy
+            %div
+              %div{ :class=>"stars fg" }
+              %div{ :class=>"stars bg" }
+          %div{ :class=>"small-rating", "data-value" => (@prof.avg || 0)}
+            %div{ :class=>"rating-type"}
+              Overall
+              - if @prof.avg
+                %span= @prof.avg
+            %div
+              %div{ :class=>"stars fg" }
+              %div{ :class=>"stars bg" }

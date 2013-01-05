@@ -1,488 +1,137 @@
-// Place all the styles related to the scheduler controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+@import 'colors';
+@import 'mixins';
+@import 'sizes';
 
-/* 
-  global color variables 
-  
-  tweak these to style the main page
-  TODO: unclutter this clutter
-
-*//*
-
-  all positions 
-
-  -h: height; 
-*/
-
-@mixin shadow($x, $y, $blur, $color, $inset : "") {
-  box-shadow: $inset $x $y $blur $color;
-  -moz-box-shadow: $inset $x $y $blur $color;
-  -webkit-box-shadow: $inset $x $y $blur $color;
+// Schedule
+.schedule-wrapper {
+  width: 70%;
+  min-width: 690px;
+  float: left;
+  @include user-select(none);
 }
 
-// schedule
-$schedule-block-h   : 48px;
-$numblocks          : 12;
-$scheduler-content-width: 965px;
-$scheduler-content-padding: 15px;
-$schedule-day-width : 125px;
-/* all colors */
-// These are the main element colors 
-$default-font-color : #4D4D4D;
-$accent-font-color  : #333333;
-$schedule_block_padding: 5px;
+.time-label {
+  float: left;
+  margin-top: $toolbar_h + $day_header_h;
 
-
-$showcase-bg        : url('showcase-bg.png');
-
-
-#showcase {
-  width: 100%;
-  height: 350px;
-  position: relative;
-  background: $showcase-bg;
-  padding-top:  40px;
-
-  -webkit-box-shadow: inset 0px 3px 3px #444444;
-}
-
-#showcase-title {
-  margin-top: 70px;
-  height: 50px;
-  text-align: center;
-  h1 {
-    font-size: 1.7em;
+  li {
+    height: $section_block_h;
+    display: block;
+    @include roboto();
+    text-transform: uppercase;
+    font-size: 10px;
+    color: $time_label_color;
+    text-align: center;
+    margin-right: 10px;
+    margin-left: 10px;
+    border-bottom: 1px solid transparent;
   }
 }
 
-.ui-draggable {
-  z-index: 0;
-}
-
-.small-width {
-  width: $schedule-day-width/10;
-}
-
-.large-width {
-  width: $schedule-day-width;
-}
-
-.small-height {
-  height: $schedule-block-h/10;
-}
-.large-height {
-  height: $schedule-block-h;
+.schedule-content {
+  float: left;
+  margin-left: -1px;
+  width: 658px; //TODO: make this fluid
 }
 
 .schedule-day {
-  position: relative;
-  width: $schedule-day-width;
-  background: #cccccc;
+  width: 20%;
   float: left;
-  margin: 0 0px 0 0px;
-  border-right: 1px solid #cccccc;
-  border-bottom: 1px solid #aaaaaa;
+  position: relative;
+
+  li {
+    @include roboto();
+    height: $section_block_h;
+    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    box-shadow: inset 1px 1px 2px 1px white;
+  }
+
+  li:nth-child(even) {
+    background: #f4f4f4;
+  }
+
+  li:nth-child(odd) {
+    background: #f8f8f8;
+  }
+}
+
+.schedule-display {
+  position: relative;
 }
 
 .schedule-block {
+  position: absolute;
   width: 100%;
-  position: absolute;
-  border: 1px solid #999999;
   cursor: move;
+  box-shadow: 1px 1px 3px #ccc;
+  background: #fff;
+  border: 1px solid #999;
 
-  box-shadow: 1px 2px 2px 1px #cccccc;
-  -webkit-box-shadow: 1px 2px 2px 1px #cccccc;
-  -mox-box-shadow: 1px 2px 2px 1px #cccccc;
-
-  span {
-    position: absolute;
-  }
-
-  .enrollment {
-    top: 7px;
-    right: 35px;
-  }
-
-  .section-code {
-    bottom: $schedule_block_padding;
-    left:   $schedule_block_padding;
-    color: #888;
-    font-size: 0.7em;
-  }
-  .course-name {
-    top:    $schedule_block_padding;
-    left:   $schedule_block_padding;
-    color: #444;
-    font-size: 15px;
-  }
-  .section-type {
-    top:    $schedule_block_padding;
-    right:   $schedule_block_padding;
-    background: #0069D6;
-  }
-
-  .course-title {
-    font-size: .7em;
-    top: 22px;
-    left: $schedule_block_padding;
-    color: #888;
-  }
-
-  .duration {
-    font-size: .7em;
-    bottom: $schedule_block_padding;
-    right: $schedule_block_padding;
-    text-transform: uppercase;
-    color: #444;
-  }
-
-}
-
-#slides {
-  overflow: hidden;
-  //margin-top: 130px;
-  padding-top: 1px;
-  .slides_container {
-    //width: 660px;
-    float: left;
-  }
-}
-
-.schedule-wrapper {
-  clear: both;
-  //overflow: hidden;
-  margin-bottom: 10px;
-  position: relative;
-
-  .schedule-content {
-    float: left;
-    width: 685px;
-  }
-
-  .fb-comments,
-  .fb_iframe_widget {
-
-  }
-
-  ul.time-label {
-    margin-top: 1.8em;
-    float: left;
-
-    li {
-      display: block;
-      text-align: right;
-      padding-right: 15px;
-      height: $schedule-block-h;
-      font-size: .8em;
-      text-transform: uppercase;
-    }
-  }
-
-  ul.schedule-day {
-    //overflow:hidden;
-    position: relative;
-
-    li.header {
-      background: white;
-      height: 100%;
-      text-align: center;
-      padding: 0.5em 0em;
-    }
-    
-    li {
-      border: 1px solid #eeeeee;
-      display: block;
-      height: $schedule-block-h - 2;
-      width: 100%;
-      background: #dddddd;
-      border-top: 1px solid #aaaaac;
-      border-left: 1px solid #aaaaac;
-      /* Highlight white inner */
-      box-shadow: inset 1px 1px 1px 0px white;
-      -moz-box-shadow: inset 1px 1px 1px 0px white;
-      -webkit-box-shadow: inset 1px 1px 1px 0px white;
-    }
-  }
-}
-
-.ui-droppable {
-  opacity: .5;
-  border: 1px dashed #888; 
-  cursor: pointer;
-}
-
-ul.hidden-data {
-  display: none;
-}
-
-.hover {
-  opacity: .8;
-}
-
-.scheduler-content {
-  font-family: 'Arial', 'Tahoma', sans-serif;
-  padding: $scheduler-content-padding*2 $scheduler-content-padding;
-  position: relative;
-  background: white;
-  border: 1px solid #aaaaaa;
-  margin: 40px auto 0 auto;
-  width: $scheduler-content-width;
-  overflow: hidden;
-
-  h1 {
-    text-align: center;
-    font-size: 1.3em;
-    padding: 1em;
-  }
-
-}
-
-strong {
-  font-weight: bold;
-}
-
-ul.onl_sections {
-  width: 150px;
-  min-height: 10px;
-  background: white;
-  display: block;
-  padding: 5px 0 ;
-  clear: both;
-  text-align: center;
-  margin: 0 auto 0 auto;
-  
-  li.header {
-    border-bottom: 1px solid #aaa;
-    font-size: .9em;
-    text-transform: uppercase;
-    color: #555;
-    margin-top: 1em;
-    margin-bottom: 5px;
-    padding-bottom: .5em;
-  }
-
-  li {
-    font-size: .9em;
-    color: #aaa;
-
-    .course {
-      font-weight: bold;
-    }
-  }
-}
-
-.next {
-  position: absolute;
-  top: 40%;
-  right: -24px;
-  width: 24px;
-  height: 43px;
-  background: red;
-  background: image-url("arrow-next.png");
-}
-
-.F {
-  border-right: 3px solid #AAA;
-}
-
-$mini-schedule-width: 130px;
-$mini-schedule-height: 90px;
-$mini-schedule-border-color: #aaa;
-
-.mini-pagination-top {
-  //position: absolute;
-  //top: 7px;
-  //margin: -11px 0 20px 130px;
-  padding: 1.5em;
-  overflow:hidden;
-  //width: 100%;
-
-  h3 {
-    text-transform: uppercase;
-    padding: 1em;
-  }
-
-  .mini-prev {
-    position: absolute;
-    left: -20px;
-    top: 20px;
-  }
-
-  .mini-next {
-    position: absolute;
-    right: -20px;
-    top: 20px;
-  }
-  .mini-pagination-container {
-    //border: 1px solid $mini-schedule-border-color;
-    height: 106px;
-    //width: 654px;
-    //overflow: hidden;
-    overflow-x: auto;
-    overflow-y: hidden;
-    position: relative;
-
-    ul.mini-pagination {
-      //width: 9000px;
-      position: absolute;
-      top: 0px;
-      left: 0px;
-
-      li {
-        overflow: hidden;
-        display: block;
-        width: $mini-schedule-width;
-        float: left;
-        border-top: 1px solid $mini-schedule-border-color;
-        position: relative;
-      }
-
-      .current  {
-        border-top: 5px solid #64abdb;
-      }
-
-      a {
-        width: $mini-schedule-width;
-        z-index: 10;
-        height: $mini-schedule-height;
-        position: absolute;
-        top: 0px;
-        left: 0px;
-      }
-
-      a:hover {
-        background: #fff;
-        opacity: .2;
-      }
-
-      .current a{
-        //background: #fff;
-        //opacity: .3;
-      }
-    }
-  }
-}
-
-.mini-schedule {
-  width: $mini-schedule-width;
-  height: $mini-schedule-height;
-  background: #ddd;
-  margin: 1px;
-  float: left;
-  position: relative;
-
-  .mini-section {
-    position: absolute;
-    border: 1px solid #888;
-  }
-}
-
-
-.prev {
-  position: absolute;
-  top: 40%;
-  left: -24px;
-  width: 24px;
-  height: 43px;
-  background: image-url("arrow-prev.png");
-    // If we aren't given a position to insert the selected box, don't add 
-      // If we aren't given a position to insert the selected box, don't add 
-}
-.scheduler-content {
-  h1 {
-    text-align: left;
-    font-size: 1.5em;
-  }
-  ul.crns {
-    display: block;
-    margin: 0 auto;
-    li {
-      float: left;
-      margin-left: 1.5em;
-      .uneditable-input {
-        width: 65px;
-        font-size: 1.3em;
-        padding: .4em;
-        box-shadow: inset 1px 1px 3px #888;
-        background: #efefef;
-        cursor: text;
-      }
-    }
-  }
-
-  iframe {
-    margin-top: 2em;
+  .highlight {
     width: 100%;
-    height: 600px;
-    clear: both;
-    border: 1px dashed #888;
+    height: 10px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
   }
 
-  .fb-comments {
-    margin-top: -32px;
-    margin-left: 52px;
-  }
-}
+  .section-content {
+    position: relative;
+    height: 100%;
 
-/* Sidebar profile CSS */
-#profile {
-  margin: 0 auto;
-  padding: 1em;
-  background: #eee;
-  border: 1px solid #ddd;
-  margin-bottom: 1.3em;
-  height: 200px;
-  img {
-    border: 1px solid #ddd;
-    box-shadow: inset 3px 3px 3px #333;
-    display: block;
-    margin: 0 auto;
-    height: 190px;
-    max-width: 218px;
-  }
-  h2 {
-    font-size: 1.2em;
-    margin-top: .4em;
-    text-transform: none;
-    text-align: center;
-  }
-}
+    span {
+      position: absolute;
+      text-transform: uppercase;
+      @include roboto_medium();
+    }
 
-ul.friends {
-  border: 1px solid #ddd;
-  background: #eee;
-  padding: 1em;
-  overflow: hidden;
-  h2 {
-    font-size: 1.3em;
-  }
-  li {
-    float: left;
-    a {
-      display: block;
-      width: 50px;
-      height: 50px;
-      border: 1px solid #ddd;
-      margin: 1em 1em 0 0;
+    .course-name {
+      left: 5px;
+      top: 17px;
+      font-size: 16px;
+      color: #444;
+    }
+
+    .section-code {
+      bottom: 5px;
+      right: 5px;
+      font-size: 13px;
+      color: #bbb;
+      @include sans_serif("RobotoLight");
+    }
+
+    .course-title {
+      top: 38px;
+      left: 5px;
+      font-size: 10px;
+      color: #666;
+      line-height: 12px;
+      @include sans_serif("RobotoLight");
+    }
+
+    .section-type {
+      font-size: 13px;
+      top: 17px;
+      right: 5px;
+      color: #888;
+      @include sans_serif("RobotoLight");
+    }
+
+    .enrollment {
+      top: 16px;
+      right: 32px;
+    }
+
+    .duration {
+      bottom: 5px;
+      left: 5px;
+      font-size: 12px;
+      color: #888;
     }
   }
 }
 
-.message {
-  padding: .7em;
-  border: 1px solid #ddd;
-  margin: 0em 1em 1.4em 1em;
-  background: #fffde8;
-  font-size: 1em;
-  text-align: center;
-}
-
-.ui-draggable-dragging {
-	z-index: 5000;
-}
-
-// ICONS
 .enrollment {
   display: block;
   width: 9px;
@@ -490,21 +139,54 @@ ul.friends {
   background: url("status-icons.png");
 }
 
-// RED
-.status-3 {
+.status-0 {
   background-position: 20px 0px;
 }
 
-// YELLOW
 .status-2 {
   background-position: 9px 0px;
 }
 
-// GREEN
 .status-1 {
   background-position: 0px 0px;
 }
 
-#schedule-canvas{
-  background: white;
+
+ul.day-header {
+  height: $day_header_h;
+  border-bottom: 1px solid #e0e0e0;
+
+  li {
+    height: auto;
+    background: #fff;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 11px 0px 9px 0px;
+    font-size: 10px;
+    color: #777;
+    float: left;
+    width: 20%;
+  }
+}
+
+.section-message {
+  position: absolute;
+  width: 75px;
+  height: 15px;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 5px;
+  z-index: 10;
+
+  span {
+    @include roboto_medium();
+    font-size: 12px;
+    color: #999;
+    text-transform: uppercase;
+  }
+
+  .down-arrow {
+    margin: 0 auto;
+    margin-top: 4px;
+  }
 }

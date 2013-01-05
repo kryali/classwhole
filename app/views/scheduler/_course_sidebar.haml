@@ -1,45 +1,26 @@
-- colors = section_colors( sections )
-%ul.courses
-  - courses, course_section_hash = courses_from_sections( sections )
-  - courses.each do |course|
-    - sections = course_section_hash[course.id]
-    %li.course-item
-      %ul.course
-        %li{:class=> "course-header #{colors[course.id]}"}
-          %span.course-name= course.to_s
-          %span.course-title= course.title
-          %span.course-hours= "(#{course.hours})"
-        -if nil
-          %li 
-            %span.title Description
-            %span.data= shorten(course.description, 130)
-        %ul.sections
-          - sections.each do |section|
-            - section.meetings.each do |meeting|
-              %li 
-                %div
-                  %span{:class=>"hidden id"}=section.id
-                  %span{:class=>"section-type label"}= section.short_type_s
-                  %span.code= section.code
-                  %span{ :class=>"enrollment status-#{section.enrollment_status}", :title => "#{section.reason}"  }
-                  %span.crn=# section.reference_number
-                  -if not meeting.instructors.empty?
-                    - prof = meeting.instructors[0]
-                    %span.instructor 
-                      =link_to shorten(prof, 12, ".."), show_prof_path(Instructor.slugify(prof)), :target => "_blank"
-                  -else 
-                    %span.instructor TBD
-                  -if meeting.start_time
-                    %span.time= meeting.duration_s
-                  - else
-                    %span.time Online / Arr
-        = render :partial => 'classmates', :locals => {:course => course }
+%ul.courses{"ng-model" => "schedule"}
+  %li{"ng-repeat" => "course in schedule"}
+    %div.course-header
+      %div{:class => "highlight {{color(course.id)}}"}
+      %div{:class => "header-container vertical-center"}
+        %a.course-name {{course.name}}
+        %span.course-title{"truncate"=>"35"} {{course.title}}
+        %span.course-hours {{course.hours}}
+        %a{:href=>"#", :class=>"remove-course" , "ng-click" => "removeCourse(course.id)"} x
+    %ul.sections{"ng-repeat" => "section in course.sections"}
+      %li{"ng-repeat" => "meeting in section.meetings"}
+        %div
+          %span{:class=>"section-type label"} {{section.type}}
+          %span.code {{section.code}}
+          %span{ :class=>"enrollment status-0"}
+          %span.crn {{section.crn}}
+          %span.instructor {{print_instructor(meeting.instructor)}}
+          %span.time {{meeting.duration}}
 
-        :javascript 
-          $(document).ready( function() {
-            linkify_classes($(".course .course-name"));
-            $("ul.classmates a").click( function() {
-              mpq.track( "click sidebar profile" );
-              //Mixpanel tracking
-            });
-          });
+:javascript 
+  $(document).ready( function() {
+    linkify_classes($(".course-header .course-name")); //TODO move this into a directive or just make the link u fuk
+    $("ul.classmates a").click(function() {
+      mpq.track( "click sidebar profile" );
+    });
+  });

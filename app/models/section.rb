@@ -10,27 +10,23 @@ class Section < ActiveRecord::Base
   # this may need to become more advanced depending on if we discover unusual courses
   def generate_configuration_key
     if self.course_subject_code == "PHYS" #PHYSICS DEPARTMENT Y U NO CONSISTENT?
-      key = self.course_subject_code
+      key = "ALL"
     elsif self.code.nil? #If there is no code, assume all courses are in the same configuration
-      key = self.course_subject_code
+      key = "NON"
+    elsif self.short_type == "ONL" or self.short_type == "ARR"
+      key = "ARR"
     elsif (true if Integer(self.code) rescue false) #If the code is an integer, assume the courses should be in the same configuration
-      key = self.course_subject_code
-    elsif self.code.length == 1
-      key = self.course_subject_code
+      key = "INT"
+    elsif self.code.length == 1 # code is letters of length 1
+      key = "ALL"
     elsif self.code.length == 2
-      if (true if Integer(self.code[0]) rescue false)
-        key = self.code[1]
-      else
-        key = self.code[0]
-      end
+      key = self.code
     else
       key = self.code[0]
       if (true if Integer(self.code[1]) rescue false)
         unless (true if Integer(self.code[2]) rescue false)
           key << self.code[1]
         end
-      else
-        key << self.code[0]
       end
     end
     return key
@@ -40,7 +36,7 @@ class Section < ActiveRecord::Base
   #   Method: check that these sections fall within the same semester slot then
   #     check each meeting time to see if any conflict
   def section_conflict?(section)
-    if not((self.part_of_term == "A" and section.part_of_term == "B") or (self.part_of_term == "B" and section.part_of_term == "A"))
+    if self.part_of_term & section.part_of_term > 0
       self.meetings.each do |self_meeting|
         section.meetings.each do |section_meeting|
           return true if self_meeting.meeting_conflict?(section_meeting)
@@ -100,6 +96,12 @@ class Section < ActiveRecord::Base
   end
 
   def reason
-    notes || special_approval || "Open (Restricted)"
+    if enrollment_status == 0
+      "Full/Closed"
+    elsif enrollment_status == 1
+      "Open"
+    else
+      notes || special_approval || "Open (Restricted)"
+    end
   end
 end

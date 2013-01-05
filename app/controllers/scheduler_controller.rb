@@ -1,77 +1,46 @@
 class SchedulerController < ApplicationController
+  skip_before_filter :verify_authenticity_token
   before_filter :set_cache_buster
   include ApplicationHelper
+  include SchedulerHelper
 
-  def index
-  end
-    
   def show
-    #@user = User.find( params["id"].to_i )
-    @user = User.find_by_fb_id( params["id"].to_i )
+    @user = User.find_by_fb_id(params["id"].to_i)
     @sections = @user.schedule
     @hide_buttons = true
   end
 
-  def new
-    course_ids = []
-    configurations = {}
-    current_user.courses.each do |course|
-      course_ids << course.id
-      configurations[course.id] = []
-      course.configurations.each do |configuration|
-        configurations[course.id] << configuration
+  def change_configuration
+    logger.error params.inspect
+    course = Course.find(params["course_id"])
+    configuration = course.configurations.find_by_key(params["new_config_key"])
+    old_schedule = []
+    unless params["ids"].nil?
+      params["ids"].each do |id|
+        old_schedule << Section.find(id)
       end
     end
-    
-    @schedule = Scheduler.initial_schedule(current_user.courses)
-    @course_ids = course_ids.to_json
-    @configurations = configurations
+    schedule = Scheduler.schedule_change( old_schedule, configuration )
+    schedule.map { |section| Scheduler.pkg_section(section) }
+    start_hour, end_hour = Section.hour_range( schedule )
+    render :json => { :schedule => schedule, :start_hour => start_hour, :end_hour => end_hour }
   end
 
-  def sidebar
-    sections = []
-    params["schedule"].each do |section_id|
-      sections << Section.find_by_id(section_id.to_i)
-    end
-    render :partial => "course_sidebar", :locals => { :sections => sections}
-  end
-
-  # Route that delivers section hints via AJAX
-  def move_section
-    schedule = []
-    params["schedule"].each do |section_id|
-      section = Section.find_by_id(section_id.to_i)
-      Scheduler.build_section( section )
-      schedule << section
-    end
+  def section_hints
     section_hints = []
-    if params["section"]
-      section = Section.find(params["section"].to_i)
-      section_hints = section.configuration.sections_hash[section.short_type]
-      section_hints.delete_if{|move| move.schedule_conflict?(schedule)}
+    section = Section.find(params["id"].to_i)
+    section_hints = section.configuration.sections_hash[section.short_type]
+    section_hints.delete_if{|move| move.schedule_conflict?(current_user.schedule)}
 
-      # Have to give the client all the data about the section, which spans multiple tables
-      section_hints.map do |section_hint| 
-        Scheduler.build_section( section_hint )
-      end
-    end
+    # Have to give the client all the data about the section, which spans multiple tables
+    section_hints = section_hints.map {|section_hint| Scheduler.pkg_section(section_hint)}
 
-    # Nothing needs to be rendered
-    # params["render"] forces the render (used for dragndrop render)
-    if section_hints.empty? and not params["render"]
-      render :json => { :status => "error", :message => "no hints for section" }
+    if section_hints.empty?
+      render :json => {:success => false, :status => "error", :message => "No sections"}
       return
     end
 
-    start_hour, end_hour = Section.hour_range( schedule )
-
-    render :json => { 
-                      :section_hints => section_hints,
-                      :schedule => schedule,
-                      :start_hour => start_hour,
-                      :end_hour => end_hour
-                    }
-    # render :partial => 'section_ajax', :layout => false
+    render :json => {:success => true, :section_hints => section_hints}
   end
 
   def save
@@ -134,7 +103,6 @@ class SchedulerController < ApplicationController
     end
   end
 
-#  require 'base64'
   def download
     # we are a PNG image
     response.headers["Content-Type"] = "image/png"
@@ -149,11 +117,15 @@ class SchedulerController < ApplicationController
     render :text => decoded
   end
 
+  def index
+    @schedule_json = Scheduler.pkg(current_user.courses, current_user.schedule).to_json
+  end
+
   def icalendar
     sections = []
     params["schedule"].split(",").each do |section_id|
       begin
-        sections << Section.find( section_id.to_i )
+        sections << Section.find(section_id.to_i)
       rescue ActiveRecord::RecordNotFound
         render :json => { :status => :error }
         return
@@ -202,4 +174,47 @@ class SchedulerController < ApplicationController
     render :text => cal.to_ical
   end
 
+  def add_course
+    course = Course.find(params["id"].to_i)
+    
+    if current_user.courses.include?(course) 
+      render :json => {:success => false, :status => "error", :message => "Class already added"}
+      return
+    end
+
+    courses_copy = current_user.courses.clone 
+    courses_copy << course
+    schedule = do_schedule(courses_copy)
+    if schedule.nil? or schedule.empty?
+      render :json => {:success => false, :status => "error", :message => "Sorry, there was a conflict."}
+      return
+    end
+    current_user.add_course(course)
+    current_user.schedule = schedule
+    render :json => {:success => true}
+  end
+
+  def remove_course
+    course = Course.find(params["id"].to_i)
+    current_user.rem_course(course)
+
+    sections_to_remove = current_user.schedule.select {|section| section.course_id == course.id}
+    sections_to_remove.each {|section| current_user.schedule.delete(section)}
+    current_user.save if current_user.is_temp?
+
+    render :json => {:status => :success}
+  end
+
+  def schedule
+    render :json => Scheduler.pkg(current_user.courses, current_user.schedule)
+  end
+
+  private
+  def do_schedule(courses)
+    begin
+      Timeout::timeout(5) {schedule = Scheduler.initial_schedule(courses)}
+    rescue Timeout::Error
+      return nil
+    end
+  end
 end

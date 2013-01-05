@@ -93,7 +93,6 @@
                   -if !meeting.section.code.nil?  and meeting.section.code != "NO CODE" 
                     = meeting.section.code
   %div{:class => "tabContent", :id => "sched"}
-    =render "schedule", :sections => @possible_schedules.first
+    =render "scheduler/schedule", :sections => @schedule
+    = render "scheduler/sidebar" , :sections => @schedule, :course_page => true
     %div.clear
-
-

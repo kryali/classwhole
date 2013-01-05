@@ -11,7 +11,8 @@ Whiteboard::Application.routes.draw do
   match 'jobs' => 'home#careers'
 
   # Autocomplete routes
-  match  'courses/search/auto/subject' => 'catalog#subject_auto_search'
+  match  'json/subject/all' => 'catalog#get_subjects'
+  match  'json/subject/:subject_code/courses' => 'catalog#get_courses'
   match  'courses/search/auto/subject/:subject_code' => 'catalog#course_auto_search'
   match  'courses/search' => 'catalog#simple_search', :via => :post
 
@@ -34,8 +35,6 @@ Whiteboard::Application.routes.draw do
   # User auth routes
   match 'user/login' => 'user#login', :via => :post
   match 'user/register' => 'user#register', :via => :post
-  match 'user/courses/new' => 'user#add_course', :via => :post, :as => :add_course
-  match 'user/courses/destroy/:course_id' => 'user#remove_course', :as => :remove_course
 	match 'user/courses/remove' => 'user#remove_course', :via => :post  
 	match 'user/logout', :as => 'logout'
   match 'user/refresh' => 'user#refresh', :via => :post	
@@ -43,18 +42,17 @@ Whiteboard::Application.routes.draw do
 
   # Scheduler routes
   match "scheduler/" => "scheduler#index", :as => "scheduler_index"
-  get "scheduler/show"
-  get "scheduler/new"
-  match 'scheduler/sidebar' => 'scheduler#sidebar', :via => :post
-  match 'scheduler/move_section' => 'scheduler#move_section', :via => :post
-  match 'scheduler/paginate' => 'scheduler#paginate', :via => :post
-	match 'scheduler/new' => 'scheduler#new'
+  match 'scheduler/section/:id/hints' => 'scheduler#section_hints', :via => :post
 	match 'scheduler/show/:id' => 'scheduler#show', :as => 'scheduler_show'
   match 'scheduler/save' => 'scheduler#save', :via => :post
   match 'scheduler/share' => 'scheduler#share', :via => :post
   match 'scheduler/register' => 'scheduler#register', :as => 'scheduler_register'
   match 'scheduler/download' => 'scheduler#download', :via => :post
   match 'scheduler/icalendar' => 'scheduler#icalendar', :via => :post
+  match 'scheduler/configuration/change' => 'scheduler#change_configuration'
+  match 'scheduler/schedule' => 'scheduler#schedule'
+  match 'scheduler/courses/new' => 'scheduler#add_course', :via => :post, :as => :add_course
+  match 'scheduler/courses/destroy' => 'scheduler#remove_course', :via => :post, :as => :remove_course
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -1,21 +1,8 @@
 %div.sidebar
-  - if @user
-    = render :partial => "profile"
-  - if not @user or (@user and current_user.id == @user.id)
-    %div.primary-row
-      %div.save{:title => "Save to Cloud"}
-        %a{ "data-controls-modal" => "save-modal", "data-keyboard" => "true", :class => "button grey save-schedule" } 
-          %span#save-img
-          Save
-      %div.download{:title => "Schedule picture"}
-        %a{ :class => "button grey download-schedule"}
-          %span#down-img 
-          Download
-    %a{ :class => "button blue share-schedule", :title => "Show your friends what you're taking"} 
-      %span.fb-share
-      Share Schedule
-    %a{ "data-controls-modal" => "register-modal", "data-keyboard" => "true", :class => "button grey register-schedule tooltip", :title => "Get your CRNS and register on Enterprise"} Register
-  = render :partial =>  "course_sidebar", :locals => { :sections => sections }
-  %a{:class=>"button grey icalendar-modal small"} Export to Google Calendar
-  -if @user and not @user.friends.empty?
-    = render :partial => "friends", :locals => {:user => @user}
+  %div.autocomplete-container
+    %div{"ng-hide" => "scheduling"}= render 'shared/class_search'
+    %div.scheduling{"ng-show" => "scheduling"}
+      %div.loading-logo
+      %span scheduling...
+  %div.clear
+  = render "course_sidebar", :sections => @schedule

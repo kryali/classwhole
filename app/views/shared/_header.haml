@@ -1,16 +1,11 @@
 %header
-  %div.center
-    %h3= link_to "", root_path, {:id => "logo"}
-    %nav
-      = link_to "Scheduler", scheduler_index_path
-      = link_to "Courses", show_semester_path($CURRENT_SEMESTER.season,$CURRENT_SEMESTER.year)
-      - if Rails.env == "development"
-        = #link_to "Professors", profs_index_path
-      = link_to "About", about_path
-      - if Rails.env == "development"
-        = link_to "Sandbox", sandbox_index_path
-    %nav.secondary-nav
-      - if current_user.is_temp?
-        = render 'shared/fb_login_button'
-      - else 
-        = render 'shared/user_nav', :current_user => current_user
+  = link_to "", root_path, {:id => "logo"}
+  %nav
+    = link_to "Scheduler", scheduler_index_path
+    = link_to "Courses", show_semester_path($CURRENT_SEMESTER.season,$CURRENT_SEMESTER.year)
+    = link_to "About", about_path
+  %nav.secondary-nav
+    - if current_user.is_temp?
+      = render 'shared/fb_login_button'
+    - else 
+      = render 'shared/user_nav', :current_user => current_user

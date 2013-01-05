@@ -41,7 +41,7 @@ class UIUCParser
     if section_xml.has_key?("sectionNumber")   
       code = section_xml["sectionNumber"][0] 
     else
-      code = "NO CODE"
+      code = ""
     end   
     Section.transaction do    
       current_section = current_course.sections.find_by_reference_number(crn)
@@ -49,11 +49,21 @@ class UIUCParser
         current_section = current_course.sections.new
       end
       current_section.reference_number = crn        
-      current_section.code = code        
-      current_section.part_of_term = section_xml["partOfTerm"][0] if section_xml.key?("partOfTerm")
+      current_section.code = code
+      current_section.part_of_term = 3
+      if section_xml.key?("partOfTerm")
+        partOfTerm = section_xml["partOfTerm"][0]
+        if partOfTerm == "A"
+          current_section.part_of_term = 1
+        elsif partOfTerm == "B"
+          current_section.part_of_term = 2
+        end
+      end
       current_section.notes = section_xml["sectionNotes"][0] if section_xml.key?("sectionNotes")
       #1 means course is open, 0 means it's not    
-      if section_xml["enrollmentStatus"][0].include?("Restricted")
+      if section_xml["enrollmentStatus"][0].include?("Closed")
+        enrollment_status = 0
+      elsif section_xml["enrollmentStatus"][0].include?("Restricted")
         enrollment_status = 2
       elsif section_xml["enrollmentStatus"][0].include?("Open")
         enrollment_status = 1
@@ -83,12 +93,12 @@ class UIUCParser
         if configuration.nil?
           configuration = Configuration.new(:key=>key)
           configuration.course = current_course
-          configuration.save
+          configuration.save!
         end
         current_section.configuration = configuration
       end  
       
-      current_section.save
+      current_section.save!
       # iterate through the meetings
       meetings = section_xml["meetings"][0]["meeting"]
       #for each course in the subject    
@@ -122,7 +132,7 @@ class UIUCParser
         current_course.hours_min = hours[0]
         current_course.hours_max = hours[1]
       end
-      current_course.save
+      current_course.save!
       sections = course_xml["detailedSections"][0]["detailedSection"] if course_xml.key?("detailedSections")
       sections.each do |id, detailedSection|
         self.parse_section detailedSection, current_course, id
@@ -155,7 +165,7 @@ class UIUCParser
       current_subject.title = term_xml["label"][0] if term_xml.key?("label")
       current_subject.phone = term_xml["phoneNumber"][0] if term_xml.key?("phoneNumber")
       current_subject.web_site_address = term_xml["webSiteURL"][0] if term_xml.key?("webSiteURL")  
-      current_subject.save
+      current_subject.save!
       courses = term_xml["cascadingCourses"][0]["cascadingCourse"] if term_xml.key?("cascadingCourses")
       #for each course in the subject      
       puts "#{current_subject.title}"
@@ -179,6 +189,9 @@ class UIUCParser
       term_xml = XmlSimple.xml_in( xml_str, { 'KeyAttr' => 'id' } )
     rescue ArgumentError
       puts "Bad term"
+      puts "attempted #{term_url}"
+      puts "shitty cites api returned"
+      pp xml_str
       return
     end
     # find the current semester by year and seasn (later add school_id)
@@ -188,7 +201,7 @@ class UIUCParser
       current_semester = Semester.new
       current_semester.year = year
       current_semester.season = season
-      current_semester.save    
+      current_semester.save!
     end    
     subjects = term_xml["subjects"][0]["subject"]
     subjects.each do |id, subject|
@@ -232,10 +245,11 @@ end
 namespace :data do 
   task :update => [:environment] do
     puts "Parsing?"
-    UIUCParser.parse_year 2012
+    UIUCParser.parse_year 2013
   end
 
-  task :seed, :season, :year, :needs => [:environment] do |t, args|
+  task :seed, [:season, :year] => [:environment] do |t, args|
+    puts "Seeding #{args[:season]} #{args[:year]}" 
     year = args[:year]
     season = args[:season]
     UIUCParser.parse_term_sy(season,year)

@@ -1,0 +1,36 @@
+{
+  "season": "fall",
+  "year": "2012",
+  "subject_code": "MATH",
+  "number": 416,
+  "configurations": {
+    "ALL": {
+      "LCD": [
+        {
+          "crn": 51390,
+          "code": "C3H"
+        },
+        {
+          "crn": 51391,
+          "code": "C4H"
+        },
+        {
+          "crn": 57836,
+          "code": "E13"
+        },
+        {
+          "crn": 57837,
+          "code": "E14"
+        },
+        {
+          "crn": 55582,
+          "code": "X13"
+        },
+        {
+          "crn": 55583,
+          "code": "X14"
+        }
+      ]
+    }
+  }
+}

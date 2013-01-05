@@ -1,8 +1,9 @@
 source 'http://rubygems.org'
 
-gem 'rake', '0.8.7'
+gem 'rake', '>= 0.9.2'
 gem 'mysql2'
 gem 'rails', '3.1.1'
+gem 'whenever', :require => false
 # gem 'thinking-sphinx', '2.0.5'
 gem 'passenger'
 gem 'dalli'
@@ -47,6 +48,12 @@ gem 'rack-ssl', :require => 'rack/ssl'
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
+
+group :development do
+  gem 'guard'
+  gem 'guard-livereload'
+  gem 'rb-inotify'
+end
 
 group :test do
   # Pretty printed test output

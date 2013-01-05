@@ -1,9 +1,52 @@
 .tooltip-box {
-  max-width: 300px;
-  max-height: 100px;
-  border: 1px solid blue;
-  background: red;
-  z-index: 9999;
+//  max-width: 300px;
   position: absolute;
-  padding: 10px;
+  overflow: hidden;
+  z-index: 9999;
+  box-shadow: 0px 1px 5px #999;
+
+  .prof-box {
+    margin-top: 0px;
+    max-height: 100px;
+    border: 1px solid #999;
+    background: white;
+    padding: 5px;
+    overflow: hidden;
+  }
+
+  .small-prof-name {
+    display: block;
+    font-size: 20px;
+    margin-left: 30px;
+  }
+
+  .small-rating {
+    font-size: 12px;
+    max-width: 80px;
+    height: 30px;
+    position: relative;
+    float: left;
+    margin-top: 5px;
+    margin-left: 5px;
+    //border-left: 3px solid #ccc;
+    padding-left: 5px;
+  }
+
+  .small-prof-img {
+    width: 24px;
+    height: 24px;
+    background: url("small-prof.png");
+    display: block;
+    float: left;
+  }
+
+  .tooltip-prof-header, .tooltip-ratings {
+    overflow: hidden;
+  }
+
+  .down-arrow {
+    width: 16px;
+    height: 9px;
+    background: url("down-arrow.png");
+  }
 }
