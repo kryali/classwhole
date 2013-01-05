@@ -23,6 +23,13 @@ html, body {
   background-size: 100%;
 }
 
+.down-arrow {
+  width: 20px;
+  height: 10px;
+  background: url('down-arrow.png') no-repeat;
+  background-size: 100%;
+}
+
 #wrapper {
   width: 100%;
   max-width: 1000px;

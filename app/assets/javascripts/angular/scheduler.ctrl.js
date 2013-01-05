@@ -32,18 +32,21 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
     });
   };
 
-  $scope.showHints = function(section_id) {
-    $scope.showHint[section_id] = true;
-    SchedulerService.getHints(section_id, function(data) {
-      if (data.success && $scope.showHint[section_id]) {
+  $scope.showHints = function(sectionId, element) {
+    $scope.showHint[sectionId] = true;
+    SchedulerService.getHints(sectionId, function(data) {
+      if (data.success && $scope.showHint[sectionId]) {
         $scope.scheduleHints = flattenHints(data["section_hints"]);
+      } else {
+        var tooltip = new Tooltip("scheduler/_section_message", {message: data.message}); 
+        tooltip.putAbove(element, 10);
       }
       //console.log(data);
     });
   };
 
-  $scope.hideHints = function(section_id) {
-    $scope.showHint[section_id] = false;
+  $scope.hideHints = function(sectionId) {
+    $scope.showHint[sectionId] = false;
     $scope.scheduleHints = [];
   }
 

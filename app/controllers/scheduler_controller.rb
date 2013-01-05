@@ -36,7 +36,7 @@ class SchedulerController < ApplicationController
     section_hints = section_hints.map {|section_hint| Scheduler.pkg_section(section_hint)}
 
     if section_hints.empty?
-      render :json => {:success => false, :status => "error", :message => "no hints for section"}
+      render :json => {:success => false, :status => "error", :message => "No sections"}
       return
     end
 

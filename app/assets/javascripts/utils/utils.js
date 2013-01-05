@@ -23,7 +23,6 @@ Utils = {
     if (width) {
       $(node).css("width", freeSpace.width); 
     } else {
-      console.log("Free height" , freeSpace);
       $(node).css("height", freeSpace.height); 
     }
   },
@@ -50,6 +49,19 @@ Utils = {
       node.text(text.substring(0, textLength) + "...");
       textLength--;
     }
+  },
+
+  putAbove: function(element, target, margin) {
+    var offset = target.offset();
+    var height = element.outerHeight();
+    var width = element.outerWidth();
+
+    var otop = offset.top - (height + margin);
+    var left = offset.left - width/2 + target.width()/2;
+
+    element.css("top", otop)
+    element.css("left", left);
+    element.css("display", "absolute");
   },
 
   // fragile : doesn't consider floated elements or padding or margin or anything like that

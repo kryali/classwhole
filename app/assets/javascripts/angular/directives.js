@@ -26,7 +26,7 @@ angular.module('directives', [])
       var timeout;
       element.bind("mouseenter", function(event) {
         timeout = setTimeout(function() {
-          fn($scope);
+          fn($scope, {$element: element});
         }, 70); // threshold for mouse hover
       });
       element.bind("mouseleave", function(event) {
