@@ -1,6 +1,7 @@
 class Section < ActiveRecord::Base
   belongs_to :course
   belongs_to :configuration
+  has_many :meetings
 
   def short_type_s
     return short_type || "N/A"

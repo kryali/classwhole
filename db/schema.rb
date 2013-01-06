@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130103060847) do
+ActiveRecord::Schema.define(:version => 20130105230148) do
 
   create_table "attribs", :force => true do |t|
     t.string "code"
@@ -66,10 +66,34 @@ ActiveRecord::Schema.define(:version => 20130103060847) do
     t.integer "course_id"
   end
 
-  create_table "instructors_meetings", :id => false, :force => true do |t|
-    t.integer "meeting_id"
-    t.integer "instructor_id"
+  create_table "instructors", :force => true do |t|
+    t.string  "name"
+    t.float   "easy"
+    t.float   "avg"
+    t.integer "num_ratings"
   end
+
+  add_index "instructors", ["name"], :name => "index_instructors_on_name"
+
+  create_table "instructors_meetings", :id => false, :force => true do |t|
+    t.integer "instructor_id", :null => false
+    t.integer "meeting_id",    :null => false
+  end
+
+  add_index "instructors_meetings", ["instructor_id", "meeting_id"], :name => "index_instructors_meetings_on_instructor_id_and_meeting_id", :unique => true
+
+  create_table "meetings", :force => true do |t|
+    t.integer "section_id"
+    t.time    "start_time"
+    t.time    "end_time"
+    t.string  "room_number"
+    t.string  "days"
+    t.string  "class_type"
+    t.string  "building"
+    t.string  "short_type"
+  end
+
+  add_index "meetings", ["section_id"], :name => "index_meetings_on_section_id"
 
   create_table "schools", :force => true do |t|
     t.string "name"
@@ -100,10 +124,7 @@ ActiveRecord::Schema.define(:version => 20130103060847) do
     t.datetime "end_date"
   end
 
-  create_table "sections_meetings", :id => false, :force => true do |t|
-    t.integer "sections_id"
-    t.integer "meetings_id"
-  end
+  add_index "sections", ["reference_number"], :name => "index_sections_on_reference_number"
 
   create_table "sections_users", :id => false, :force => true do |t|
     t.integer "section_id"
@@ -145,5 +166,7 @@ ActiveRecord::Schema.define(:version => 20130103060847) do
     t.string  "link"
     t.string  "gender"
   end
+
+  add_index "users", ["fb_id"], :name => "index_users_on_fb_id"
 
 end

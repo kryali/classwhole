@@ -26,10 +26,18 @@ def parse_prof_for_letter( letter )
     names = prof_name.to_s.gsub(/\s/,'').split(",")
     last_name = names[0]
     first_name = names[1][0]
-    redis_key = "#{last_name}, #{first_name}"
-    Instructor.set( redis_key, "easy", easy )
-    Instructor.set( redis_key, "avg", avg )
-    Instructor.set( redis_key, "num_ratings", num_ratings )
+    
+    instructor_name = "#{last_name}, #{first_name}"
+    instructor = Instructor.find_by_name instructor_name
+    if instructor.nil?
+      instructor = Instructor.new
+      instructor.name = instructor_name
+    end
+    instructor.easy = easy
+    instructor.avg = avg
+    instructor.num_ratings = num_ratings
+    instructor.save!
+
     puts "#{prof_name} - #{prof_url}"
     puts "RATINGS: \n\teasy-#{easy}\n\tavg-#{avg}\n\tnum-#{num_ratings}"
     puts "#######"

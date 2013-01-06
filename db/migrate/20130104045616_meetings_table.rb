@@ -23,10 +23,10 @@ class MeetingsTable < ActiveRecord::Migration
     add_index :instructors, :name
     
     create_table :instructors_meetings, :id => false, :force => true do |t|
-      t.references :instructors, :null => false
-      t.references :meetings, :null => false
+      t.references :instructor, :null => false
+      t.references :meeting, :null => false
     end
-    add_index(:meetings_instructors, [:meetings, :orange_id], :unique => true)
+    add_index(:instructors_meetings, [:instructor_id, :meeting_id], :unique => true)
     
   end
   

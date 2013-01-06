@@ -189,7 +189,8 @@ DEPENDENCIES
   rack-ssl
   rails (= 3.1.1)
   rails3-jquery-autocomplete (~> 0.9.1)
-  rake (= 0.8.7)
+  rake (>= 0.9.2)
+  rb-inotify
   sass-rails (~> 3.1.0)
   sqlite3
   turn
