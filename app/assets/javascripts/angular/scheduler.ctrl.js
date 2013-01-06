@@ -7,6 +7,16 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
   /****************************************
     api methods
   ****************************************/
+
+  $scope.replaceSection = function(oldSectionId, newSection) {
+    $scope.dragging = true;
+    $scope.scheduleHints = [];
+    replaceSection(oldSectionId, newSection);
+    SchedulerService.replaceSection(oldSectionId, newSection.id, function(data) {
+      $scope.dragging = false;
+    });
+  }
+
   $scope.removeCourse = function(courseId) {
     SchedulerService.removeCourse(courseId, function(data) {
       for (var i = 0; i < $scope.schedule.length; i++) {
@@ -24,7 +34,7 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
     $scope.scheduling = true;
     SchedulerService.addCourse(courseId, function(data) {
       if (data.success) {
-        update($scope);
+        update();
       } else {
         $scope.scheduling = false;
         pop_alert(data.status, data.message);
@@ -33,20 +43,22 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
   };
 
   $scope.showHints = function(sectionId, element) {
+    if ($scope.dragging) return;
     $scope.showHint[sectionId] = true;
     SchedulerService.getHints(sectionId, function(data) {
-      if (data.success) {
-        if ($scope.showHint[sectionId]) {
+      if ($scope.showHint[sectionId]) {
+        if (data.success) {
           $scope.scheduleHints = flattenHints(data["section_hints"]);
+        } else {
+          var tooltip = new Tooltip("scheduler/_section_message", {message: data.message}); 
+          tooltip.putAbove(element, 10);
         }
-      } else {
-        var tooltip = new Tooltip("scheduler/_section_message", {message: data.message}); 
-        tooltip.putAbove(element, 10);
       }
     });
   };
 
   $scope.hideHints = function(sectionId) {
+    if ($scope.dragging) return;
     $scope.showHint[sectionId] = false;
     $scope.scheduleHints = [];
   }
@@ -54,6 +66,7 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
   /****************************************
     helper methods
   ****************************************/
+
   $scope.print_hour = function(hour) {
     return hour % 2 == 0 ? to12hr(hour) : "";
   }
@@ -61,6 +74,17 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
   $scope.print_instructor = function(professor) {
     return professor ? professor : "TBD";
   };
+
+  $scope.$on('startDrag', function() {
+    $scope.dragging = true;
+  });
+
+  $scope.$on('endDrag', function() {
+    $scope.dragging = false;
+    $scope.$apply(function() {
+      $scope.scheduleHints = [];
+    });
+  });
 
   function flattenHints(sections) {
     var flatHints = []
@@ -111,6 +135,24 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
     return "color-" + $scope.colors.get(id);
   }
 
+  function replaceSection(oldSectionId, newSection) {
+    var courses = $scope.schedule;
+    var found = false;
+    for (var i = 0; i < courses.length; i++) {
+      var sections = courses[i].sections;
+      for (var j = 0; j < sections.length; j++) {
+        if (sections[j].id == oldSectionId) {
+          courses[i].sections.splice(j, 1);
+          courses[i].sections.push(newSection);
+          found = true;
+          break;
+        }
+      }
+      if (found) break;
+    }
+    $scope.flatSchedule = flattenSchedule($scope.schedule);
+  }
+
   function enumerateHours(hourRange) {
     hourArray = [];
     for(var i = hourRange[0]; i < hourRange[1]; i++) {
@@ -125,22 +167,27 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
     $scope.hourRange = enumerateHours(data["hour_range"]);
   }
 
-  function update($scope) {
+  function update() {
     SchedulerService.get(function(data) {
       $scope.scheduling = false;
       save(data);
     });
   }
 
-  function eachMeeting(courses, callback) {
+  function eachSection(courses, callback) {
     for (var i = 0; i < courses.length; i++) {
       for (var j = 0; j < courses[i].sections.length; j++) {
-        var section = courses[i].sections[j];
-        for (var k = 0; k < section.meetings.length; k++) {
-          callback(section.meetings[k], section, courses[i]);
-        }
+        callback(courses[i].sections[j], courses[i]);
       }
     }
+  }
+
+  function eachMeeting(courses, callback) {
+    eachSection(courses, function(section, course) {
+      for (var i = 0; i < section.meetings.length; i++) {
+        callback(section.meetings[i], section, course);
+      }
+    });
   }
   
   function to12hr(hour) {

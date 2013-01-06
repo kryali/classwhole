@@ -32,6 +32,7 @@
   float: left;
   margin-left: -1px;
   width: 658px; //TODO: make this fluid
+  @include user-select(none);
 }
 
 .schedule-day {
