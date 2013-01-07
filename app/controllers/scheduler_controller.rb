@@ -205,6 +205,13 @@ class SchedulerController < ApplicationController
     render :json => {:status => :success}
   end
 
+  def replace
+    current_user.schedule.delete(Section.find(params[:del_id].to_i))
+    current_user.schedule << Section.find(params[:add_id].to_i)
+    current_user.save
+    render :json => {:status => :success}
+  end
+
   def schedule
     render :json => Scheduler.pkg(current_user.courses, current_user.schedule)
   end
