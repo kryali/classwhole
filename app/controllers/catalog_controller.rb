@@ -190,48 +190,6 @@ class CatalogController < ApplicationController
 		return list
 	end
 
- 	
-
-  # Description:
-  # - Return a json formatted list of classes for autocomplete
-  #
-  # Route:
-  #   courses/search/auto/subject/:subject_code
-  def course_auto_search
-    result_json = Course.trie(params["term"])
-    if result_json
-      render :json => result_json 
-      return
-    end
-
-    # If result_json is nil, then we couldn't connect to redis
-    unless result_json
-      # NOTE: this section likely belongs in the model as a function self.backup_search(params)
-      #       couldn't figure it out
-      course_list = []
-
-      # Fall back to using all courses, if we can't find the subject
-      begin
-        courses = Subject.find_by_code(params[:subject_code]).courses
-      rescue
-        courses = all_courses
-      end
-
-      courses.each do |course|
-        if params["term"] and course.to_s.include?(params["term"].upcase) or not params["term"]
-          course_list << { :label => "#{course.to_s}",
-                           :title =>  "#{course.title}",
-                           :value => "#{course.to_s}" }
-        end
-      end
-      render :json => course_list
-    end
-  end
-
-  def simple_search
-    render :json => Course.trie(params[:term])
-  end
-
   def all_subjects
 		@all_subjects ||= Subject.all
   end

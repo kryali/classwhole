@@ -68,10 +68,6 @@ class UserController < ApplicationController
     #  friends.each { |friend| Friendship.create(:friend_id => friend["id"], :user_id => userID) }
     #end
     
-    # Slightly faster redis insertion
-    $redis.multi do
-      friends.each { |friend| $redis.sadd("user:#{@user.id}:friends", friend["id"]) }
-    end
     @user.save
 
     if @user.nil?

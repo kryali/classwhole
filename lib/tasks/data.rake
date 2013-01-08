@@ -9,25 +9,28 @@ require 'time'
 class UIUCParser
   @base_url = "http://courses.illinois.edu/cisapp/explorer/schedule/"
 
-  def self.parse_meeting(meeting, meeting_number, current_section)
+  def self.parse_meeting(meeting, current_section)
     current_meeting = Meeting.new
     current_meeting.start_time = meeting["start"][0] if meeting.key?("start") and meeting.key?("end")    
     current_meeting.end_time = meeting["end"][0] if meeting.key?("end")
-    current_meeting.room = meeting["roomNumber"][0]    if meeting.key?("roomNumber")      
+    current_meeting.room_number = meeting["roomNumber"][0]    if meeting.key?("roomNumber")      
     current_meeting.days = meeting["daysOfTheWeek"][0].strip if meeting.key?("daysOfTheWeek")
     current_meeting.class_type = meeting["type"][0]["content"]       if meeting.key?("type")
     current_meeting.building = meeting["buildingName"][0] if meeting.key?("buildingName")
     current_meeting.section_id = current_section.id
     current_meeting.short_type = meeting["type"][0]["code"]
-    instructor_list = []
-    if not meeting["instructors"][0].empty?
-      for instructor in  meeting["instructors"][0]["instructor"]
-        instructor_list << instructor["content"]
-        Instructor.add( instructor["content"], current_section.course )
-      end
-    end   
-    current_meeting.instructors = instructor_list
-    return current_meeting
+    
+    #fuk dis shit
+    #instructor_list = []
+    #if not meeting["instructors"][0].empty?
+    #  for instructor in  meeting["instructors"][0]["instructor"]
+    #    current_meeting.instructors << instructor["content"]
+    #    Instructor.add( instructor["content"], current_section.course )
+    #  end
+    #end   
+    #current_meeting.instructors = instructor_list
+    
+    current_meeting.save!
   end 
 
   def self.parse_section(section_xml, current_course, name)
@@ -101,13 +104,9 @@ class UIUCParser
       current_section.save!
       # iterate through the meetings
       meetings = section_xml["meetings"][0]["meeting"]
-      #for each course in the subject    
-      meeting_list = []
       meetings.each do |id, meeting|
-        meeting_list << self.parse_meeting(meeting, id, current_section)
+        self.parse_meeting(meeting, current_section)
       end
-    section_id = current_section.id
-    $redis.set("section:#{section_id}:meetings", meeting_list.to_json) 
     end  
   end
 

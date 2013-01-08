@@ -52,7 +52,7 @@ module Whiteboard
       begin
         $CURRENT_SEMESTER = Semester.find_by_season_and_year("Spring", "2013")
       rescue
-        $CURRENT_SEMESTER = Semester.all.first
+        $CURRENT_SEMESTER = Semester.first
       end
     end
   end
