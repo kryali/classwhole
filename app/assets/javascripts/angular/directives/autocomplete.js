@@ -3,7 +3,7 @@ angular.module('directives').directive('autocomplete', function() {
     var autocomplete = new Autocomplete();
     autocomplete.input_suggestion = ".autocomplete-suggestion";
     autocomplete.input = "#autocomplete-list";
-    autocomplete.ajax_search_url = "../courses/search/auto/subject/";
+    autocomplete.ajax_search_url = "/courses/search/auto/subject/";
     autocomplete.course_select = add_course_callback;
     autocomplete.init();
 

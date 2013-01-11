@@ -7,6 +7,7 @@ class Meeting < ActiveRecord::Base
   end
 
   def duration_s
+    return "Online/Arr" if start_time.nil?
     return "#{print_time(start_time)}-#{print_time(end_time)}"
   end
 

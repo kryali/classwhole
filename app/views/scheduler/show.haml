@@ -1,8 +1,5 @@
-= javascript_include_tag "scheduler.render.js"
-= javascript_include_tag "scheduler.sidebar.js"
 = javascript_include_tag "scheduler.js"
-- title = "#{@user.name}'s #{$CURRENT_SEMESTER.name} Class Schedule"
-= content_for :title, title
+= content_for :title, "Classwhole"
 
 %div.scheduler-content
   - if current_user.is_temp?
@@ -13,32 +10,7 @@
         = link_to "Classwhole", scheduler_index_path, :id => "temp-message-link2"
         = "to share #{ @user.owns } schedule with you."
       =link_to "Click here to make your own", scheduler_index_path, :id => "temp-message-link"
-  = render "schedule", :sections => @sections
-  = render "schedule_canvas"
-  = render 'scheduler/sidebar' , :sections => @sections, :course_page => false
-
-:javascript
-  $(document).ready( function() {
-    mpq.track( "User profile viewed" );
-    $(".schedule-block").each( function() {
-      //$(this).css("cursor", "auto");
-      if( $(this).height() < 50 ) {
-        $(this).find(".course-title").hide();
-      }
-    });
-
-    $("#temp-message-link").click( function() {
-      mpq.track("Temp message clicked");
-    });
-    $("#temp-message-link2").click( function() {
-      mpq.track("Temp message 2 clicked");
-    });
-  });
-
-:javascript
-  $(document).ready( function() {
-    init();
-    $("ul.friends a").click( function() {
-      mpq.track("User click friend profile");
-    });
-  });
+  %div{"ng-controller" => "SchedulerCtrl", "ng-init" => "init(#{@user.id})"}
+    = render "schedule"
+    = render "sidebar"
+    = render "schedule_canvas"

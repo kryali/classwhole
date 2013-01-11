@@ -6,8 +6,6 @@ class SchedulerController < ApplicationController
 
   def show
     @user = User.find_by_fb_id(params["id"].to_i)
-    @sections = @user.schedule
-    @hide_buttons = true
   end
 
   def change_configuration
@@ -118,7 +116,6 @@ class SchedulerController < ApplicationController
   end
 
   def index
-    @schedule_json = Scheduler.pkg(current_user.courses, current_user.schedule).to_json
   end
 
   def icalendar
@@ -213,7 +210,8 @@ class SchedulerController < ApplicationController
   end
 
   def schedule
-    render :json => Scheduler.pkg(current_user.courses, current_user.schedule)
+    user = params[:id] ? User.find(params[:id].to_i) : current_user
+    render :json => Scheduler.pkg(user.courses, user.schedule)
   end
 
   private

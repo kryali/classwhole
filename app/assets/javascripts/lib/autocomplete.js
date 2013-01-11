@@ -173,7 +173,7 @@ Autocomplete.prototype.switch_to_course_mode = function (subject_id) {
   menu.subject_code = subject_id.toUpperCase();
   var data_source;
   if (typeof menu.cache[menu.subject_code] == "undefined") {
-    data_source = 'json/subject/' + menu.subject_code + '/courses';
+    data_source = '/json/subject/' + menu.subject_code + '/courses';
   } else {
     data_source = menu.cache[menu.subject_code];
   }

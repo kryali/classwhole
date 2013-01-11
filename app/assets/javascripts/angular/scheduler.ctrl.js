@@ -1,12 +1,15 @@
 function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
 
   $scope.colors = ColorList;
-  $scope.showHint = {}
-  save(initial_schedule);
 
   /****************************************
     api methods
   ****************************************/
+  $scope.init = function(id) {
+    $scope.id = id;
+    $scope.showHint = {}
+    update();
+  }
 
   $scope.replaceSection = function(oldSectionId, newSection) {
     $scope.dragging = true;
@@ -168,10 +171,17 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
   }
 
   function update() {
-    SchedulerService.get(function(data) {
-      $scope.scheduling = false;
-      save(data);
-    });
+    if ($scope.id) {
+      SchedulerService.getId($scope.id, function(data) {
+        $scope.scheduling = false;
+        save(data);
+      });
+    } else {
+      SchedulerService.get(function(data) {
+        $scope.scheduling = false;
+        save(data);
+      });
+    }
   }
 
   function eachSection(courses, callback) {

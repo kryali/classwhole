@@ -8,6 +8,10 @@ SchedulerService.prototype.get = function(callback) {
   this.$http.post("/scheduler/schedule").success(callback);
 }
 
+SchedulerService.prototype.getId = function(id, callback) {
+  this.$http.post("/scheduler/schedule/" + id).success(callback);
+}
+
 SchedulerService.prototype.addCourse = function(courseId, callback) {
   this.$http.post("/scheduler/courses/new/", {id:courseId}).success(callback);
 }
