@@ -4,12 +4,12 @@
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr="#{$start}", endColorstr='#{$end}');
 }
 
-@mixin transition($time, $mode) {
-  -webkit-transition: $time $mode all;
-  -moz-transition: $time $mode all;
-  -ms-transition: $time $mode all;
-  -o-transition: $time $mode all;
-  transition: $time $mode all;
+@mixin transition($property, $time) {
+  -webkit-transition:$property $time;
+  -moz-transition: $property $time;
+  -ms-transition: $property $time;
+  -o-transition: $property $time;
+  transition: $property $time;
 }
 
 @mixin user-select( $type ) {

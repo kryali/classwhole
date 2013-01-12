@@ -132,6 +132,9 @@
     }
   }
 }
+.hint {
+  @include transition(opacity, 300ms);
+}
 
 .enrollment {
   display: block;
@@ -172,7 +175,7 @@ ul.day-header {
 
 .section-message {
   position: absolute;
-  width: 75px;
+  width: 145px;
   height: 15px;
   background: #fff;
   border: 1px solid #ccc;

@@ -6,9 +6,11 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
     api methods
   ****************************************/
   $scope.init = function(id) {
-    $scope.id = id;
     $scope.showHint = {}
-    update();
+    $scope.id = id;
+    if (initialSchedule) {
+      save(initialSchedule);
+    }
   }
 
   $scope.replaceSection = function(oldSectionId, newSection) {

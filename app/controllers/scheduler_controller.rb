@@ -6,6 +6,7 @@ class SchedulerController < ApplicationController
 
   def show
     @user = User.find_by_fb_id(params["id"].to_i)
+    @schedule_json = Scheduler.pkg(@user.courses, @user.schedule)
   end
 
   def change_configuration
@@ -34,7 +35,7 @@ class SchedulerController < ApplicationController
     section_hints = section_hints.map {|section_hint| Scheduler.pkg_section(section_hint)}
 
     if section_hints.empty?
-      render :json => {:success => false, :status => "error", :message => "No sections"}
+      render :json => {:success => false, :status => "error", :message => "No alternate sections"}
       return
     end
 
@@ -116,6 +117,7 @@ class SchedulerController < ApplicationController
   end
 
   def index
+    @schedule_json = Scheduler.pkg(current_user.courses, current_user.schedule)
   end
 
   def icalendar

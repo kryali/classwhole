@@ -1,5 +1,5 @@
 %ul.courses{"ng-model" => "schedule"}
-  %li{"ng-repeat" => "course in schedule"}
+  %li.height-0{"ng-repeat" => "course in schedule", "animate" => "height-auto"}
     %div.course-header
       %div{:class => "highlight {{color(course.id)}}"}
       %div{:class => "header-container vertical-center"}

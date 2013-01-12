@@ -68,7 +68,6 @@ Schedule.layoutSection = function(sectionElement, section, globalStartHour) {
   sectionElement.css("top", y_offset);
   sectionElement.css("width", section_width - 2); // -2 for borders
   sectionElement.css("height", height);
-  sectionElement.css("display", "block");
   if (height < 63) { // Yep, this is arbitrary. Don't like it? FIX IT
     sectionElement.find(".course-title").css("display", "none");
   }

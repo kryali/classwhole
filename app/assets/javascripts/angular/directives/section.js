@@ -39,6 +39,7 @@ angular.module('directives').directive("section", function() {
     Schedule.layoutSection(sectionElement, $scope.section, $scope.hourRange[0]); 
     if (eval(attrs.hint)) {
       sectionElement.droppable(options.droppable);
+      sectionElement.addClass("in");
     } else {
       sectionElement.draggable(options.draggable).data("id", $scope.section.id);
     }
