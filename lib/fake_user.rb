@@ -6,6 +6,10 @@ class Fake_user
     @schedule = data[:schedule]
   end
 
+  def id
+    return "ANONYMOUS USER"
+  end
+
   def save_courses(courses)
     ids = []
     courses.each {|course| ids << course.id}

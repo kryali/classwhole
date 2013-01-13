@@ -1,25 +1,32 @@
 function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
 
+  /****************************************
+    initialization methods
+  ****************************************/
   $scope.colors = ColorList;
+  init(initData); // initData gets set as a global var through the html (show.haml/index.haml)
+
+  function init(data) {
+    $scope.showHint = {}
+    $scope.id = data.id;
+    $scope.canModify = data.canModify;
+    console.log($scope.canModify);
+    save(data.schedule);
+  }
+
 
   /****************************************
     api methods
   ****************************************/
-  $scope.init = function(id) {
-    $scope.showHint = {}
-    $scope.id = id;
-    if (initialSchedule) {
-      save(initialSchedule);
-    }
-  }
-
   $scope.replaceSection = function(oldSectionId, newSection) {
     $scope.dragging = true;
     $scope.scheduleHints = [];
     replaceSection(oldSectionId, newSection);
-    SchedulerService.replaceSection(oldSectionId, newSection.id, function(data) {
-      $scope.dragging = false;
-    });
+    if ($scope.canModify) {
+      SchedulerService.replaceSection(oldSectionId, newSection.id, function(data) {
+        $scope.dragging = false;
+      });
+    }
   }
 
   $scope.removeCourse = function(courseId) {
@@ -48,7 +55,7 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
   };
 
   $scope.showHints = function(sectionId, element) {
-    if ($scope.dragging) return;
+    if (!$scope.canModify || $scope.dragging) return;
     $scope.showHint[sectionId] = true;
     SchedulerService.getHints(sectionId, function(data) {
       if ($scope.showHint[sectionId]) {

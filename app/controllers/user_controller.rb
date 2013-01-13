@@ -13,11 +13,15 @@ class UserController < ApplicationController
     ensure
       self.current_user=@user
 
-      # if there is a cookie, overwrite any courses in db
-      saved_data = Fake_user.get_saved_data(cookies)
-      @user.courses = saved_data[:courses] if saved_data[:courses].any?
-      @user.schedule = saved_data[:schedule] if saved_data[:schedule].any?
-      Fake_user.clear_data(cookies)
+      # Transfer the temp user's schedule only if the user's schedule is already empty
+      if @user.schedule.empty?
+        # if there is a cookie, overwrite any courses in db
+        saved_data = Fake_user.get_saved_data(cookies)
+        @user.courses = saved_data[:courses] if saved_data[:courses].any?
+        @user.schedule = saved_data[:schedule] if saved_data[:schedule].any?
+        Fake_user.clear_data(cookies)
+      end
+
       @status = "success"
       @message = "Logged in"
       render :partial => 'shared/user_nav', :layout => false

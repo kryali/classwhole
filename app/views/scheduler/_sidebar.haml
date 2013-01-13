@@ -1,5 +1,7 @@
 %div.sidebar
-  %div.autocomplete-container
+  -if @user
+    = render 'profile'
+  %div.autocomplete-container{"ng-show" =>"canModify"}
     %div{"ng-hide" => "scheduling"}= render 'shared/class_search'
     %div.scheduling{"ng-show" => "scheduling"}
       %div.loading-logo

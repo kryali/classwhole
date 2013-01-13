@@ -30,10 +30,29 @@
       margin-top: 5px;
     }
   }
+
+  .profile {
+    padding: 20px;
+    border: 1px solid #ccc;
+    background: #fefefe;
+
+    img {
+      margin: 0 auto;
+      display: block;
+    }
+
+    .name {
+      text-align: center;
+      margin-top: 10px;
+      @include roboto_light;
+      text-transform: uppercase;
+    }
+  }
 }
 
 ul.courses {
   li {
+    @include transition(max-height, 4s);
   }
 
   .course-header {

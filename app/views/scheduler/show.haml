@@ -2,18 +2,18 @@
 = content_for :title, "Classwhole"
 
 %div.scheduler-content
-  - if current_user.is_temp?
-    %div.message
-      %span
-        %strong= @user.name
-        is using
-        = link_to "Classwhole", scheduler_index_path, :id => "temp-message-link2"
-        = "to share #{ @user.owns } schedule with you."
-      =link_to "Click here to make your own", scheduler_index_path, :id => "temp-message-link"
-  %div{"ng-controller" => "SchedulerCtrl", "ng-init" => "init(#{@user.id})"}
+  -#if current_user.is_temp?
+  -#%div.message
+  -#  %span
+  -#    %strong= @user.name
+  -#    is using
+  -#    = link_to "Classwhole", scheduler_index_path, :id => "temp-message-link2"
+  -#    = "to share #{ @user.owns } schedule with you."
+  -#  =link_to "Click here to make your own", scheduler_index_path, :id => "temp-message-link"
+  %div{"ng-controller" => "SchedulerCtrl"}
     = render "schedule"
     = render "sidebar"
     = render "schedule_canvas"
 
 :javascript
-  var initialSchedule = #{@schedule_json.to_json};
+  var initData = {id:#{@user.id}, canModify: #{current_user.id == @user.id}, schedule: #{@schedule_json.to_json}};
