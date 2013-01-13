@@ -1,8 +1,8 @@
 source 'http://rubygems.org'
 
-gem 'rake', '>= 0.9.2'
+gem 'rake'
 gem 'mysql2'
-gem 'rails', '3.1.1'
+gem 'rails', '3.1.10'
 gem 'whenever', :require => false
 # gem 'thinking-sphinx', '2.0.5'
 gem 'passenger'
@@ -37,7 +37,7 @@ end
 
 gem 'jquery-rails'
 
-gem 'rack', '1.3.3'
+gem 'rack'
 gem 'rack-ssl', :require => 'rack/ssl'
 
 # Use unicorn as the web server
