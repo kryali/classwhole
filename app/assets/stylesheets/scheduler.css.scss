@@ -35,6 +35,14 @@
   @include user-select(none);
 }
 
+.scheduler-landing {
+  float: left;
+  margin-left: 15px;
+  padding: 20px;
+  width: 641px; //TODO: make this fluid
+  background: #eee;
+}
+
 .schedule-day {
   width: 20%;
   float: left;
