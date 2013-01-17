@@ -1,10 +1,8 @@
 source 'http://rubygems.org'
 
 gem 'rake'
-gem 'mysql2'
 gem 'rails', '3.1.10'
 gem 'whenever', :require => false
-# gem 'thinking-sphinx', '2.0.5'
 gem 'passenger'
 gem 'dalli'
 
@@ -13,11 +11,6 @@ gem 'mechanize'
 
 # memory logger
 gem 'oink'
-
-# Bundle edge Rails instead:
-# gem 'rails',     :git => 'git://github.com/rails/rails.git'
-
-gem 'sqlite3'
 gem 'xml-simple'
 gem 'koala', "~> 1.2.0beta"
 
@@ -48,11 +41,16 @@ gem 'rack-ssl', :require => 'rack/ssl'
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
+group :production do
+  gem 'pg'
+  gem 'mysql2'
+end
 
 group :development do
   gem 'guard'
   gem 'guard-livereload'
   gem 'rb-inotify'
+  gem 'sqlite3'
 end
 
 group :test do
