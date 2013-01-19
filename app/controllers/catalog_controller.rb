@@ -8,6 +8,10 @@ class CatalogController < ApplicationController
   include ApplicationHelper  
   #caches_page :semester, :subject, :course
 
+  def default_semester
+    @default_semester = Semester.find_by_year_and_season(DefaultSemester::YEAR, DefaultSemester::SEASON)
+  end
+
   # <helpers> 
   # Description:
   #  The following 3 functions parse paramaters to find the database object
@@ -75,7 +79,7 @@ class CatalogController < ApplicationController
   def semester
     get_semester(params)
     if @semester.nil?
-      redirect_to show_semester_path( $CURRENT_SEMESTER.season, $CURRENT_SEMESTER.year )
+      redirect_to show_semester_path(DefaultSemester::SEASON, DefaultSemester::YEAR)
       return
     end
     @subjects = @semester.subjects
@@ -212,11 +216,11 @@ class CatalogController < ApplicationController
   end
 
   def get_subjects
-    render :json => Subject.minify($CURRENT_SEMESTER.subjects)
+    render :json => Subject.minify(default_semester.subjects)
   end
 
   def get_courses
-    subject = $CURRENT_SEMESTER.subjects.find_by_code(params[:subject_code].upcase)
+    subject = default_semester.subjects.find_by_code(params[:subject_code].upcase)
     if subject
       render :json => subject.mini_courses 
     else

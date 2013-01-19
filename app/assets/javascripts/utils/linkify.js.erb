@@ -3,7 +3,7 @@ function show_course_path( name ) {
   name_copy = name_copy.split(" ");
   var subject = name_copy[0];
   var number = name_copy[1];
-  var url = ("http://" + document.location.host )+ "/courses/<%= $CURRENT_SEMESTER.season %>/<%= $CURRENT_SEMESTER.year %>/" + subject + "/" + number;
+  var url = ("http://" + document.location.host )+ "/courses/<%= DefaultSemester::SEASON %>/<%= DefaultSemester::YEAR %>/" + subject + "/" + number;
   return "<a href=\""+ url + "\" target=\"_BLANK\">" + name + "</a>";
 }
 

@@ -46,14 +46,5 @@ module Whiteboard
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
-
-    # config.time_zone = "Central Time (US & Canada)"
-    config.after_initialize do 
-      begin
-        $CURRENT_SEMESTER = Semester.find_by_season_and_year("Spring", "2013")
-      rescue
-        $CURRENT_SEMESTER = Semester.first
-      end
-    end
   end
 end

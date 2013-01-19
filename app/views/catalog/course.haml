@@ -35,7 +35,7 @@
     %meta{:itemprop=>"image", :content => "http://i.imgur.com/j0LXM.jpg" } 
     %meta{:itemprop=>"url", :content => "#{request.url}" } 
 
-    - if @semester.year == $CURRENT_SEMESTER.year and @semester.season == $CURRENT_SEMESTER.season
+    - if @semester.year == DefaultSemester::YEAR and @semester.season == DefaultSemester::SEASON
       %button{:class => "button large green", :id=> "add_class_button", :type => "submit"}
         %span{:class => "hidden id"}= @course.id
         %span{:class => "font"} Add Class

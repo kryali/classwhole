@@ -44,6 +44,4 @@ class Meeting < ActiveRecord::Base
     end
     return false
   end
-
 end
-
