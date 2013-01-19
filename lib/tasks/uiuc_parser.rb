@@ -8,51 +8,29 @@ require 'pp'
 class UIUCParser
   @base_url = "http://courses.illinois.edu/cisapp/explorer/schedule/"
 
-  def self.parse_meeting(meeting, meeting_number, current_section)
-    current_meeting = current_section.meetings.find_by_meeting_number(meeting_number)
-    if current_meeting.nil?
-      current_meeting = current_section.meetings.new
-      current_meeting.meeting_number = meeting_number    
-    end       
-    current_meeting.start_time = meeting["start"][0] if meeting.key?("start")     
-    current_meeting.end_time = meeting["end"][0] if meeting.key?("end")  
-    current_meeting.room = meeting["roomNumber"][0]    if meeting.key?("roomNumber")      
+  def self.parse_meeting(meeting, current_section)
+    current_meeting = Meeting.new
+    current_meeting.start_time = meeting["start"][0] if meeting.key?("start") and meeting.key?("end")    
+    current_meeting.end_time = meeting["end"][0] if meeting.key?("end")
+    current_meeting.room_number = meeting["roomNumber"][0]    if meeting.key?("roomNumber")      
     current_meeting.days = meeting["daysOfTheWeek"][0].strip if meeting.key?("daysOfTheWeek")
     current_meeting.class_type = meeting["type"][0]["content"]       if meeting.key?("type")
-    building = meeting["buildingName"][0] if meeting.key?("buildingName")
-    current_building = Building.find_by_name(building)
-    if current_building.nil?
-      current_building = Building.new
-      current_building.name = building
-      current_building.save
-    end
-    current_meeting.building = current_building
-    current_meeting.save
-    #add instructor to database
-    if not meeting["instructors"][0].empty?
-      #loop over all the professors for the meeting (some have multiple instructors)      
-      for instructor in  meeting["instructors"][0]["instructor"]
-        full_name = instructor["content"]
-        #instructor table
-        instructor_alone = Instructor.find_by_full_name(full_name)        
-        instructor_alone = Instructor.new  if instructor_alone.nil?
-        instructor_alone.full_name = full_name
-        instructor_alone.save
-        #instructors.meetings
-        instructor_meeting = instructor_alone.meetings.find_by_id(current_meeting.id)
-        instructor_alone.meetings << current_meeting if instructor_meeting.nil?
-        #meetings.instructors 
-        meeting_instructor = current_meeting.instructors.find_by_full_name(full_name) 
-        meeting_instructor = current_meeting.instructors.new if meeting_instructor.nil?
-        meeting_instructor.full_name = full_name
-        #### checkkkkkkkkkkkkkkkkkkk
-        meeting_instructor.save   
-      end
-    end   
-    # current_instructor = Instructor.find_by_full_name
-    #current_meeting.save
-  
-  end
+    current_meeting.building = meeting["buildingName"][0] if meeting.key?("buildingName")
+    current_meeting.section_id = current_section.id
+    current_meeting.short_type = meeting["type"][0]["code"]
+    
+    #fuk dis shit
+    #instructor_list = []
+    #if not meeting["instructors"][0].empty?
+    #  for instructor in  meeting["instructors"][0]["instructor"]
+    #    current_meeting.instructors << instructor["content"]
+    #    Instructor.add( instructor["content"], current_section.course )
+    #  end
+    #end   
+    #current_meeting.instructors = instructor_list
+    
+    current_meeting.save!
+  end 
 
   def self.parse_section(section_xml, current_course, name)
     course_number = section_xml["parents"][0]["course"].first[0] #probably a better way to do this     
@@ -65,7 +43,7 @@ class UIUCParser
     if section_xml.has_key?("sectionNumber")   
       code = section_xml["sectionNumber"][0] 
     else
-      code = "NO CODE"
+      code = ""
     end   
     Section.transaction do    
       current_section = current_course.sections.find_by_reference_number(crn)
@@ -73,10 +51,21 @@ class UIUCParser
         current_section = current_course.sections.new
       end
       current_section.reference_number = crn        
-      current_section.code = code        
-      current_section.part_of_term = section_xml["partOfTerm"][0] if section_xml.key?("partOfTerm")
+      current_section.code = code
+      current_section.part_of_term = 3
+      if section_xml.key?("partOfTerm")
+        partOfTerm = section_xml["partOfTerm"][0]
+        if partOfTerm == "A"
+          current_section.part_of_term = 1
+        elsif partOfTerm == "B"
+          current_section.part_of_term = 2
+        end
+      end
+      current_section.notes = section_xml["sectionNotes"][0] if section_xml.key?("sectionNotes")
       #1 means course is open, 0 means it's not    
-      if section_xml["enrollmentStatus"][0].include?("Restricted")
+      if section_xml["enrollmentStatus"][0].include?("Closed")
+        enrollment_status = 0
+      elsif section_xml["enrollmentStatus"][0].include?("Restricted")
         enrollment_status = 2
       elsif section_xml["enrollmentStatus"][0].include?("Open")
         enrollment_status = 1
@@ -90,36 +79,22 @@ class UIUCParser
       current_section.short_type = section_xml["meetings"][0]["meeting"].first[1]["type"][0]["code"]
       current_section.course_subject_code = section_xml["parents"][0]["subject"].first[0]
       current_section.course_title = section_xml["parents"][0]["course"].first[1]["content"]
-      #current_section.course_number = section_xml["parents"][0]["course"].first[0]
-      current_section.code = section_xml["sectionNumber"][0]    if section_xml.has_key?("sectionNumber")
+      current_section.code = section_xml["sectionNumber"][0].strip    if section_xml.has_key?("sectionNumber")
       if section_xml.has_key?("creditHours")
-        current_section.hours = section_xml["creditHours"][0].scan(/\d/).map{|n| n.to_i} 
+        current_section.hours = section_xml["creditHours"][0].scan(/\d+/).map{|n| n.to_i}[0]
       else
         current_section.hours = 0
       end
       current_section.start_date = DateTime.parse(section_xml["startDate"][0]) if section_xml.key?("startDate")
       current_section.end_date = DateTime.parse(section_xml["endDate"][0]) if section_xml.key?("endDate")
 
-      # setup course configuration
-      if current_section.configuration.nil?
-        key = current_section.generate_configuration_key
-        configuration = Configuration.find_by_course_id_and_key(current_course.id, key)
-        if configuration.nil?
-          configuration = Configuration.new(:key=>key)
-          configuration.course = current_course
-          configuration.save
-        end
-        current_section.configuration = configuration
-      end  
-      
-      current_section.save
+      current_section.save!
       # iterate through the meetings
       meetings = section_xml["meetings"][0]["meeting"]
-      #for each course in the subject    
       meetings.each do |id, meeting|
-        self.parse_meeting meeting, id, current_section
+        self.parse_meeting(meeting, current_section)
       end
-    end   
+    end  
   end
 
   def self.parse_course(course_xml, current_subject, name) 
@@ -135,7 +110,7 @@ class UIUCParser
       current_course.description = course_xml["description"][0] if course_xml.key?("description")
       current_course.title = course_xml["label"][0]  if course_xml.key?("label")
       current_course.subject_code = name.split(" ")[0]
-      hours = course_xml["creditHours"][0].scan(/\d/).map{|n| n.to_i}
+      hours = course_xml["creditHours"][0].scan(/\d+/).map{|n| n.to_i}
       if hours.size == 1
         current_course.hours_min = hours[0]
         current_course.hours_max = hours[0]
@@ -143,7 +118,7 @@ class UIUCParser
         current_course.hours_min = hours[0]
         current_course.hours_max = hours[1]
       end
-      current_course.save
+      current_course.save!
       sections = course_xml["detailedSections"][0]["detailedSection"] if course_xml.key?("detailedSections")
       sections.each do |id, detailedSection|
         self.parse_section detailedSection, current_course, id
@@ -176,7 +151,7 @@ class UIUCParser
       current_subject.title = term_xml["label"][0] if term_xml.key?("label")
       current_subject.phone = term_xml["phoneNumber"][0] if term_xml.key?("phoneNumber")
       current_subject.web_site_address = term_xml["webSiteURL"][0] if term_xml.key?("webSiteURL")  
-      current_subject.save
+      current_subject.save!
       courses = term_xml["cascadingCourses"][0]["cascadingCourse"] if term_xml.key?("cascadingCourses")
       #for each course in the subject      
       puts "#{current_subject.title}"
@@ -200,6 +175,9 @@ class UIUCParser
       term_xml = XmlSimple.xml_in( xml_str, { 'KeyAttr' => 'id' } )
     rescue ArgumentError
       puts "Bad term"
+      puts "attempted #{term_url}"
+      puts "shitty cites api returned"
+      pp xml_str
       return
     end
     # find the current semester by year and seasn (later add school_id)
@@ -209,7 +187,7 @@ class UIUCParser
       current_semester = Semester.new
       current_semester.year = year
       current_semester.season = season
-      current_semester.save    
+      current_semester.save!
     end    
     subjects = term_xml["subjects"][0]["subject"]
     subjects.each do |id, subject|
@@ -248,5 +226,4 @@ class UIUCParser
       current.attribute = hash[key]
     end
   end
-
 end

@@ -6,8 +6,17 @@ require 'json'
 
 class SectionGroupingGenerator
 
+  def self.seed_term (season, year)
+    semester = Semester.find_by_season_and_year(season, year)
+    semester.subjects.all.each do |subject|
+      subject.courses.all.each do |course|
+        SectionGroupingGenerator.seed_course course
+      end
+    end
+  end
+
   def self.seed_course (course)
-    puts "Seeding #{course.subject_code} #{course.number}"
+    puts "#{course.subject_code} #{course.number}"
     # generate new configurations
     course.sections.each do |section|
       key = self.generate_group_key(section)
@@ -57,15 +66,9 @@ end
 
 namespace :groups do
 
-  #SEED
+  #Generate or regenerate groupings
 
   task :generate, [:season, :year] => [:environment] do |t, args|
-    #re seed all courses
-    semester = Semester.find_by_season_and_year(args[:season], args[:year])
-    semester.subjects.all.each do |subject|
-      subject.courses.all.each do |course|
-        SectionGroupingGenerator.seed_course course
-      end
-    end
+    SectionGroupingGenerator.seed_term args[:season], args[:year]
   end
 end
