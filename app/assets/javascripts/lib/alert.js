@@ -39,8 +39,6 @@ $(document).ready(function () {
     alert_box.append(alert_message);
     alert_box.css("opacity", "0");
     
-    /* Enable the close button on the box - Twitter bootstrap voodoo*/
-    alert_box.alert();
     $('.alert-box').append(alert_box);
 
     alert_box.animate({

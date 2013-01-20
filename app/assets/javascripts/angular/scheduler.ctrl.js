@@ -10,7 +10,6 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
     $scope.showHint = {}
     $scope.id = data.id;
     $scope.canModify = data.canModify;
-    console.log($scope.canModify);
     save(data.schedule);
   }
 
