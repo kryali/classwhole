@@ -50,7 +50,6 @@ end
 group :development do
   gem 'guard'
   gem 'guard-livereload'
-  gem 'rb-inotify'
   gem 'sqlite3'
 end
 
