@@ -5,6 +5,7 @@ gem 'rails', '3.1.10'
 gem 'whenever', :require => false
 gem 'passenger'
 gem 'dalli'
+gem 'rb-readline'
 
 # simulate a web browser
 gem 'mechanize'
