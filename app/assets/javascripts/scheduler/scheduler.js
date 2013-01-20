@@ -44,7 +44,7 @@ var options = {
 }
 
 function init_profs() {
-  var config = {
+  var group = {
     over: function() {
       var professor_name = $(this).text();
       var url = "profs/_tooltip";
@@ -63,7 +63,7 @@ function init_profs() {
     out: function(){}
   };
 
-  $(".instructor a").hoverIntent(config);//(function(){})
+  $(".instructor a").hoverIntent(group);//(function(){})
 }
 
 function save_schedule() {
@@ -345,17 +345,17 @@ function inArray( array, element ) {
   return false;
 }
 
-function init_configurations() {
+function init_groups() {
   $(".course-header").each(function() {
     $(this).find("select").change(function() {
       var selected = $(this).find("option:selected");
-      var new_config_key = selected.text();
+      var new_group_key = selected.text();
       var course_id = selected.attr("data-course-id");
-      var url = "/scheduler/configuration/change";
+      var url = "/scheduler/group/change";
       var old_schedule_ids = get_schedule_ids();
       var data = {
         ids: old_schedule_ids,
-        new_config_key: new_config_key,
+        new_group_key: new_group_key,
         course_id: course_id
       };
       $.ajax({
@@ -450,7 +450,7 @@ init = function() {
   init_share_button();
   init_download_schedule();
   init_pagination();
-  init_configurations();
+  init_groups();
   init_profs();
 
   // Use the keyboard to select other schedules

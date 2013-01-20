@@ -1,71 +1,71 @@
 class Scheduler
   def self.initial_schedule( courses )
-    # create a list of configurations for each course
-    course_configurations = []
+    # create a list of groups for each course
+    course_groups = []
     (0...courses.count).each do |index|
-      course_configurations[index] = []
-      courses[index].configurations.each do |configuration|
-        course_configurations[index] << configuration
+      course_groups[index] = []
+      courses[index].groups.each do |group|
+        course_groups[index] << group
       end
     end
-    course_configurations.sort!{|x,y| x.count <=> y.count}
+    course_groups.sort!{|x,y| x.count <=> y.count}
     @schedule = []
-    return self.configuration_recurse([], course_configurations, 0)
+    return self.group_recurse([], course_groups, 0)
   end
 
-  def self.configuration_recurse( configurations, course_configurations, index )
-    return self.schedule_configurations(configurations) if index == course_configurations.count
-    course_configurations[index].each do |configuration|
-      configurations.push(configuration)
-      schedule = self.configuration_recurse(configurations, course_configurations, index+1)
+  def self.group_recurse( groups, course_groups, index )
+    return self.schedule_groups(groups) if index == course_groups.count
+    course_groups[index].each do |group|
+      groups.push(group)
+      schedule = self.group_recurse(groups, course_groups, index+1)
       return schedule if @valid
-      configurations.pop
+      groups.pop
     end
     if index == 0 # no valid schedule found
       return []
     end
   end
 
-  def self.schedule_change( schedule, config_new )
+  def self.schedule_change( schedule, grp_new )
     @schedule = schedule
-    self.remove_configuration(config_new)
-    schedule_configs = [config_new]
-    self.schedule_configurations( schedule_configs )
-    # couldnt schedule this config? loop until we get a valid schedule
+    self.remove_group(grp_new)
+    schedule_grps = [grp_new]
+    self.schedule_groups( schedule_grps )
+    # couldnt schedule this grp? loop until we get a valid schedule
     while not @valid and @schedule.length > 0
-      removed_conf = @schedule.first.configuration
-      schedule_configs << removed_conf
-      self.remove_configuration( removed_conf )
-      self.schedule_configurations( schedule_configs )
+      removed_conf = @schedule.first.group
+      schedule_grps << removed_conf
+      self.remove_group( removed_conf )
+      self.schedule_groups( schedule_grps )
     end
     return @schedule
   end
 
-  def self.remove_configuration(configuration)
-    @schedule.delete_if {|s| s.course == configuration.course}
+  def self.remove_group(group)
+    @schedule.delete_if {|s| s.course == group.course}
   end
 
-  def self.schedule_configurations( configurations )
+  def self.schedule_groups( groups )
     @schedule = [] if @schedule.nil?
     @valid = false
-    self.schedule_configurations_recursive( configurations, 0, 0 )
+    self.schedule_groups_recursive( groups, 0, 0 )
     return @schedule
   end
 
-  def self.schedule_configurations_recursive(configurations, configuration_index, sections_index)
-    if configuration_index == configurations.size #valid schedule!
+  def self.schedule_groups_recursive(groups, group_index, sections_index)
+    if group_index == groups.size #valid schedule!
       @valid = true
       return
     end
-    configuration = configurations[configuration_index]
-    if sections_index == configuration.sections_array.size
-      return self.schedule_configurations_recursive(configurations, configuration_index + 1, 0)
+    group = groups[group_index]
+    if sections_index == group.sections_array.size
+      return self.schedule_groups_recursive(groups, group_index + 1, 0)
     end
-    sections = configuration.sections_array[sections_index]
+    sections = group.sections_array[sections_index]
     sections.each do |section|
       unless section.schedule_conflict?(@schedule)
         @schedule.push(section)
-        self.schedule_configurations_recursive(configurations, configuration_index, sections_index+1)
+        self.schedule_groups_recursive(groups, group_index, sections_index+1)
         break if @valid
         @schedule.pop
       end
@@ -101,15 +101,15 @@ class Scheduler
     return start_time, end_time
   end
 
-  def self.get_configurations( courses ) 
-    configurations = {}
+  def self.get_groups( courses ) 
+    groups = {}
     course_ids = []
     courses.each do |course|
       course_ids << course.id
-      configurations[course.id] = []
-      course.configurations.each { |configuration| configurations[course.id] << configuration.key }
+      groups[course.id] = []
+      course.groups.each { |group| groups[course.id] << group.key }
     end
-    return configurations
+    return groups
   end
 
   def self.pkg_section(section)

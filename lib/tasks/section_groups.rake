@@ -17,21 +17,21 @@ class SectionGroupingGenerator
 
   def self.seed_course (course)
     puts "#{course.subject_code} #{course.number}"
-    # generate new configurations
+    # generate new groups
     course.sections.each do |section|
       key = self.generate_group_key(section)
-      configuration = Configuration.find_by_course_id_and_key(course.id, key)
-      if configuration.nil?
-        configuration = Configuration.new(:key=>key)
-        configuration.course = course
-        configuration.save
+      group = Group.find_by_course_id_and_key(course.id, key)
+      if group.nil?
+        group = Group.new(:key=>key)
+        group.course = course
+        group.save
       end        
-      section.configuration = configuration
+      section.group = group
       section.save
     end
-    # remove old configurations
-    course.configurations.each do |configuration|
-      Configuration.delete(configuration.id) if configuration.sections.count == 0
+    # remove old groups
+    course.groups.each do |group|
+      Group.delete(group.id) if group.sections.count == 0
     end
   end
   

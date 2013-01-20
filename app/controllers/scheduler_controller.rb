@@ -9,17 +9,17 @@ class SchedulerController < ApplicationController
     @schedule_json = Scheduler.pkg(@user.courses, @user.schedule)
   end
 
-  def change_configuration
+  def change_group
     logger.error params.inspect
     course = Course.find(params["course_id"])
-    configuration = course.configurations.find_by_key(params["new_config_key"])
+    group = course.groups.find_by_key(params["new_config_key"])
     old_schedule = []
     unless params["ids"].nil?
       params["ids"].each do |id|
         old_schedule << Section.find(id)
       end
     end
-    schedule = Scheduler.schedule_change( old_schedule, configuration )
+    schedule = Scheduler.schedule_change( old_schedule, group )
     schedule.map { |section| Scheduler.pkg_section(section) }
     start_hour, end_hour = Section.hour_range( schedule )
     render :json => { :schedule => schedule, :start_hour => start_hour, :end_hour => end_hour }
@@ -28,7 +28,7 @@ class SchedulerController < ApplicationController
   def section_hints
     section_hints = []
     section = Section.find(params["id"].to_i)
-    section_hints = section.configuration.sections_hash[section.short_type]
+    section_hints = section.group.sections_hash[section.short_type]
     section_hints.delete_if{|move| move.schedule_conflict?(current_user.schedule)}
 
     # Have to give the client all the data about the section, which spans multiple tables
