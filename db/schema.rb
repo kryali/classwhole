@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130105230148) do
+ActiveRecord::Schema.define(:version => 20130119235630) do
 
   create_table "attribs", :force => true do |t|
     t.string "code"
@@ -29,11 +29,6 @@ ActiveRecord::Schema.define(:version => 20130105230148) do
     t.float  "latitude"
     t.float  "longitude"
     t.string "address"
-  end
-
-  create_table "configurations", :force => true do |t|
-    t.string  "key"
-    t.integer "course_id"
   end
 
   create_table "courses", :force => true do |t|
@@ -63,6 +58,11 @@ ActiveRecord::Schema.define(:version => 20130105230148) do
 
   create_table "geneds_courses", :id => false, :force => true do |t|
     t.integer "gened_id"
+    t.integer "course_id"
+  end
+
+  create_table "groups", :force => true do |t|
+    t.string  "key"
     t.integer "course_id"
   end
 
@@ -117,13 +117,14 @@ ActiveRecord::Schema.define(:version => 20130105230148) do
     t.integer  "semester_id"
     t.string   "text"
     t.string   "special_approval"
-    t.integer  "configuration_id"
+    t.integer  "group_id"
     t.string   "short_type"
     t.integer  "hours"
     t.datetime "start_date"
     t.datetime "end_date"
   end
 
+  add_index "sections", ["group_id"], :name => "index_sections_on_group_id"
   add_index "sections", ["reference_number"], :name => "index_sections_on_reference_number"
 
   create_table "sections_users", :id => false, :force => true do |t|
