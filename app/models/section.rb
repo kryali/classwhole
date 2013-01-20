@@ -7,32 +7,6 @@ class Section < ActiveRecord::Base
     return short_type || "N/A"
   end
 
-  # Configuration Key generation
-  # this may need to become more advanced depending on if we discover unusual courses
-  def generate_configuration_key
-    if self.course_subject_code == "PHYS" #PHYSICS DEPARTMENT Y U NO CONSISTENT?
-      key = "ALL"
-    elsif self.code.nil? #If there is no code, assume all courses are in the same configuration
-      key = "NON"
-    elsif self.short_type == "ONL" or self.short_type == "ARR"
-      key = "ARR"
-    elsif (true if Integer(self.code) rescue false) #If the code is an integer, assume the courses should be in the same configuration
-      key = "INT"
-    elsif self.code.length == 1 # code is letters of length 1
-      key = "ALL"
-    elsif self.code.length == 2
-      key = self.code
-    else
-      key = self.code[0]
-      if (true if Integer(self.code[1]) rescue false)
-        unless (true if Integer(self.code[2]) rescue false)
-          key << self.code[1]
-        end
-      end
-    end
-    return key
-  end
-
   # Description: This function ensures that no two sections are conflicting
   #   Method: check that these sections fall within the same semester slot then
   #     check each meeting time to see if any conflict
