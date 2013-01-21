@@ -29,7 +29,7 @@ class SchedulerController < ApplicationController
     section_hints = []
     section = Section.find(params["id"].to_i)
     section_hints = section.group.sections_hash[section.short_type]
-    section_hints.delete_if{|move| move.schedule_conflict?(current_user.schedule)}
+    section_hints.delete_if {|move| move.schedule_conflict?(current_user.schedule)}
 
     # Have to give the client all the data about the section, which spans multiple tables
     section_hints = section_hints.map {|section_hint| Scheduler.pkg_section(section_hint)}
