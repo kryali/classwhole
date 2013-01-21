@@ -12,7 +12,7 @@ angular.module('directives').directive("section", function() {
     var options = {
       snap:        '.ui-droppable',
       snapMode:    'inner',
-      snapTolerance: 20,
+      snapTolerance: 10,
       start:       startDrag,
       stop:        endDrag,
       revert:      true,
@@ -45,7 +45,7 @@ angular.module('directives').directive("hint", function() {
     var sectionElement = $(element);
     Schedule.layoutSection(sectionElement, $scope.section, $scope.hourRange[0]); 
     sectionElement.droppable(options);
-    sectionElement.addClass("in");
+    sectionElement.removeClass("out");
   });
 })
 

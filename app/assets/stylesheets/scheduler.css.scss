@@ -76,6 +76,7 @@
   box-shadow: 1px 1px 3px #ccc;
   background: #fff;
   border: 1px solid #999;
+  @include transition(-webkit-transform, 450ms);
 
   .highlight {
     width: 100%;
@@ -147,10 +148,14 @@
   border-top: none;
   opacity: .6;
 
+  .highlight {
+    opacity: .7;
+  }
+
   .section-content {
     .section-code {
       top: 15px;
-      font-size: 18px;
+      font-size: 16px;
       left: 5px;
       color: #555;
       @include roboto_medium();
@@ -218,6 +223,15 @@ ul.day-header {
 }
 
 .ui-draggable-dragging {
-  opacity: .85;
-  //-webkit-transform: scale(.9);
+  //opacity: .85;
+  -webkit-transform: scale(1.03);
+}
+
+.snapping {
+  -webkit-transform: scale(1.0);
+}
+
+.hover {
+  opacity: 1.0;
+  border: 1px solid #999;
 }
