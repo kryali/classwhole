@@ -1,4 +1,4 @@
-angular.module('services', []).service('SchedulerService', SchedulerService);
+angular.module('services').service('SchedulerService', ['$http', SchedulerService]);
 
 function SchedulerService($http) {
   this.$http = $http;

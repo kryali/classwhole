@@ -1,4 +1,4 @@
-angular.module('directives').directive('mousehover', function($parse) {
+angular.module('directives').directive('mousehover', ['$parse', function($parse) {
 
   return {
     link: function($scope, iElement, attrs) {
@@ -41,4 +41,4 @@ angular.module('directives').directive('mousehover', function($parse) {
       element.bind("mouseleave", mouseLeave);
     }
   }
-});
+}]);

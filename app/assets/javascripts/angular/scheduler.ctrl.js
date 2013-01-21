@@ -212,3 +212,5 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
     return hour == 12 ? "12" : hour % 12;
   }
 }
+
+SchedulerCtrl.$inject = ['$scope', '$http', 'SchedulerService', 'ColorList'];
