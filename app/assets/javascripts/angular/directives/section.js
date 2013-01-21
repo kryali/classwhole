@@ -10,6 +10,7 @@ angular.module('directives').directive("section", function() {
     }
 
     var options = {
+      containment: '#content',
       snap:        '.ui-droppable',
       snapMode:    'inner',
       snapTolerance: 10,
@@ -48,4 +49,3 @@ angular.module('directives').directive("hint", function() {
     sectionElement.removeClass("out");
   });
 })
-

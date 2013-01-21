@@ -4,3 +4,4 @@
 //= require_tree ./utils
 //= require_tree ./lib
 //= require init
+//= require overrides

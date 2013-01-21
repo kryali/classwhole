@@ -205,8 +205,14 @@ class SchedulerController < ApplicationController
   end
 
   def replace
-    current_user.schedule.delete(Section.find(params[:del_id].to_i))
-    current_user.schedule << Section.find(params[:add_id].to_i)
+    to_delete = Section.find(params[:del_id].to_i)
+    to_add = Section.find(params[:add_id].to_i)
+    if to_delete.course_id != to_add.course_id
+      render :json => {:status => :error, :message => "Course mismatch"}
+      return
+    end
+    current_user.schedule.delete(to_delete)
+    current_user.schedule << to_add
     current_user.save
     render :json => {:status => :success}
   end

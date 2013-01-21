@@ -224,10 +224,10 @@ ul.day-header {
 
 .ui-draggable-dragging {
   //opacity: .85;
-  -webkit-transform: scale(1.03);
+  -webkit-transform: scale(0.80);
 }
 
-.snapping {
+.hovering {
   -webkit-transform: scale(1.0);
 }
 
