@@ -115,6 +115,7 @@ class Scheduler
   def self.pkg_section(section)
     section_pkg = {
       :id => section.id,
+      :course_id => section.course_id,
       :type => section.short_type_s,
       :code => section.code,
       :crn => section.reference_number,

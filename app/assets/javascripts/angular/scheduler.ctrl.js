@@ -112,6 +112,7 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
             sectionCopy.duration = meeting.duration;
             sectionCopy.start_time = meeting.start_time;
             sectionCopy.end_time = meeting.end_time;
+            sectionCopy.course_id = section.course_id;
             flatHints.push(sectionCopy);
           }
         }
@@ -132,6 +133,7 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
         sectionCopy.start_time = meeting.start_time;
         sectionCopy.end_time = meeting.end_time;
         sectionCopy.course = course;
+        sectionCopy.course_id = section.course_id;
         sections.push(sectionCopy);
       }
     });
