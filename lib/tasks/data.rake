@@ -10,7 +10,7 @@ namespace :data do
   task :update => [:environment] do
     puts "Parsing?"
     UIUCParser.parse_year 2013
-    SectionGroupingGenerator.seed_term "Spring", 2013
+    SectionGroupingGenerator.seed_term DefaultSemester::SEASON, DefaultSemester::YEAR
   end
 
   task :seed, [:season, :year] => [:environment] do |t, args|
