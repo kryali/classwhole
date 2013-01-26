@@ -141,11 +141,12 @@
   }
 }
 
+/* SECTION HINTS */
 .hint {
   @include transition(opacity, 300ms);
   border: 1px dashed #aaaaaa;
   border-top: none;
-  opacity: .6;
+  opacity: .8;
 
   .highlight {
     opacity: .7;
@@ -157,7 +158,14 @@
       font-size: 16px;
       left: 5px;
       color: #555;
-      @include roboto_medium();
+    }
+
+    .duration {
+      bottom: 5px;
+      font-size: 16px;
+      left: 5px;
+      color: #555;
+      @include roboto_thin();
     }
   }
 }

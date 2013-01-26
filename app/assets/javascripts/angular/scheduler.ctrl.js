@@ -86,6 +86,7 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
   };
 
   $scope.hideHints = function(sectionId) {
+    return;
     if ($scope.dragging) return;
     $scope.showHint[sectionId] = false;
     $scope.scheduleHints = [];

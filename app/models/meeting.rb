@@ -11,23 +11,9 @@ class Meeting < ActiveRecord::Base
     return "#{print_time(start_time)}-#{print_time(end_time)}"
   end
 
-  # NOTE: move this somewhere where every method can use it
   def print_time(time)
-    hour = time.hour
-    time_s = ""
-    if( time.hour > 12 and time.hour < 24)
-      time_s = "#{time.hour-12}:%02dpm" % time.min
-    elsif ( hour < 12 and hour != 0)
-      time_s = "#{time.hour}:%02dam" % time.min
-    elsif ( hour == 24 )
-      time_s = "#{time.hour-12}:%02dam" % time.min
-    elsif ( hour == 12 )
-      time_s = "#{time.hour}:%02dpm" % time.min
-    else
-      time_s = "nil"
-    end
-
-    return time_s.gsub(/:00/, "")
+    show_min_s = time.min == 0 ? "" : ":%M"
+    time.strftime "%-I#{show_min_s}%P"
   end
 
     # Description: Checks to see if there is a conflict between 2 meetings
