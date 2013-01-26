@@ -76,7 +76,6 @@
   box-shadow: 1px 1px 3px #ccc;
   background: #fff;
   border: 1px solid #999;
-  @include transition(-webkit-transform, 450ms);
 
   .highlight {
     width: 100%;
@@ -220,15 +219,6 @@ ul.day-header {
     margin: 0 auto;
     margin-top: 4px;
   }
-}
-
-.ui-draggable-dragging {
-  //opacity: .85;
-  -webkit-transform: scale(0.80);
-}
-
-.hovering {
-  -webkit-transform: scale(1.0);
 }
 
 .hover {
