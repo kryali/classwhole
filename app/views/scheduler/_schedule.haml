@@ -1,4 +1,8 @@
-%div{:class => "schedule-wrapper", "ng-show" => "schedule.length > 0" }
+-#
+-# Main schedule Display
+-# -  use showActiveSchedule to show/hide the schedule
+-#
+%div{:class => "schedule-wrapper", "ng-show" => "showActiveSchedule()" }
   %ul.time-label
     %li{"ng-repeat" => "hour in hourRange"} 
       {{print_hour(hour)}}
