@@ -1,4 +1,4 @@
-%div{:class => "schedule-wrapper", "ng-show" => "schedule.length > 0" }
+%div{:class => "schedule-wrapper", "ng-show" => "showActiveSchedule" }
   %ul.time-label
     %li{"ng-repeat" => "hour in hourRange"} 
       {{print_hour(hour)}}

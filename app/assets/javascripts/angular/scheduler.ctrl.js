@@ -1,8 +1,14 @@
+
+// What it does
+// - Adding, removing, and modifying courses
+// - showing landing page / active schedule
+
 function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
 
   /****************************************
-    initialization methods
+    initialization
   ****************************************/
+
   $scope.colors = ColorList;
   init(initData); // initData gets set as a global var through the html (show.haml/index.haml)
 
@@ -15,8 +21,17 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
 
 
   /****************************************
-    api methods
+    html template methods
   ****************************************/
+    
+  $scope.showActiveSchedule = function() {
+    return $scope.schedule.length > 0;
+  }
+
+  $scope.showActiveSchedule = function() {
+    return $scope.schedule.length > 0;
+  }
+
   $scope.replaceSection = function(oldSectionId, newSection) {
     $scope.dragging = true;
     $scope.scheduleHints = [];
@@ -29,7 +44,9 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
   }
 
   $scope.removeCourse = function(courseId) {
+    $scope.scheduling = true;
     SchedulerService.removeCourse(courseId, function(data) {
+      $scope.scheduling = false;
       for (var i = 0; i < $scope.schedule.length; i++) {
         if ($scope.schedule[i].id == courseId) {
           $scope.schedule.splice(i, 1);
@@ -215,4 +232,5 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList) {
   }
 }
 
+// need to do this for minification. Javascript is the world's purest evil.
 SchedulerCtrl.$inject = ['$scope', '$http', 'SchedulerService', 'ColorList'];
