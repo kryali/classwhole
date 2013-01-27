@@ -8,12 +8,13 @@ class Meeting < ActiveRecord::Base
 
   def duration_s
     return "Online/Arr" if start_time.nil?
-    return "#{print_time(start_time)}-#{print_time(end_time)}"
+    return "#{print_time(start_time, false)}-#{print_time(end_time, true)}"
   end
 
-  def print_time(time)
+  def print_time(time, show_pm)
+    show_pm_s = show_pm ? "%P" : ""
     show_min_s = time.min == 0 ? "" : ":%M"
-    time.strftime "%-I#{show_min_s}%P"
+    time.strftime "%-I#{show_min_s}#{show_pm_s}"
   end
 
     # Description: Checks to see if there is a conflict between 2 meetings

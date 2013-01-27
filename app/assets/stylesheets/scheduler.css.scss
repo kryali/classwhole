@@ -144,9 +144,11 @@
 /* SECTION HINTS */
 .hint {
   @include transition(opacity, 300ms);
-  border: 1px dashed #aaaaaa;
-  border-top: none;
-  opacity: .8;
+  @include transition(-webkit-transform, 300ms);
+  border: 1px solid #aaa;
+  box-shadow: none;
+  opacity: 1;
+  -webkit-transform: scale(.9);
 
   .highlight {
     opacity: .7;
@@ -160,12 +162,16 @@
       color: #555;
     }
 
+    .section-type {
+      display: none;
+    }
+
     .duration {
       bottom: 5px;
       font-size: 16px;
       left: 5px;
       color: #555;
-      @include roboto_thin();
+      @include roboto_light();
     }
   }
 }
@@ -232,4 +238,9 @@ ul.day-header {
 .hover {
   opacity: 1.0;
   border: 1px solid #999;
+  -webkit-transform: scale(1);
+
+  .highlight {
+    opacity: 1.0;
+  }
 }

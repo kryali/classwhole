@@ -11,9 +11,9 @@ angular.module('directives').directive("section", function() {
 
     var options = {
       containment: '#content',
-      snap:        '.ui-droppable',
-      snapMode:    'inner',
-      snapTolerance: 10,
+      //snap:        '.ui-droppable',
+      //snapMode:    'inner',
+      //snapTolerance: 10,
       start:       startDrag,
       stop:        endDrag,
       revert:      true,
