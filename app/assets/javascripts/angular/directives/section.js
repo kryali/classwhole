@@ -28,13 +28,14 @@ angular.module('directives').directive("section", function() {
   });
 })
 
-angular.module('directives').directive("hint", function() {
+angular.module('directives').directive("hint", ['$parse', function($parse) {
   return domReady(function($scope, element, attrs) {
+    var dropFn = $parse(attrs.drop);
 
     function drop(event, ui) {
       $scope.$emit('endDrag');
       $scope.$apply(function() {
-        $scope.replaceSection($(ui.draggable).data("id"), $scope.section);
+        dropFn($scope, {newSection: $scope.section, oldId: $(ui.draggable).data("id")})
       });
     }
 
@@ -50,4 +51,4 @@ angular.module('directives').directive("hint", function() {
     sectionElement.droppable(options);
     sectionElement.removeClass("out");
   });
-})
+}]);

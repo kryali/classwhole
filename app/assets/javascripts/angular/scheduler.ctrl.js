@@ -3,21 +3,19 @@
 // - Adding, removing, and modifying courses
 // - showing landing page / active schedule
 
-function SchedulerCtrl($scope, $http, SchedulerService, ColorList, Schedule) {
+function SchedulerCtrl($scope, $http, Schedule) {
 
   /****************************************
     initialization
   ****************************************/
 
   $scope.schedule = Schedule;
-  $scope.colors = ColorList;
   init(initData); // initData gets set as a global var through the html (show.haml/index.haml)
 
   function init(data) {
-    $scope.showHint = {}
-    $scope.id = data.id;
-    $scope.canModify = data.canModify;
-    save(data.schedule);
+    Schedule.setSchedule(data.schedule, data.hour_range);
+    Schedule.setUserId(data.id);
+    Schedule.enableModify(data.canModify);
   }
 
   /****************************************
@@ -30,46 +28,6 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList, Schedule) {
 
   $scope.showActiveSchedule = function() {
     return !Schedule.isEmpty();
-  }
-
-  $scope.replaceSection = function(oldSectionId, newSection) {
-    Schedule.replaceSection(oldSectionId, newSection);
-  }
-
-  $scope.removeCourse = function(courseId) {
-    $scope.scheduling = true;
-    SchedulerService.removeCourse(courseId, function(data) {
-      $scope.scheduling = false;
-      for (var i = 0; i < $scope.schedule.length; i++) {
-        if ($scope.schedule[i].id == courseId) {
-          $scope.schedule.splice(i, 1);
-          $scope.flatSchedule = flattenSchedule($scope.schedule);
-          break;
-        } 
-      }
-      ColorList.remove(courseId);
-    });
-  };
-
-  $scope.addCourse = function(courseId) {
-    $scope.scheduling = true;
-    SchedulerService.addCourse(courseId, function(data) {
-      if (data.success) {
-        update();
-      } else {
-        $scope.scheduling = false;
-        pop_alert(data.status, data.message);
-      }
-    });
-  };
-
-  $scope.showHints = function(sectionId, element) {
-    if (!$scope.canModify) return;
-    Schedule.showHints(sectionId, element);
-  };
-
-  $scope.hideHints = function(sectionId) {
-    Schedule.hideHints(sectionId);
   }
 
   /****************************************
@@ -99,28 +57,10 @@ function SchedulerCtrl($scope, $http, SchedulerService, ColorList, Schedule) {
     return "color-" + $scope.colors.get(id);
   }
 
-  function save(data) {
-    Schedule.setSchedule(data["schedule"], data["hour_range"]);
-  }
-
-  function update() {
-    if ($scope.id) {
-      SchedulerService.getId($scope.id, function(data) {
-        $scope.scheduling = false;
-        save(data);
-      });
-    } else {
-      SchedulerService.get(function(data) {
-        $scope.scheduling = false;
-        save(data);
-      });
-    }
-  }
-  
   function to12hr(hour) {
     return hour == 12 ? "12" : hour % 12;
   }
 }
 
 // need to do this for minification. Javascript is the world's purest evil.
-SchedulerCtrl.$inject = ['$scope', '$http', 'SchedulerService', 'ColorList', 'Schedule'];
+SchedulerCtrl.$inject = ['$scope', '$http', 'Schedule'];

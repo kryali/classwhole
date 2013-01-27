@@ -1,5 +1,6 @@
-var Schedule = function Schedule(SchedulerService) {
+var Schedule = function Schedule(SchedulerService, ColorList) {
   this.scheduler = SchedulerService;
+  this.colors = ColorList;
   this.courses = [];
   this.flatSections = [];
   this.hourRange = [];
@@ -7,7 +8,15 @@ var Schedule = function Schedule(SchedulerService) {
   this.busy = false;
 }
 
-angular.module('services').service('Schedule', ['SchedulerService', Schedule]);
+angular.module('services').service('Schedule', ['SchedulerService', 'ColorList', Schedule]);
+
+Schedule.prototype.setUserId = function(userId) {
+  this.userId = userId;
+}
+
+Schedule.prototype.enableModify = function(canModify) {
+  this.canModify = canModify;
+}
 
 Schedule.prototype.setSchedule = function(newSchedule, hourRange) {
   this.courses = newSchedule;
@@ -24,15 +33,40 @@ Schedule.prototype.enumerateRange = function() {
   return hourArray;
 }
 
-Schedule.prototype.removeCourse = function(section) {
+Schedule.prototype.removeCourse = function(courseId) {
+  var self = this;
+  for (var i = 0; i < this.courses.length; i++) {
+    if (this.courses[i].id == courseId) {
+      this.courses.splice(i, 1);
+      this.flatSchedule = flattenSchedule(this.courses);
+      break;
+    }
+  }
 
+  this.scheduling = true;
+  this.scheduler.removeCourse(courseId, function(data) {
+    self.scheduling = false;
+    self.colors.remove(courseId);
+  });
 }
 
-Schedule.prototype.addCourse = function(course) {
-
+Schedule.prototype.addCourse = function(courseId) {
+  console.log("THIS WORKED", courseId);
+  this.scheduling = true;
+  var self = this;
+  this.scheduler.addCourse(courseId, function(data) {
+    self.scheduling = false;
+    if (data.success) {
+      self.update();
+    } else {
+      pop_alert(data.status, data.message);
+    }
+  });
 }
 
 Schedule.prototype.replaceSection = function(oldSectionId, newSection) {
+  if (this.stale || !this.canModify) return;
+
   this.stale = true;
   var self = this;
   this.scheduler.replaceSection(oldSectionId, newSection.id, function() {
@@ -62,7 +96,7 @@ Schedule.prototype.hideHints = function(sectionId, element) {
 }
 
 Schedule.prototype.showHints = function(sectionId, element) {
-  if (this.stale) return;
+  if (this.stale || !this.canModify) return;
   var self = this;
   this.showHint[sectionId] = true;
   this.scheduler.getHints(sectionId, function(data) {
@@ -83,6 +117,19 @@ Schedule.prototype.getSections = function() {
 
 Schedule.prototype.isEmpty = function() {
   return this.courses.length == 0;
+}
+
+Schedule.prototype.update = function() {
+  var self = this;
+  var data = {id: this.userId};
+  this.scheduler.get(data, function(data) {
+    self.scheduling = false;
+    self.setSchedule(data.schedule, data.hour_range);
+  });
+}
+
+Schedule.prototype.color = function(id) {
+  return "color-" + this.colors.get(id);
 }
 
 /*======================================
@@ -147,4 +194,3 @@ function flattenHints(sections) {
   }
   return flatHints;
 }
-

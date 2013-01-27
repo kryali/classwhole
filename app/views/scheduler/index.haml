@@ -11,4 +11,4 @@
   = render "schedule_canvas"
 
 :javascript
-  var initData = {schedule: #{@schedule_json.to_json}, canModify: true};
+  var initData = #{@schedule_json.to_json};

@@ -118,6 +118,7 @@ class SchedulerController < ApplicationController
 
   def index
     @schedule_json = Scheduler.pkg(current_user.courses, current_user.schedule)
+    @schedule_json[:canModify] = true
   end
 
   def icalendar
@@ -218,7 +219,7 @@ class SchedulerController < ApplicationController
   end
 
   def schedule
-    user = params[:id] ? User.find(params[:id].to_i) : current_user
+    user = params[:id].nil? ? current_user : User.find(params[:id].to_i)
     render :json => Scheduler.pkg(user.courses, user.schedule)
   end
 
