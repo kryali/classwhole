@@ -22,7 +22,8 @@ angular.module('directives').directive("section", function() {
       zIndex:       10,
     };
     var sectionElement = $(element);
-    Schedule.layoutSection(sectionElement, $scope.section, $scope.hourRange[0]); 
+    Schedule.layoutSection(sectionElement, $scope.section,
+      $scope.schedule.hourRange[0]);
     sectionElement.draggable(options).data("id", $scope.section.id);
   });
 })
@@ -44,7 +45,8 @@ angular.module('directives').directive("hint", function() {
       scope:       'section_hint',
     };
     var sectionElement = $(element);
-    Schedule.layoutSection(sectionElement, $scope.section, $scope.hourRange[0]); 
+    Schedule.layoutSection(sectionElement, $scope.section,
+      $scope.schedule.hourRange[0]);
     sectionElement.droppable(options);
     sectionElement.removeClass("out");
   });

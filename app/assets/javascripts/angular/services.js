@@ -5,25 +5,31 @@ function SchedulerService($http) {
 }
 
 SchedulerService.prototype.get = function(callback) {
-  this.$http.post("/scheduler/schedule").success(callback);
+  this.$http.post("/scheduler/schedule").success(safe(callback));
 }
 
 SchedulerService.prototype.getId = function(id, callback) {
-  this.$http.post("/scheduler/schedule/" + id).success(callback);
+  this.$http.post("/scheduler/schedule/" + id).success(safe(callback));
 }
 
 SchedulerService.prototype.addCourse = function(courseId, callback) {
-  this.$http.post("/scheduler/courses/new/", {id:courseId}).success(callback);
+  this.$http.post("/scheduler/courses/new/", {id:courseId}).success(safe(callback));
 }
 
 SchedulerService.prototype.removeCourse = function(courseId, callback) {
-  this.$http.post("/scheduler/courses/destroy/", {id:courseId}).success(callback);
+  this.$http.post("/scheduler/courses/destroy/", {id:courseId}).success(safe(callback));
 }
 
 SchedulerService.prototype.getHints = function(sectionId, callback) {
-  this.$http.post("/scheduler/section/hints/", {id: sectionId}).success(callback);
+  this.$http.post("/scheduler/section/hints/", {id: sectionId}).success(safe(callback));
 }
 
 SchedulerService.prototype.replaceSection = function(oldSectionId, newSectionId, callback) {
-  this.$http.post("/scheduler/schedule/replace", {add_id: newSectionId, del_id: oldSectionId}).success(callback);
+  this.$http.post("/scheduler/schedule/replace", {add_id: newSectionId, del_id: oldSectionId}).success(safe(callback));
+}
+
+function safe(callback) {
+  return function(data) {
+    if (callback) callback(data);
+  }
 }

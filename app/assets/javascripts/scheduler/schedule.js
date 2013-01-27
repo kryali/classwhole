@@ -1,0 +1,150 @@
+var Schedule = function Schedule(SchedulerService) {
+  this.scheduler = SchedulerService;
+  this.courses = [];
+  this.flatSections = [];
+  this.hourRange = [];
+  this.showHint = {};
+  this.busy = false;
+}
+
+angular.module('services').service('Schedule', ['SchedulerService', Schedule]);
+
+Schedule.prototype.setSchedule = function(newSchedule, hourRange) {
+  this.courses = newSchedule;
+  this.hourRange = hourRange;
+  this.flatSchedule = flattenSchedule(newSchedule);
+  this.showHint = {};
+}
+
+Schedule.prototype.enumerateRange = function() {
+  var hourArray = [];
+  for(var i = this.hourRange[0]; i < this.hourRange[1]; i++) {
+    hourArray.push(i);
+  }
+  return hourArray;
+}
+
+Schedule.prototype.removeCourse = function(section) {
+
+}
+
+Schedule.prototype.addCourse = function(course) {
+
+}
+
+Schedule.prototype.replaceSection = function(oldSectionId, newSection) {
+  this.stale = true;
+  var self = this;
+  this.scheduler.replaceSection(oldSectionId, newSection.id, function() {
+    self.stale = false;
+  });
+
+  this.hints = [];
+  var found = false;
+  for (var i = 0; i < this.courses.length; i++) {
+    var sections = this.courses[i].sections;
+    for (var j = 0; j < sections.length; j++) {
+      if (sections[j].id == oldSectionId) {
+        this.courses[i].sections.splice(j, 1);
+        this.courses[i].sections.push(newSection);
+        found = true;
+        break;
+      }
+    }
+    if (found) break;
+  }
+  this.flatSchedule = flattenSchedule(this.courses);
+}
+
+Schedule.prototype.hideHints = function(sectionId, element) {
+  this.showHint[sectionId] = false;
+  this.hints = [];
+}
+
+Schedule.prototype.showHints = function(sectionId, element) {
+  if (this.stale) return;
+  var self = this;
+  this.showHint[sectionId] = true;
+  this.scheduler.getHints(sectionId, function(data) {
+    if (self.showHint[sectionId]) {
+      if (data.success) {
+        self.hints = flattenHints(data.section_hints);
+      } else {
+        var tooltip = new Tooltip("scheduler/_section_message", {message: data.message}); 
+        tooltip.putAbove(element, 10);
+      }
+    }
+  });
+}
+
+Schedule.prototype.getSections = function() {
+  return this.flatSchedule;
+}
+
+Schedule.prototype.isEmpty = function() {
+  return this.courses.length == 0;
+}
+
+/*======================================
+      Helper methods
+ *====================================*/
+
+function flattenSchedule(schedule) {
+  var sections = []
+  eachMeeting(schedule, function(meeting, section, course) {
+    if (meeting.days == null) return;
+    var days = meeting.days.split("");
+    for (var i = 0; i < days.length; i++) {
+      var sectionCopy = Utils.deepCopy(section);
+      sectionCopy.day = days[i];
+      sectionCopy.duration = meeting.duration;
+      sectionCopy.start_time = meeting.start_time;
+      sectionCopy.end_time = meeting.end_time;
+      sectionCopy.course = course;
+      sectionCopy.course_id = section.course_id;
+      sections.push(sectionCopy);
+    }
+  });
+  return sections;
+}; 
+
+function eachSection(courses, callback) {
+  for (var i = 0; i < courses.length; i++) {
+    for (var j = 0; j < courses[i].sections.length; j++) {
+      callback(courses[i].sections[j], courses[i]);
+    }
+  }
+}
+
+function eachMeeting(courses, callback) {
+  eachSection(courses, function(section, course) {
+    for (var i = 0; i < section.meetings.length; i++) {
+      callback(section.meetings[i], section, course);
+    }
+  });
+}
+
+function flattenHints(sections) {
+  var flatHints = []
+  if (sections) {
+    for (var k = 0; k < sections.length; k++) {
+      var section = sections[k];
+      for (var i = 0; i < section.meetings.length; i++) {
+        var meeting = section.meetings[i];
+        if (meeting.days == null) break;
+        var days = meeting.days.split("");
+        for (var j = 0; j < days.length; j++) {
+          var sectionCopy = Utils.deepCopy(section);
+          sectionCopy.day = days[j];
+          sectionCopy.duration = meeting.duration;
+          sectionCopy.start_time = meeting.start_time;
+          sectionCopy.end_time = meeting.end_time;
+          sectionCopy.course_id = section.course_id;
+          flatHints.push(sectionCopy);
+        }
+      }
+    }
+  }
+  return flatHints;
+}
+
