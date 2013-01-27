@@ -23,7 +23,7 @@ angular.module('directives').directive('mousehover', ['$parse', function($parse)
           $scope.$apply(function() {
             fnMouseHover($scope, {$element: element});
           });
-        }, 150); // threshold for mouse hover
+        }, 50); // threshold for mouse hover
       }
 
       function mouseLeave(event) {
