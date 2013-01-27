@@ -7,6 +7,8 @@ class SchedulerController < ApplicationController
   def show
     @user = User.find_by_fb_id(params["id"].to_i)
     @schedule_json = Scheduler.pkg(@user.courses, @user.schedule)
+    @schedule_json[:id] = @user.id
+    @schedule_json[:canModify] = current_user.id == @user.id
   end
 
   def change_group
