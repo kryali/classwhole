@@ -13,7 +13,7 @@ angular.module('directives').directive("section", function() {
       containment: '#content',
       //snap:        '.ui-droppable',
       //snapMode:    'inner',
-      //snapTolerance: 10,
+      //snapTolerance: 4,
       start:       startDrag,
       stop:        endDrag,
       revert:      true,
@@ -33,7 +33,7 @@ angular.module('directives').directive("hint", ['$parse', function($parse) {
     var dropFn = $parse(attrs.drop);
 
     function drop(event, ui) {
-      $scope.$emit('endDrag');
+      REJECT_EVENTS = false;
       $scope.$apply(function() {
         dropFn($scope, {newSection: $scope.section, oldId: $(ui.draggable).data("id")})
       });
