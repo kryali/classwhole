@@ -143,7 +143,8 @@
 
 /* SECTION HINTS */
 .hint {
-  @include transition(opacity -webkit-transform, 300ms);
+  //@include transition(opacity -webkit-transform, 300ms);
+  @include transition(-webkit-transform, 300ms);
   border: 1px solid #aaa;
   box-shadow: none;
   opacity: 1;

@@ -1,5 +1,6 @@
-var Schedule = function Schedule(SchedulerService, ColorList) {
-  this.scheduler = SchedulerService;
+var Schedule = function Schedule(Scheduler, ColorList, Catalog) {
+  this.scheduler = Scheduler;
+  this.catalog = Catalog;
   this.colors = ColorList;
   this.courses = [];
   this.flatSections = [];
@@ -8,7 +9,7 @@ var Schedule = function Schedule(SchedulerService, ColorList) {
   this.busy = false;
 }
 
-angular.module('services').service('Schedule', ['SchedulerService', 'ColorList', Schedule]);
+angular.module('services').service('Schedule', ['Scheduler', 'ColorList', 'Catalog', Schedule]);
 
 Schedule.prototype.setUserId = function(userId) {
   this.userId = userId;
@@ -43,19 +44,18 @@ Schedule.prototype.removeCourse = function(courseId) {
     }
   }
 
-  this.scheduling = true;
+  this.loadingMessage = "removing...";
   this.scheduler.removeCourse(courseId, function(data) {
-    self.scheduling = false;
+    self.loadingMessage = false;
     self.colors.remove(courseId);
   });
 }
 
 Schedule.prototype.addCourse = function(courseId) {
-  console.log("THIS WORKED", courseId);
-  this.scheduling = true;
+  this.loadingMessage = "scheduling...";
   var self = this;
   this.scheduler.addCourse(courseId, function(data) {
-    self.scheduling = false;
+    self.loadingMessage = false;
     if (data.success) {
       self.update();
     } else {
@@ -67,9 +67,11 @@ Schedule.prototype.addCourse = function(courseId) {
 Schedule.prototype.replaceSection = function(oldSectionId, newSection) {
   if (this.stale || !this.canModify) return;
 
+  this.loadingMessage = "saving...";
   this.stale = true;
   var self = this;
   this.scheduler.replaceSection(oldSectionId, newSection.id, function() {
+    self.loadingMessage = false;
     self.stale = false;
   });
 
