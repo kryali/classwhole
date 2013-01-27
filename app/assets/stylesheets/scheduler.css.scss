@@ -143,8 +143,7 @@
 
 /* SECTION HINTS */
 .hint {
-  @include transition(opacity, 300ms);
-  @include transition(-webkit-transform, 300ms);
+  @include transition(opacity -webkit-transform, 300ms);
   border: 1px solid #aaa;
   box-shadow: none;
   opacity: 1;
@@ -247,4 +246,8 @@ ul.day-header {
   .highlight {
     opacity: 1.0;
   }
+}
+
+.needs-layout {
+  display: none;
 }

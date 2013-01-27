@@ -22,7 +22,7 @@
     %div{:class => "schedule-display"}
       %ul{:class => "schedule-day", "ng-repeat" => "day in days()"}
         %li{"ng-repeat" => "hour in schedule.enumerateRange()"}
-      %div.schedule-block{"ng-repeat" => "section in schedule.getSections()", :mousehover => "schedule.showHints(section.id, $element)", "mouseleave" => "schedule.hideHints(section.id)", :section => ""}
+      %div.schedule-block{"ng-repeat" => "section in schedule.getSections()", :mousehover => "schedule.showHints(section.id, $element)", "mouseleave" => "schedule.hideHints(section.id)", :section => "", :class => "needs-layout"}
         %div.highlight{:class=>"{{schedule.color(section.course_id)}}"}
         %div.section-content
           %span.course-name {{section.course.name}}
@@ -31,7 +31,7 @@
           %span{:class => "enrollment status-{{section.enrollment}}", :title => "{{section.reason}}"}
           %span.section-type {{section.type}}
           %span.duration {{section.duration}}
-      %div.schedule-block{"ng-repeat" => "section in schedule.hints", :hint => "", :class => "hint out", :drop => "schedule.replaceSection(oldId, newSection)"}
+      %div.schedule-block{"ng-repeat" => "section in schedule.hints", :hint => "", :class => "hint out needs-layout", :drop => "schedule.replaceSection(oldId, newSection)"}
         %div.highlight{:class=>"{{schedule.color(section.course_id)}}"}
         %div.section-content
           %span.course-name {{section.course.name}}
