@@ -10,18 +10,16 @@ Whiteboard::Application.routes.draw do
   match 'careers' => 'home#careers'
   match 'jobs' => 'home#careers'
 
-  # Autocomplete routes
+  # Catalog routes
   match 'catalog/subjects/' => 'catalog#get_subjects'
   match 'catalog/course/' => 'catalog#find_course'
   match 'catalog/section/' => 'catalog#find_section'
   match 'catalog/:subject_code/courses' => 'catalog#get_courses'
 
-  # Catalog routes
   match 'courses/' => 'catalog#semester', :as => 'show_university'
   match 'courses/:season/:year/' => 'catalog#semester', :as => 'show_semester'
   match 'courses/:season/:year/:subject_code' => 'catalog#subject', :as => 'show_subject'
   match 'courses/:season/:year/:subject_code/:course_number' => 'catalog#course', :as => 'show_course'
-
 
   # Professor routes
   match 'profs/' => 'profs#index', :as => 'profs_index'

@@ -20,8 +20,8 @@ class Pkg
     section.meetings.each do |meeting| 
       section_pkg[:meetings] << { 
         :duration => meeting.duration_s,
-        :start_time => simple_time(meeting.start_time),
-        :end_time => simple_time(meeting.end_time),
+        :start_time => Util.simple_time(meeting.start_time),
+        :end_time => Util.simple_time(meeting.end_time),
         :days => meeting.days,
         :instructor => meeting.instructors[0]
       }

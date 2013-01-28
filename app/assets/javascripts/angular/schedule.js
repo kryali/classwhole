@@ -25,6 +25,13 @@ Schedule.prototype.setSchedule = function(newSchedule, hourRange) {
   this.hourRange = hourRange;
   this.flatSchedule = flattenSchedule(newSchedule);
   this.showHint = {};
+
+  // Preload course data
+  var ids = [];
+  for (var i = 0; i < this.courses.length; i++) {
+    ids.push(this.courses[i].id);
+  }
+  this.catalog.loadCourses(ids);
 }
 
 Schedule.prototype.enumerateRange = function() {
@@ -102,14 +109,13 @@ Schedule.prototype.showHints = function(sectionId, element) {
   if (this.stale || !this.canModify) return;
   var self = this;
   this.showHint[sectionId] = true;
-  this.scheduler.getHints(sectionId, function(data) {
-    if (self.showHint[sectionId]) {
-      if (data.success) {
-        self.hints = flattenHints(data.section_hints);
-      } else {
-        var tooltip = new Tooltip("scheduler/_section_message", {message: data.message}); 
-        tooltip.putAbove(element, 10);
-      }
+  self.catalog.getSectionOptions(sectionId, function(allSectionOptions) {
+    var finalOptions = removeConflicts(self.courses, allSectionOptions);
+    if (finalOptions.length > 0 ) {
+      self.hints = flattenHints(finalOptions);
+    } else {
+      var tooltip = new Tooltip("scheduler/_section_message", {message: "No alternate sections"}); 
+      tooltip.putAbove(element, 10);
     }
   });
 }
@@ -138,6 +144,57 @@ Schedule.prototype.color = function(id) {
 /*======================================
       Helper methods
  *====================================*/
+function removeConflicts(courses, options) {
+  var options = Utils.copyArray(options);
+  var to_remove = [];
+  eachSection(courses, function(section) {
+    to_remove = [];
+    for (var i = 0; i < options.length; i++) {
+      if(section_conflicts(section, options[i])) {
+        to_remove.push(i);
+      }
+    }
+
+    for (var i = to_remove.length - 1; i >= 0; i--) {
+      options.splice(to_remove[i], 1);
+      to_remove.push(i);
+    }
+  });
+  return options;
+}
+
+
+function section_conflicts(sectiona, sectionb) {
+  for(var i = 0; i < sectiona.meetings.length; i++) {
+    for(var j = 0; j < sectionb.meetings.length; j++) {
+      if (meeting_conflicts(sectiona.meetings[i], sectionb.meetings[j])) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+function print_duration(meeting) {
+  return meeting.hour + "-" + meeting.min;
+}
+
+function meeting_conflicts(meetinga, meetingb) {
+  if (!meetinga.start_time || !meetingb.start_time) {
+    return false;
+  } else {
+    var occurs_same_day = meetinga.days.match(new RegExp("[" + meetingb.days + "]"));
+    if (!occurs_same_day) return false;
+
+    return overlaps(meetinga, meetingb) || overlaps(meetingb, meetinga);
+  }
+}
+
+function overlaps(meetinga, meetingb) {
+  return (meetinga.start_time.value >= meetingb.start_time.value) 
+      && (meetinga.start_time.value <= meetingb.end_time.value);
+}
 
 function flattenSchedule(schedule) {
   var sections = []

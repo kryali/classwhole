@@ -81,4 +81,12 @@ Utils = {
   deepCopy: function(obj) {
     return jQuery.extend(true, {}, obj);
   },
+
+  copyArray: function(array) {
+    var copy = [];
+    for (var i in array) {
+      copy.push(array[i]);
+    }
+    return copy;
+  }
 }

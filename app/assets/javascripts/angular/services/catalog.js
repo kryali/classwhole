@@ -26,17 +26,24 @@ Catalog.prototype.loadCourses = function(ids) {
 }
 
 Catalog.prototype.getCourse = function(id, callback) {
-  if (this.cache.courses[id]) return this.cache.courses[id];
+  if (this.cache.courses[id]) {
+    callback(this.cache.courses[id]);
+    return;
+  }
 
   var self = this;
   this.$http.post("/catalog/course", {id: id}).success(function(data) {
+    console.log(data);
     self.saveCourse(data);
     if (callback) callback(self.cache.courses[id]);
   });
 }
 
 Catalog.prototype.getSection = function(id, callback) {
-  if (this.cache.sections[id]) return this.cache.sections[id];
+  if (this.cache.sections[id]) {
+    callback(this.cache.sections[id]);
+    return;
+  }
 
   var self = this;
   this.$http.post("/catalog/section", {id: id}).success(function(data) {
@@ -59,6 +66,15 @@ Catalog.prototype.saveSection = function(section) {
   }
   this.cache.sections[section.id] = section;
 }
+
+Catalog.prototype.getSectionOptions = function(sectionId, callback) {
+  var self = this;
+  this.getSection(sectionId, function(section) {
+    self.getCourse(section.course_id, function(course) {
+      callback(self.cache.groups[section.group.id][section.group.key][section.type]);
+    });
+  });
+};
 
 Catalog.prototype.addToGroups = function(section) {
   assertObject(this.cache.groups, section.group.id);
