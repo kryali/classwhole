@@ -4,7 +4,6 @@ angular.module('directives').directive('autocomplete', ['$parse', function($pars
     var fn = $parse(attrs.aSelected);
     autocomplete.input_suggestion = ".autocomplete-suggestion";
     autocomplete.input = "#autocomplete-list";
-    autocomplete.ajax_search_url = "/courses/search/auto/subject/";
     autocomplete.course_select = execute;
     autocomplete.init();
 

@@ -37,28 +37,6 @@ class CatalogController < ApplicationController
   end
 
 
-  # gets the indeces to jump to for the pagination
-  # neccesary because the header covers ~2em
-
-  def get_pagination_indeces(semester)
-    counter = 0
-    ret_list = []
-    first_letter = -1
-    for sub in semester.subjects
-      if first_letter != sub.code[0]
-        inside_array = []
-        first_letter = sub.code[0]
-        inside_array << counter
-        inside_array << sub.code[0]        
-        ret_list << inside_array
-      end      
-      counter+=1
-    end
-    ret_list << -1
-    return ret_list
-  end
-  # </helpers>
-
   # Description:
   # - Display university information
   # - Show the available semesters
@@ -83,7 +61,6 @@ class CatalogController < ApplicationController
       return
     end
     @subjects = @semester.subjects
-    @pagination_indeces = get_pagination_indeces(@semester)
 		render 'semester'
   end
 
@@ -159,24 +136,24 @@ class CatalogController < ApplicationController
 	#   - (lecture, discussion, etc)
 	#	  - used to make the tabs for the sections table on course page
 	#
-	def get_different_sections()	
-		lecture_exists = 0		
+	def get_different_sections
+		lecture_exists = 0
 		list = []
 		lecture_index = -1
-		lecture_discussion_index = -1		
+		lecture_discussion_index = -1
 		index = 0
 		for section in @sections do
 			if !list.include? section.section_type
-				list << section.section_type			
+				list << section.section_type
 				if section.section_type == 'lecture'
-					lecture_index = index			
+					lecture_index = index
 				end
 				if section.section_type == 'lecture-discussion'
-					lecture_discussion_index = index				
+					lecture_discussion_index = index
 				end
-				index = index + 1				
-			end		
-		end		
+				index = index + 1
+			end
+		end
 		# This code puts Lecture and Lecture-Discussions at the front of the list 		
 		if lecture_index != -1
 			lecture_exists = 1			
@@ -202,19 +179,6 @@ class CatalogController < ApplicationController
 		@all_courses ||= Course.all
 	end
 
-  def sections 
-    sections = []
-    params["schedule"].each do |section_id|
-      begin
-        sections << Scheduler.pkg_section(Section.find(section_id.to_i))
-      rescue ActiveRecord::RecordNotFound
-        render :json => { :status => :error }
-        return
-      end
-    end
-    render :json => { :status => :success, :sections => sections }
-  end
-
   def get_subjects
     render :json => Subject.minify(default_semester.subjects)
   end
@@ -225,6 +189,26 @@ class CatalogController < ApplicationController
       render :json => subject.mini_courses 
     else
       render :json => { success: false, message: "Subject #{params[:subject_code]} not found" } 
+    end
+  end
+
+  def find_course
+    if params[:id]
+      render :json => Pkg.course(Course.find(params[:id].to_i))
+    elsif params[:ids]
+      render :json => params[:ids].map{ |id| Pkg.course(Course.find(id.to_i)) }
+    else
+      render :json => fail_message("Bad request")
+    end
+  end
+
+  def find_section
+    if params[:id]
+      render :json => Pkg.section(Section.find_by_id(params[:id].to_i))
+    elsif params[:ids]
+      render :json => params[:ids].map{ |id| Pkg.section(Section.find(id.to_i)) }
+    else
+      render :json => fail_message("Bad request")
     end
   end
 end

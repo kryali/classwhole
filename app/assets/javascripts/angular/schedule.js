@@ -1,6 +1,7 @@
 var Schedule = function Schedule(Scheduler, ColorList, Catalog) {
   this.scheduler = Scheduler;
   this.catalog = Catalog;
+  catalog = Catalog;
   this.colors = ColorList;
   this.courses = [];
   this.flatSections = [];
