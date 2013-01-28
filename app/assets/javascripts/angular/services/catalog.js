@@ -9,12 +9,20 @@ function Catalog($http) {
 
 
 Catalog.prototype.loadCourses = function(ids) {
-  var self = this;
-  this.$http.post("/catalog/course", {ids: ids}).success(function(data) {
-    for(var i in data) {
-      self.saveCourse(data[i]);
+  var lookup = [];
+  for (var i in ids) {
+    if (!this.cache.courses[ids[i]]) {
+      lookup.push(ids[i]);
     }
-  });
+  }
+  if (lookup.length > 0) {
+    var self = this;
+    this.$http.post("/catalog/course", {ids: lookup}).success(function(data) {
+      for(var i in data) {
+        self.saveCourse(data[i]);
+      }
+    });
+  }
 }
 
 Catalog.prototype.getCourse = function(id, callback) {
