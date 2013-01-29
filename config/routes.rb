@@ -37,7 +37,6 @@ Whiteboard::Application.routes.draw do
 
   # Scheduler routes
   match "scheduler/" => "scheduler#index", :as => "scheduler_index"
-  match 'scheduler/section/hints' => 'scheduler#section_hints', :via => :post
   match 'scheduler/schedule' => 'scheduler#schedule'
   match "scheduler/schedule/replace" => 'scheduler#replace', :via => :post
 	match 'scheduler/show/:id' => 'scheduler#show', :as => 'scheduler_show'

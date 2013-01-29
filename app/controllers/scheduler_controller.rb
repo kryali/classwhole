@@ -27,23 +27,6 @@ class SchedulerController < ApplicationController
     render :json => { :schedule => schedule, :start_hour => start_hour, :end_hour => end_hour }
   end
 
-  def section_hints
-    section_hints = []
-    section = Section.find(params["id"].to_i)
-    section_hints = section.group.sections_hash[section.short_type]
-    section_hints.delete_if {|move| move.schedule_conflict?(current_user.schedule)}
-
-    # Have to give the client all the data about the section, which spans multiple tables
-    section_hints = section_hints.map {|section_hint| Scheduler.pkg_section(section_hint)}
-
-    if section_hints.empty?
-      render :json => {:success => false, :status => "error", :message => "No alternate sections"}
-      return
-    end
-
-    render :json => {:success => true, :section_hints => section_hints}
-  end
-
   def save
     if current_user.is_temp?
       render :json => {
