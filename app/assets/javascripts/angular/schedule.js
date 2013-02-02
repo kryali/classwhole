@@ -1,4 +1,4 @@
-var Schedule = function Schedule(Scheduler, ColorList, Catalog) {
+var Schedule = function Schedule(Scheduler, ColorList, Catalog, ConflictGraph, ScheduleIter) {
   this.scheduler = Scheduler;
   this.catalog = Catalog;
   catalog = Catalog;
@@ -8,9 +8,11 @@ var Schedule = function Schedule(Scheduler, ColorList, Catalog) {
   this.hourRange = [];
   this.showHint = {};
   this.busy = false;
+  this.iter = ScheduleIter;
+  this.conflictGraph = ConflictGraph;
 }
 
-angular.module('services').service('Schedule', ['Scheduler', 'ColorList', 'Catalog', Schedule]);
+angular.module('services').service('Schedule', ['Scheduler', 'ColorList', 'Catalog', 'ConflictGraph', 'ScheduleIter', Schedule]);
 
 Schedule.prototype.setUserId = function(userId) {
   this.userId = userId;
@@ -23,7 +25,7 @@ Schedule.prototype.enableModify = function(canModify) {
 Schedule.prototype.setSchedule = function(newSchedule, hourRange) {
   this.courses = newSchedule;
   this.hourRange = hourRange;
-  this.flatSchedule = flattenSchedule(newSchedule);
+  this.flatSchedule = this.flattenSchedule(newSchedule);
   this.showHint = {};
 
   // Preload course data
@@ -47,7 +49,7 @@ Schedule.prototype.removeCourse = function(courseId) {
   for (var i = 0; i < this.courses.length; i++) {
     if (this.courses[i].id == courseId) {
       this.courses.splice(i, 1);
-      this.flatSchedule = flattenSchedule(this.courses);
+      this.flatSchedule = this.flattenSchedule(this.courses);
       break;
     }
   }
@@ -75,11 +77,9 @@ Schedule.prototype.addCourse = function(courseId) {
 Schedule.prototype.replaceSection = function(oldSectionId, newSection) {
   if (this.stale || !this.canModify) return;
 
-  this.loadingMessage = "saving...";
   this.stale = true;
   var self = this;
   this.scheduler.replaceSection(oldSectionId, newSection.id, function() {
-    self.loadingMessage = false;
     self.stale = false;
   });
 
@@ -97,7 +97,7 @@ Schedule.prototype.replaceSection = function(oldSectionId, newSection) {
     }
     if (found) break;
   }
-  this.flatSchedule = flattenSchedule(this.courses);
+  this.flatSchedule = this.flattenSchedule(this.courses);
 }
 
 Schedule.prototype.hideHints = function(sectionId, element) {
@@ -110,8 +110,9 @@ Schedule.prototype.showHints = function(sectionId, element) {
   var self = this;
   this.showHint[sectionId] = true;
   self.catalog.getSectionOptions(sectionId, function(allSectionOptions) {
-    var finalOptions = removeConflicts(self.courses, allSectionOptions);
+    var finalOptions = self.conflictGraph.removeConflicts(self.courses, allSectionOptions);
     if (finalOptions.length > 0 ) {
+      finalOptions = self.conflictGraph.apply(finalOptions);
       self.hints = flattenHints(finalOptions);
     } else {
       var tooltip = new Tooltip("scheduler/_section_message", {message: "No alternate sections"}); 
@@ -141,64 +142,9 @@ Schedule.prototype.color = function(id) {
   return "color-" + this.colors.get(id);
 }
 
-/*======================================
-      Helper methods
- *====================================*/
-function removeConflicts(courses, options) {
-  var options = Utils.copyArray(options);
-  var to_remove = [];
-  eachSection(courses, function(section) {
-    to_remove = [];
-    for (var i = 0; i < options.length; i++) {
-      if(section_conflicts(section, options[i])) {
-        to_remove.push(i);
-      }
-    }
-
-    for (var i = to_remove.length - 1; i >= 0; i--) {
-      options.splice(to_remove[i], 1);
-      to_remove.push(i);
-    }
-  });
-  return options;
-}
-
-
-function section_conflicts(sectiona, sectionb) {
-  for(var i = 0; i < sectiona.meetings.length; i++) {
-    for(var j = 0; j < sectionb.meetings.length; j++) {
-      if (meeting_conflicts(sectiona.meetings[i], sectionb.meetings[j])) {
-        return true;
-      }
-    }
-  }
-
-  return false;
-}
-
-function print_duration(meeting) {
-  return meeting.hour + "-" + meeting.min;
-}
-
-function meeting_conflicts(meetinga, meetingb) {
-  if (!meetinga.start_time || !meetingb.start_time) {
-    return false;
-  } else {
-    var occurs_same_day = meetinga.days.match(new RegExp("[" + meetingb.days + "]"));
-    if (!occurs_same_day) return false;
-
-    return overlaps(meetinga, meetingb) || overlaps(meetingb, meetinga);
-  }
-}
-
-function overlaps(meetinga, meetingb) {
-  return (meetinga.start_time.value >= meetingb.start_time.value) 
-      && (meetinga.start_time.value <= meetingb.end_time.value);
-}
-
-function flattenSchedule(schedule) {
+Schedule.prototype.flattenSchedule = function(schedule) {
   var sections = []
-  eachMeeting(schedule, function(meeting, section, course) {
+  this.iter.eachMeeting(schedule, function(meeting, section, course) {
     if (meeting.days == null) return;
     var days = meeting.days.split("");
     for (var i = 0; i < days.length; i++) {
@@ -215,20 +161,13 @@ function flattenSchedule(schedule) {
   return sections;
 }; 
 
-function eachSection(courses, callback) {
-  for (var i = 0; i < courses.length; i++) {
-    for (var j = 0; j < courses[i].sections.length; j++) {
-      callback(courses[i].sections[j], courses[i]);
-    }
-  }
-}
 
-function eachMeeting(courses, callback) {
-  eachSection(courses, function(section, course) {
-    for (var i = 0; i < section.meetings.length; i++) {
-      callback(section.meetings[i], section, course);
-    }
-  });
+/*======================================
+      Helper methods
+ *====================================*/
+
+function print_duration(meeting) {
+  return meeting.hour + "-" + meeting.min;
 }
 
 function flattenHints(sections) {

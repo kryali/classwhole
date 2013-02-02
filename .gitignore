@@ -34,3 +34,4 @@ app/assets/stylesheets/.livereload
 config/database.yml
 *~
 *.pyc
+.idea
