@@ -42,7 +42,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.4.0)
-    daemon_controller (1.1.0)
+    daemon_controller (1.1.1)
     dalli (2.6.0)
     domain_name (0.5.7)
       unf (~> 0.0.3)
@@ -110,9 +110,8 @@ GEM
       fastthread (>= 1.0.1)
       rack
       rake (>= 0.8.1)
-    pg (0.14.1)
     polyglot (0.3.3)
-    pry (0.9.11.3)
+    pry (0.9.11.4)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.4)
@@ -194,7 +193,6 @@ DEPENDENCIES
   mysql2
   oink
   passenger
-  pg
   rack
   rack-ssl
   rails (= 3.1.10)

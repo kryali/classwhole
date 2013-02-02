@@ -1,8 +1,12 @@
-%div{:class => "schedule-wrapper", "ng-show" => "schedule.length > 0" }
+-#
+-# Main schedule Display
+-# -  use showActiveSchedule to show/hide the schedule
+-#
+%div{:class => "schedule-wrapper", "ng-show" => "showActiveSchedule()" }
   %ul.time-label
-    %li{"ng-repeat" => "hour in hourRange"} 
+    %li{"ng-repeat" => "hour in schedule.enumerateRange()"}
       {{print_hour(hour)}}
-  %div{:class => "schedule-content", "data-tooltip" => "" }
+  %div{:class => "schedule-content", "data-tooltip" => ""}
     %ul.toolbar
       %li
         %a{:href => "#"} save
@@ -17,9 +21,9 @@
       %li.header{"ng-repeat" => "day in days()"} {{day}}
     %div{:class => "schedule-display"}
       %ul{:class => "schedule-day", "ng-repeat" => "day in days()"}
-        %li{"ng-repeat" => "hour in hourRange"}
-      %div.schedule-block{"ng-repeat" => "section in flatSchedule", :mousehover => "showHints(section.id, $element)", "mouseleave" => "hideHints(section.id)", :section => "", :hint => "false"}
-        %div.highlight{:class=>"{{color(section.course.id)}}"}
+        %li{"ng-repeat" => "hour in schedule.enumerateRange()"}
+      %div.schedule-block{"ng-repeat" => "section in schedule.getSections()", :mousehover => "schedule.showHints(section.id, $element)", "mouseleave" => "schedule.hideHints(section.id)", :section => "", :class => "needs-layout"}
+        %div.highlight{:class=>"{{schedule.color(section.course_id)}}"}
         %div.section-content
           %span.course-name {{section.course.name}}
           %span.section-code  {{section.code}}
@@ -27,8 +31,8 @@
           %span{:class => "enrollment status-{{section.enrollment}}", :title => "{{section.reason}}"}
           %span.section-type {{section.type}}
           %span.duration {{section.duration}}
-      %div.schedule-block{"ng-repeat" => "section in scheduleHints", "section" => "", :class => "hint out", :hint => "true"}
-        %div.highlight{:class=>"{{color(section.course.id)}}"}
+      %div.schedule-block{"ng-repeat" => "section in schedule.hints", :hint => "", :class => "hint out needs-layout", :drop => "schedule.replaceSection(oldId, newSection)"}
+        %div.highlight{:class=>"{{schedule.color(section.course_id)}}"}
         %div.section-content
           %span.course-name {{section.course.name}}
           %span.section-code  {{section.code}}

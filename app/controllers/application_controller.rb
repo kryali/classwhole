@@ -26,4 +26,8 @@ class ApplicationController < ActionController::Base
 		@current_user = new_user
     session[:user_id] = new_user.id
   end
+
+  def fail_message(message)
+    return {success: false, message: message}
+  end
 end

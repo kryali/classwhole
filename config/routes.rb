@@ -10,27 +10,22 @@ Whiteboard::Application.routes.draw do
   match 'careers' => 'home#careers'
   match 'jobs' => 'home#careers'
 
-  # Autocomplete routes
-  match  'json/subject/all' => 'catalog#get_subjects'
-  match  'json/subject/:subject_code/courses' => 'catalog#get_courses'
-  match  'courses/search/auto/subject/:subject_code' => 'catalog#course_auto_search'
-  match  'courses/search' => 'catalog#simple_search', :via => :post
-
   # Catalog routes
-  match  'courses/' => 'catalog#semester', :as => 'show_university'
-  match  'courses/:season/:year/' => 'catalog#semester', :as => 'show_semester'
-  match  'courses/:season/:year/:subject_code' => 'catalog#subject', :as => 'show_subject'
-  match  'courses/:season/:year/:subject_code/:course_number' => 'catalog#course', :as => 'show_course'
+  match 'catalog/subjects/' => 'catalog#get_subjects'
+  match 'catalog/course/' => 'catalog#find_course'
+  match 'catalog/section/' => 'catalog#find_section'
+  match 'catalog/:subject_code/courses' => 'catalog#get_courses'
 
+  match 'courses/' => 'catalog#semester', :as => 'show_university'
+  match 'courses/:season/:year/' => 'catalog#semester', :as => 'show_semester'
+  match 'courses/:season/:year/:subject_code' => 'catalog#subject', :as => 'show_subject'
+  match 'courses/:season/:year/:subject_code/:course_number' => 'catalog#course', :as => 'show_course'
 
   # Professor routes
   match 'profs/' => 'profs#index', :as => 'profs_index'
   match 'profs/:name_slug' => 'profs#show', :as => 'show_prof'
   match 'professors/' => 'profs#index'
   match 'professors/:name_slug' => 'profs#show'
-
-  # Temp hack to return json array of section ids
-  match  'sections/' => 'catalog#sections', :via => :post
 
   # User auth routes
   match 'user/login' => 'user#login', :via => :post
@@ -42,10 +37,8 @@ Whiteboard::Application.routes.draw do
 
   # Scheduler routes
   match "scheduler/" => "scheduler#index", :as => "scheduler_index"
-  match 'scheduler/section/hints' => 'scheduler#section_hints', :via => :post
   match 'scheduler/schedule' => 'scheduler#schedule'
   match "scheduler/schedule/replace" => 'scheduler#replace', :via => :post
-  match 'scheduler/schedule/:id' => 'scheduler#schedule'
 	match 'scheduler/show/:id' => 'scheduler#show', :as => 'scheduler_show'
   match 'scheduler/save' => 'scheduler#save', :via => :post
   match 'scheduler/share' => 'scheduler#share', :via => :post

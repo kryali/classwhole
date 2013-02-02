@@ -115,6 +115,7 @@ class Scheduler
   def self.pkg_section(section)
     section_pkg = {
       :id => section.id,
+      :course_id => section.course_id,
       :type => section.short_type_s,
       :code => section.code,
       :crn => section.reference_number,
@@ -125,8 +126,8 @@ class Scheduler
     section.meetings.each do |meeting| 
       section_pkg[:meetings] << { 
         :duration => meeting.duration_s,
-        :start_time => simple_time(meeting.start_time),
-        :end_time => simple_time(meeting.end_time),
+        :start_time => Util.simple_time(meeting.start_time),
+        :end_time => Util.simple_time(meeting.end_time),
         :days => meeting.days,
         :instructor => meeting.instructors[0]
       }
@@ -153,10 +154,6 @@ class Scheduler
     end
     
     return { :hour_range => hour_range, :schedule => pkg }
-  end
-
-  def self.simple_time(time)
-    { :hour => time.hour, :min => time.min } if time
   end
 
   def self.hour_range(sections)

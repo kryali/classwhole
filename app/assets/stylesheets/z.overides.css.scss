@@ -1,0 +1,15 @@
+.out {
+  opacity: 0;
+}
+
+.in {
+  opacity: 1;
+}
+
+.height-0 {
+  max-height: 0px;
+}
+
+.height-auto {
+  max-height: 900px; /* Hack to show height growing */
+}

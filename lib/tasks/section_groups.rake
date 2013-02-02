@@ -67,6 +67,9 @@ end
 namespace :groups do
 
   #Generate or regenerate groupings
+  task :generate_default => [:environment] do |t, args|
+    SectionGroupingGenerator.seed_term DefaultSemester::SEASON, DefaultSemester::YEAR
+  end
 
   task :generate, [:season, :year] => [:environment] do |t, args|
     SectionGroupingGenerator.seed_term args[:season], args[:year]

@@ -1,38 +1,37 @@
-angular.module('directives').directive('mousehover', function($parse) {
+var REJECT_EVENTS = false;
+
+angular.module('directives').directive('mousehover', ['$parse', function($parse) {
 
   return {
     link: function($scope, iElement, attrs) {
       var element = $(iElement);
-      var fn = $parse(attrs.mousehover);
-      var defMouseLeave = $parse(attrs.mouseleave);
+      var fnMouseHover = $parse(attrs.mousehover);
+      var fnMouseLeave = $parse(attrs.mouseleave);
       var timeout;
 
       $scope.$on('startDrag', function() {
-        element.unbind("mouseenter", mouseEnter);
-        element.unbind("mouseleave", mouseLeave);
+        REJECT_EVENTS = true;
       });
 
       $scope.$on('endDrag', function() {
-        element.bind("mouseenter", mouseEnter);
-        element.bind("mouseleave", mouseLeave);
-         // Manually firing mouse leave event since it doesn't get triggered when dragging stops.
-        mouseLeave();
+        REJECT_EVENTS = false;
       });
 
       function mouseEnter(event) {
+        if (REJECT_EVENTS) return;
         timeout = setTimeout(function() {
-        }, 70); // threshold for mouse hover
-
-        $scope.$apply(function() {
-          fn($scope, {$element: element});
-        });
+          $scope.$apply(function() {
+            fnMouseHover($scope, {$element: element});
+          });
+        }, 50); // threshold for mouse hover
       }
 
       function mouseLeave(event) {
+        if (REJECT_EVENTS) return;
         clearTimeout(timeout);
-        if (defMouseLeave) {
+        if (fnMouseLeave) {
           $scope.$apply(function(event) {
-            defMouseLeave($scope, {$event: event});
+            fnMouseLeave($scope, {$event: event});
           }); 
         }
       };
@@ -41,4 +40,4 @@ angular.module('directives').directive('mousehover', function($parse) {
       element.bind("mouseleave", mouseLeave);
     }
   }
-});
+}]);

@@ -33,3 +33,4 @@ app/assets/stylesheets/.livereload
 *.rdb
 config/database.yml
 *~
+*.pyc

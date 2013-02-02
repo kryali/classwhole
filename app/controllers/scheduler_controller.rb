@@ -7,6 +7,8 @@ class SchedulerController < ApplicationController
   def show
     @user = User.find_by_fb_id(params["id"].to_i)
     @schedule_json = Scheduler.pkg(@user.courses, @user.schedule)
+    @schedule_json[:id] = @user.id
+    @schedule_json[:canModify] = current_user.id == @user.id
   end
 
   def change_group
@@ -23,23 +25,6 @@ class SchedulerController < ApplicationController
     schedule.map { |section| Scheduler.pkg_section(section) }
     start_hour, end_hour = Section.hour_range( schedule )
     render :json => { :schedule => schedule, :start_hour => start_hour, :end_hour => end_hour }
-  end
-
-  def section_hints
-    section_hints = []
-    section = Section.find(params["id"].to_i)
-    section_hints = section.group.sections_hash[section.short_type]
-    section_hints.delete_if{|move| move.schedule_conflict?(current_user.schedule)}
-
-    # Have to give the client all the data about the section, which spans multiple tables
-    section_hints = section_hints.map {|section_hint| Scheduler.pkg_section(section_hint)}
-
-    if section_hints.empty?
-      render :json => {:success => false, :status => "error", :message => "No alternate sections"}
-      return
-    end
-
-    render :json => {:success => true, :section_hints => section_hints}
   end
 
   def save
@@ -118,6 +103,7 @@ class SchedulerController < ApplicationController
 
   def index
     @schedule_json = Scheduler.pkg(current_user.courses, current_user.schedule)
+    @schedule_json[:canModify] = true
   end
 
   def icalendar
@@ -205,14 +191,20 @@ class SchedulerController < ApplicationController
   end
 
   def replace
-    current_user.schedule.delete(Section.find(params[:del_id].to_i))
-    current_user.schedule << Section.find(params[:add_id].to_i)
+    to_delete = Section.find(params[:del_id].to_i)
+    to_add = Section.find(params[:add_id].to_i)
+    if to_delete.course_id != to_add.course_id
+      render :json => {:status => :error, :message => "Course mismatch"}
+      return
+    end
+    current_user.schedule.delete(to_delete)
+    current_user.schedule << to_add
     current_user.save
     render :json => {:status => :success}
   end
 
   def schedule
-    user = params[:id] ? User.find(params[:id].to_i) : current_user
+    user = params[:id].nil? ? current_user : User.find(params[:id].to_i)
     render :json => Scheduler.pkg(user.courses, user.schedule)
   end
 

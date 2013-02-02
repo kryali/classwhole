@@ -9,40 +9,46 @@ angular.module('directives').directive("section", function() {
       $scope.$emit('endDrag');
     }
 
+    var options = {
+      containment: '#content',
+      //snap:        '.ui-droppable',
+      //snapMode:    'inner',
+      //snapTolerance: 4,
+      start:       startDrag,
+      stop:        endDrag,
+      revert:      true,
+      revertDuration: 200,
+      scope:        'section_hint',
+      zIndex:       10,
+    };
+    var sectionElement = $(element);
+    Schedule.layoutSection(sectionElement, $scope.section,
+      $scope.schedule.hourRange[0]);
+    sectionElement.draggable(options).data("id", $scope.section.id);
+  });
+})
+
+angular.module('directives').directive("hint", ['$parse', function($parse) {
+  return domReady(function($scope, element, attrs) {
+    var dropFn = $parse(attrs.drop);
+
     function drop(event, ui) {
-      $scope.$emit('endDrag');
+      REJECT_EVENTS = false;
       $scope.$apply(function() {
-        $scope.replaceSection($(ui.draggable).data("id"), $scope.section);
+        dropFn($scope, {newSection: $scope.section, oldId: $(ui.draggable).data("id")})
       });
     }
 
     var options = {
-      draggable: {
-        snap:        '.ui-droppable',
-        snapMode:    'inner',
-        snapTolerance: 20,
-        start:       startDrag,
-        stop:        endDrag,
-        revert:      true,
-        revertDuration: 200,
-        scope:        'section_hint',
-        zIndex:       10,
-      },
-      droppable: {
-        accept:      '.ui-draggable',
-        hoverClass:  'hover',
-        drop:        drop,
-        scope:       'section_hint',
-      }
+      accept:      '.ui-draggable',
+      hoverClass:  'hover',
+      drop:        drop,
+      scope:       'section_hint',
     };
     var sectionElement = $(element);
-    Schedule.layoutSection(sectionElement, $scope.section, $scope.hourRange[0]); 
-    if (eval(attrs.hint)) {
-      sectionElement.droppable(options.droppable);
-      sectionElement.addClass("in");
-    } else {
-      sectionElement.draggable(options.draggable).data("id", $scope.section.id);
-    }
+    Schedule.layoutSection(sectionElement, $scope.section,
+      $scope.schedule.hourRange[0]);
+    sectionElement.droppable(options);
+    sectionElement.removeClass("out");
   });
-})
-
+}]);

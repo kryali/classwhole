@@ -93,6 +93,11 @@ class UIUCParser
       current_section.meetings.delete_all
       # iterate through the meetings
       meetings = section_xml["meetings"][0]["meeting"]
+
+      # Clear out all current meetings, this is okay because we don't refer to meetings, only sections
+      # Could be a problem later.... What should we do instead?
+      current_section.meetings.delete_all
+
       meetings.each do |id, meeting|
         self.parse_meeting(meeting, current_section)
       end

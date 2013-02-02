@@ -5,11 +5,17 @@
 }
 
 @mixin transition($property, $time) {
-  -webkit-transition:$property $time;
-  -moz-transition: $property $time;
-  -ms-transition: $property $time;
-  -o-transition: $property $time;
-  transition: $property $time;
+  -webkit-transition-property: $property;
+  -moz-transition-property: $property;
+  -ms-transition-property: $property;
+  -o-transition-property: $property;
+  transition-property: $property;
+
+  -webkit-transition-duration: $time;
+  -moz-transition-duration: $time;
+  -ms-transition-duration: $time;
+  -o-transition-duration: $time;
+  transition-duration: $time;
 }
 
 @mixin user-select( $type ) {
