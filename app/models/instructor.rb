@@ -1,7 +1,5 @@
 class Instructor < ActiveRecord::Base
   has_and_belongs_to_many :meetings
-  
-  attr_accessor :avg, :num_ratings, :easy, :name
 
   def self.slugify( name )
     slug = name.gsub(/,\s/,"-")

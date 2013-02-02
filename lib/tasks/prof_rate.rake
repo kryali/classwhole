@@ -33,9 +33,9 @@ def parse_prof_for_letter( letter )
       instructor = Instructor.new
       instructor.name = instructor_name
     end
-    instructor.easy = easy
-    instructor.avg = avg
-    instructor.num_ratings = num_ratings
+    instructor.easy = easy.to_f
+    instructor.avg = avg.to_f
+    instructor.num_ratings = num_ratings.to_i
     instructor.save!
 
     puts "#{prof_name} - #{prof_url}"

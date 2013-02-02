@@ -89,6 +89,8 @@ class UIUCParser
       current_section.end_date = DateTime.parse(section_xml["endDate"][0]) if section_xml.key?("endDate")
 
       current_section.save!
+
+      current_section.meetings.delete_all
       # iterate through the meetings
       meetings = section_xml["meetings"][0]["meeting"]
       meetings.each do |id, meeting|
