@@ -1,6 +1,7 @@
 class Meeting < ActiveRecord::Base
   belongs_to :section
   has_and_belongs_to_many :instructors
+  before_destroy {|meeting| meeting.instructors.clear}
 
   def duration
     return (end_time.hour - start_time.hour) + (end_time.min - start_time.min)/60.0

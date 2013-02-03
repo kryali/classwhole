@@ -1,5 +1,6 @@
 class Instructor < ActiveRecord::Base
   has_and_belongs_to_many :meetings
+  before_destroy {|instructor| instructor.meetings.clear}
 
   def self.slugify( name )
     slug = name.gsub(/,\s/,"-")
