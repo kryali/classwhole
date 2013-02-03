@@ -7,30 +7,37 @@ require 'pp'
 
 class UIUCParser
   @base_url = "http://courses.illinois.edu/cisapp/explorer/schedule/"
-
+  
   def self.parse_meeting(meeting, current_section)
-    current_meeting = Meeting.new
-    current_meeting.start_time = meeting["start"][0] if meeting.key?("start") and meeting.key?("end")    
-    current_meeting.end_time = meeting["end"][0] if meeting.key?("end")
-    current_meeting.room_number = meeting["roomNumber"][0]    if meeting.key?("roomNumber")      
-    current_meeting.days = meeting["daysOfTheWeek"][0].strip if meeting.key?("daysOfTheWeek")
-    current_meeting.class_type = meeting["type"][0]["content"]       if meeting.key?("type")
-    current_meeting.building = meeting["buildingName"][0] if meeting.key?("buildingName")
-    current_meeting.section_id = current_section.id
-    current_meeting.short_type = meeting["type"][0]["code"]
-    
-    #fuk dis shit
-    #instructor_list = []
-    #if not meeting["instructors"][0].empty?
-    #  for instructor in  meeting["instructors"][0]["instructor"]
-    #    current_meeting.instructors << instructor["content"]
-    #    Instructor.add( instructor["content"], current_section.course )
-    #  end
-    #end   
-    #current_meeting.instructors = instructor_list
-    
-    current_meeting.save!
-  end 
+    Meeting.transaction do
+      current_meeting = Meeting.new
+      current_meeting.start_time = meeting["start"][0] if meeting.key?("start") and meeting.key?("end")   
+      current_meeting.end_time = meeting["end"][0] if meeting.key?("end")
+      current_meeting.room_number = meeting["roomNumber"][0]    if meeting.key?("roomNumber")     
+      current_meeting.days = meeting["daysOfTheWeek"][0].strip if meeting.key?("daysOfTheWeek")
+      current_meeting.class_type = meeting["type"][0]["content"]       if meeting.key?("type")
+      current_meeting.building = meeting["buildingName"][0] if meeting.key?("buildingName")
+      current_meeting.section_id = current_section.id
+      current_meeting.short_type = meeting["type"][0]["code"]
+
+      if not meeting["instructors"][0].empty?
+        for instructor in meeting["instructors"][0]["instructor"]
+          inst = Instructor.find_by_name instructor["content"]
+          if inst.nil?
+            inst = Instructor.new
+            inst.name = instructor["content"]
+            inst.num_ratings = 0
+            inst.easy = 0.0
+            inst.avg = 0.0
+            inst.save!
+          end
+          current_meeting.instructors << inst
+        end
+      end
+      
+      current_meeting.save!
+    end
+  end
 
   def self.parse_section(section_xml, current_course, name)
     course_number = section_xml["parents"][0]["course"].first[0] #probably a better way to do this     
@@ -101,7 +108,7 @@ class UIUCParser
       meetings.each do |id, meeting|
         self.parse_meeting(meeting, current_section)
       end
-    end  
+    end
   end
 
   def self.parse_course(course_xml, current_subject, name) 
