@@ -97,7 +97,6 @@ class UIUCParser
 
       current_section.save!
 
-      current_section.meetings.delete_all
       # iterate through the meetings
       meetings = section_xml["meetings"][0]["meeting"]
 
