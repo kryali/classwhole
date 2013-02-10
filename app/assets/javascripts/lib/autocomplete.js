@@ -134,9 +134,10 @@ function render_item(ul, item) {
   var title = truncate(item.title);
   var course_title = $("<div class='course-title'></span>")["html"](title);
   return $("<li></li>")
-         .data( "item.autocomplete", item )
-         .append($("<a></a>").append( course_label ).append( course_title ))
-         .appendTo(ul);
+          .attr("title", item.title)
+          .data("item.autocomplete", item)
+          .append($("<a></a>").append(course_label).append(course_title))
+          .appendTo(ul);
 };
 
 
@@ -203,11 +204,11 @@ Autocomplete.prototype.clear = function() {
 
 /* ========= Helper Functions ========= */
 
-max_string_length = undefined;
+var max_string_length = undefined;
 function truncate( str ){
   if( !max_string_length ){
-    max_string_length = $(".user-course-list-wrapper").width();
-    max_string_length = max_string_length/12;
+    max_string_length = Math.floor($("#autocomplete-list").width() / 12.5);
+    console.log(max_string_length);
   }
   if( str.length > max_string_length )
     return str.substring( 0, max_string_length) + "...";

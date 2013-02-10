@@ -30,7 +30,7 @@ $menu_border_color: #aaaaaa;
   display: block;
   z-index: 5;
   padding: $autocomplete_input_top_padding 0 0 $autocomplete_input_left_padding;
-  width: 100%;
+  width: 94%;
   height: 100%;
   outline: medium none;
   position: absolute;
@@ -39,7 +39,7 @@ $menu_border_color: #aaaaaa;
   color: $autocomplete_input_font_color;
   font-size: $font_size;
   @include box-shadow(none);
-  @include arial();
+  @include roboto_light();
 }
 
 input:focus {
@@ -63,7 +63,7 @@ input.autocomplete-list:focus {
   @include border-radius(3px);
 }
 
-.autocomplete-suggestion{
+.autocomplete-suggestion {
   font-size: $font_size;
   z-index: 0;
   width: 100%;
@@ -72,8 +72,8 @@ input.autocomplete-list:focus {
   top: $suggestion-y-offest;
   left: $autocomplete_input_left_padding;
   padding: 0;
-  //background: red;
-  @include arial();
+  @include roboto_light();
+  opacity: 0.7;
 }
 
 .ui-autocomplete-loading {
@@ -101,9 +101,8 @@ input.autocomplete-list:focus {
   }
   .ui-corner-all {
     display: block;
-    font-size: 1.4em;
     width: 100%;
-    font-family: 'Arial', 'Tahoma', sans-serif;
+    @include roboto_light();
     position: relative;
   }
 
@@ -115,13 +114,11 @@ input.autocomplete-list:focus {
 
   .course-title {
     color: #777;
-    padding: 1em;
+    padding: 0.7em;
     position: absolute;
-    top: 0px;
+    top: 2px;
     right: 0px;
-    font-size: .8em;
-    font-size: 15px;
-    top: 5px;
+    font-size: 14px;
   }
 
 }
