@@ -6,6 +6,8 @@
         %a.course-name {{course.name}}
         %span.course-title{"truncate"=>"35"} {{course.title}}
         %span.course-hours {{course.hours}}
+        %select
+          %option{'ng-repeat' => 'group in course.groups', 'on-select' => 'schedule.changeGroup(courseId, groupKey)', 'group-select' => '', 'value' => "{{course.id + ',' + group.key}}"} {{group.key}}
         %a{:href=>"#", :class=>"remove-course" , "ng-show" => "schedule.canModify","ng-click" => "schedule.removeCourse(course.id)"} x
     %ul.sections{"ng-repeat" => "section in course.sections"}
       %li{"ng-repeat" => "meeting in section.meetings"}
@@ -16,11 +18,3 @@
           %span.crn {{section.crn}}
           %span.instructor {{print_instructor(meeting.instructor)}}
           %span.time {{meeting.duration}}
-
-:javascript 
-  $(document).ready( function() {
-    linkify_classes($(".course-header .course-name")); //TODO move this into a directive or just make the link u fuk
-    $("ul.classmates a").click(function() {
-      mpq.track( "click sidebar profile" );
-    });
-  });

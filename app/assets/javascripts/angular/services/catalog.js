@@ -18,6 +18,7 @@ Catalog.prototype.loadCourses = function(ids) {
   if (lookup.length > 0) {
     var self = this;
     this.$http.post("/catalog/course", {ids: lookup}).success(function(data) {
+      console.log(data);
       for(var i in data) {
         self.saveCourse(data[i]);
       }
@@ -33,7 +34,6 @@ Catalog.prototype.getCourse = function(id, callback) {
 
   var self = this;
   this.$http.post("/catalog/course", {id: id}).success(function(data) {
-    console.log(data);
     self.saveCourse(data);
     if (callback) callback(self.cache.courses[id]);
   });

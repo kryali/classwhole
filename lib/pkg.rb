@@ -34,7 +34,8 @@ class Pkg
       id: course.id,
       name: course.to_s,
       subjectCode: course.subject_code,
-      number: course.number
+      number: course.number,
+      groups: course.groups,
     }
     course_pkg[:sections] = course.sections.map{|section| Pkg.section(section)}
     return course_pkg

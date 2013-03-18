@@ -39,13 +39,13 @@ Whiteboard::Application.routes.draw do
   match "scheduler/" => "scheduler#index", :as => "scheduler_index"
   match 'scheduler/schedule' => 'scheduler#schedule'
   match "scheduler/schedule/replace" => 'scheduler#replace', :via => :post
+  match 'scheduler/group/change' => 'scheduler#change_group'
 	match 'scheduler/show/:id' => 'scheduler#show', :as => 'scheduler_show'
   match 'scheduler/save' => 'scheduler#save', :via => :post
   match 'scheduler/share' => 'scheduler#share', :via => :post
   match 'scheduler/register' => 'scheduler#register', :as => 'scheduler_register'
   match 'scheduler/download' => 'scheduler#download', :via => :post
   match 'scheduler/icalendar' => 'scheduler#icalendar', :via => :post
-  match 'scheduler/group/change' => 'scheduler#change_group'
   match 'scheduler/courses/new' => 'scheduler#add_course', :via => :post, :as => :add_course
   match 'scheduler/courses/destroy' => 'scheduler#remove_course', :via => :post, :as => :remove_course
 

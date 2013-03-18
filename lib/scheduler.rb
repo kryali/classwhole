@@ -144,6 +144,7 @@ class Scheduler
         :name => course.to_s,
         :title => course.title,
         :hours => course.hours,
+        :groups => course.groups,
         :sections => []
       }
     end

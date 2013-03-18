@@ -18,6 +18,10 @@ Scheduler.prototype.replaceSection = function(oldSectionId, newSectionId, callba
   this.$http.post("/scheduler/schedule/replace", {add_id: newSectionId, del_id: oldSectionId}).success(safe(callback));
 }
 
+Scheduler.prototype.changeGroup = function(courseId, groupKey, callback) {
+  this.$http.post("/scheduler/group/change", {course_id: courseId, new_group_key: groupKey}).success(safe(callback));
+}
+
 function safe(callback) {
   return function(data) {
     if (callback) callback(data);

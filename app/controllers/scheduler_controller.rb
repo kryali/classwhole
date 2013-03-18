@@ -12,19 +12,16 @@ class SchedulerController < ApplicationController
   end
 
   def change_group
-    logger.error params.inspect
-    course = Course.find(params["course_id"])
-    group = course.groups.find_by_key(params["new_config_key"])
-    old_schedule = []
-    unless params["ids"].nil?
-      params["ids"].each do |id|
-        old_schedule << Section.find(id)
-      end
+    course = Course.find(params["course_id"].to_i)
+    group = course.groups.find_by_key(params["new_group_key"])
+    logger.error current_user.schedule.inspect
+    schedule = Scheduler.schedule_change(current_user.schedule, group)
+    if schedule.nil?
+      render :json => { :success => false, :message => "Sorry, there was a conflict." }
+    else
+      current_user.schedule = schedule
+      render :json => { :success => true }
     end
-    schedule = Scheduler.schedule_change( old_schedule, group )
-    schedule.map { |section| Scheduler.pkg_section(section) }
-    start_hour, end_hour = Section.hour_range( schedule )
-    render :json => { :schedule => schedule, :start_hour => start_hour, :end_hour => end_hour }
   end
 
   def save
