@@ -152,6 +152,7 @@ class Scheduler
     schedule.each do |section|
       course = pkg.select{|course| course[:name] == section.course_to_s}[0]
       course[:sections] << self.pkg_section(section)
+      course[:selected_group] = section.group.key
     end
     
     return { :hour_range => hour_range, :schedule => pkg }

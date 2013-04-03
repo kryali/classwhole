@@ -208,7 +208,6 @@ var max_string_length = undefined;
 function truncate( str ){
   if( !max_string_length ){
     max_string_length = Math.floor($("#autocomplete-list").width() / 12.5);
-    console.log(max_string_length);
   }
   if( str.length > max_string_length )
     return str.substring( 0, max_string_length) + "...";

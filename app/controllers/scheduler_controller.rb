@@ -14,10 +14,9 @@ class SchedulerController < ApplicationController
   def change_group
     course = Course.find(params["course_id"].to_i)
     group = course.groups.find_by_key(params["new_group_key"])
-    logger.error current_user.schedule.inspect
     schedule = Scheduler.schedule_change(current_user.schedule, group)
-    if schedule.nil?
-      render :json => { :success => false, :message => "Sorry, there was a conflict." }
+    if schedule.nil? or schedule.length == 0
+      render :json => { :success => false, :status => "error", :message => "Sorry, there was a conflict." }
     else
       current_user.schedule = schedule
       render :json => { :success => true }

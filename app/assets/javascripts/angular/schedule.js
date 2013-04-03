@@ -27,7 +27,6 @@ Schedule.prototype.setSchedule = function(newSchedule, hourRange) {
   this.hourRange = hourRange;
   this.flatSchedule = this.flattenSchedule(newSchedule);
   this.showHint = {};
-  console.log(this.courses);
 
   // Preload course data
   var ids = [];
@@ -76,7 +75,6 @@ Schedule.prototype.addCourse = function(courseId) {
 }
 
 Schedule.prototype.changeGroup = function(courseId, groupKey) {
-  console.log("changing this stupis group");
   this.loadingMessage = "scheduling...";
   var self = this;
   this.scheduler.changeGroup(courseId, groupKey, function(data) {
@@ -149,7 +147,6 @@ Schedule.prototype.update = function() {
   var data = {id: this.userId};
   this.scheduler.get(data, function(data) {
     self.scheduling = false;
-    console.log(data);
     self.setSchedule(data.schedule, data.hour_range);
   });
 }

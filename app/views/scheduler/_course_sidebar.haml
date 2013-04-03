@@ -6,8 +6,7 @@
         %a.course-name {{course.name}}
         %span.course-title{"truncate"=>"35"} {{course.title}}
         %span.course-hours {{course.hours}}
-        %select
-          %option{'ng-repeat' => 'group in course.groups', 'on-select' => 'schedule.changeGroup(courseId, groupKey)', 'group-select' => '', 'value' => "{{course.id + ',' + group.key}}"} {{group.key}}
+        %select{'new-select' => '{{course.groups}}', 'on-select' => 'schedule.changeGroup(courseId, groupKey)', 'selected-group' => '{{course.selected_group}}'}
         %a{:href=>"#", :class=>"remove-course" , "ng-show" => "schedule.canModify","ng-click" => "schedule.removeCourse(course.id)"} x
     %ul.sections{"ng-repeat" => "section in course.sections"}
       %li{"ng-repeat" => "meeting in section.meetings"}
