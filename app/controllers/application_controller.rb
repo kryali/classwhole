@@ -14,7 +14,8 @@ class ApplicationController < ActionController::Base
   def current_user    
     if @current_user.nil?
       if session[:user_id]
-        @current_user ||= User.find(session[:user_id])
+        @current_user ||= User.find_by_id(session[:user_id])
+        @current_user = Fake_user.new(cookies) if @current_user.nil?
       else
         @current_user = Fake_user.new(cookies)
       end
