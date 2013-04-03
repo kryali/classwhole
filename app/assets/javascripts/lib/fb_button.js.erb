@@ -36,16 +36,10 @@ init_fb = function () {
         url: path,
         data: params,
         success: function( data, textStatus, xqHR){
-          mpq.track("Logged in");
-          pop_alert( textStatus, "Logged in" );
-
-          // track the name
           mpq.name_tag($(data).find(".name").text());
-          //console.log(data["user"]["name"]);
-          $(".secondary-nav").empty().append( $(data) );
-          $(document).trigger("logged-in");
+          mpq.track("Logged in");
           hideModal();
-
+          window.location = "/";
         },
         error: function(jqXHR, textStatus, errorThrown) {
           //console.log( jqXHR );

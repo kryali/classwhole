@@ -11,7 +11,6 @@ Whiteboard::Application.routes.draw do
   match 'jobs' => 'home#careers'
 
   # Catalog routes
-  match 'catalog/*other' => 'scheduler#redirect'
   match 'catalog/subjects/' => 'catalog#get_subjects'
   match 'catalog/course/' => 'catalog#find_course'
   match 'catalog/section/' => 'catalog#find_section'

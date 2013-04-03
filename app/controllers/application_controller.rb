@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   include ApplicationHelper
 
-  protect_from_forgery
+  skip_before_filter :verify_authenticity_token
   helper_method :current_user
 
   def set_cache_buster

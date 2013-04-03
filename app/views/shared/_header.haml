@@ -2,7 +2,7 @@
   = link_to "", root_path, {:id => "logo"}
   %nav
     = link_to "Scheduler", scheduler_index_path
-    = link_to "Courses", show_semester_path(DefaultSemester::SEASON, DefaultSemester::YEAR)
+    =#link_to "Courses", show_semester_path(DefaultSemester::SEASON, DefaultSemester::YEAR)
     = link_to "About", about_path
   %nav.secondary-nav
     - if current_user.is_temp?
