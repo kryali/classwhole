@@ -7,16 +7,6 @@
     %li{"ng-repeat" => "hour in schedule.enumerateRange()"}
       {{print_hour(hour)}}
   %div{:class => "schedule-content", "data-tooltip" => ""}
-    %ul.toolbar
-      %li
-        %a{:href => "#"} save
-        %span
-      %li
-        %a{:href => "#"} image
-        %span
-      %li
-        %a{:href => "#"} share
-        %span
     %ul.day-header
       %li.header{"ng-repeat" => "day in days()"} {{day}}
     %div{:class => "schedule-display"}
