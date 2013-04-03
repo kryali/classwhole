@@ -11,6 +11,10 @@ class SchedulerController < ApplicationController
     @schedule_json[:canModify] = current_user.id == @user.id
   end
 
+  def redirect
+    redirect_to :root
+  end
+
   def change_group
     course = Course.find(params["course_id"].to_i)
     group = course.groups.find_by_key(params["new_group_key"])

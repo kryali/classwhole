@@ -11,11 +11,13 @@ Whiteboard::Application.routes.draw do
   match 'jobs' => 'home#careers'
 
   # Catalog routes
+  match 'catalog/*other' => 'scheduler#redirect'
   match 'catalog/subjects/' => 'catalog#get_subjects'
   match 'catalog/course/' => 'catalog#find_course'
   match 'catalog/section/' => 'catalog#find_section'
   match 'catalog/:subject_code/courses' => 'catalog#get_courses'
 
+  match 'courses/*other' => 'scheduler#redirect'
   match 'courses/' => 'catalog#semester', :as => 'show_university'
   match 'courses/:season/:year/' => 'catalog#semester', :as => 'show_semester'
   match 'courses/:season/:year/:subject_code' => 'catalog#subject', :as => 'show_subject'
