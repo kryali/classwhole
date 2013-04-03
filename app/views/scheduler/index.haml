@@ -5,7 +5,7 @@
 %div{"ng-controller" => "SchedulerCtrl", "ng-init" => "init(initData)"}
   = render "schedule"
   %div{"ng-show"  => "showLandingPage()", :class => "scheduler-landing"}
-    Add classes -> (todo make it prettier)
+    %div.splash
     <div class="fb-like" data-href="http://classwhole.com" data-send="true" data-width="450" data-show-faces="true"></div>
   = render "sidebar"
   = render "schedule_canvas"
