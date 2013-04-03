@@ -1,8 +1,12 @@
-![The joke that went too far](http://imgur.com/1zN99Zc.png)
+![http://classwhole.com](http://imgur.com/1zN99Zc.png)
 
-Classwhole is a drag-and-drop course scheduler, use the site [here](http://classwhole.com). Pull requests are welcome.
+Classwhole is a drag-and-drop course scheduler, [try it out](http://classwhole.com). 
 
-## Geeky stuff
+If you find a bug, please file an [issue](https://github.com/kryali/classwhole/issues?direction=desc&sort=updated&state=open).
+
+Pull requests are welcome!
+
+## Overview
 
 Classwhole is built on [Rails 3](http://rubyonrails.org/) with [AngularJS](http://angularjs.org/). 
 We use AngularJS for its excellent data-binding support and for it's dependency injection to organize client-size code.
@@ -29,9 +33,11 @@ If you're using linux or a Debian distribution, you can run `ubuntu_bootstrap.sh
     bundle exec rake assets:precompile
     passenger start
 
-## Where things live
+## Geeky Stuff
 
 Below are some of the technical highlights in how Classwhole works.
+
+![demo](http://imgur.com/5ORNq5a.png)
 
 #### Course Catalog scraping
 We scrape course catalog data from the university via an XML API they provide. This runs as a daily cron job to keep course information fresh.
@@ -62,8 +68,10 @@ We use [Nokogiri](http://nokogiri.org/) to scrape professor data fom RateMyProfe
 
 #### Interaction (The Magic)
 Interacting with the schedule happens in a few ways. Usually a browser event is dispatched to `angular/schedule.js` which decides what to do and how to modify the current state of the page.
-    
-# Contributing
+
+* [app/assets/javascripts/schedule/angular/schedule.js](https://github.com/kryali/classwhole/tree/master/app/assets/javascripts/angular/schedule.js)
+
+## Contributing
 Lots of general cleanup, bug fixes, and features are needed, any help is greatly appreciated.
 
 1. Fork our project
