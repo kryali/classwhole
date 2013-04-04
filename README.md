@@ -64,6 +64,8 @@ In order to pull off a multi-mode search field, custom suggestions, and a Google
 #### Scraping RateMyProfessor
 We use [Nokogiri](http://nokogiri.org/) to scrape professor data fom RateMyProfessor as a rake task. This code is pretty easy to pull out if you'd like to use it in your own project.
 
+NOTE: one caveat is that the school doesn't provide us with the complete first name for Professors. We've had this request on the books for nearly two years and is unlikely to get fixed.
+
 * [lib/tasks/prof_rate.rake](https://github.com/kryali/classwhole/blob/master/lib/tasks/prof_rake.rb)
 
 #### Interaction (The Magic)
