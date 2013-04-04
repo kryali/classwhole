@@ -31,7 +31,6 @@ pickle-email-*.html
 .livereload
 app/assets/stylesheets/.livereload
 *.rdb
-config/database.yml
 *~
 *.pyc
 .idea
