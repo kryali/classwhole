@@ -73,6 +73,11 @@ All schedule interaction follows the flow of `event -> schedule#method`. The bro
 
 * [app/assets/javascripts/schedule/angular/schedule.js](https://github.com/kryali/classwhole/tree/master/app/assets/javascripts/angular/schedule.js)
 
+#### Section Grouping and Data Model
+The University provides a course catalog which has a list of all courses. It doesn't provide a way to group courses together. Check the [Section Grouping Wiki](https://github.com/kryali/classwhole/wiki/Section-Groups) for our implementation details.
+
+* [/lib/tasks/section_groups.rake](https://github.com/kryali/classwhole/blob/master/lib/tasks/section_groups.rake#L41)
+
 ## [Contributing](https://github.com/kryali/classwhole/blob/master/CONTRIBUTING.md)
 Lots of general cleanup, bug fixes, and features are needed, any help is greatly appreciated. 
 
