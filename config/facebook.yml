@@ -1,0 +1,13 @@
+# config/facebook.yml
+development:
+  app_id: your_app_id
+  app_secret: your_secret
+  scope: 'email, user_education_history, friends_education_history'
+test:
+  app_id: your_app_id
+  app_secret: your_secret
+  scope: 'email, user_education_history, friends_education_history'
+production:
+  app_id: your_app_id
+  app_secret: your_secret
+  scope: 'email, user_education_history, friends_education_history'
