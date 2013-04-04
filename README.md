@@ -69,7 +69,7 @@ NOTE: one caveat is that the school doesn't provide us with the complete first n
 * [lib/tasks/prof_rate.rake](https://github.com/kryali/classwhole/blob/master/lib/tasks/prof_rake.rb)
 
 #### Interaction (The Magic)
-All schedule interaction follows the flow of `event` -> `schedule#method`. The browser event is dispatched via a directive to `angular/schedule.js` which decides what to do and how to modify the current state of the page. This includes section hovering, class addition, removal, and group switching.
+All schedule interaction follows the flow of `event -> schedule#method`. The browser event is dispatched via a directive to `angular/schedule.js` which decides what to do and how to modify the current state of the page. This includes section hovering, class addition, removal, and group switching.
 
 * [app/assets/javascripts/schedule/angular/schedule.js](https://github.com/kryali/classwhole/tree/master/app/assets/javascripts/angular/schedule.js)
 
