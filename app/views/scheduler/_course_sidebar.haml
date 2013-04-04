@@ -13,7 +13,7 @@
         %div
           %span{:class=>"section-type label"} {{section.type}}
           %span.code {{section.code}}
-          %span{ :class=>"enrollment status-0"}
+          %span{:class=>"enrollment status-{{section.enrollment}}"}
           %span.crn {{section.crn}}
           %span.instructor {{print_instructor(meeting.instructor.name)}}
           %span.time {{meeting.duration}}
