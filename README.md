@@ -73,8 +73,8 @@ All schedule interaction follows the flow of `event -> schedule#method`. The bro
 
 * [app/assets/javascripts/schedule/angular/schedule.js](https://github.com/kryali/classwhole/tree/master/app/assets/javascripts/angular/schedule.js)
 
-## Contributing
-Lots of general cleanup, bug fixes, and features are needed, any help is greatly appreciated.
+## [Contributing](https://github.com/kryali/classwhole/blob/master/CONTRIBUTING.md)
+Lots of general cleanup, bug fixes, and features are needed, any help is greatly appreciated. 
 
 1. Fork our project
 2. Pull request!
