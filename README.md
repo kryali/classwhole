@@ -10,7 +10,7 @@ Pull requests are welcome!
 
 Classwhole is built on [Rails 3](http://rubyonrails.org/) with [AngularJS](http://angularjs.org/). 
 We use AngularJS for its excellent data-binding support and for it's dependency injection to organize client-size code.
-Rails is reponsible for collection course catalog data as well as persisting user schedule and accounts.
+Rails is reponsible for updating course catalog data as well as persisting user schedules and accounts.
 We use [HAML](http://haml.info/) and [SASS](http://sass-lang.com/) to generate our front-end HTML/CSS.
 
 The best way to think about how this application works is that Rails produces the API that the client-side AngularJS consumes it.
