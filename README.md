@@ -13,7 +13,7 @@ We use AngularJS for its excellent data-binding support and for it's dependency 
 Rails is reponsible for updating course catalog data as well as persisting user schedules and accounts.
 We use [HAML](http://haml.info/) and [SASS](http://sass-lang.com/) to generate our front-end HTML/CSS.
 
-The best way to think about how this application works is that Rails produces the API that the client-side AngularJS consumes it.
+The best way to think about how this application works is that Rails produces the API that the client-side AngularJS consumes.
 
 ## Setup
 
